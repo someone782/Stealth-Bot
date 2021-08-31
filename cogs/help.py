@@ -65,7 +65,7 @@ Commands usable by you (in this server): {len(await self.filter_commands(list(se
                 iter+=1
         nl = '\n'
         embed.add_field(name=f"__Available categories__ [{len(allcogs)}]", value=f"```fix\n{nl.join(allcogs)}```")
-        embed.add_field(name="📰 __Latest News__ - <t:1629314078:d> (<t:1629314078:R>)", value = f"""
+        embed.add_field(name="📰 __Latest News__ - <t:1630413792:d> (<t:1630413792:R>)", value = f"""
 {news}
                         """)
 

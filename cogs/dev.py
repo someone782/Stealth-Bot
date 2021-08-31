@@ -16,21 +16,17 @@ class dev(commands.Cog):
     @commands.command(aliases=['to_do'])
     @commands.is_owner()
     async def todo(self, ctx, *, text):
-        embed = discord.Embed(title=f"<a:loading:747680523459231834> Sending to do...", timestamp=discord.utils.utcnow(), color=0x2F3136)
-        embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
-        message = await ctx.reply(embed=embed, mention_author=False)
-
-        channel = self.client.get_channel(844556340399046697) # Gets the channel "stealth_client" (844556340399046697) and stores it as the channel variable
+        channel = self.client.get_channel(881541529381007431)
 
         await channel.send(f"TO DO: {text}")
 
         embed = discord.Embed(title=f"Sent to do!", description=f"What was sent: {text}", timestamp=discord.utils.utcnow(), color=0x2F3136)
         embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
-        await message.edit(embed=embed)
+        await ctx.reply(embed=embed)
 
-    @commands.command(aliases = ['np','invisprefix', 'sp', 'noprefix'], help="toggles no-prefix mode on or off", usage="[on|off]")
+    @commands.command(help="toggles no-prefix mode on or off", aliases=["no_prefix", "silentprefix", "silent_prefix"])
     @commands.is_owner()
-    async def silentprefix(self, ctx, state: typing.Optional[str] = None):
+    async def noprefix(self, ctx, state : str=None):
         if state == 'on':
             await ctx.message.add_reaction('<:toggle_on:857842924729270282>')
             self.client.no_prefix = True
@@ -46,96 +42,122 @@ class dev(commands.Cog):
                 self.client.no_prefix = False
 
 
-    @commands.command(help="Loads an extension", aliases=['le', 'lc', 'loadcog'], usage="<extension>")
+    @commands.command(help="Loads a cog", aliases=['le', 'lc', 'loadcog'])
     @commands.is_owner()
-    async def load(self, ctx, extension = ""):
-        embed = discord.Embed(color=ctx.me.color, description = f"⬆ {extension}")
-        message = await ctx.send(embed=embed)
+    async def load(self, ctx, extension):
+        embed = discord.Embed(description=f"<a:loading:747680523459231834> Loading {extension}...")
+        embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+
+        message = await ctx.reply(embed=embed, mention_author=False)
+
         try:
-            self.client.load_extension("cogs.{}".format(extension))
-            await asyncio.sleep(0.5)
-            embed = discord.Embed(color=ctx.me.color, description = f"✅ {extension}")
+            self.client.load_extension(f"cogs.{extension}")
+            embed = discord.Embed(description=f":white_check_mark: {extension}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+            embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+
             await message.edit(embed=embed)
 
         except discord.ext.commands.ExtensionNotFound:
-            await asyncio.sleep(0.5)
-            embed = discord.Embed(color=ctx.me.color, description = f"❌ Extension not found")
+            embed = discord.Embed(description=":x: That cog doesn't exist.", timestamp=discord.utils.utcnow(), color=0x2F3136)
+            embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+
             await message.edit(embed=embed)
 
         except discord.ext.commands.ExtensionAlreadyLoaded:
-            await asyncio.sleep(0.5)
-            embed = discord.Embed(color=ctx.me.color, description = f"❌ Extension already loaded")
+            embed = discord.Embed(description=":x: That cog is already loaded.", timestamp=discord.utils.utcnow(), color=0x2F3136)
+            embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+
             await message.edit(embed=embed)
 
-
         except discord.ext.commands.NoEntryPointError:
-            await asyncio.sleep(0.5)
-            embed = discord.Embed(color=ctx.me.color, description = f"❌ No setup function")
+            embed = discord.Embed(description=":x: That cog doesn't have a setup function.", timestamp=discord.utils.utcnow(), color=0x2F3136)
+            embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+
             await message.edit(embed=embed)
 
         except discord.ext.commands.ExtensionFailed as e:
             traceback_string = "".join(traceback.format_exception(etype=None, value=e, tb=e.__traceback__))
-            await asyncio.sleep(0.5)
-            embed = discord.Embed(color=ctx.me.color, description = f"❌ Execution error\n```{traceback_string}```")
-            try: await message.edit(embed=embed)
+            embed = discord.Embed(description=":x An error occurred while trying to load that cog.\n```{traceback_string}```", timestamp=discord.utils.utcnow(), color=0x2F3136)
+            embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+
+            try:
+                await message.edit(embed=embed)
+
             except:
-                embed = discord.Embed(color=ctx.me.color, description = f"❌ Execution error ```\n error too long, check the console\n```")
+                embed = discord.Embed(description=":x: An error occurred while trying to load that cog. ```\nError message is too long to send it here.\nPlease check the console\n```", timestamp=discord.utils.utcnow(), color=0x2F3136)
+                embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+
                 await message.edit()
             raise e
 
-    @commands.command(help="Unloads an extension", aliases=['unl', 'ue', 'uc'], usage="<extension>")
+    @commands.command(help="Unloads a cog", aliases=['unl', 'ue', 'uc'])
     @commands.is_owner()
-    async def unload(self, ctx, extension = ""):
-        embed = discord.Embed(color=ctx.me.color, description = f"⬇ {extension}")
-        message = await ctx.send(embed=embed)
+    async def unload(self, ctx, extension):
+        embed = discord.Embed(description=f"⬇ {extension}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+        message = await ctx.reply(embed=embed, mention_author=False)
+
         try:
             self.client.unload_extension("cogs.{}".format(extension))
-            await asyncio.sleep(0.5)
-            embed = discord.Embed(color=ctx.me.color, description = f"✅ {extension}")
+            embed = discord.Embed(description=f":white_check_mark: {extension}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+            embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+
             await message.edit(embed=embed)
 
         except discord.ext.commands.ExtensionNotFound:
-            await asyncio.sleep(0.5)
-            embed = discord.Embed(color=ctx.me.color, description = f"❌ Extension not found")
+            embed = discord.Embed(description=f":x: That cog doesn't exist.", timestamp=discord.utils.utcnow(), color=0x2F3136)
+            embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+
             await message.edit(embed=embed)
 
         except discord.ext.commands.ExtensionNotLoaded:
-            await asyncio.sleep(0.5)
-            embed = discord.Embed(color=ctx.me.color, description = f"❌ Extension not loaded")
+            embed = discord.Embed(description = f":x: That cog isn't loaded.", timestamp=discord.utils.utcnow(), color=0x2F3136)
+            embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+
             await message.edit(embed=embed)
 
-    @commands.command(help="Reloads an extension", aliases=['rel', 're', 'rc'])
+    @commands.command(help="Reloads an cog", aliases=['rel', 're', 'rc'])
     @commands.is_owner()
-    async def reload(self, ctx, extension = ""):
-        embed = discord.Embed(color=ctx.me.color, description = f"🔃 {extension}")
-        message = await ctx.send(embed=embed)
+    async def reload(self, ctx, extension):
+        embed = discord.Embed(description=f"<a:loading:747680523459231834> {extension}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+        message = await ctx.reply(embed=embed, mention_author=False)
+
         try:
             self.client.reload_extension("cogs.{}".format(extension))
-            await asyncio.sleep(0.5)
-            embed = discord.Embed(color=ctx.me.color, description = f"✅ {extension}")
+            embed = discord.Embed(description=f":white_check_mark: {extension}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+            embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+
             await message.edit(embed=embed)
+
         except discord.ext.commands.ExtensionNotLoaded:
-            await asyncio.sleep(0.5)
-            embed = discord.Embed(color=ctx.me.color, description = f"❌ Extension not loaded")
+            embed = discord.Embed(description=":x: That cog isn't loaded.", timestamp=discord.utils.utcnow(), color=0x2F3136)
+            embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+
             await message.edit(embed=embed)
 
         except discord.ext.commands.ExtensionNotFound:
-            await asyncio.sleep(0.5)
-            embed = discord.Embed(color=ctx.me.color, description = f"❌ Extension not found")
+            embed = discord.Embed(description=":x: That cog doesn't exist.", timestamp=discord.utils.utcnow(), color=0x2F3136)
+            embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+
             await message.edit(embed=embed)
 
         except discord.ext.commands.NoEntryPointError:
-            await asyncio.sleep(0.5)
-            embed = discord.Embed(color=ctx.me.color, description = f"❌ No setup function")
+            embed = discord.Embed(description="x: That cog doesn't have a setup function", timestamp=discord.utils.utcnow(), color=0x2F3136)
+            embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+
             await message.edit(embed=embed)
 
         except discord.ext.commands.ExtensionFailed as e:
             traceback_string = "".join(traceback.format_exception(etype=None, value=e, tb=e.__traceback__))
-            await asyncio.sleep(0.5)
-            embed = discord.Embed(color=ctx.me.color, description = f"❌ Execution error\n```{traceback_string}```")
-            try: await message.edit(embed=embed)
+            embed = discord.Embed(description = f":x: An error occurred while trying to load that cog.\n```{traceback_string}```", timestamp=discord.utils.utcnow(), color=0x2F3136)
+            embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+
+            try:
+                await message.edit(embed=embed)
+
             except:
-                embed = discord.Embed(color=ctx.me.color, description = f"❌ Execution error ```\n error too long, check the console\n```")
+                embed = discord.Embed(description = f"An error occurred while trying to load that cog.\n``` error too long, check the console\n```", timestamp=discord.utils.utcnow(), color=0x2F3136)
+                embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+
                 await message.edit()
             raise e
 
@@ -187,7 +209,6 @@ class dev(commands.Cog):
                     else: await ctx.send(embed=embederr)
                 err = True
 
-        await asyncio.sleep(0.4)
         if err == True:
             if silent == False:
                 if channel == False: desc = f"{desc} \n\n📬 {ctx.author.mention}, I sent you all the tracebacks."

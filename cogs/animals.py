@@ -12,6 +12,7 @@ class animals(commands.Cog):
 
 
     @commands.command(help="Shows a picture of a cat and a random fact about cats")
+    @commands.bot_has_permissions(send_messages=True, embed_links=True)
     async def cat(self, ctx):
        async with aiohttp.ClientSession() as session:
           request = await session.get('https://some-random-api.ml/img/cat')
@@ -25,6 +26,7 @@ class animals(commands.Cog):
        await ctx.reply(embed=embed, mention_author=False)
 
     @commands.command(help="Shows a picture of a dog and a random fact about dogs")
+    @commands.bot_has_permissions(send_messages=True, embed_links=True)
     async def dog(self, ctx):
        async with aiohttp.ClientSession() as session:
           request = await session.get('https://some-random-api.ml/img/dog')
@@ -37,31 +39,25 @@ class animals(commands.Cog):
        embed.set_footer(text=factjson['fact'])
        await ctx.reply(embed=embed, mention_author=False)
 
-    @commands.command(description="Shows you a random shiba from Reddit.")
+    @commands.command(help="Sends you a random picture of a shiba")
     async def shiba(self, ctx):
-        epic = random.random()
-        if epic > 0.5:
-            URL = "https://www.reddit.com/r/shiba/hot.json?limit=102"
-        else:
-            URL = "https://www.reddit.com/r/shiba/hot.json?limit=102"
+        subreddit = "shiba"
+        url = f"https://reddit.com/r/{subreddit}/random.json?limit=1"
 
-
-
-        async with aiohttp.request("GET", URL) as something:
-            if something.status == 200:
-                json_data = await something.json()
-                radome = random.randint(0, 100)
-                image = json_data["data"]["children"][radome]["data"]["url"]
-                embed = discord.Embed(title="Woof", timestamp=discord.utils.utcnow(), color=0x2F3136)
-                embed.set_image(url=image)
-                embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
-
-                await ctx.reply(embed=embed, mention_author=False)
-            else:
-                print(f"The request was invalid\nStatus code: {something.status}")
-                return await ctx.reply(f"Something went wrong!`", mention_author=False)
+        async with self.client.session.get(f"https://reddit.com/r/{subreddit}/random.json?limit=1") as r:
+            res = await r.json()
+            s = ""
+            try:
+                subredditDict = dict(res[0]['data']['children'][0]['data'])
+            except KeyError:
+                return await ctx.send("I couldn't find that subreddit.")
+            embed = discord.Embed(title=f"{subredditDict['title']}", url=f"https://reddit.com{subredditDict['permalink']}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+            embed.set_image(url=subredditDict['url'])
+            embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
+            await ctx.send(embed=embed)
 
     @commands.command(help="Shows a picture of a panda and a random fact about pandas")
+    @commands.bot_has_permissions(send_messages=True, embed_links=True)
     async def panda(self, ctx):
        async with aiohttp.ClientSession() as session:
           request = await session.get('https://some-random-api.ml/img/panda')
@@ -75,6 +71,7 @@ class animals(commands.Cog):
        await ctx.reply(embed=embed, mention_author=False)
 
     @commands.command(help="Shows a picture of a fox and a random fact about foxes")
+    @commands.bot_has_permissions(send_messages=True, embed_links=True)
     async def fox(self, ctx):
        async with aiohttp.ClientSession() as session:
           request = await session.get('https://some-random-api.ml/img/fox')
@@ -88,6 +85,7 @@ class animals(commands.Cog):
        await ctx.reply(embed=embed, mention_author=False)
 
     @commands.command(help="Shows a picture of a bird and a random fact about birds")
+    @commands.bot_has_permissions(send_messages=True, embed_links=True)
     async def bird(self, ctx):
        async with aiohttp.ClientSession() as session:
           request = await session.get('https://some-random-api.ml/img/bird')
@@ -101,6 +99,7 @@ class animals(commands.Cog):
        await ctx.reply(embed=embed, mention_author=False)
 
     @commands.command(help="Shows a picture of a koala and a random fact about koalas")
+    @commands.bot_has_permissions(send_messages=True, embed_links=True)
     async def koala(self, ctx):
        async with aiohttp.ClientSession() as session:
           request = await session.get('https://some-random-api.ml/img/koala')
@@ -114,6 +113,7 @@ class animals(commands.Cog):
        await ctx.reply(embed=embed, mention_author=False)
 
     @commands.command(help="Shows a picture of a kangaroo and a random fact about kangaroos")
+    @commands.bot_has_permissions(send_messages=True, embed_links=True)
     async def kangaroo(self, ctx):
        async with aiohttp.ClientSession() as session:
           request = await session.get('https://some-random-api.ml/img/kangaroo')
@@ -127,6 +127,7 @@ class animals(commands.Cog):
        await ctx.reply(embed=embed, mention_author=False)
 
     @commands.command(help="Shows a picture of a racoon and a random fact about racoons")
+    @commands.bot_has_permissions(send_messages=True, embed_links=True)
     async def racoon(self, ctx):
        async with aiohttp.ClientSession() as session:
           request = await session.get('https://some-random-api.ml/img/racoon')
@@ -140,6 +141,7 @@ class animals(commands.Cog):
        await ctx.reply(embed=embed, mention_author=False)
 
     @commands.command(help="Shows a picture of a whale and a random fact about whales", aliases=['urmom', 'ur_mom', 'yourmom', 'your_mom'])
+    @commands.bot_has_permissions(send_messages=True, embed_links=True)
     async def whale(self, ctx):
        async with aiohttp.ClientSession() as session:
           request = await session.get('https://some-random-api.ml/img/whale')
@@ -153,6 +155,7 @@ class animals(commands.Cog):
        await ctx.reply(embed=embed, mention_author=False)
 
     @commands.command(help="Shows a picture of a pikachu")
+    @commands.bot_has_permissions(send_messages=True, embed_links=True)
     async def pikachu(self, ctx):
        async with aiohttp.ClientSession() as session:
           request = await session.get('https://some-random-api.ml/img/pikachu')

@@ -12,16 +12,29 @@ class errorhandler(commands.Cog):
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx : commands.Context, error : commands.CommandError):
+        prefix = await self.client.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1', ctx.guild.id)
+        prefix = prefix or 'sb!'
 
         if isinstance(error, commands.CommandNotFound):
             if ctx.author.id == 564890536947875868 and ctx.bot.no_prefix is True: return
-            message = "I couldn't find that command, do `-help` to see a list of all commands."
+            message = f"I couldn't find that command, do `{prefix}help` to see a list of all commands."
 
         elif isinstance(error, helpers.NotSH):
             message = f"You can only use this command in `Stealth Hangout`!\ndiscord.gg/ktkXwmD2kF"
 
         elif isinstance(error, commands.CommandOnCooldown):
             message = f"This command is on cooldown. Please try again after {round(error.retry_after, 1)} seconds."
+
+        elif isinstance(error, discord.Forbidden):
+            message = f"""
+I don't have the permissions to do that.
+This might be due to me missing permissions in the current channel or server.
+This might also be a issue with role hierarchy, try to change my permissions for this server.
+Note: I can't edit the owner of the server
+            """
+
+        elif isinstance(error, discord.HTTPException):
+            message = "An unexpected HTTP error occurred.\nPlease notify Ender2K89#9999 about this issue with a screenshot of what you're trying to do."
 
         elif isinstance(error, commands.MissingPermissions):
             message = "You are missing the required permissions to run this command."
@@ -30,7 +43,7 @@ class errorhandler(commands.Cog):
             message = "Only the owner of this bot can run this command."
 
         elif isinstance(error, commands.TooManyArguments):
-            message = "It appears that you've provided too many arguments, please trx again with less arguments."
+            message = "It appears that you've provided too many arguments, please try again with fewer arguments."
 
         elif isinstance(error, commands.MemberNotFound):
             message = "I couldn't find that member."

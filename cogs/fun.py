@@ -3,6 +3,7 @@ import discord
 import random
 import helpers
 import io
+from asyncdagpi import Client, ImageFeatures
 import datetime
 import aiohttp
 import pyfiglet
@@ -12,7 +13,6 @@ class fun(commands.Cog):
     "Fun commands like -meme, -hug and more"
     def __init__(self, client):
         self.client = client
-
 
     @commands.command(aliases=['asciitext', 'ascii_text', 'gen_ascii', 'generator_ascii'], description="Turns any text into ASCII")
     async def ascii(self, ctx, *, text):
@@ -241,24 +241,32 @@ class fun(commands.Cog):
 
         await ctx.reply(embed=embed, mention_author=False)
 
-    @commands.command(description="Tells you a random number", aliases=['rm'])
+    @commands.command(help="Generates a random number", aliases=['rm'])
     async def randomnumber(self, ctx, minimum : int=None, maximum : int=None):
         if minimum == None:
             minimum = 1
 
-        if maximum == None or maximum > 2147483647:
-            maximum = 2147483647
+        if maximum == None:
+            maximum = 10
 
-        if maximum > 2147483647:
-            await ctx.reply("Number cannot be more than 2147483647.")
+        if maximum > 1000000:
+            return await ctx.reply("Number cannot be more than `1000000`.")
 
-        embed = discord.Embed(title=f"Random number generator", description="*You can change the minimum and maximum number, example: -randomnumber 69 420*\n*The default minimum number is 1 and the maximum is 2147483647*", timestamp=discord.utils.utcnow(), color=0x2F3136)
-        embed.add_field(name="Random number:", value=random.randint(minimum, maximum), inline=True)
-        embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
+        number = random.randint(minimum, maximum)
 
-        await ctx.reply(embed=embed, mention_author=False)
+        await ctx.reply(f"Randomly generated number between `{minimum}` and `{maximum}`: `{number}`", mention_author=False)
 
-    @commands.command(description="Tells you a random game you can play in ROBLOX!")
+    @commands.command(help="Generates a random word", aliases=['rw'])
+    async def randomword(self, ctx):
+        with open("./data/verifyWords.txt", "r") as file:
+            allText = file.read()
+            wordsList = list(map(str, allText.split()))
+
+        randomWord = random.choice(wordsList)
+
+        await ctx.reply(f"Randomly generated word: {randomWord}", mention_author=False)
+
+    @commands.command(help="Tells you a random game you can play in ROBLOX!")
     async def robloxgame(self, ctx):
         responses = ['Jailbreak.',
                     'Flee The Facility.',
@@ -310,79 +318,43 @@ class fun(commands.Cog):
 
         await ctx.reply(embed=embed, mention_author=False)
 
-    @commands.command(description="Shows you a random meme from the Reddit.")
+    @commands.command(help="Shows you a random meme from the subreddit r/memes", aliases=['m'])
     async def meme(self, ctx):
-        embed = discord.Embed(title=f"<a:loading:747680523459231834> Getting meme...", timestamp=discord.utils.utcnow(), color=0x2F3136)
-        embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
-        message = await ctx.reply(embed=embed, mention_author=False)
+        subreddit = "meme"
+        url = f"https://reddit.com/r/{subreddit}/random.json?limit=1"
 
-        epic = random.random()
-        if epic > 0.5:
-            URL = "https://www.reddit.com/r/memes/hot.json?limit=102"
-        else:
-            URL = "https://www.reddit.com/r/dankmemes/hot.json?limit=102"
+        async with self.client.session.get(f"https://reddit.com/r/{subreddit}/random.json?limit=1") as response:
+            response = await response.json()
+            redditDict = dict(response[0]['data']['children'][0]['data'])
 
+            embed = discord.Embed(title=f"{redditDict['title']}", url=f"https://reddit.com{redditDict['permalink']}", description=f"Upvotes: {redditDict['ups']}\nComments: {redditDict['num_comments']}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+            embed.set_image(url=redditDict['url'])
+            embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
 
+            await ctx.reply(embed=embed, mention_author=False)
 
-        async with aiohttp.request("GET", URL) as something:
-            if something.status == 200:
-                json_data = await something.json()
-                radome = random.randint(0, 100)
-                image = json_data["data"]["children"][radome]["data"]["url"]
-                title = json_data["data"]["children"][radome]["data"]["title"]
-                ups = json_data["data"]["children"][radome]["data"]["ups"]
-                downs = json_data["data"]["children"][radome]["data"]["downs"]
-                comments = json_data["data"]["children"][radome]["data"]["num_comments"]
-                embed = discord.Embed(title=f"Meme", url=f"{image}", timestamp=discord.utils.utcnow(), color=0x2F3136)
-                embed.add_field(name="Title:", value=f"{title}")
-                embed.set_image(url=image)
-                embed.add_field(name="Likes:", value=f"{ups}")
-                embed.add_field(name="Comments:", value=f"{comments}")
-                embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
-
-                await message.edit(content="Received meme!", embed=embed)
-            else:
-                print(f"The request was invalid\nStatus code: {something.status}")
-                return await ctx.reply(f"Something went wrong!`", mention_author=False)
-
-    @commands.command(description="Shows you a random programmer meme from Reddit.", aliases=['pm', 'programmer_meme', 'programmeme', 'program_meme'])
+    @commands.command(help="Shows you a random meme from the subreddit r/ProgrammerHumor", aliases=['programmer_meme', 'programmeme', 'program_meme', 'pm'])
     async def programmermeme(self, ctx):
-        embed = discord.Embed(title=f"<a:loading:747680523459231834> Getting programmer meme...", timestamp=discord.utils.utcnow(), color=0x2F3136)
-        embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
-        message = await ctx.reply(embed=embed, mention_author=False)
+        subreddit = "ProgrammerHumor"
+        url = f"https://reddit.com/r/{subreddit}/random.json?limit=1"
 
-        xd = random.random()
-        if xd > 0.5:
-            URL = "https://www.reddit.com/r/ProgrammerHumor/hot.json?limit=102"
-        else:
-            URL = "https://www.reddit.com/r/ProgrammerHumor/hot.json?limit=102"
+        async with self.client.session.get(f"https://reddit.com/r/{subreddit}/random.json?limit=1") as r:
+            res = await r.json()
+            s = ""
 
-
-        async with aiohttp.request("GET", URL) as something:
-            if something.status == 200:
-                json_data = await something.json()
-                radome = random.randint(0, 99)
-                image = json_data["data"]["children"][radome]["data"]["url"]
-                title = json_data["data"]["children"][radome]["data"]["title"]
-                ups = json_data["data"]["children"][radome]["data"]["ups"]
-                comments = json_data["data"]["children"][radome]["data"]["num_comments"]
-                embed = discord.Embed(title=f"Programmer Meme", url=f"{image}", timestamp=discord.utils.utcnow(), color=0x2F3136)
-                embed.add_field(name="Title:", value=f"{title}")
-                embed.set_image(url=image)
-                embed.add_field(name="Likes:", value=f"{ups}")
-                embed.add_field(name="Comments:", value=f"{comments}")
-                embed.set_footer(text=f"Command requested by: {ctx.author}"	, icon_url=ctx.author.avatar.url)
-
-                await message.edit(content="Received meme!", embed=embed)
-            else:
-                print(f"The request was invalid\nStatus code: {something.status}")
-                return await ctx.reply(f"Something went wrong!`", mention_author=False)
+            subredditDict = dict(res[0]['data']['children'][0]['data'])
+            embed = discord.Embed(title=f"{subredditDict['title']}", url=f"https://reddit.com{subredditDict['permalink']}", description=f"Upvotes: {subredditDict['ups']}\nComments: {subredditDict['num_comments']}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+            embed.set_image(url=subredditDict['url'])
+            embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
+            await ctx.reply(embed=embed, mention_author=False)
 
     @commands.command(description="Messages you.")
     async def msgme(self, ctx, *, content):
-        member = ctx.message.author
-        channel = await member.create_dm()
-        await channel.send(content)
+        try:
+            await ctx.author.send(content)
+            await ctx.reply("Successfully messaged you.")
+        except:
+            await ctx.reply("I couldn't message you, make sure your private messages are enabled.")
 
     @commands.command(description="Let's you hug someone!")
     async def hug(self, ctx, member : discord.Member=None):
@@ -435,65 +407,87 @@ Original text: {text}
         embed.set_footer(text=f"Command requested by: {ctx.author}"	, icon_url=ctx.author.avatar.url)
         await ctx.reply(embed=embed, mention_author=False)
 
-    @commands.command(help="Kills the person you mentioned", aliases=['oof', 'murder'])
-    async def kill(self, ctx, member : discord.Member=None):
+    @commands.command(help="OOF's the person you mentioned", aliases=['commitoof', 'commit_oof'])
+    async def oof(self, ctx, member : discord.Member=None):
         if member == None or member == ctx.author:
-            return await ctx.reply(f"You can't kill yourself!\n||do `suicide` for that||")
+            responses = [f"{ctx.author.name} was killed in Electrical.",
+            f"{ctx.author.name} failed math.",
+            f"{ctx.author.name} rolled down a large hill.",
+            f"{ctx.author.name} cried to death.",
+            f"{ctx.author.name} smelt their own socks.",
+            f"{ctx.author.name} forgot to stop texting while driving. Don't text and drive, kids.",
+            f"{ctx.author.name} said Among Us in a public chat.",
+            f"{ctx.author.name} stubbed their toe.",
+            f"{ctx.author.name} forgot to grippen their shoes when walking down the stairs.",
+            f"{ctx.author.name} wasn't paying attention and stepped on a mine.",
+            f"{ctx.author.name} held a grenade for too long.",
+            f"{ctx.author.name} got pwned by a sweaty tryhard.",
+            f"{ctx.author.name} wore a black shirt in the summer.",
+            f"{ctx.author.name} burned to a crisp.",
+            f"{ctx.author.name} choked on a chicken nugget.",
+            f"{ctx.author.name} forgot to look at the expiration date on the food.",
+            f"{ctx.author.name} ran into a wall.",
+            f"{ctx.author.name} shook a vending machine too hard.",
+            f"{ctx.author.name} was struck by lightning.",
+            f"{ctx.author.name} chewed 5 gum.",
+            f"{ctx.author.name} ate too many vitamin gummy bears.",
+            f"{ctx.author.name} tried to swim in lava. Why would you ever try to do that?"]
+            return await ctx.reply(f"{random.choice(responses)}", mention_author=False)
+        else:
+            responses = [f"{ctx.author.name} exploded {member.name}.",
+                        f"{ctx.author.name} shot {member.name}.",
+                        f"{ctx.author.name} went ham on {member.name}.",
+                        f"{ctx.author.name} betrayed and killed {member.name}.",
+                        f"{ctx.author.name} sent {member.name} to Davy Jones' locker.",
+                        f"{ctx.author.name} no scoped {member.name}.",
+                        f"{ctx.author.name} said no u and killed {member.name}.",
+                        f"{ctx.author.name} blew up {member.name} with a rocket.",
+                        f"{ctx.author.name} pushed {member.name} off a cliff.",
+                        f"{ctx.author.name} stabbed {member.name} to death.",
+                        f"{ctx.author.name} slammed {member.name} with a chair.",
+                        f"{ctx.author.name} recited a magic spell and killed {member.name}.",
+                        f"{ctx.author.name} electrified {member.name}.",
+                        f"{member.name} was slain by {ctx.author.name}.",
+                        f"{ctx.author.name} burnt {member.name} alive.",
+                        f"{ctx.author.name} buried {member.name}.",
+                        f"{ctx.author.name} shoved {member.name}'s head underwater for too long.",
+                        f"{ctx.author.name} slid a banana peel under {member.name}'s feet. They tripped and died...",
+                        f"{ctx.author.name} got a headshot on {member.name}.",
+                        f"{ctx.author.name} said a hilarious joke to {member.name} and died.",
+                        f"{ctx.author.name} showed old Vicente0670 videos to {member.name} and died of cringe.",
+                        f"{ctx.author.name} didn't buy Panda Express for {member.name} and exploded.",
+                        f"{ctx.author.name} sent {member.name} to the Nether.",
+                        f"{ctx.author.name} tossed {member.name} off an airplane.",
+                        f"{ctx.author.name} broke {member.name}'s neck."]
 
-        responses = [f"{ctx.author.name} exploded {member.name}.",
-                    f"{ctx.author.name} shot {member.name}.",
-                    f"{ctx.author.name} went ham on {member.name}.",
-                    f"{ctx.author.name} betrayed and killed {member.name}.",
-                    f"{ctx.author.name} sent {member.name} to Davy Jones' locker.",
-                    f"{ctx.author.name} no scoped {member.name}.",
-                    f"{ctx.author.name} said no u and killed {member.name}.",
-                    f"{ctx.author.name} blew up {member.name} with a rocket.",
-                    f"{ctx.author.name} pushed {member.name} off a cliff.",
-                    f"{ctx.author.name} stabbed {member.name} to death.",
-                    f"{ctx.author.name} slammed {member.name} with a chair.",
-                    f"{ctx.author.name} recited a magic spell and killed {member.name}.",
-                    f"{ctx.author.name} electrified {member.name}.",
-                    f"{member.name} was slain by {ctx.author.name}.",
-                    f"{ctx.author.name} burnt {member.name} alive.",
-                    f"{ctx.author.name} buried {member.name}.",
-                    f"{ctx.author.name} shoved {member.name}'s head underwater for too long.",
-                    f"{ctx.author.name} slid a banana peel under {member.name}'s feet. They tripped and died...",
-                    f"{ctx.author.name} got a headshot on {member.name}.",
-                    f"{ctx.author.name} said a hilarious joke to {member.name} and died.",
-                    f"{ctx.author.name} showed old Vicente0670 videos to {member.name} and died of cringe.",
-                    f"{ctx.author.name} didn't buy Panda Express for {member.name} and exploded.",
-                    f"{ctx.author.name} sent {member.name} to the Nether.",
-                    f"{ctx.author.name} tossed {member.name} off an airplane.",
-                    f"{ctx.author.name} broke {member.name}'s neck."]
+            await ctx.reply(f"{random.choice(responses)}", mention_author=False)
 
-        await ctx.reply(f"{random.choice(responses)}", mention_author=False)
-
-    @commands.command(help="Let's you commit suicide", aliases=['suicied', 'suiced'])
-    async def suicide(self, ctx):
-        responses = [f"{ctx.author.name} said, goodbye cruel world!",
-                    f"{ctx.author.name} commited sudoku.",
-                    f"{ctx.author.name} tripped down a mountain.",
-                    f"{ctx.author.name} stabbed themselves.",
-                    f"{ctx.author.name} smelt their socks.",
-                    f"{ctx.author.name} banged their head with a pan.",
-                    f"{ctx.author.name} held the knife the wrong way.",
-                    f"{ctx.author.name} stubbed their toe.",
-                    f"{ctx.author.name} forgot to grippen their shoes when walking down the stairs.",
-                    f"{ctx.author.name} stepped on a mine.",
-                    f"{ctx.author.name} held a grenade for too long.",
-                    f"{ctx.author.name} jumped off a cliff.",
-                    f"{ctx.author.name} wore a black shirt in the summer.",
-                    f"{ctx.author.name} caught on fire.",
-                    f"{ctx.author.name} choked on a chicken nugget.",
-                    f"{ctx.author.name} ate expired Oreos.",
-                    f"{ctx.author.name} hit their head on the wall.",
-                    f"{ctx.author.name} shook a vending machine too hard.",
-                    f"{ctx.author.name} was struck by lightning.",
-                    f"{ctx.author.name} chewed 5 gum.",
-                    f"{ctx.author.name} ate too many vitamin gummy bear.",
-                    f"{ctx.author.name} tried to swim in lava. Why would you ever try to do that?"]
-
-        await ctx.reply(f"{random.choice(responses)}", mention_author=False)
+    # @commands.command(help="Let's you commit suicide", aliases=['suicied', 'suiced'])
+    # async def suicide(self, ctx):
+    #     responses = [f"{ctx.author.name} said, goodbye cruel world!",
+    #                 f"{ctx.author.name} commited sudoku.",
+    #                 f"{ctx.author.name} tripped down a mountain.",
+    #                 f"{ctx.author.name} stabbed themselves.",
+    #                 f"{ctx.author.name} smelt their socks.",
+    #                 f"{ctx.author.name} banged their head with a pan.",
+    #                 f"{ctx.author.name} held the knife the wrong way.",
+    #                 f"{ctx.author.name} stubbed their toe.",
+    #                 f"{ctx.author.name} forgot to grippen their shoes when walking down the stairs.",
+    #                 f"{ctx.author.name} stepped on a mine.",
+    #                 f"{ctx.author.name} held a grenade for too long.",
+    #                 f"{ctx.author.name} jumped off a cliff.",
+    #                 f"{ctx.author.name} wore a black shirt in the summer.",
+    #                 f"{ctx.author.name} caught on fire.",
+    #                 f"{ctx.author.name} choked on a chicken nugget.",
+    #                 f"{ctx.author.name} ate expired Oreos.",
+    #                 f"{ctx.author.name} hit their head on the wall.",
+    #                 f"{ctx.author.name} shook a vending machine too hard.",
+    #                 f"{ctx.author.name} was struck by lightning.",
+    #                 f"{ctx.author.name} chewed 5 gum.",
+    #                 f"{ctx.author.name} ate too many vitamin gummy bear.",
+    #                 f"{ctx.author.name} tried to swim in lava. Why would you ever try to do that?"]
+    #
+    #     await ctx.reply(f"{random.choice(responses)}", mention_author=False)
 
 
 def setup(client):

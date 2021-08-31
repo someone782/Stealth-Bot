@@ -1,6 +1,7 @@
 import discord
 import datetime
 import io
+import psutil
 import helpers
 import unicodedata
 import time
@@ -64,6 +65,8 @@ class info(commands.Cog):
         if roles != "":
             roles = f"{roles}"
 
+        top_role = member.top_role.mention.replace("@@everyone", "")
+
         badges = helpers.get_member_badges(member)
         if badges: badges = f"{badges}"
         else: badges = ''
@@ -72,13 +75,36 @@ class info(commands.Cog):
         if perms: perms = f"{', '.join(perms)}"
         else: perms = ''
 
-        embed = discord.Embed(title=f"Userinfo - {member}", description=f"""
+        if member.avatar.is_animated() == True:
+            text1 = f"[PNG]({member.avatar.replace(format='png', size=2048).url}) | [JPG]({member.avatar.replace(format='jpg', size=2048).url}) | [WEBP]({member.avatar.replace(format='webp', size=2048).url}) | [GIF]({member.avatar.replace(format='gif', size=2048).url})"
+            text = text1.replace("cdn.discordapp.com", "media.discordapp.net")
+        else:
+            text1 = f"[PNG]({member.avatar.replace(format='png', size=2048).url}) | [JPG]({member.avatar.replace(format='jpg', size=2048).url}) | [WEBP]({member.avatar.replace(format='webp', size=2048).url})"
+            text = text1.replace("cdn.discordapp.com", "media.discordapp.net")
+
+        guild = ctx.guild
+
+        desktopStatus = ":desktop: <:redTick:596576672149667840>"
+        webStatus = ":globe_with_meridians: <:redTick:596576672149667840>"
+        mobileStatus = ":mobile_phone:  <:redTick:596576672149667840>"
+
+        if str(member.desktop_status) == "online" or str(member.desktop_status) == "idle" or str(member.desktop_status) == "dnd" or str(member.desktop_status) == "streaming":
+            desktopStatus = ":desktop: <:greenTick:596576670815879169>"
+
+        if str(member.web_status) == "online" or str(member.web_status) == "idle" or str(member.web_status) == "dnd" or str(member.web_status) == "streaming":
+            webStatus = ":globe_with_meridians: <:greenTick:596576670815879169>"
+
+        if str(member.mobile_status) == "online" or str(member.mobile_status) == "idle" or str(member.mobile_status) == "dnd" or str(member.mobile_status) == "streaming":
+            mobileStatus = ":mobile_phone: <:greenTick:596576670815879169>"
+
+        embed = discord.Embed(title=f"Userinfo - {member}", url=f"https://discord.com/users/{member.id}", description=f"""
 Name: {member}
 <:nickname:876507754917929020> Nickname: {member.nick}
 Discriminator:  #{member.discriminator}
 Display name: {member.mention}
 <:greyTick:860644729933791283> ID: {member.id}
 :robot: Bot?: {botText}
+Avatar url: {text}
 <a:nitro_wumpus:857636144875175936> Boosting: {premiumText}
 <:invite:860644752281436171> Created: {discord.utils.format_dt(member.created_at, style="f")} ({discord.utils.format_dt(member.created_at, style="R")})
 <:member_join:596576726163914752> Joined: {discord.utils.format_dt(member.joined_at, style="f")} ({discord.utils.format_dt(member.joined_at, style="R")})
@@ -86,7 +112,8 @@ Display name: {member.mention}
 Mutual guilds: {len(member.mutual_guilds)}
 {statusEmote} Current status: {str(member.status).title()}
 :video_game: Current activity: {str(member.activity.type).split('.')[-1].title() if member.activity else 'Not playing'} {member.activity.name if member.activity else ''}
-<:role:876507395839381514> Top Role: {member.top_role.mention}
+<:discord:877926570512236564> Client: {desktopStatus} **–** {webStatus} **–** {mobileStatus}
+<:role:876507395839381514> Top Role: {top_role}
 <:role:876507395839381514> Roles: {roles}
 <:store_tag:860644620857507901> Staff permissions: {perms}
 <:store_tag:860644620857507901> Badges: {badges}
@@ -180,21 +207,26 @@ Created: {discord.utils.format_dt(server.created_at, style="f")} ({discord.utils
 
     @commands.command(help="Shows information about the bot", aliases=['bi', 'bot', 'info', 'about'])
     async def botinfo(self, ctx):
+        prefix = await self.client.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1', ctx.guild.id)
+        prefix = prefix or 'sb!'
         current_time = time.time()
         threads = threading.activeCount()
+        mem_info = psutil.virtual_memory()
 
-        embed = discord.Embed(title=f"Bot info - Stealth Bot [-]#1082", description=f"""
-Developer: Ender2K89#9999
-Ping: {round(self.client.latency * 1000)}ms
-Threads: {threads}
-Uptime: {self.client.launch_time}
-Python version: {pythonVersion}
-Discord.py version: {discord.__version__}
-Prefixes: <@760179628122964008>, `{ctx.prefix}`
-Servers: {len(self.client.guilds)}
-Total users: {len(self.client.users)}
-Cogs: {len(self.client.cogs)}
-""", timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed = discord.Embed(title=f"Bot info - Stealth Bot [-]#1082",  color=0x2F3136)
+
+        embed.add_field(name="Processor", value=f"""
+Physical cores: {psutil.cpu_count(logical=False)}
+Total cores: {psutil.cpu_count()}\nFrequency:  {psutil.cpu_freq()}
+Usage: {psutil.cpu_percent(interval=None)}%""")
+
+        embed.add_field(name="Memory", value=f"""
+Total: {mem_info[0]}
+Avaible: {mem_info[1]}
+Used: {mem_info[2]}%
+Free: {mem_info[3]}
+Percent: {mem_info[4]}""")
+
         embed.set_thumbnail(url=self.client.user.avatar.url)
         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url = ctx.author.avatar.url)
 
@@ -321,8 +353,11 @@ Cogs: {len(self.client.cogs)}
         else:
             embed = discord.Embed(title="Bot suggestion", description=f"""
 Suggestion by: {ctx.author} | {ctx.author.name} | {ctx.author.id}
+
 Suggestion from server: {ctx.guild} | {ctx.guild.id}
+
 Suggestion from channel: {ctx.channel} | {ctx.channel.name} | {ctx.channel.id}
+
 Suggestion: {suggestion}
             """, timestamp=discord.utils.utcnow(), color=0x2F3136)
             channel = self.client.get_channel(879786064473129033)
@@ -344,12 +379,17 @@ Suggestion: {suggestion}
     @commands.command(help="Shows you who helped with the making of this bot", aliases=['credit'])
     async def credits(self, ctx):
         embed = discord.Embed(title="Credits", description="""
-Owner: Ender2K89#9999 (<@!564890536947875868>)
-Main help command page inspired by: Charles#5244 (<@!505532526257766411>)
-A lot of command ideas: Vicente0670 YT#0670 (<@!555818548291829792>)
+Owner: Ender2K89#9999
+Main help command page inspired by: Charles#5244
+A lot of command ideas: Vicente0670 YT#0670
+Tested verify command: Eiiknostv#2016
         """, timestamp=discord.utils.utcnow(), color=0x2F3136)
 
         await ctx.reply(embed=embed, mention_author=False)
+
+    @commands.command(help="Shows the current time", aliases=['date'])
+    async def time(self, ctx):
+        await ctx.reply(f"The current time is {discord.utils.format_dt(discord.utils.utcnow(), style='T')}")
 
 
 def setup(client):

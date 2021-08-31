@@ -28,7 +28,7 @@ class giveaway(commands.Cog):
 
 
     @commands.command(aliases=['gstart', 'start_giveaway', 'gcreate'])
-    @commands.has_role("Staff")
+    @commands.check_any(commands.has_permissions(manage_guild=True), commands.is_owner())
     @commands.cooldown(1, 60, commands.BucketType.user) # Sets the cooldown to 60 seconds for the user executing the command
     async def giveaway(self, ctx):
         def format_dt(dt, style=None):
@@ -124,7 +124,7 @@ class giveaway(commands.Cog):
 	# reroll command
 
     @commands.command(aliases=['rerollgiveaway', 'greroll', 'giveawayreroll'])
-    @commands.has_role("Staff")
+    @commands.check_any(commands.has_permissions(manage_guild=True), commands.is_owner())
     @commands.cooldown(1, 5, commands.BucketType.user) # Sets the cooldown to 5 seconds for the user executing the command
     async def reroll(self, ctx, channel : discord.TextChannel, message : int):
         try: # Tries to:

@@ -1,7 +1,10 @@
 import discord
 import datetime
 import io
+import asyncio
+import random
 import helpers
+from PIL import Image, ImageSequence
 import aiohttp
 from discord.ext import commands
 
@@ -9,6 +12,7 @@ class other(commands.Cog):
     "All other commands"
     def __init__(self, client):
         self.client = client
+        client.session = aiohttp.ClientSession()
 
     @commands.command(help="Sends the source code of the bot", aliases=['code', 'sourcecode', 'source_code'])
     async def source(self, ctx):
@@ -91,38 +95,52 @@ class other(commands.Cog):
             embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
             await ctx.reply(embed=embed, mention_author=False)
 
-    @commands.command(pass_context=True, help="Verifies you")
-    @commands.cooldown(1, 99999999999, commands.BucketType.user) # Sets the cooldown to 99999999999 seconds for the user executing the command
+    @commands.command(help="Verifies you", hidden=True)
+    @commands.cooldown(1, 30, commands.BucketType.user)
+    @helpers.is_sh_server()
     async def verify(self, ctx):
-        user = ctx.message.author
-        role = 'Members'
-        success_message = 'Verified!'
-        try:
-            await user.add_roles(discord.utils.get(user.guild.roles, name=role))
-            await ctx.message.delete()
-            await ctx.send(success_message, delete_after=5.0)
-            embed = discord.Embed(title="Someone has verified!", color=0x2F3136)
-            embed.add_field(name="Person who verified:", value=f"{user.name}")
-            channel = self.client.get_channel(836232733126426666)
-            await channel.send(embed=embed)
-        except Exception as e:
-            await ctx.send('Cannot assign role. Error: ' + str(e))
+        with open("./data/verifyWords.txt", "r") as file:
+            allText = file.read()
+            wordsList = list(map(str, allText.split()))
 
-    @commands.command(aliases=['giveaway_ping', 'ping_giveaway'], help="Pings the Giveaways role")
+        member = ctx.author
+        role = 'Members'
+        correctAnswer = random.choice(wordsList)
+
+        message = await ctx.send(f"Please say `{correctAnswer}` to verify.\nYou have 15 seconds to type the word.")
+
+        def check(m):
+            return m.content == f'{correctAnswer.lower}' and m.channel.id == ctx.channel.id
+
+        try:
+            msg = await self.client.wait_for(event='message', check=check, timeout=15)
+        except asyncio.TimeoutError:
+            await message.delete()
+            await ctx.message.delete(delay=5.0)
+            await ctx.reply("It's been over 15 seconds, please try again by doing `-verify`", mention_author=False, delete_after=5.0)
+        else:
+            await ctx.message.delete()
+            await message.delete()
+            await msg.delete(delay=5.0)
+            await msg.reply("You've successfully verified!", mention_author=False, delete_after=5.0)
+
+            await member.add_roles(discord.utils.get(member.guild.roles, name=role))
+
+    @commands.command(aliases=['giveaway_ping', 'ping_giveaway'], help="Pings the Giveaways role", hidden=True)
     @commands.has_role("Staff")
     @commands.cooldown(1, 60, commands.BucketType.user) # Sets the cooldown to 60 seconds for the user executing the command
     async def gping(self, ctx):
         await ctx.message.delete()
         await ctx.send(f"<@&868823472304971817>\n*ping from {ctx.author.mention}*")
 
-    @commands.command(aliases=['qotd_ping', 'ping_qotd'], help="Pings the QOTD role")
+    @commands.command(aliases=['qotd_ping', 'ping_qotd'], help="Pings the QOTD role", hidden=True)
     @commands.has_role("Staff")
     @commands.cooldown(1, 60, commands.BucketType.user) # Sets the cooldown to 60 seconds for the user executing the command
     async def qping(self, ctx):
         await ctx.message.delete()
         await ctx.send(f"<@&836281279934496770>\n*ping from {ctx.author.mention}*")
 
-    @commands.command(help="Sends a screenshot of the site you specify.\nNOTE: It needs to be with https.", aliases=['ss', 'screenshot_website', 'ss_website'])
+    @commands.command(help="Sends a screenshot of the site you specify.\nNOTE: It needs to be with http/s.", aliases=['ss', 'screenshot_website', 'ss_website'])
     @commands.is_nsfw()
     async def screenshot(self, ctx, url):
         async with aiohttp.ClientSession() as session:
@@ -133,12 +151,12 @@ class other(commands.Cog):
         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
         embed.set_image(url="attachment://ss.png")
 
-        if "ip" in url.lower():
+        if "ip" in url.lower() or "test" in url.lower() or "speed" in url.lower() or "address" in url.lower():
             await ctx.reply("no.")
         else:
             await ctx.reply(embed=embed, mention_author=False, file=discord.File(io.BytesIO(res), filename="ss.png"))
 
-    @commands.command(help="secret command")
+    @commands.command(help="secret command", hidden=True)
     @commands.is_owner()
     async def bypass_here(self, ctx):
         channel = self.client.get_channel(837348307570393218)
@@ -147,10 +165,6 @@ class other(commands.Cog):
         message = await channel.send(embed=embed)
         await message.pin()
 
-    @commands.command()
-    async def boobs(self, ctx):
-        embed = discord.Embed(title="Click here for boobs", url="https://www.youtube.com/watch?v=dQw4w9WgXcQ")
-        await ctx.reply(embed=embed, mention_author=False)
 
 def setup(client):
     client.add_cog(other(client))

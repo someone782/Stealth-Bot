@@ -101,9 +101,12 @@ class custom(commands.Cog):
 
     # <@748105241857097759>
 
-    @commands.command(description="Sends a GIF of a man eating a burger")
-    async def burger(self, ctx):
-        await ctx.reply(f"https://tenor.com/view/burger-eating-burbger-asmr-sussy-gif-21505937", mention_author=False)
+    # @commands.command(description="Sends a GIF of a man eating a burger")
+    # async def burger(self, ctx):
+    #     if ctx.author.id == 555818548291829792:
+    #         return await ctx.reply("Sorry, but you're blacklisted from using this command.")
+    #     else:
+    #         await ctx.reply(f"https://tenor.com/view/burger-eating-burbger-asmr-sussy-gif-21505937", mention_author=False)
 
     # <@530472612871143476>
 

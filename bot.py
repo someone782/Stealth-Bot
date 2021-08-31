@@ -52,7 +52,7 @@ async def get_prefix(client, message):
 
 client = commands.Bot(command_prefix=get_prefix, intents=discord.Intents.all(), activity=activity, status=status, case_insensitive=True, help_command=None) # Initializes the client object
 tracker = DiscordUtils.InviteTracker(client) # Initializes the tracker object
-client.owner_ids = [349373972103561218, 564890536947875868]
+# client.owner_ids = [349373972103561218, 564890536947875868]
 client.launch_time = discord.utils.utcnow()
 client.no_prefix = False
 
@@ -124,10 +124,13 @@ async def on_invite_create(invite):
 
 @client.event
 async def on_guild_join(guild):
-    if guild.id not in moderated_servers: # If the guild ID isn't in the list of the moderated servers then:
-        return # Return
-    else: # If the bot did join a guild different than any of those ID's then:
-        await tracker.update_guild_cache(guild)
+    channel = client.get_channel(876937268609290300)
+    await channel.send(f"ayo i got added into a guild called {guild.name} ({guild.id})\n<@!564890536947875868> <@!349373972103561218>")
+
+@client.event
+async def on_guild_remove(guild):
+    channel = client.get_channel(876937268609290300)
+    await channel.send(f"ayo i got removed from a guild called {guild.name} ({guild.id})\n<@!564890536947875868> <@!349373972103561218>")
 
 @client.event
 async def on_invite_delete(invite):
@@ -135,13 +138,6 @@ async def on_invite_delete(invite):
         return # Return
     else: # If the invite wasn't deleted in any of those 2 servers, then:
         await tracker.remove_invite_cache(invite)
-
-@client.event
-async def on_guild_remove(guild):
-    if guild.id not in moderated_servers: # If the guild ID isn't in the list of the moderated servers then:
-        return # Return
-    else: # If the bot did leave a guild different than any of those ID's then:
-        await tracker.remove_guild_cache(guild)
 
 @client.event
 async def on_member_join(member): # If a member joined the server then:
@@ -160,6 +156,11 @@ async def on_member_join(member): # If a member joined the server then:
         await channel.send(embed=embed) # Sends the embed to the "welcome_and_goodbye" channel (843503882226499634)
         await stealth_logs.send(embed=embed) # Sends the embed to the "stealth_logs" channel (836232733126426666)
 
+@client.command()
+async def test(ctx, member : discord.Member):
+    inviter = await tracker.fetch_inviter(member) # Fetches the inviter that invited the member
+    await ctx.send(f"inviter: {inviter}")
+
 @client.event
 async def on_member_remove(member): # If a member left the server then:
     if member.guild.id not in moderated_servers: # If the guild ID isn't in the list of the moderated servers then:
@@ -177,8 +178,8 @@ async def on_member_remove(member): # If a member left the server then:
 
 @client.event
 async def on_message(message):
-    if re.match("<@!?760179628122964008>", message.content) is not None:
-        await message.reply("fuck off")
+    if message.content in [f'<@!{client.user.id}>', f'<@{client.user.id}>']:
+        await message.reply(f"fuck off", mention_author=False)
     if not message.guild: # If the message wasn't sent in a guild then:
         return await client.process_commands(message) # Return and process the command.
     if message.guild.id in moderated_servers:

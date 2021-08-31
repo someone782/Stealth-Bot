@@ -1,3 +1,6 @@
 _ _
-> <:gun_think:814521272548982824> New `%%PREFIX%%kill [member]` and `%%PREFIX%%suicide` commands (these are a joke)
-• Thanks to Vicente0670 for the idea and helping me make these
+> <:gun_think:814521272548982824> New `%%PREFIX%%oof [member]` command!
+• Thanks to Vicente0670 for the idea and helping me make this command.
+
+> :frog: WAY faster meme commands!
+• Do `%%PREFIX%%meme` or `%%PREFIX%%programmermeme` to see them.
