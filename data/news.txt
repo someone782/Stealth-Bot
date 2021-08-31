@@ -1,4 +1,7 @@
 _ _
+> <:github:744345792172654643> The bot is now open-source!
+• Use the `%%PREFIX%%source` command to view the source code!
+
 > <:gun_think:814521272548982824> New `%%PREFIX%%oof [member]` command!
 • Thanks to Vicente0670 for the idea and helping me make this command.
 
