@@ -13,7 +13,7 @@ from discord.ext import commands, tasks
 import DiscordUtils
 import asyncpg
 
-  # Variables
+  # Variables the token isnt here wdym
 
 TOKEN = os.getenv('TOKEN')
 DEFAULT_PREFIX = 'sb!'
@@ -228,7 +228,7 @@ async def enable_bump(ctx):
 @client.command(aliases=['db', 'disable_bump_notifier'], description="Secret")
 @commands.has_permissions(administrator=True) # Checks if the author executing the command has the permission "administrator"
 @commands.cooldown(1, 10, commands.BucketType.user) # Sets the cooldown to 10 seconds for the user executing the command
-async def disable_bump(ctx):
+async def disable_bump(ctx): 
     try: # Tries to cancel the task "bump"
       bump.cancel() # Cancels the task called "bump"
       await ctx.send("Successfully stopped the bump notifier!") # Sends "Successfully stopped the bump notifier!"
@@ -256,4 +256,4 @@ async def disable_vc(ctx):
       await ctx.send("Couldn't stop the task bump cause it's already stopped") # Sends "Couldn't start the task change_vc cause it's already active"
 
 client.loop.run_until_complete(create_db_pool())
-client.run("NzYwMTc5NjI4MTIyOTY0MDA4.X3IScg.6nB36O_no9YxUfQqHiBD5EK5hnQ", reconnect=True) # Runs the bot with the token being the variable "TOKEN"
+client.run(TOKEN, reconnect=True) # Runs the bot with the token being the variable "TOKEN"
