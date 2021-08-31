@@ -3,11 +3,10 @@ import datetime
 from discord.ext import commands, menus
 from discord.ext.commands.cooldowns import BucketType
 
-class info(commands.Cog):
-    "All informative commands like `serverinfo`, `userinfo` and more!"
+class mod(commands.Cog):
+    "Moderation commands"
     def __init__(self, client):
         self.client = client
-        client.session = aiohttp.ClientSession()
 
     @commands.command(help="Bans the person you mention")
     @commands.bot_has_permissions()
@@ -17,4 +16,4 @@ class info(commands.Cog):
 
 
 def setup(client):
-    client.add_cog(info(client))
+    client.add_cog(mod(client))

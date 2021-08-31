@@ -5,6 +5,7 @@ from unidecode import unidecode
 import os
 import random
 import datetime
+import yaml
 import pickle
 from pathlib import Path
 from better_profanity import profanity as prof
@@ -13,9 +14,10 @@ from discord.ext import commands, tasks
 import DiscordUtils
 import asyncpg
 
-  # Variables the token isnt here wdym
+with open(r'config.yaml') as file:
+    full_yaml = yaml.load(file)
+yaml_data = full_yaml
 
-TOKEN = os.getenv('TOKEN')
 DEFAULT_PREFIX = 'sb!'
 activity = discord.Game(name="@Stealth Bot help")
 status = "online"
@@ -25,17 +27,6 @@ social_category = [829418754408317029, 829418830383677510, 829419223977426962, 8
 fun_stuff_category = [829419667873333248, 829419746843426886, 799662507484119071, 823193053531340800, 859482564477583410, 859482572677054495, 843135406589476885]
 no_mic_channel = [843135406589476885]
 moderated_servers = [799330949686231050]
-
-# async def get_prefix(client, message):
-#
-#     if not message.guild:
-#         return commands.when_mentioned_or(DEFAULT_PREFIX)(client, message)
-#
-#     prefix = await client.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1', message.guild.id)
-#     if not prefix:
-#         prefix = DEFAULT_PREFIX
-#
-#     return commands.when_mentioned_or(prefix)(client, message)
 
 async def get_prefix(client, message):
     if not message.guild:
@@ -228,7 +219,7 @@ async def enable_bump(ctx):
 @client.command(aliases=['db', 'disable_bump_notifier'], description="Secret")
 @commands.has_permissions(administrator=True) # Checks if the author executing the command has the permission "administrator"
 @commands.cooldown(1, 10, commands.BucketType.user) # Sets the cooldown to 10 seconds for the user executing the command
-async def disable_bump(ctx): 
+async def disable_bump(ctx):
     try: # Tries to cancel the task "bump"
       bump.cancel() # Cancels the task called "bump"
       await ctx.send("Successfully stopped the bump notifier!") # Sends "Successfully stopped the bump notifier!"
@@ -256,4 +247,4 @@ async def disable_vc(ctx):
       await ctx.send("Couldn't stop the task bump cause it's already stopped") # Sends "Couldn't start the task change_vc cause it's already active"
 
 client.loop.run_until_complete(create_db_pool())
-client.run(TOKEN, reconnect=True) # Runs the bot with the token being the variable "TOKEN"
+client.run(yaml_data['TOKEN'], reconnect=True) # Runs the bot with the token being the variable "TOKEN"
