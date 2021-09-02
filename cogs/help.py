@@ -71,7 +71,7 @@ Commands usable by you (in this server): {len(await self.filter_commands(list(se
 
         embed.set_footer(text=f"Suggested command: {random.choice(list(self.context.bot.commands))} • Credits given in {prefix}credits")
 
-        await ctx.reply(embed=embed, view=Buttons(), mention_author=False)
+        await ctx.reply(embed=embed, view=Buttons())
 
 
 
@@ -104,7 +104,7 @@ Usage: {self.get_minimal_command_signature(command)}
 
         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-        await ctx.reply(embed=embed, mention_author=False)
+        await ctx.reply(embed=embed)
 
 
 
@@ -131,12 +131,12 @@ Commands usable by you (in this server): {len(await self.filter_commands(cog.get
                                 """, timestamp=discord.utils.utcnow(), color=0x2F3136)
             embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-            await ctx.reply(embed=embed, mention_author=False)
+            await ctx.reply(embed=embed)
         else:
             embed=discord.Embed(title=f"Help - {cog.qualified_name}", description=f"""
 This cog has no commands.
                                 """, timestamp=discord.utils.utcnow(), color=0x2F3136)
-            await ctx.reply(embed=embed, mention_author=False)
+            await ctx.reply(embed=embed)
 
 
 class help(commands.Cog):

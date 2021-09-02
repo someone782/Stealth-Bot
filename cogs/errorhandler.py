@@ -100,7 +100,7 @@ Note: I can't edit the owner of the server
 
         # errormessage = f"{error}"
         # embed = discord.Embed(description=message, timestamp=discord.utils.utcnow(), color=0x2F3136)
-        await ctx.reply(message, mention_author=False)
+        await ctx.reply(message)
         # await ctx.send(error)
 
 

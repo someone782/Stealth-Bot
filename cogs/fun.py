@@ -23,7 +23,7 @@ class fun(commands.Cog):
         embed.add_field(name="ASCII text", value=f"```\n{ascii}\n```")
 
         embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
-        await ctx.reply(embed=embed, mention_author=False)
+        await ctx.reply(embed=embed)
 
     @commands.command(description="Sends a image of the member you mention but triggered")
     async def triggered(self, ctx, member : discord.Member=None):
@@ -37,7 +37,7 @@ class fun(commands.Cog):
                     file = discord.File(fp, "triggered.gif")
                     embed = discord.Embed(title=f"<a:loading:747680523459231834> Processing image...", timestamp=discord.utils.utcnow(), color=0x2F3136)
                     embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
-                    message = await ctx.reply(embed=embed, file=file, mention_author=False)
+                    message = await ctx.reply(embed=embed, file=file)
                     embed = discord.Embed(title=f"{member.name} is triggered", timestamp=discord.utils.utcnow(), color=0x2F3136)
                     embed.set_image(url="attachment://triggered.gif")
 
@@ -56,7 +56,7 @@ class fun(commands.Cog):
                     file = discord.File(fp, "horny.png")
                     embed = discord.Embed(title=f"<a:loading:747680523459231834> Processing image...", timestamp=discord.utils.utcnow(), color=0x2F3136)
                     embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
-                    message = await ctx.reply(embed=embed, file=file, mention_author=False)
+                    message = await ctx.reply(embed=embed, file=file)
                     embed = discord.Embed(title=f"{member.name} has the license to be horny", timestamp=discord.utils.utcnow(), color=0x2F3136)
                     embed.set_image(url="attachment://horny.png")
 
@@ -75,7 +75,7 @@ class fun(commands.Cog):
                     file = discord.File(fp, "jail.png")
                     embed = discord.Embed(title=f"<a:loading:747680523459231834> Processing image...", timestamp=discord.utils.utcnow(), color=0x2F3136)
                     embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
-                    message = await ctx.reply(embed=embed, file=file, mention_author=False)
+                    message = await ctx.reply(embed=embed, file=file)
                     embed = discord.Embed(title=f"{member.name} has been sent to jail for 69420 years", timestamp=discord.utils.utcnow(), color=0x2F3136)
                     embed.set_image(url="attachment://jail.png")
 
@@ -94,7 +94,7 @@ class fun(commands.Cog):
                     file = discord.File(fp, "wasted.png")
                     embed = discord.Embed(title=f"<a:loading:747680523459231834> Processing image...", timestamp=discord.utils.utcnow(), color=0x2F3136)
                     embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
-                    message = await ctx.reply(embed=embed, file=file, mention_author=False)
+                    message = await ctx.reply(embed=embed, file=file)
                     embed = discord.Embed(title=f"WASTED.", timestamp=discord.utils.utcnow(), color=0x2F3136)
                     embed.set_image(url="attachment://wasted.png")
 
@@ -113,7 +113,7 @@ class fun(commands.Cog):
                     file = discord.File(fp, "gay.png")
                     embed = discord.Embed(title=f"<a:loading:747680523459231834> Processing image...", timestamp=discord.utils.utcnow(), color=0x2F3136)
                     embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
-                    message = await ctx.reply(embed=embed, file=file, mention_author=False)
+                    message = await ctx.reply(embed=embed, file=file)
                     embed = discord.Embed(title=f"{member.name} is now gay", timestamp=discord.utils.utcnow(), color=0x2F3136)
                     embed.set_image(url="attachment://gay.png")
 
@@ -132,7 +132,7 @@ class fun(commands.Cog):
                     file = discord.File(fp, "glass.png")
                     embed = discord.Embed(title=f"<a:loading:747680523459231834> Processing image...", timestamp=discord.utils.utcnow(), color=0x2F3136)
                     embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
-                    message = await ctx.reply(embed=embed, file=file, mention_author=False)
+                    message = await ctx.reply(embed=embed, file=file)
                     embed = discord.Embed(title=f"{member.name} is now **glass**", timestamp=discord.utils.utcnow(), color=0x2F3136)
                     embed.set_image(url="attachment://glass.png")
 
@@ -143,7 +143,7 @@ class fun(commands.Cog):
     async def token(self, ctx):
         embed = discord.Embed(title=f"<a:loading:747680523459231834> Getting token...", timestamp=discord.utils.utcnow(), color=0x2F3136)
         embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
-        message = await ctx.reply(embed=embed, mention_author=False)
+        message = await ctx.reply(embed=embed)
 
         async with aiohttp.ClientSession() as session:
             request1 = await session.get('https://some-random-api.ml/bottoken')
@@ -164,7 +164,7 @@ class fun(commands.Cog):
         embed = discord.Embed(title=f"PP Size - {member}", description=f"8{'=' * length}D\n{member}'s pp is {length} cm", timestamp=discord.utils.utcnow(), color=0x2F3136)
 
         embed.set_footer(icon_url=ctx.author.avatar.url, text='​')
-        await ctx.reply(embed=embed, mention_author=False)
+        await ctx.reply(embed=embed)
 
     @commands.command(aliases=['8ball', 'magicball', 'magic_ball', 'eight_ball'], description="Answers with yes or no to your question")
     async def eightball(self, ctx, *, question):
@@ -193,7 +193,7 @@ class fun(commands.Cog):
         embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
         embed.add_field(name="Question: ", value=question, inline=True)
         embed.add_field(name="Answer:",value=random.choice(responses), inline=True)
-        await ctx.reply(embed=embed, mention_author=False)
+        await ctx.reply(embed=embed)
 
     @commands.command(description="Tells you if someone is a furry or not! (This command is a joke)")
     async def furrydetector(self, ctx, member : discord.Member=None):
@@ -208,7 +208,7 @@ class fun(commands.Cog):
         embed.add_field(name="Furry?", value=f"{random.choice(responses)}", inline=True)
         embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
 
-        await ctx.reply(embed=embed, mention_author=False)
+        await ctx.reply(embed=embed)
 
     @commands.command(description="Tells you how gay someone is! (This command is a joke)")
     async def gayrate(self, ctx, member : discord.Member=None):
@@ -220,7 +220,7 @@ class fun(commands.Cog):
         embed.add_field(name="Gay rate", value=f"{random.randint(0, 100)}", inline=True)
         embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
 
-        await ctx.reply(embed=embed, mention_author=False)
+        await ctx.reply(embed=embed)
 
     @commands.command(description="Tells you a random thing you can do in Minecraft!")
     async def minecraft(self, ctx):
@@ -239,7 +239,7 @@ class fun(commands.Cog):
         embed = discord.Embed(title=f"Here's what you should do in minecraft", description=f"{random.choice(responses)}", timestamp=discord.utils.utcnow(), color=0x2F3136)
         embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
 
-        await ctx.reply(embed=embed, mention_author=False)
+        await ctx.reply(embed=embed)
 
     @commands.command(help="Generates a random number", aliases=['rm'])
     async def randomnumber(self, ctx, minimum : int=None, maximum : int=None):
@@ -254,7 +254,7 @@ class fun(commands.Cog):
 
         number = random.randint(minimum, maximum)
 
-        await ctx.reply(f"Randomly generated number between `{minimum}` and `{maximum}`: `{number}`", mention_author=False)
+        await ctx.reply(f"Randomly generated number between `{minimum}` and `{maximum}`: `{number}`")
 
     @commands.command(help="Generates a random word", aliases=['rw'])
     async def randomword(self, ctx):
@@ -264,7 +264,7 @@ class fun(commands.Cog):
 
         randomWord = random.choice(wordsList)
 
-        await ctx.reply(f"Randomly generated word: {randomWord}", mention_author=False)
+        await ctx.reply(f"Randomly generated word: {randomWord}")
 
     @commands.command(help="Tells you a random game you can play in ROBLOX!")
     async def robloxgame(self, ctx):
@@ -316,7 +316,7 @@ class fun(commands.Cog):
         embed = discord.Embed(title=f"Here's what game you should play in ROBLOX", description=f"{random.choice(responses)}", timestamp=discord.utils.utcnow(), color=0x2F3136)
         embed.add_field(name="Game name", value=f"{random.choice(responses)}", inline=True)
 
-        await ctx.reply(embed=embed, mention_author=False)
+        await ctx.reply(embed=embed)
 
     @commands.command(help="Shows you a random meme from the subreddit r/memes", aliases=['m'])
     async def meme(self, ctx):
@@ -331,7 +331,7 @@ class fun(commands.Cog):
             embed.set_image(url=redditDict['url'])
             embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
 
-            await ctx.reply(embed=embed, mention_author=False)
+            await ctx.reply(embed=embed)
 
     @commands.command(help="Shows you a random meme from the subreddit r/ProgrammerHumor", aliases=['programmer_meme', 'programmeme', 'program_meme', 'pm'])
     async def programmermeme(self, ctx):
@@ -346,7 +346,7 @@ class fun(commands.Cog):
             embed = discord.Embed(title=f"{subredditDict['title']}", url=f"https://reddit.com{subredditDict['permalink']}", description=f"Upvotes: {subredditDict['ups']}\nComments: {subredditDict['num_comments']}", timestamp=discord.utils.utcnow(), color=0x2F3136)
             embed.set_image(url=subredditDict['url'])
             embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
-            await ctx.reply(embed=embed, mention_author=False)
+            await ctx.reply(embed=embed)
 
     @commands.command(description="Messages you.")
     async def msgme(self, ctx, *, content):
@@ -367,7 +367,7 @@ class fun(commands.Cog):
             embed = discord.Embed(title=f"{ctx.author} hugged {member}", timestamp=discord.utils.utcnow(), color=0x2F3136)
             embed.set_image(url=hugjson['link'])
             embed.set_footer(text=f"Command requested by: {ctx.author}"	, icon_url=ctx.author.avatar.url)
-            await ctx.reply(embed=embed, mention_author=False)
+            await ctx.reply(embed=embed)
             return
 
     @commands.command(description="Let's you pat someone!")
@@ -381,7 +381,7 @@ class fun(commands.Cog):
             embed = discord.Embed(title=f"{ctx.author} patted {member}", timestamp=discord.utils.utcnow(), color=0x2F3136)
             embed.set_image(url=patjson['link'])
             embed.set_footer(text=f"Command requested by: {ctx.author}"	, icon_url=ctx.author.avatar.url)
-            await ctx.reply(embed=embed, mention_author=False)
+            await ctx.reply(embed=embed)
             return
 
     @commands.command(description="Let's you wink at someone!")
@@ -395,7 +395,7 @@ class fun(commands.Cog):
             embed = discord.Embed(title=f"{ctx.author} winked at {member}", timestamp=discord.utils.utcnow(), color=0x2F3136)
             embed.set_image(url=winkjson['link'])
             embed.set_footer(text=f"Command requested by: {ctx.author}"	, icon_url=ctx.author.avatar.url)
-            await ctx.reply(embed=embed, mention_author=False)
+            await ctx.reply(embed=embed)
             return
 
     @commands.command(description="Let's you reverse some text")
@@ -405,7 +405,7 @@ Original text: {text}
 <:reverse:879724816834375791> Reveresd text: {text[::-1]}
         """, timestamp=discord.utils.utcnow(), color=0x2F3136)
         embed.set_footer(text=f"Command requested by: {ctx.author}"	, icon_url=ctx.author.avatar.url)
-        await ctx.reply(embed=embed, mention_author=False)
+        await ctx.reply(embed=embed)
 
     @commands.command(help="OOF's the person you mentioned", aliases=['commitoof', 'commit_oof'])
     async def oof(self, ctx, member : discord.Member=None):
@@ -432,7 +432,7 @@ Original text: {text}
             f"{ctx.author.name} chewed 5 gum.",
             f"{ctx.author.name} ate too many vitamin gummy bears.",
             f"{ctx.author.name} tried to swim in lava. Why would you ever try to do that?"]
-            return await ctx.reply(f"{random.choice(responses)}", mention_author=False)
+            return await ctx.reply(f"{random.choice(responses)}")
         else:
             responses = [f"{ctx.author.name} exploded {member.name}.",
                         f"{ctx.author.name} shot {member.name}.",
@@ -460,7 +460,7 @@ Original text: {text}
                         f"{ctx.author.name} tossed {member.name} off an airplane.",
                         f"{ctx.author.name} broke {member.name}'s neck."]
 
-            await ctx.reply(f"{random.choice(responses)}", mention_author=False)
+            await ctx.reply(f"{random.choice(responses)}")
 
     # @commands.command(help="Let's you commit suicide", aliases=['suicied', 'suiced'])
     # async def suicide(self, ctx):
@@ -487,7 +487,7 @@ Original text: {text}
     #                 f"{ctx.author.name} ate too many vitamin gummy bear.",
     #                 f"{ctx.author.name} tried to swim in lava. Why would you ever try to do that?"]
     #
-    #     await ctx.reply(f"{random.choice(responses)}", mention_author=False)
+    #     await ctx.reply(f"{random.choice(responses)}")
 
 
 def setup(client):

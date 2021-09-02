@@ -12,6 +12,16 @@ class dev(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+    @commands.command()
+    @commands.is_owner()
+    async def say(self, ctx, *, message):
+        await ctx.send(message)
+
+    @commands.command(aliases=['borgor', 'burgor'])
+    async def burger(self, ctx):
+        prefix = await self.client.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1', ctx.guild.id)
+        prefix = prefix or 'sb!'
+        await ctx.reply(f"I couldn't find that command, do `{prefix}oof` to kill yourself.")
 
     @commands.command(aliases=['to_do'])
     @commands.is_owner()
@@ -48,7 +58,7 @@ class dev(commands.Cog):
         embed = discord.Embed(description=f"<a:loading:747680523459231834> Loading {extension}...")
         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-        message = await ctx.reply(embed=embed, mention_author=False)
+        message = await ctx.reply(embed=embed)
 
         try:
             self.client.load_extension(f"cogs.{extension}")
@@ -94,7 +104,7 @@ class dev(commands.Cog):
     @commands.is_owner()
     async def unload(self, ctx, extension):
         embed = discord.Embed(description=f"⬇ {extension}", timestamp=discord.utils.utcnow(), color=0x2F3136)
-        message = await ctx.reply(embed=embed, mention_author=False)
+        message = await ctx.reply(embed=embed)
 
         try:
             self.client.unload_extension("cogs.{}".format(extension))
@@ -119,7 +129,7 @@ class dev(commands.Cog):
     @commands.is_owner()
     async def reload(self, ctx, extension):
         embed = discord.Embed(description=f"<a:loading:747680523459231834> {extension}", timestamp=discord.utils.utcnow(), color=0x2F3136)
-        message = await ctx.reply(embed=embed, mention_author=False)
+        message = await ctx.reply(embed=embed)
 
         try:
             self.client.reload_extension("cogs.{}".format(extension))

@@ -48,7 +48,7 @@ class giveaway(commands.Cog):
 
         firstEmbed = discord.Embed(title="Starting Giveaway", description="Answer these 4 questions within 30 seconds", timestamp=discord.utils.utcnow(), color=0x2F3136) # Makes a embed called "firstEmbed"
 
-        await ctx.reply(embed=firstEmbed, mention_author=False) # Sends the first embed
+        await ctx.reply(embed=firstEmbed) # Sends the first embed
 
         questions = ["What channel should the giveaway be hosted in?", "How long should the giveaway last? (s|m|h|d)", "What's the prize for this giveaway?", "What's the claim time for this giveaway?"] # Stores the questions in a variable called "questions"
 
@@ -77,11 +77,11 @@ class giveaway(commands.Cog):
         channel = self.client.get_channel(channel_id) #
         time = convert(answers[1]) # Converts the answer 2 (How long should the giveaway last? (s|m|h|d)) to a valid time and stores it as the "time" variable
         if time == -1:
-            await ctx.reply("You didn't provide a valid time, please try again by doing `-gstart`.\n*Example: 6h", mention_author=False) # Tells the author that they didn't provide a valid time
+            await ctx.reply("You didn't provide a valid time, please try again by doing `-gstart`.\n*Example: 6h") # Tells the author that they didn't provide a valid time
             return
         prize = answers[2] # Stores the answer 3 (What's the prize for this giveaway?) as the variable prize
 
-        await ctx.reply(f"The giveaway will be hosted in {channel.mention} and will last {answers[1]}", mention_author=False)
+        await ctx.reply(f"The giveaway will be hosted in {channel.mention} and will last {answers[1]}")
 
         embed = discord.Embed(title=f"{emote} Giveaway Started {emote}", description=f"React with {emote} to enter the giveaway!", timestamp=discord.utils.utcnow(), color=0x2F3136)
         embed.add_field(name="Prize", value=prize, inline=True)

@@ -23,7 +23,7 @@ class animals(commands.Cog):
        embed = discord.Embed(title="Meow", timestamp=discord.utils.utcnow(), color=0x2F3136)
        embed.set_image(url=dogjson['link'])
        embed.set_footer(text=factjson['fact'])
-       await ctx.reply(embed=embed, mention_author=False)
+       await ctx.reply(embed=embed)
 
     @commands.command(help="Shows a picture of a dog and a random fact about dogs")
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
@@ -37,7 +37,7 @@ class animals(commands.Cog):
        embed = discord.Embed(title="Woof", timestamp=discord.utils.utcnow(), color=0x2F3136)
        embed.set_image(url=dogjson['link'])
        embed.set_footer(text=factjson['fact'])
-       await ctx.reply(embed=embed, mention_author=False)
+       await ctx.reply(embed=embed)
 
     @commands.command(help="Sends you a random picture of a shiba")
     async def shiba(self, ctx):
@@ -68,7 +68,7 @@ class animals(commands.Cog):
        embed = discord.Embed(title="Panda!", timestamp=discord.utils.utcnow(), color=0x2F3136)
        embed.set_image(url=dogjson['link'])
        embed.set_footer(text=factjson['fact'])
-       await ctx.reply(embed=embed, mention_author=False)
+       await ctx.reply(embed=embed)
 
     @commands.command(help="Shows a picture of a fox and a random fact about foxes")
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
@@ -82,7 +82,7 @@ class animals(commands.Cog):
        embed = discord.Embed(title="Fox!", timestamp=discord.utils.utcnow(), color=0x2F3136)
        embed.set_image(url=dogjson['link'])
        embed.set_footer(text=factjson['fact'])
-       await ctx.reply(embed=embed, mention_author=False)
+       await ctx.reply(embed=embed)
 
     @commands.command(help="Shows a picture of a bird and a random fact about birds")
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
@@ -96,7 +96,7 @@ class animals(commands.Cog):
        embed = discord.Embed(title="Bird!", timestamp=discord.utils.utcnow(), color=0x2F3136)
        embed.set_image(url=dogjson['link'])
        embed.set_footer(text=factjson['fact'])
-       await ctx.reply(embed=embed, mention_author=False)
+       await ctx.reply(embed=embed)
 
     @commands.command(help="Shows a picture of a koala and a random fact about koalas")
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
@@ -110,7 +110,7 @@ class animals(commands.Cog):
        embed = discord.Embed(title="Koala!", timestamp=discord.utils.utcnow(), color=0x2F3136)
        embed.set_image(url=dogjson['link'])
        embed.set_footer(text=factjson['fact'])
-       await ctx.reply(embed=embed, mention_author=False)
+       await ctx.reply(embed=embed)
 
     @commands.command(help="Shows a picture of a kangaroo and a random fact about kangaroos")
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
@@ -124,7 +124,7 @@ class animals(commands.Cog):
        embed = discord.Embed(title="Kangaroo!", timestamp=discord.utils.utcnow(), color=0x2F3136)
        embed.set_image(url=dogjson['link'])
        embed.set_footer(text=factjson['fact'])
-       await ctx.reply(embed=embed, mention_author=False)
+       await ctx.reply(embed=embed)
 
     @commands.command(help="Shows a picture of a racoon and a random fact about racoons")
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
@@ -138,7 +138,7 @@ class animals(commands.Cog):
        embed = discord.Embed(title="Racoon!", timestamp=discord.utils.utcnow(), color=0x2F3136)
        embed.set_image(url=dogjson['link'])
        embed.set_footer(text=factjson['fact'])
-       await ctx.reply(embed=embed, mention_author=False)
+       await ctx.reply(embed=embed)
 
     @commands.command(help="Shows a picture of a whale and a random fact about whales", aliases=['urmom', 'ur_mom', 'yourmom', 'your_mom'])
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
@@ -152,7 +152,7 @@ class animals(commands.Cog):
        embed = discord.Embed(title="Whale!", timestamp=discord.utils.utcnow(), color=0x2F3136)
        embed.set_image(url=dogjson['link'])
        embed.set_footer(text=factjson['fact'])
-       await ctx.reply(embed=embed, mention_author=False)
+       await ctx.reply(embed=embed)
 
     @commands.command(help="Shows a picture of a pikachu")
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
@@ -163,7 +163,7 @@ class animals(commands.Cog):
 
        embed = discord.Embed(title="Pikachu!", timestamp=discord.utils.utcnow(), color=0x2F3136)
        embed.set_image(url=dogjson['link'])
-       await ctx.reply(embed=embed, mention_author=False)
+       await ctx.reply(embed=embed)
 
 
 def setup(client):

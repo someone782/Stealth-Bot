@@ -11,8 +11,6 @@ from discord.ext.commands.cooldowns import BucketType
 import threading
 from platform import python_version
 import asyncio
-from roblox_py import Client
-roblox_py_client = Client()
 pythonVersion = python_version()
 start_time = time.time()
 
@@ -68,12 +66,16 @@ class info(commands.Cog):
         top_role = member.top_role.mention.replace("@@everyone", "")
 
         badges = helpers.get_member_badges(member)
-        if badges: badges = f"{badges}"
-        else: badges = ''
+        if badges:
+            badges = f"{badges}"
+        else:
+            badges = ''
 
         perms = helpers.get_perms(member.guild_permissions)
-        if perms: perms = f"{', '.join(perms)}"
-        else: perms = ''
+        if perms:
+            perms = f"{', '.join(perms)}"
+        else:
+            perms = ''
 
         if member.avatar.is_animated() == True:
             text1 = f"[PNG]({member.avatar.replace(format='png', size=2048).url}) | [JPG]({member.avatar.replace(format='jpg', size=2048).url}) | [WEBP]({member.avatar.replace(format='webp', size=2048).url}) | [GIF]({member.avatar.replace(format='gif', size=2048).url})"
@@ -123,13 +125,18 @@ Mutual guilds: {len(member.mutual_guilds)}
         embed.set_thumbnail(url=member.avatar.url)
         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-        await ctx.reply(embed=embed, mention_author=False)
+        await ctx.reply(embed=embed)
 
 
     @commands.command(help="Shows you information about the server", aliases=['si', 'guild', 'guildinfo'])
     @commands.cooldown(1, 5, BucketType.member)
-    async def serverinfo(self, ctx):
-        server = ctx.guild
+    async def serverinfo(self, ctx, id : int=None):
+        if id:
+            server = self.client.get_guild(id)
+            if not server:
+                return await ctx.reply("I couldn't find that server. Make sure the ID you entered was correct.")
+        else:
+            server = ctx.guild
 
         if ctx.me.guild_permissions.ban_members:
             bannedMembers = len(await server.bans())
@@ -142,52 +149,78 @@ Mutual guilds: {len(member.mutual_guilds)}
                     len(list(filter(lambda m: str(m.status) == "streaming", server.members))),
                     len(list(filter(lambda m: str(m.status) == "offline", server.members)))]
 
-        region = f"{str(server.region).title().replace('-', ' ').replace('_', ' ').replace('Us', 'US')}"
-
-        if region == "Brazil":
-            regionEmote = "🇧🇷"
-        elif region == "Europe":
-            regionEmote = "🇪🇺"
-        elif region == "Hong Kong":
-            regionEmote = "🇭🇰"
-        elif region == "India":
-            regionEmote = "🇮🇳"
-        elif region == "Russia":
-            regionEmote = "🇷🇺"
-        elif region == "Singapore":
-            regionEmote = "🇸🇬"
-        elif region == "South Africa":
-            regionEmote = "🇿🇦"
-        elif region == "Sydney":
-            regionEmote = "🇦🇺"
-        elif region == "US East":
-            regionEmote = "🇺🇸"
-        elif region == "US South":
-            regionEmote = "🇺🇸"
-        elif region == "US West":
-            regionEmote = "🇺🇸"
-        elif region == "US Central":
-            regionEmote = "🇺🇸"
+        last_boost = max(server.members, key=lambda m : m.premium_since or server.created_at)
+        if last_boost.premium_since is not None:
+            boost = f"{last_boost} {discord.utils.format_dt(last_boost.premium_since, style='f')} {discord.utils.format_dt(last_boost.premium_since, style='R')}"
         else:
-            regionEmote = "N/A "
+            boost = "No boosters exist."
+
+        if server.description:
+            description = server.description
+        else:
+            description = "This serer doesn't have a descripton"
+
+        enabled_features = []
+        features = set(server.features)
+        all_features = {
+            'COMMUNITY': 'Community Server',
+            'VERIFIED': 'Verified',
+            'DISCOVERABLE': 'Discoverable',
+            'PARTNERED': 'Partnered',
+            'FEATURABLE': 'Featured',
+            'COMMERCE': 'Commerce',
+            'MONETIZATION_ENABLED': 'Monetization',
+            'NEWS': 'News Channels',
+            'PREVIEW_ENABLED': 'Preview Enabled',
+            'INVITE_SPLASH': 'Invite Splash',
+            'VANITY_URL': 'Vanity Invite URL',
+            'ANIMATED_ICON': 'Animated Server Icon',
+            'BANNER': 'Server Banner',
+            'MORE_EMOJI': 'More Emoji',
+            'MORE_STICKERS': 'More Stickers',
+            'WELCOME_SCREEN_ENABLED': 'Welcome Screen',
+            'MEMBER_VERIFICATION_GATE_ENABLED': 'Membership Screening',
+            'TICKETED_EVENTS_ENABLED': 'Ticketed Events',
+            'VIP_REGIONS': 'VIP Voice Regions',
+            'PRIVATE_THREADS': 'Private Threads',
+            'THREE_DAY_THREAD_ARCHIVE': '3 Day Thread Archive',
+            'SEVEN_DAY_THREAD_ARCHIVE': '1 Week Thread Archive',
+        }
+
+        for feature, label in all_features.items():
+            if feature in features:
+                enabled_features.append(f"<:greenTick:596576670815879169> {label}")
+
+        features = '\n'.join(enabled_features)
 
         embed = discord.Embed(title=f"Server info - {server}", description=f"""
 Name: {server}
 <:greyTick:860644729933791283> ID: {server.id}
+:information_source: Description: {description}
+
 <:members:858326990725709854> Members: {len(server.members)} (:robot: {len(list(filter(lambda m : m.bot, server.members)))})
 :robot: Bots: {len(list(filter(lambda m: m.bot, server.members)))}
 <:owner_crown:845946530452209734> Owner: {server.owner}
-Created: {discord.utils.format_dt(server.created_at, style="f")} ({discord.utils.format_dt(server.created_at, style="R")})
-{regionEmote} Region: {str(server.region).title().replace('-', ' ').replace('_', ' ').replace('Us', 'US')}
 <:members:858326990725709854> Max members: {server.max_members}
 <:bans:878324391958679592> Banned members: {bannedMembers}
+
+Verification Level: {server.verification_level}
+Created: {discord.utils.format_dt(server.created_at, style="f")} ({discord.utils.format_dt(server.created_at, style="R")})
+{helpers.get_server_region_emote(server)} Region: {helpers.get_server_region(server)}
+
 <:status_offline:596576752013279242> Statuses: <:status_online:596576749790429200> {statuses[0]} <:status_idle:596576773488115722> {statuses[1]} <:status_dnd:596576774364856321> {statuses[2]} <:status_streaming:596576747294818305> {statuses[3]} <:status_offline:596576752013279242> {statuses[4]}
-<:text_channel:876503902554578984> Channels: <:text_channel:876503902554578984> {len(server.text_channels)} <:voice_channel:876503909512933396> {len(server.voice_channels)}
+<:text_channel:876503902554578984> Channels: <:text_channel:876503902554578984> {len(server.text_channels)} <:voice_channel:876503909512933396> {len(server.voice_channels)} <:category:882685952999428107> {len(server.categories)} <:stagechannel:824240882793447444> {len(server.stage_channels)} <:threadnew:833432474347372564> {len(server.threads)}
 <:role:876507395839381514> Roles: {len(server.roles)}
-:sunglasses: Animated emojis: {len([x for x in server.emojis if x.animated])}/{server.emoji_limit}
-:sunglasses: Non animated emojis: {len([x for x in server.emojis if not x.animated])}/{server.emoji_limit}
+
+<:emoji_ghost:658538492321595393> Animated emojis: {len([x for x in server.emojis if x.animated])}/{server.emoji_limit}
+<:emoji_ghost:658538492321595393> Non animated emojis: {len([x for x in server.emojis if not x.animated])}/{server.emoji_limit}
+
 <:boost:858326699234164756> Level: {server.premium_tier}
 <:boost:858326699234164756> Boosts: {server.premium_subscription_count}
+<:boost:858326699234164756> Latest booster: {boost}
+
+Features:
+{features}
         """)
 
         if server.banner:
@@ -201,9 +234,9 @@ Created: {discord.utils.format_dt(server.created_at, style="f")} ({discord.utils
             url = url1.replace("cdn.discordapp.com", "media.discordapp.net")
             embed.set_thumbnail(url=url)
 
-        embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+        #embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-        await ctx.reply(embed=embed, mention_author=False)
+        await ctx.reply(embed=embed)
 
     @commands.command(help="Shows information about the bot", aliases=['bi', 'bot', 'info', 'about'])
     async def botinfo(self, ctx):
@@ -230,7 +263,7 @@ Percent: {mem_info[4]}""")
         embed.set_thumbnail(url=self.client.user.avatar.url)
         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url = ctx.author.avatar.url)
 
-        await ctx.reply(embed=embed, mention_author=False)
+        await ctx.reply(embed=embed)
 
     @commands.command(help="Shows the avatar of the member you mentioned", aliases=['av'])
     async def avatar(self, ctx, member : discord.Member=None):
@@ -249,7 +282,7 @@ Percent: {mem_info[4]}""")
             embed.set_image(url=url)
             embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-            await ctx.reply(embed=embed, mention_author=False)
+            await ctx.reply(embed=embed)
         else:
             await ctx.reply("You don't have a avatar.")
 
@@ -276,7 +309,7 @@ Percent: {mem_info[4]}""")
             embed.set_image(url=url)
             embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-            await ctx.reply(embed=embed, mention_author=False)
+            await ctx.reply(embed=embed)
         else:
             await ctx.reply(f"{errorMessage}")
 
@@ -293,7 +326,7 @@ Percent: {mem_info[4]}""")
         pings.append(typingms)
 
         start = time.perf_counter()
-        message = await ctx.reply("Getting ping...", mention_author=False)
+        message = await ctx.reply("Getting ping...")
         end = time.perf_counter()
         messagems = (end - start) * 1000
         pings.append(messagems)
@@ -344,7 +377,7 @@ Percent: {mem_info[4]}""")
         embed = discord.Embed(title=f'I\'ve been online since {discord.utils.format_dt(self.client.launch_time, style="f")} ({discord.utils.format_dt(self.client.launch_time, style="R")})', timestamp=discord.utils.utcnow(), color=0x2F3136)
         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-        await ctx.reply(embed=embed, mention_author=False)
+        await ctx.reply(embed=embed)
 
     @commands.command(help="Sends a suggestion", aliases=['bot_suggestion', 'suggestion', 'make_suggestion', 'botsuggestion', 'makesuggestion'])
     async def suggest(self, ctx, *, suggestion):
@@ -380,12 +413,13 @@ Suggestion: {suggestion}
     async def credits(self, ctx):
         embed = discord.Embed(title="Credits", description="""
 Owner: Ender2K89#9999
+Helped make bot open-source and with a lot of other things: LeoCx1000#9999
 Main help command page inspired by: Charles#5244
 A lot of command ideas: Vicente0670 YT#0670
 Tested verify command: Eiiknostv#2016
         """, timestamp=discord.utils.utcnow(), color=0x2F3136)
 
-        await ctx.reply(embed=embed, mention_author=False)
+        await ctx.reply(embed=embed)
 
     @commands.command(help="Shows the current time", aliases=['date'])
     async def time(self, ctx):

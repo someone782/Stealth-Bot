@@ -18,12 +18,12 @@ class other(commands.Cog):
     async def source(self, ctx):
         view = discord.ui.View()
         style = discord.ButtonStyle.gray
-        item = discord.ui.Button(style=style, emoji="<:github:744345792172654643>", label="Source Code", url="https://github.com/Ender2K89/Stealth-Bot-Source")
+        item = discord.ui.Button(style=style, emoji="<:github:744345792172654643>", label="Source Code", url="https://github.com/Ender2K89/Stealth-Bot")
         view.add_item(item=item)
 
-        embed = discord.Embed(title="Click here for the source code of this bot", url="https://github.com/Ender2K89/Stealth-Bot-Source", timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed = discord.Embed(title="Click here for the source code of this bot", url="https://github.com/Ender2K89/Stealth-Bot", timestamp=discord.utils.utcnow(), color=0x2F3136)
         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
-        await ctx.reply(embed=embed, view=view, mention_author=False)
+        await ctx.reply(embed=embed, view=view)
 
     @commands.command(help="Sends a invite of the bot", alises=['inv', 'invite_me', 'inviteme'])
     async def invite(self, ctx):
@@ -34,7 +34,7 @@ class other(commands.Cog):
 
         embed = discord.Embed(title="Click here for the invite to this bot", url="https://discord.com/api/oauth2/authorize?client_id=760179628122964008&permissions=8&scope=bot", timestamp=discord.utils.utcnow(), color=0x2F3136)
         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
-        await ctx.reply(embed=embed, view=view, mention_author=False)
+        await ctx.reply(embed=embed, view=view)
 
     @commands.command(help="Sends the support server of the bot", aliases=['supportserver', 'support_server'])
     async def support(self, ctx):
@@ -45,7 +45,7 @@ class other(commands.Cog):
 
         embed = discord.Embed(title="Click here for the invite to the support server", url="https://discord.gg/MrBcA6PZPw", timestamp=discord.utils.utcnow(), color=0x2F3136)
         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
-        await ctx.reply(embed=embed, view=view, mention_author=False)
+        await ctx.reply(embed=embed, view=view)
 
     @commands.command(help="Changes the prefix for the current server", aliases=['pre', 'setprefix', 'set_prefix'])
     @commands.check_any(commands.has_permissions(manage_guild=True), commands.is_owner())
@@ -93,7 +93,7 @@ class other(commands.Cog):
         else:
             embed = discord.Embed(title="You can only use this command in the `Stealth Hangout` server.", timestamp=discord.utils.utcnow(), color=0x2F3136)
             embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
-            await ctx.reply(embed=embed, mention_author=False)
+            await ctx.reply(embed=embed)
 
     @commands.command(help="Verifies you", hidden=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
@@ -110,19 +110,19 @@ class other(commands.Cog):
         message = await ctx.send(f"Please say `{correctAnswer}` to verify.\nYou have 15 seconds to type the word.")
 
         def check(m):
-            return m.content == f'{correctAnswer.lower}' and m.channel.id == ctx.channel.id
+            return m.content == correctAnswer and m.channel.id == ctx.channel.id
 
         try:
             msg = await self.client.wait_for(event='message', check=check, timeout=15)
         except asyncio.TimeoutError:
             await message.delete()
             await ctx.message.delete(delay=5.0)
-            await ctx.reply("It's been over 15 seconds, please try again by doing `-verify`", mention_author=False, delete_after=5.0)
+            await ctx.reply("It's been over 15 seconds, please try again by doing `-verify`", delete_after=5.0)
         else:
             await ctx.message.delete()
             await message.delete()
             await msg.delete(delay=5.0)
-            await msg.reply("You've successfully verified!", mention_author=False, delete_after=5.0)
+            await msg.reply("You've successfully verified!", delete_after=5.0)
 
             await member.add_roles(discord.utils.get(member.guild.roles, name=role))
 
@@ -154,7 +154,7 @@ class other(commands.Cog):
         if "ip" in url.lower() or "test" in url.lower() or "speed" in url.lower() or "address" in url.lower():
             await ctx.reply("no.")
         else:
-            await ctx.reply(embed=embed, mention_author=False, file=discord.File(io.BytesIO(res), filename="ss.png"))
+            await ctx.reply(embed=embed, file=discord.File(io.BytesIO(res), filename="ss.png"))
 
     @commands.command(help="secret command", hidden=True)
     @commands.is_owner()
@@ -164,6 +164,11 @@ class other(commands.Cog):
         await ctx.message.delete()
         message = await channel.send(embed=embed)
         await message.pin()
+
+
+    @commands.command(help="Average embed fields enjoyer vs average embed description enjoyer", hidden=True)
+    async def embed(self, ctx):
+        await ctx.reply("https://cdn.upload.systems/uploads/udt7Bv0U.gif")
 
 
 def setup(client):

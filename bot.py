@@ -1,8 +1,10 @@
   	# Imports
 
 import discord
+import logging
 from unidecode import unidecode
 import os
+import aiohttp
 import random
 import datetime
 import yaml
@@ -46,6 +48,86 @@ tracker = DiscordUtils.InviteTracker(client) # Initializes the tracker object
 # client.owner_ids = [349373972103561218, 564890536947875868]
 client.launch_time = discord.utils.utcnow()
 client.no_prefix = False
+client.invite_url = "https://discord.com/api/oauth2/authorize?client_id=760179628122964008&permissions=8&scope=bot"
+client.vote_top_gg = "Soon"
+client.vote_bots_gg = "https://discord.bots.gg/bots/760179628122964008"
+client.repo = "https://github.com/Ender2K89/Stealth-Bot"
+client.allowed_mentions = discord.AllowedMentions(replied_user=False)
+client.session = aiohttp.ClientSession()
+
+class CustomContext(commands.Context):
+
+    @staticmethod
+    def tick(opt: bool, text: str = None) -> str:
+        ticks = {
+            True: '<:greenTick:596576670815879169>',
+            False: '<:redTick:596576672149667840>',
+            None: '<:greyTick:860644729933791283>',
+        }
+        emoji = ticks.get(opt, "<:redTick:596576672149667840>")
+        if text:
+            return f"{emoji} {text}"
+        return emoji
+
+    @staticmethod
+    def default_tick(opt: bool, text: str = None) -> str:
+        ticks = {
+            True: '✅',
+            False: '❌',
+            None: '➖',
+        }
+        emoji = ticks.get(opt, "❌")
+        if text:
+            return f"{emoji} {text}"
+        return emoji
+
+    @staticmethod
+    def square_tick(opt: bool, text: str = None) -> str:
+        ticks = {
+            True: '🟩',
+            False: '🟥',
+            None: '⬛',
+        }
+        emoji = ticks.get(opt, "🟥")
+        if text:
+            return f"{emoji} {text}"
+        return emoji
+
+    @staticmethod
+    def dc_toggle(opt: bool, text: str = None) -> str:
+        ticks = {
+            True: '<:DiscordON:882991627541565461>',
+            False: '<:DiscordOFF:882991627994542080>',
+            None: '<:DiscordNONE:882991627994546237>',
+        }
+        emoji = ticks.get(opt, "<:DiscordOFF:882991627994542080>")
+        if text:
+            return f"{emoji} {text}"
+        return emoji
+
+    @staticmethod
+    def toggle(opt: bool, text: str = None) -> str:
+        ticks = {
+            True: '<:toggle_on:857842924729270282>',
+            False: '<:toggle_off:857842924544065536>',
+            None: '<:toggle_off:857842924544065536>',
+        }
+        emoji = ticks.get(opt, "<:toggle_off:857842924544065536>")
+        if text:
+            return f"{emoji} {text}"
+        return emoji
+
+    async def send(self, content: str = None, embed: discord.Embed = None,
+                   reply: bool = True, footer: bool = True, **kwargs):
+
+        if embed and footer is True:
+            if not embed.footer:
+                embed.set_footer(text=f"Command requested by {self.author}",
+                                 icon_url=self.author.display_avatar.url)
+                embed.timestamp = discord.utils.utcnow()
+
+        return await super().send(content=content, embed=embed, **kwargs) if not reply \
+            else await self.reply(content=content, embed=embed, **kwargs)
 
 	# Functions and stuff
 
@@ -245,6 +327,7 @@ async def disable_vc(ctx):
       await ctx.send("Successfully disabled the change_vc task!") # Sends "Successfully enabled the change_vc task!"
     except: # If something went wrong while starting the "change_vc" task then:
       await ctx.send("Couldn't stop the task bump cause it's already stopped") # Sends "Couldn't start the task change_vc cause it's already active"
+
 
 client.loop.run_until_complete(create_db_pool())
 client.run(yaml_data['TOKEN'], reconnect=True) # Runs the bot with the token being the variable "TOKEN"
