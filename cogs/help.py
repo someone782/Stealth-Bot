@@ -7,14 +7,14 @@ import random
 class VoteButtons(discord.ui.View):
     def __init__(self):
         super().__init__()
-        #self.add_item(discord.ui.Button(emoji="<:topgg:870133913102721045>", label='top.gg', url="https://top.gg/bot/760179628122964008"))
+        self.add_item(discord.ui.Button(emoji="<:topgg:870133913102721045>", label='top.gg', url="https://top.gg/bot/760179628122964008"))
         self.add_item(discord.ui.Button(emoji="<:botsgg:870134146972938310>", label='bots.gg', url="https://discord.bots.gg/bots/760179628122964008"))
 
 class Buttons(discord.ui.View):
     def __init__(self):
         super().__init__()
         self.add_item(discord.ui.Button(emoji="<:invite:860644752281436171>", label='Invite me', url="https://discord.com/api/oauth2/authorize?client_id=760179628122964008&permissions=8&scope=bot"))
-        self.add_item(discord.ui.Button(emoji="<:github:744345792172654643>", label='Source code', url="https://github.com/Ender2K89/Stealth-Bot-Source"))
+        self.add_item(discord.ui.Button(emoji="<:github:744345792172654643>", label='Source code', url="https://github.com/Ender2K89/Stealth-Bot"))
 
     @discord.ui.button(label='Vote', style=discord.ButtonStyle.gray, emoji="<:topgg:870133913102721045>")
     async def receive(self, button: discord.ui.Button, interaction: discord.Interaction):
@@ -71,7 +71,7 @@ Commands usable by you (in this server): {len(await self.filter_commands(list(se
 ```
         """)
 
-        embed.add_field(name="📰 __**Latest News**__ - <t:1630413792:d> (<t:1630413792:R>)", value = f"""
+        embed.add_field(name="📰 __**Latest News**__ - <t:1631043823:d> (<t:1631043823:R>)", value = f"""
 {news}
                         """)
 
