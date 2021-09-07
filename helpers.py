@@ -187,8 +187,18 @@ class NotSH(commands.CheckFailure):
 
 def is_sh_server():
     def predicate(ctx):
-        # a function that takes ctx as it's only arg, that returns
-        # a truethy or falsey value, or raises an exception
-        if ctx.guild.id == 799330949686231050: return True
-        else: raise NotSH("You can only use this command in `Stealth Hangout`!\ndiscord.gg/ktkXwmD2kF")
+        if ctx.guild.id == 799330949686231050:
+            return True
+        else:
+            raise NotSH("You can only use this command in `Stealth Hangout`!\ndiscord.gg/ktkXwmD2kF")
+    return commands.check(predicate)
+
+class NotCSMP(commands.CheckFailure):
+    pass
+
+def is_csmp_server():
+    def predicate(ctx):
+        if ctx.guild.id == 882341595528175686: return True
+        else:
+            raise NotCSMP("You can only use this command in `ClassicSMP`!\nhttps://discord.gg/afBDa2Kqc9")
     return commands.check(predicate)

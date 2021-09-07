@@ -2,6 +2,7 @@ from aiohttp import helpers
 import discord
 import random
 import helpers
+import asyncio
 import io
 from asyncdagpi import Client, ImageFeatures
 import datetime
@@ -10,9 +11,30 @@ import pyfiglet
 from discord.ext import commands
 
 class fun(commands.Cog):
-    "Fun commands like -meme, -hug and more"
+    ":zany_face: Fun commands like -meme, -hug and more"
     def __init__(self, client):
         self.client = client
+
+    @commands.command(aliases=['guess_the_number'])
+    async def number(self, ctx):
+        number = random.randint(1, 3)
+        await ctx.send(number)
+        message = await ctx.reply("Try to guess the number! You have 15 seconds.")
+
+        def check(m):
+            return m.content == number and m.channel.id == ctx.channel.id
+
+        try:
+            msg = await self.client.wait_for(event='message', check=check, timeout=15)
+        except asyncio.TimeoutError:
+            await message.delete()
+            await ctx.message.delete(delay=5.0)
+            await ctx.reply("You lost! It's been 15 seconds and you haven't guessed the number correctly.", delete_after=5.0)
+        else:
+            await ctx.message.delete()
+            await message.delete()
+            await msg.delete(delay=5.0)
+            await msg.reply("You've got the number right!", delete_after=5.0)
 
     @commands.command(aliases=['asciitext', 'ascii_text', 'gen_ascii', 'generator_ascii'], description="Turns any text into ASCII")
     async def ascii(self, ctx, *, text):
@@ -318,37 +340,51 @@ class fun(commands.Cog):
 
         await ctx.reply(embed=embed)
 
-    @commands.command(help="Shows you a random meme from the subreddit r/memes", aliases=['m'])
+    @commands.command(help="Sends a random meme from the r/meme subreddit", aliases=['m'])
+    @commands.cooldown(1, 5, commands.BucketType.member)
     async def meme(self, ctx):
-        subreddit = "meme"
-        url = f"https://reddit.com/r/{subreddit}/random.json?limit=1"
+        embed = discord.Embed(title="<a:loading:747680523459231834> Getting meme...", timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
 
-        async with self.client.session.get(f"https://reddit.com/r/{subreddit}/random.json?limit=1") as response:
-            response = await response.json()
-            redditDict = dict(response[0]['data']['children'][0]['data'])
+        message = await ctx.reply(embed=embed)
 
-            embed = discord.Embed(title=f"{redditDict['title']}", url=f"https://reddit.com{redditDict['permalink']}", description=f"Upvotes: {redditDict['ups']}\nComments: {redditDict['num_comments']}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+        sebreddit_list = ["dankmemes", "memes"]
+        subreddit = random.choice(sebreddit_list)
+
+        async with self.client.session.get(f"https://www.reddit.com/r/{subreddit}/hot.json") as r:
+            response = await r.json()
+            redditDict = dict(random.choice(response['data']['children']))
+            redditDict = redditDict['data']
+
+            embed = discord.Embed(title=f"{redditDict['title'].upper()}", url=f"https://reddit.com{redditDict['permalink']}", description=f"<:upvote:274492025678856192> Upvotes: {redditDict['ups']}\nComments: {redditDict['num_comments']}", timestamp=discord.utils.utcnow(), color=0x2F3136)
             embed.set_image(url=redditDict['url'])
-            embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
+            embed.set_footer(text=f"Command requested by: {ctx.author} • Subreddit: {subreddit}", icon_url=ctx.author.avatar.url)
 
-            await ctx.reply(embed=embed)
+            await message.edit(embed=embed)
 
     @commands.command(help="Shows you a random meme from the subreddit r/ProgrammerHumor", aliases=['programmer_meme', 'programmeme', 'program_meme', 'pm'])
+    @commands.cooldown(1, 5, commands.BucketType.member)
     async def programmermeme(self, ctx):
-        subreddit = "ProgrammerHumor"
-        url = f"https://reddit.com/r/{subreddit}/random.json?limit=1"
+        embed = discord.Embed(title="<a:loading:747680523459231834> Getting programmer meme...", timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
 
-        async with self.client.session.get(f"https://reddit.com/r/{subreddit}/random.json?limit=1") as r:
-            res = await r.json()
-            s = ""
+        message = await ctx.reply(embed=embed)
 
-            subredditDict = dict(res[0]['data']['children'][0]['data'])
-            embed = discord.Embed(title=f"{subredditDict['title']}", url=f"https://reddit.com{subredditDict['permalink']}", description=f"Upvotes: {subredditDict['ups']}\nComments: {subredditDict['num_comments']}", timestamp=discord.utils.utcnow(), color=0x2F3136)
-            embed.set_image(url=subredditDict['url'])
-            embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
-            await ctx.reply(embed=embed)
+        sebreddit_list = ["ProgrammerHumor", "ProgrammerHumor"]
+        subreddit = random.choice(sebreddit_list)
 
-    @commands.command(description="Messages you.")
+        async with self.client.session.get(f"https://www.reddit.com/r/{subreddit}/hot.json") as r:
+            response = await r.json()
+            redditDict = dict(random.choice(response['data']['children']))
+            redditDict = redditDict['data']
+
+            embed = discord.Embed(title=f"{redditDict['title'].upper()}", url=f"https://reddit.com{redditDict['permalink']}", description=f"<:upvote:274492025678856192> Upvotes: {redditDict['ups']}\nComments: {redditDict['num_comments']}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+            embed.set_image(url=redditDict['url'])
+            embed.set_footer(text=f"Command requested by: {ctx.author} • Subreddit: {subreddit}", icon_url=ctx.author.avatar.url)
+
+            await message.edit(embed=embed)
+
+    @commands.command(description="Messages you.", aliases=['msg_me'])
     async def msgme(self, ctx, *, content):
         try:
             await ctx.author.send(content)

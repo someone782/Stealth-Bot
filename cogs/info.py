@@ -3,16 +3,47 @@ import datetime
 import io
 import psutil
 import helpers
+import os
 import unicodedata
+import sys
 import time
+import pkg_resources
+import math
 import aiohttp
 from discord.ext import commands, menus
 from discord.ext.commands.cooldowns import BucketType
 import threading
 from platform import python_version
 import asyncio
-pythonVersion = python_version()
-start_time = time.time()
+from afks import afks
+
+# bytes pretty-printing
+UNITS_MAPPING = [
+    (1<<50, ' PB'),
+    (1<<40, ' TB'),
+    (1<<30, ' GB'),
+    (1<<20, ' MB'),
+    (1<<10, ' KB'),
+    (1, (' byte', ' bytes')),
+]
+
+
+def pretty_size(bytes, units=UNITS_MAPPING):
+    """Get human-readable file sizes.
+    simplified version of https://pypi.python.org/pypi/hurry.filesize/
+    """
+    for factor, suffix in units:
+        if bytes >= factor:
+            break
+    amount = int(bytes / factor)
+
+    if isinstance(suffix, tuple):
+        singular, multiple = suffix
+        if amount == 1:
+            suffix = singular
+        else:
+            suffix = multiple
+    return str(amount) + suffix
 
 class EmbedPageSource(menus.ListPageSource):
     async def format_page(self, menu, item):
@@ -22,7 +53,7 @@ class EmbedPageSource(menus.ListPageSource):
         return embed
 
 class info(commands.Cog):
-    "All informative commands like `serverinfo`, `userinfo` and more!"
+    ":information_source: All informative commands like `serverinfo`, `userinfo` and more!"
     def __init__(self, client):
         self.client = client
         client.session = aiohttp.ClientSession()
@@ -63,8 +94,6 @@ class info(commands.Cog):
         if roles != "":
             roles = f"{roles}"
 
-        top_role = member.top_role.mention.replace("@@everyone", "")
-
         badges = helpers.get_member_badges(member)
         if badges:
             badges = f"{badges}"
@@ -79,10 +108,22 @@ class info(commands.Cog):
 
         if member.avatar.is_animated() == True:
             text1 = f"[PNG]({member.avatar.replace(format='png', size=2048).url}) | [JPG]({member.avatar.replace(format='jpg', size=2048).url}) | [WEBP]({member.avatar.replace(format='webp', size=2048).url}) | [GIF]({member.avatar.replace(format='gif', size=2048).url})"
-            text = text1.replace("cdn.discordapp.com", "media.discordapp.net")
+            avatar = text1.replace("cdn.discordapp.com", "media.discordapp.net")
         else:
             text1 = f"[PNG]({member.avatar.replace(format='png', size=2048).url}) | [JPG]({member.avatar.replace(format='jpg', size=2048).url}) | [WEBP]({member.avatar.replace(format='webp', size=2048).url})"
-            text = text1.replace("cdn.discordapp.com", "media.discordapp.net")
+            avatar = text1.replace("cdn.discordapp.com", "media.discordapp.net")
+
+        fetchedMember = await self.client.fetch_user(member.id)
+
+        if fetchedMember.banner:
+            if fetchedMember.banner.is_animated() == True:
+                text1 = f"[PNG]({fetchedMember.banner.replace(format='png', size=2048).url}) | [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) | [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url}) | [GIF]({fetchedMember.banner.replace(format='gif', size=2048).url})"
+                banner = text1.replace("cdn.discordapp.com", "media.discordapp.net")
+            else:
+                text1 = f"[PNG]({fetchedMember.avatar.replace(format='png', size=2048).url}) | [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) | [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url})"
+                banner = text1.replace("cdn.discordapp.com", "media.discordapp.net")
+        else:
+            banner = "No banner found"
 
         guild = ctx.guild
 
@@ -99,26 +140,37 @@ class info(commands.Cog):
         if str(member.mobile_status) == "online" or str(member.mobile_status) == "idle" or str(member.mobile_status) == "dnd" or str(member.mobile_status) == "streaming":
             mobileStatus = ":mobile_phone: <:greenTick:596576670815879169>"
 
-        embed = discord.Embed(title=f"Userinfo - {member}", url=f"https://discord.com/users/{member.id}", description=f"""
-Name: {member}
+        if member.id in afks.keys():
+            afkStatus = "Yes"
+        else:
+            afkStatus = "No"
+
+        embed = discord.Embed(title=f"{member}", url=f"https://discord.com/users/{member.id}", description=f"""
 <:nickname:876507754917929020> Nickname: {member.nick}
-Discriminator:  #{member.discriminator}
-Display name: {member.mention}
-<:greyTick:860644729933791283> ID: {member.id}
+:hash: Discriminator:  #{member.discriminator}
+Mention: {member.mention}
+<:greyTick:596576672900186113> ID: {member.id}
+
 :robot: Bot?: {botText}
-Avatar url: {text}
+AFK?: {afkStatus}
+Avatar url: {avatar}
+Banner url: {banner}
+
 <a:nitro_wumpus:857636144875175936> Boosting: {premiumText}
 <:invite:860644752281436171> Created: {discord.utils.format_dt(member.created_at, style="f")} ({discord.utils.format_dt(member.created_at, style="R")})
 <:member_join:596576726163914752> Joined: {discord.utils.format_dt(member.joined_at, style="f")} ({discord.utils.format_dt(member.joined_at, style="R")})
 <:moved:848312880666640394> Join position: {sorted(ctx.guild.members, key=lambda member : member.joined_at).index(member) + 1}
 Mutual guilds: {len(member.mutual_guilds)}
+
 {statusEmote} Current status: {str(member.status).title()}
 :video_game: Current activity: {str(member.activity.type).split('.')[-1].title() if member.activity else 'Not playing'} {member.activity.name if member.activity else ''}
 <:discord:877926570512236564> Client: {desktopStatus} **–** {webStatus} **–** {mobileStatus}
-<:role:876507395839381514> Top Role: {top_role}
+
+<:role:876507395839381514> Top Role: {member.top_role.mention}
 <:role:876507395839381514> Roles: {roles}
 <:store_tag:860644620857507901> Staff permissions: {perms}
 <:store_tag:860644620857507901> Badges: {badges}
+
 :rainbow: Color: {member.color}
 :rainbow: Accent color: {fetchedMember.accent_color}
         """, timestamp=discord.utils.utcnow(), color=0x2F3136)
@@ -158,7 +210,7 @@ Mutual guilds: {len(member.mutual_guilds)}
         if server.description:
             description = server.description
         else:
-            description = "This serer doesn't have a descripton"
+            description = "This server doesn't have a description"
 
         enabled_features = []
         features = set(server.features)
@@ -193,9 +245,39 @@ Mutual guilds: {len(member.mutual_guilds)}
 
         features = '\n'.join(enabled_features)
 
-        embed = discord.Embed(title=f"Server info - {server}", description=f"""
-Name: {server}
-<:greyTick:860644729933791283> ID: {server.id}
+        if features == "":
+            features = "This server doesn't have any features."
+
+        if server.premium_tier == 1:
+            levelEmoji = "<:Level1_guild:883072977430794240>"
+        elif server.premium_tier == 2:
+            levelEmoji = "<:Level2_guild:883073003984916491>"
+        else:
+            levelEmoji = "<:Level3_guild:883073034817245234>"
+
+        verification_level1 = str(server.verification_level)
+        verification_level = verification_level1.capitalize()
+
+        if verification_level == "Low":
+            verificationEmote = "<:low_verification:883363584464285766>"
+        elif verification_level == "Medium":
+            verificationEmote = "<:medium_verifiaction:883363595163947120>"
+        elif verification_level == "High":
+            verificationEmote = "<:high_verifiaction:883363640537915472>"
+        elif verification_level == "Highest":
+            verificationEmote = "<:highest_verifiaction:883363707332202546>"
+        else:
+            verificationEmote = "<:none_verifiaction:883363576377659532>"
+
+        if str(server.explicit_content_filter) == "no_role":
+            explictContentFilter = "Scan media content from members without a role."
+        elif str(server.explicit_content_filter) == "all_members":
+            explictContentFilter = "Scan media from all members."
+        else:
+            explictContentFilter = "Don't scan any media content."
+
+        embed = discord.Embed(title=f"{server}", description=f"""
+<:greyTick:596576672900186113> ID: {server.id}
 :information_source: Description: {description}
 
 <:members:858326990725709854> Members: {len(server.members)} (:robot: {len(list(filter(lambda m : m.bot, server.members)))})
@@ -204,7 +286,9 @@ Name: {server}
 <:members:858326990725709854> Max members: {server.max_members}
 <:bans:878324391958679592> Banned members: {bannedMembers}
 
-Verification Level: {server.verification_level}
+{verificationEmote} Verification level: {verification_level}
+<:channel_nsfw:585783907660857354> Explicit content filter: {explictContentFilter}
+:file_folder: Filesize limit: {pretty_size(server.filesize_limit)}
 Created: {discord.utils.format_dt(server.created_at, style="f")} ({discord.utils.format_dt(server.created_at, style="R")})
 {helpers.get_server_region_emote(server)} Region: {helpers.get_server_region(server)}
 
@@ -215,7 +299,7 @@ Created: {discord.utils.format_dt(server.created_at, style="f")} ({discord.utils
 <:emoji_ghost:658538492321595393> Animated emojis: {len([x for x in server.emojis if x.animated])}/{server.emoji_limit}
 <:emoji_ghost:658538492321595393> Non animated emojis: {len([x for x in server.emojis if not x.animated])}/{server.emoji_limit}
 
-<:boost:858326699234164756> Level: {server.premium_tier}
+{levelEmoji} Level: {server.premium_tier}
 <:boost:858326699234164756> Boosts: {server.premium_subscription_count}
 <:boost:858326699234164756> Latest booster: {boost}
 
@@ -226,6 +310,7 @@ Features:
         if server.banner:
             url1 = server.banner.url
             url = url1.replace("cdn.discordapp.com", "media.discordapp.net")
+            print(url)
             embed.set_thumbnail(url=url)
 
 
@@ -238,27 +323,36 @@ Features:
 
         await ctx.reply(embed=embed)
 
-    @commands.command(help="Shows information about the bot", aliases=['bi', 'bot', 'info', 'about'])
+    @commands.command(help="Shows information about the bot", aliases=['bi', 'bot', 'info', 'about', 'bisexual'])
     async def botinfo(self, ctx):
         prefix = await self.client.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1', ctx.guild.id)
         prefix = prefix or 'sb!'
-        current_time = time.time()
-        threads = threading.activeCount()
-        mem_info = psutil.virtual_memory()
 
-        embed = discord.Embed(title=f"Bot info - Stealth Bot [-]#1082",  color=0x2F3136)
+        text_channels = [channel for channel in self.client.get_all_channels() if isinstance(channel, discord.TextChannel)]
+        voice_channels = [channel for channel in self.client.get_all_channels() if isinstance(channel, discord.VoiceChannel)]
+        categories = [channel for channel in self.client.get_all_channels() if isinstance(channel, discord.CategoryChannel)]
+        stage_channels = [channel for channel in self.client.get_all_channels() if isinstance(channel, discord.StageChannel)]
+        threads = [channel for channel in self.client.get_all_channels() if isinstance(channel, discord.Thread)]
 
-        embed.add_field(name="Processor", value=f"""
-Physical cores: {psutil.cpu_count(logical=False)}
-Total cores: {psutil.cpu_count()}\nFrequency:  {psutil.cpu_freq()}
-Usage: {psutil.cpu_percent(interval=None)}%""")
+        avg = [(sum(m.bot for m in g.members) / g.member_count) * 100 for g in self.client.guilds]
+        version = pkg_resources.get_distribution('pycord').version
 
-        embed.add_field(name="Memory", value=f"""
-Total: {mem_info[0]}
-Avaible: {mem_info[1]}
-Used: {mem_info[2]}%
-Free: {mem_info[3]}
-Percent: {mem_info[4]}""")
+        memory_usage = psutil.Process().memory_full_info().uss / 1024 ** 2
+        cpu_usage = psutil.cpu_percent()
+
+        embed = discord.Embed(title=f"Bot info - Stealth Bot [-]#1082", description=f"""
+Developer: Ender2K89#9999
+Server prefix: {prefix}
+Pycord version: v{version}
+Uptime: since {discord.utils.format_dt(self.client.launch_time, style="f")} ({discord.utils.format_dt(self.client.launch_time, style="R")})
+Commands: {len(self.client.commands)}
+Memory usage: {memory_usage:.2f} MiB
+CPU usage: {cpu_usage:.2f}%
+Average server bot percentage: {round(sum(avg) / len(avg), 2)}%
+<:servers:870152102759006208> Servers: {len(self.client.guilds)}
+<:members:858326990725709854> Members: {sum([g.member_count for g in self.client.guilds])}
+<:text_channel:876503902554578984> Channels: <:text_channel:876503902554578984> {len(text_channels)} <:voice_channel:876503909512933396> {len(voice_channels)} <:category:882685952999428107> {len(categories)} <:stagechannel:824240882793447444> {len(stage_channels)} <:threadnew:833432474347372564> {len(threads)}
+        """, color=0x2F3136)
 
         embed.set_thumbnail(url=self.client.user.avatar.url)
         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url = ctx.author.avatar.url)
@@ -424,6 +518,24 @@ Tested verify command: Eiiknostv#2016
     @commands.command(help="Shows the current time", aliases=['date'])
     async def time(self, ctx):
         await ctx.reply(f"The current time is {discord.utils.format_dt(discord.utils.utcnow(), style='T')}")
+
+    @commands.command()
+    async def afk(self, ctx, *, reason=None):
+        member = ctx.author
+        if reason == None:
+            reason = "No reason provided."
+
+        if member.id in afks.keys():
+            afks.pop(member.id)
+        else:
+            try:
+                await member.edit(nick=f"[AFK] {member.display_name}")
+            except:
+                pass
+
+        afks[member.id] = reason
+
+        await ctx.reply(f"{member} went afk cause `{reason}`")
 
 
 def setup(client):

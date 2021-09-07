@@ -6,6 +6,7 @@ from discord.ext import commands
 class custom(commands.Cog):
     "Commands that are made by members that won a giveaway called \"Custom command for Stealth Bot\""
     def __init__(self, client):
+        self.hidden = True
         self.client = client
 
 

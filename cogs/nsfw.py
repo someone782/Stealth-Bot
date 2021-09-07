@@ -5,10 +5,9 @@ from discord.ext import commands, menus
 from discord.ext.commands.cooldowns import BucketType
 
 class nsfw(commands.Cog):
-    "NSFW commands"
+    ":underage: NSFW commands"
     def __init__(self, client):
         self.client = client
-        client.session = aiohttp.ClientSession()
 
     @commands.command(help="Shows you a random post from the subreddit r/hentai")
     @commands.is_nsfw()

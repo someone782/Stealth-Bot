@@ -6,7 +6,7 @@ from discord.ext import commands
 import random
 
 class animals(commands.Cog):
-    "Commands that show you pictures of certain animals & facts about them"
+    ":dog: Commands that show you pictures of certain animals & facts about them"
     def __init__(self, client):
         self.client = client
 
@@ -14,7 +14,7 @@ class animals(commands.Cog):
     @commands.command(help="Shows a picture of a cat and a random fact about cats")
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
     async def cat(self, ctx):
-       async with aiohttp.ClientSession() as session:
+       async with self.client.session() as session:
           request = await session.get('https://some-random-api.ml/img/cat')
           dogjson = await request.json()
           request2 = await session.get('https://some-random-api.ml/facts/cat')
@@ -28,7 +28,7 @@ class animals(commands.Cog):
     @commands.command(help="Shows a picture of a dog and a random fact about dogs")
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
     async def dog(self, ctx):
-       async with aiohttp.ClientSession() as session:
+       async with self.client.session() as session:
           request = await session.get('https://some-random-api.ml/img/dog')
           dogjson = await request.json()
           request2 = await session.get('https://some-random-api.ml/facts/dog')
@@ -59,7 +59,7 @@ class animals(commands.Cog):
     @commands.command(help="Shows a picture of a panda and a random fact about pandas")
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
     async def panda(self, ctx):
-       async with aiohttp.ClientSession() as session:
+       async with self.client.session() as session:
           request = await session.get('https://some-random-api.ml/img/panda')
           dogjson = await request.json()
           request2 = await session.get('https://some-random-api.ml/facts/panda')
@@ -73,7 +73,7 @@ class animals(commands.Cog):
     @commands.command(help="Shows a picture of a fox and a random fact about foxes")
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
     async def fox(self, ctx):
-       async with aiohttp.ClientSession() as session:
+       async with self.client.session() as session:
           request = await session.get('https://some-random-api.ml/img/fox')
           dogjson = await request.json()
           request2 = await session.get('https://some-random-api.ml/facts/fox')
@@ -87,7 +87,7 @@ class animals(commands.Cog):
     @commands.command(help="Shows a picture of a bird and a random fact about birds")
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
     async def bird(self, ctx):
-       async with aiohttp.ClientSession() as session:
+       async with self.client.session() as session:
           request = await session.get('https://some-random-api.ml/img/bird')
           dogjson = await request.json()
           request2 = await session.get('https://some-random-api.ml/facts/bird')
@@ -101,7 +101,7 @@ class animals(commands.Cog):
     @commands.command(help="Shows a picture of a koala and a random fact about koalas")
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
     async def koala(self, ctx):
-       async with aiohttp.ClientSession() as session:
+       async with self.client.session() as session:
           request = await session.get('https://some-random-api.ml/img/koala')
           dogjson = await request.json()
           request2 = await session.get('https://some-random-api.ml/facts/koala')
@@ -115,7 +115,7 @@ class animals(commands.Cog):
     @commands.command(help="Shows a picture of a kangaroo and a random fact about kangaroos")
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
     async def kangaroo(self, ctx):
-       async with aiohttp.ClientSession() as session:
+       async with self.client.session() as session:
           request = await session.get('https://some-random-api.ml/img/kangaroo')
           dogjson = await request.json()
           request2 = await session.get('https://some-random-api.ml/facts/kangaroo')
@@ -129,7 +129,7 @@ class animals(commands.Cog):
     @commands.command(help="Shows a picture of a racoon and a random fact about racoons")
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
     async def racoon(self, ctx):
-       async with aiohttp.ClientSession() as session:
+       async with self.client.session() as session:
           request = await session.get('https://some-random-api.ml/img/racoon')
           dogjson = await request.json()
           request2 = await session.get('https://some-random-api.ml/facts/racoon')
@@ -143,7 +143,7 @@ class animals(commands.Cog):
     @commands.command(help="Shows a picture of a whale and a random fact about whales", aliases=['urmom', 'ur_mom', 'yourmom', 'your_mom'])
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
     async def whale(self, ctx):
-       async with aiohttp.ClientSession() as session:
+       async with self.client.session() as session:
           request = await session.get('https://some-random-api.ml/img/whale')
           dogjson = await request.json()
           request2 = await session.get('https://some-random-api.ml/facts/whale')
@@ -157,7 +157,7 @@ class animals(commands.Cog):
     @commands.command(help="Shows a picture of a pikachu")
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
     async def pikachu(self, ctx):
-       async with aiohttp.ClientSession() as session:
+       async with self.client.session() as session:
           request = await session.get('https://some-random-api.ml/img/pikachu')
           dogjson = await request.json()
 

@@ -196,16 +196,6 @@ async def on_invite_create(invite):
         await tracker.update_invite_cache(invite)
 
 @client.event
-async def on_guild_join(guild):
-    channel = client.get_channel(876937268609290300)
-    await channel.send(f"ayo i got added into a guild called {guild.name} ({guild.id})\n<@!564890536947875868> <@!349373972103561218>")
-
-@client.event
-async def on_guild_remove(guild):
-    channel = client.get_channel(876937268609290300)
-    await channel.send(f"ayo i got removed from a guild called {guild.name} ({guild.id})\n<@!564890536947875868> <@!349373972103561218>")
-
-@client.event
 async def on_invite_delete(invite):
     if invite.id not in moderated_servers: # If the guild ID isn't in the list of the moderated servers then:
         return # Return
@@ -249,34 +239,34 @@ async def on_member_remove(member): # If a member left the server then:
         await channel.send(embed=embed) # Sends the embed to the "welcome_and_goodbye" channel (843503882226499634)
         await stealth_logs.send(embed=embed) # Sends the embed to the "stealth_logs" channel (836232733126426666)
 
-@client.event
-async def on_message(message):
-    if message.content in [f'<@!{client.user.id}>', f'<@{client.user.id}>']:
-        await message.reply(f"fuck off", mention_author=False)
-    if not message.guild: # If the message wasn't sent in a guild then:
-        return await client.process_commands(message) # Return and process the command.
-    if message.guild.id in moderated_servers:
-        if len(message.content) >  500: # If the length of the message is over 500 then:
-            await message.delete() # Deletes the message
-            warnMessage = f"Hey {message.author.mention}! Your message was over 500 characters so I had to delete it!\n*If you think this was a mistake then please contact Ender2K89 (The owner of this bot & server)*" # String that tells the author to not send messages over 500 messages
-            await message.channel.send(warnMessage, delete_after=5.0) # Sends the warnMessage and deletes it after 5 seconds
-        if message.channel.id in social_category or message.channel.id in fun_stuff_category or message.channel.id in no_mic_channel: # If the message was sent in the social, fun stuff category or the no mic channel then:
-            #url_regex = re.compile(r'((http|https)\:\/\/)?[a-zA-Z0-9\.\/\?\:@\-_=#]+\.([a-zA-Z]){2,6}([a-zA-Z0-9\.\&\/\?\:@\-_=#])*')
-            #url_regex = re.compile(r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))")
-            invite_regex = re.compile(r"<?(https?:\/\/)?(www\.)?(discord\.gg|discordapp\.com\/invite)\b([-a-zA-Z0-9/]*)>?")
-            link_perms_role = discord.utils.get(message.guild.roles, name="Link Perms")
-
-            if link_perms_role in message.author.roles:
-                await client.process_commands(message) # Processes commands
-                return # Return (ignore)
-            else:
-                if invite_regex.search(message.content):
-                    await message.delete() # Deletes the message
-                    warnMessage = f"Hey {message.author.mention}! Sending discord invites is not allowed!" # String that tells the author to stop sending discord invites
-                    await message.channel.send(warnMessage, delete_after=5.0) # Sends the warnMessage and deletes it after 5 seconds
-                else: # If it didn't match then:
-                    pass # I don't know what to put
-    await client.process_commands(message) # Processes commands
+# @client.event
+# async def on_message(message):
+#     if message.content in [f'<@!{client.user.id}>', f'<@{client.user.id}>']:
+#         await message.reply(f"fuck off", mention_author=False)
+#     if not message.guild: # If the message wasn't sent in a guild then:
+#         return await client.process_commands(message) # Return and process the command.
+#     if message.guild.id in moderated_servers:
+#         if len(message.content) >  500: # If the length of the message is over 500 then:
+#             await message.delete() # Deletes the message
+#             warnMessage = f"Hey {message.author.mention}! Your message was over 500 characters so I had to delete it!\n*If you think this was a mistake then please contact Ender2K89 (The owner of this bot & server)*" # String that tells the author to not send messages over 500 messages
+#             await message.channel.send(warnMessage, delete_after=5.0) # Sends the warnMessage and deletes it after 5 seconds
+#         if message.channel.id in social_category or message.channel.id in fun_stuff_category or message.channel.id in no_mic_channel: # If the message was sent in the social, fun stuff category or the no mic channel then:
+#             #url_regex = re.compile(r'((http|https)\:\/\/)?[a-zA-Z0-9\.\/\?\:@\-_=#]+\.([a-zA-Z]){2,6}([a-zA-Z0-9\.\&\/\?\:@\-_=#])*')
+#             #url_regex = re.compile(r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))")
+#             invite_regex = re.compile(r"<?(https?:\/\/)?(www\.)?(discord\.gg|discordapp\.com\/invite)\b([-a-zA-Z0-9/]*)>?")
+#             link_perms_role = discord.utils.get(message.guild.roles, name="Link Perms")
+#
+#             if link_perms_role in message.author.roles:
+#                 await client.process_commands(message) # Processes commands
+#                 return # Return (ignore)
+#             else:
+#                 if invite_regex.search(message.content):
+#                     await message.delete() # Deletes the message
+#                     warnMessage = f"Hey {message.author.mention}! Sending discord invites is not allowed!" # String that tells the author to stop sending discord invites
+#                     await message.channel.send(warnMessage, delete_after=5.0) # Sends the warnMessage and deletes it after 5 seconds
+#                 else: # If it didn't match then:
+#                     pass # I don't know what to put
+#     await client.process_commands(message) # Processes commands
 
     # Commands
 

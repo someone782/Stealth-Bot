@@ -8,8 +8,9 @@ import traceback
 from discord.ext import commands
 
 class dev(commands.Cog):
-    "Commands that only the developer of this client can use"
+    "<:earlybotdev:850843591756349450> Commands that only the developer of this client can use"
     def __init__(self, client):
+        self.hidden = True
         self.client = client
 
     @commands.command()

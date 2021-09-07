@@ -22,7 +22,7 @@ def convert(time):
     return timeVal*time_dict[unit]
 
 class giveaway(commands.Cog):
-    "Commands that are used to reroll/start a giveaway"
+    ":tada: Commands that are used to reroll/start a giveaway"
     def __init__(self, client):
         self.client = client
 

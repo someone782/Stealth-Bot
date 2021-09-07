@@ -44,8 +44,6 @@ class MyHelp(commands.HelpCommand):
 Total commands: {len(list(self.context.bot.commands))}
 Commands usable by you (in this server): {len(await self.filter_commands(list(self.context.bot.commands), sort=True))}
 ```diff
-- <> = required argument
-- [] = optional argument
 + Type {prefix}help [command/category] for help on a command/category
 ```
                               """, timestamp=discord.utils.utcnow(), color=0x2F3136)
@@ -64,8 +62,16 @@ Commands usable by you (in this server): {len(await self.filter_commands(list(se
                 allcogs.append(f"{num} {cog.qualified_name}")
                 iter+=1
         nl = '\n'
-        embed.add_field(name=f"__Available categories__ [{len(allcogs)}]", value=f"```fix\n{nl.join(allcogs)}```")
-        embed.add_field(name="📰 __Latest News__ - <t:1630413792:d> (<t:1630413792:R>)", value = f"""
+        embed.add_field(name=f"<:category:882685952999428107> __**Available categories**__ [{len(allcogs)}]", value=f"""
+```fix
+{nl.join(allcogs)}
+
+<> required argument
+[] optional argument
+```
+        """)
+
+        embed.add_field(name="📰 __**Latest News**__ - <t:1630413792:d> (<t:1630413792:R>)", value = f"""
 {news}
                         """)
 

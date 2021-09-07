@@ -1,9 +1,9 @@
 _ _
-> <:github:744345792172654643> The bot is now open-source!
-• Use the `%%PREFIX%%source` command to view the source code!
+> <:pog_cat:859833551419998218> New AFK system!
+• Use the `%%PREFIX%%AFK` command to go AFK!
+
+> :frog: Improved the meme commands!
+• Both meme commands now show popular memes only!
 
 > <:gun_think:814521272548982824> New `%%PREFIX%%oof [member]` command!
 • Thanks to Vicente0670 for the idea and helping me make this command.
-
-> :frog: WAY faster meme commands!
-• Do `%%PREFIX%%meme` or `%%PREFIX%%programmermeme` to see them.

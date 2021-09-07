@@ -22,6 +22,9 @@ class errorhandler(commands.Cog):
         elif isinstance(error, helpers.NotSH):
             message = f"You can only use this command in `Stealth Hangout`!\ndiscord.gg/ktkXwmD2kF"
 
+        elif isinstance(error, helpers.NotCSMP):
+            message = f"You can only use this command in `ClassicSMP`!\nhttps://discord.gg/afBDa2Kqc9"
+
         elif isinstance(error, commands.CommandOnCooldown):
             message = f"This command is on cooldown. Please try again after {round(error.retry_after, 1)} seconds."
 

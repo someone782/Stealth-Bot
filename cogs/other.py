@@ -9,10 +9,9 @@ import aiohttp
 from discord.ext import commands
 
 class other(commands.Cog):
-    "All other commands"
+    ":grey_question:  All other commands"
     def __init__(self, client):
         self.client = client
-        client.session = aiohttp.ClientSession()
 
     @commands.command(help="Sends the source code of the bot", aliases=['code', 'sourcecode', 'source_code'])
     async def source(self, ctx):
@@ -97,14 +96,16 @@ class other(commands.Cog):
 
     @commands.command(help="Verifies you", hidden=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
-    @helpers.is_sh_server()
+    # @helpers.is_sh_server()
     async def verify(self, ctx):
         with open("./data/verifyWords.txt", "r") as file:
             allText = file.read()
             wordsList = list(map(str, allText.split()))
 
         member = ctx.author
-        role = 'Members'
+        stealth_hangout_role = 'Members'
+        classicsmp_role = 'Members'
+
         correctAnswer = random.choice(wordsList)
 
         message = await ctx.send(f"Please say `{correctAnswer}` to verify.\nYou have 15 seconds to type the word.")
@@ -124,7 +125,30 @@ class other(commands.Cog):
             await msg.delete(delay=5.0)
             await msg.reply("You've successfully verified!", delete_after=5.0)
 
-            await member.add_roles(discord.utils.get(member.guild.roles, name=role))
+            if ctx.guild.id == 799330949686231050: # stealth hangout
+                await member.add_roles(discord.utils.get(member.guild.roles, name=stealth_hangout_role))
+            elif ctx.guild.id == 882341595528175686: # classicsmp
+                await member.add_roles(discord.utils.get(member.guild.roles, name=classicsmp_role))
+            else:
+                return
+                # await member.add_roles(discord.utils.get(member.guild.roles, name=role))
+
+    @commands.command(help="Shows the server address and port of ClassicSMP", aliases=['address', 'classicsmp'])
+    @helpers.is_csmp_server()
+    async def ip(self, ctx):
+        embed = discord.Embed(title="ClassicSMP IP", description="""
+```diff
+- Java Edition:
++ Server address: 207.244.233.7:25565
+
+- Bedrock Edition:
++ Server address: 207.244.233.7
++ Server port: 19132
+```
+        """, timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+
+        await ctx.reply(embed=embed)
 
     @commands.command(aliases=['giveaway_ping', 'ping_giveaway'], help="Pings the Giveaways role", hidden=True)
     @commands.has_role("Staff")
@@ -143,9 +167,9 @@ class other(commands.Cog):
     @commands.command(help="Sends a screenshot of the site you specify.\nNOTE: It needs to be with http/s.", aliases=['ss', 'screenshot_website', 'ss_website'])
     @commands.is_nsfw()
     async def screenshot(self, ctx, url):
-        async with aiohttp.ClientSession() as session:
-            async with session.get(f'https://image.thum.io/get/width/1920/crop/675/maxAge/1/noanimate/{url}') as r:
-                res = await r.read()
+        #async with self.client.session() as session:
+        async with self.client.session.get(f'https://image.thum.io/get/width/1920/crop/675/maxAge/1/noanimate/{url}') as r:
+            res = await r.read()
 
         embed = discord.Embed(title=f"Screenshot of {url}", timestamp=discord.utils.utcnow(), color=0x2F3136)
         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
@@ -169,6 +193,302 @@ class other(commands.Cog):
     @commands.command(help="Average embed fields enjoyer vs average embed description enjoyer", hidden=True)
     async def embed(self, ctx):
         await ctx.reply("https://cdn.upload.systems/uploads/udt7Bv0U.gif")
+
+    @commands.command(help="Shows you a list of flags", aliases=['flags'])
+    async def flag(self, ctx):
+        foo = """🇦🇫
+🇦🇽
+🇦🇱
+🇩🇿
+🇦🇸
+🇦🇩
+🇦🇴
+🇦🇮
+🇦🇶
+🇦🇬
+🇦🇷
+🇦🇲
+🇦🇼
+🇦🇺
+🇦🇹
+🇦🇿
+🇧🇸
+🇧🇭
+🇧🇩
+🇧🇧
+🇧🇾
+🇧🇪
+🇧🇿
+🇧🇯
+🇧🇲
+🇧🇹
+🇧🇴
+🇧🇦
+🇧🇼
+🇧🇻
+🇧🇷
+🇮🇴
+🇧🇳
+🇧🇬
+🇧🇫
+🇧🇮
+🇰🇭
+🇨🇲
+🇨🇦
+🇨🇻
+🇧🇶
+🇰🇾
+🇨🇫
+🇹🇩
+🇨🇱
+🇨🇳
+🇨🇽
+🇨🇨
+🇨🇴
+🇰🇲
+🇨🇬
+🇨🇩
+🇨🇰
+🇨🇷
+🇨🇮
+🇭🇷
+🇨🇺
+🇨🇼
+🇨🇾
+🇨🇿
+🇩🇰
+🇩🇯
+🇩🇲
+🇩🇴
+🇪🇨
+🇪🇬
+🇸🇻
+🏴󠁧󠁢󠁥󠁮󠁧󠁿
+🇬🇶
+🇪🇷
+🇪🇪
+🇸🇿
+🇪🇹
+🇫🇰
+🇫🇴
+🇫🇯
+🇫🇮
+🇫🇷
+🇬🇫
+🇵🇫
+🇹🇫
+🇬🇦
+🇬🇲
+🇬🇪
+🇩🇪
+🇬🇭
+🇬🇮
+🇬🇷
+🇬🇱
+🇬🇩
+🇬🇵
+🇬🇺
+🇬🇹
+🇬🇬
+🇬🇳
+🇬🇼
+🇬🇾
+🇭🇹
+🇭🇲
+🇭🇳
+🇭🇰
+🇭🇺
+🇮🇸
+🇮🇳
+🇮🇩
+🇮🇷
+🇮🇶
+🇮🇪
+🇮🇲
+🇮🇱
+🇮🇹
+🇯🇲
+🇯🇵
+🇯🇪
+🇯🇴
+🇰🇿
+🇰🇪
+🇰🇮
+🇰🇵
+🇰🇷
+🇽🇰
+🇰🇼
+🇰🇬
+🇱🇦
+🇱🇻
+🇱🇧
+🇱🇸
+🇱🇷
+🇱🇾
+🇱🇮
+🇱🇹
+🇱🇺
+🇲🇴
+🇲🇬
+🇲🇼
+🇲🇾
+🇲🇻
+🇲🇱
+🇲🇹
+🇲🇭
+🇲🇶
+🇲🇷
+🇲🇺
+🇾🇹
+🇲🇽
+🇫🇲
+🇲🇩
+🇲🇨
+🇲🇳
+🇲🇪
+🇲🇸
+🇲🇦
+🇲🇿
+🇲🇲
+🇳🇦
+🇳🇷
+🇳🇵
+🇳🇱
+🇳🇨
+🇳🇿
+🇳🇮
+🇳🇪
+🇳🇬
+🇳🇺
+🇳🇫
+🇲🇰
+🇲🇵
+🇳🇴
+🇴🇲
+🇵🇰
+🇵🇼
+🇵🇸
+🇵🇦
+🇵🇬
+🇵🇾
+🇵🇪
+🇵🇭
+🇵🇳
+🇵🇱
+🇵🇹
+🇵🇷
+🇶🇦
+🇷🇪
+🇷🇴
+🇷🇺
+🇷🇼
+🇧🇱
+🇸🇭
+🇰🇳
+🇱🇨
+🇲🇫
+🇵🇲
+🇻🇨
+🇼🇸
+🇸🇲
+🇸🇹
+🇸🇦
+🏴󠁧󠁢󠁳󠁣󠁴󠁿
+🇸🇳
+🇷🇸
+🇸🇨
+🇸🇱
+🇸🇬
+🇸🇽
+🇸🇰
+🇸🇮
+🇸🇧
+🇸🇴
+🇿🇦
+🇬🇸
+🇸🇸
+🇪🇸
+🇱🇰
+🇸🇩
+🇸🇷
+🇸🇯
+🇸🇪
+🇨🇭
+🇸🇾
+🇹🇼
+🇹🇯
+🇹🇿
+🇹🇭
+🇹🇱
+🇹🇬
+🇹🇰
+🇹🇴
+🇹🇹
+🇹🇳
+🇹🇷
+🇹🇲
+🇹🇨
+🇹🇻
+🇺🇬
+🇺🇦
+🇦🇪
+🇬🇧
+🇺🇸
+🇺🇲
+🇺🇾
+🇺🇿
+🇻🇺
+🇻🇦
+🇻🇪
+🇻🇳
+🇻🇬
+🇻🇮
+🏴󠁧󠁢󠁷
+🇼🇫
+🇪🇭
+🇾🇪
+🇿🇲
+🇿🇼"""
+        bar = foo.split('\n')
+        await ctx.reply(f"Here's a list of flags: {', '.join(bar)}")
+
+    @commands.command()
+    async def he(self, ctx):
+        embed = discord.Embed(title="Help Panel", description="""
+Hi there! My name is Stealth Bot. I'm a discord bot made by Ender2K89#9999.
+
+My prefix for this server is sb!, to change the prefix do sb!prefix.
+
+To get help on a category or command do sb!help [category/command].
+        """, timestamp=discord.utils.utcnow(), color=0x2F3136)
+
+        embed.add_field(name="__**Categories [8]**__", value=f"""
+```diff
++ info
++ fun
++ mod
++ giveaway
++ dev
++ other
++ animals
++ custom
+```
+        """)
+
+        embed.add_field(name="__**News []**__", value=f"""
+```yaml
+info
+fun
+mod
+giveaway
+dev
+other
+animals
+custom
+```
+        """)
+
+        await ctx.reply(embed=embed)
 
 
 def setup(client):
