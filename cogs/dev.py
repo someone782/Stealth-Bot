@@ -13,6 +13,21 @@ class dev(commands.Cog):
         self.hidden = True
         self.client = client
 
+    @commands.command(help="Updates the bot on github", aliases=['push'])
+    @commands.is_owner()
+    async def update(self, ctx, *, message=None):
+        if message == None:
+            message = "No message provided"
+        prefix = await self.client.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1', ctx.guild.id)
+        prefix = prefix or 'sb!'
+        await ctx.reply(f'''
+```yaml
+{prefix}jsk git add .
+git commit -m "{message}"
+git push origin main
+```
+        ''')
+
     @commands.command()
     @commands.is_owner()
     async def say(self, ctx, *, message):

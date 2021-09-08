@@ -45,6 +45,8 @@ Total commands: {len(list(self.context.bot.commands))}
 Commands usable by you (in this server): {len(await self.filter_commands(list(self.context.bot.commands), sort=True))}
 ```diff
 + Type {prefix}help [command/category] for help on a command/category
+- <> = required argument
+- [] = optional argument
 ```
                               """, timestamp=discord.utils.utcnow(), color=0x2F3136)
 
@@ -65,13 +67,10 @@ Commands usable by you (in this server): {len(await self.filter_commands(list(se
         embed.add_field(name=f"<:category:882685952999428107> __**Available categories**__ [{len(allcogs)}]", value=f"""
 ```fix
 {nl.join(allcogs)}
-
-<> required argument
-[] optional argument
 ```
         """)
 
-        embed.add_field(name="📰 __**Latest News**__ - <t:1631043823:d> (<t:1631043823:R>)", value = f"""
+        embed.add_field(name="📰 __**Latest News**__ - <t:1631130337:d> (<t:1631130337:R>)", value = f"""
 {news}
                         """)
 
@@ -85,14 +84,12 @@ Commands usable by you (in this server): {len(await self.filter_commands(list(se
         ctx = self.context
         alias = command.aliases
         description = command.help
+        aliastext = "Aliases: ❌ This command has no aliases."
+        descriptiontext = "Description: ❌ This command has no description."
         if alias:
             aliastext = f"Aliases: {', '.join(alias)}"
-        else:
-            aliastext = "This command has no aliases."
         if description:
-            descriptiontext = f"{command.help}"
-        else:
-            descriptiontext = "This command has no description."
+            descriptiontext = f"Description: {command.help}"
         embed = discord.Embed(title=f"Help - {command}", description=f"""
 ```diff
 - <> = required argument

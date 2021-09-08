@@ -15,7 +15,26 @@ class errorhandler(commands.Cog):
         prefix = await self.client.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1', ctx.guild.id)
         prefix = prefix or 'sb!'
 
-        if isinstance(error, commands.CommandNotFound):
+        ignored = (
+        commands.CommandNotFound,
+        music_cog.FullVoiceChannel,
+        music_cog.IncorrectChannelError,
+        music_cog.AlreadyConnectedToChannel,
+        music_cog.NoVoiceChannel,
+        music_cog.QueueIsEmpty,
+        music_cog.NoCurrentTrack,
+        music_cog.PlayerIsAlreadyPaused,
+        music_cog.PlayerIsNotPaused,
+        music_cog.NoMoreTracks,
+        music_cog.InvalidRepeatMode,
+        music_cog.InvalidTimeString,
+        music_cog.NoPerms,
+        music_cog.NoConnection
+        )
+        if isinstance(error, ignored):
+            return
+
+        elif isinstance(error, commands.CommandNotFound):
             if ctx.author.id == 564890536947875868 and ctx.bot.no_prefix is True: return
             message = f"I couldn't find that command, do `{prefix}help` to see a list of all commands."
 

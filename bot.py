@@ -15,6 +15,7 @@ import re
 from discord.ext import commands, tasks
 import DiscordUtils
 import asyncpg
+import asyncpraw
 
 with open(r'config.yaml') as file:
     full_yaml = yaml.load(file)
@@ -43,8 +44,8 @@ async def get_prefix(client, message):
         prefix = DEFAULT_PREFIX
     return commands.when_mentioned_or(prefix)(client ,message)
 
-client = commands.Bot(command_prefix=get_prefix, intents=discord.Intents.all(), activity=activity, status=status, case_insensitive=True, help_command=None) # Initializes the client object
-tracker = DiscordUtils.InviteTracker(client) # Initializes the tracker object
+client = commands.Bot(command_prefix=get_prefix, intents=discord.Intents.all(), activity=activity, status=status, case_insensitive=True, help_command=None, enable_debug_events = True) # Initializes the client object
+client.tracker = DiscordUtils.InviteTracker(client) # Initializes the tracker object
 # client.owner_ids = [349373972103561218, 564890536947875868]
 client.launch_time = discord.utils.utcnow()
 client.no_prefix = False
@@ -55,79 +56,11 @@ client.repo = "https://github.com/Ender2K89/Stealth-Bot"
 client.allowed_mentions = discord.AllowedMentions(replied_user=False)
 client.session = aiohttp.ClientSession()
 
-class CustomContext(commands.Context):
-
-    @staticmethod
-    def tick(opt: bool, text: str = None) -> str:
-        ticks = {
-            True: '<:greenTick:596576670815879169>',
-            False: '<:redTick:596576672149667840>',
-            None: '<:greyTick:860644729933791283>',
-        }
-        emoji = ticks.get(opt, "<:redTick:596576672149667840>")
-        if text:
-            return f"{emoji} {text}"
-        return emoji
-
-    @staticmethod
-    def default_tick(opt: bool, text: str = None) -> str:
-        ticks = {
-            True: '✅',
-            False: '❌',
-            None: '➖',
-        }
-        emoji = ticks.get(opt, "❌")
-        if text:
-            return f"{emoji} {text}"
-        return emoji
-
-    @staticmethod
-    def square_tick(opt: bool, text: str = None) -> str:
-        ticks = {
-            True: '🟩',
-            False: '🟥',
-            None: '⬛',
-        }
-        emoji = ticks.get(opt, "🟥")
-        if text:
-            return f"{emoji} {text}"
-        return emoji
-
-    @staticmethod
-    def dc_toggle(opt: bool, text: str = None) -> str:
-        ticks = {
-            True: '<:DiscordON:882991627541565461>',
-            False: '<:DiscordOFF:882991627994542080>',
-            None: '<:DiscordNONE:882991627994546237>',
-        }
-        emoji = ticks.get(opt, "<:DiscordOFF:882991627994542080>")
-        if text:
-            return f"{emoji} {text}"
-        return emoji
-
-    @staticmethod
-    def toggle(opt: bool, text: str = None) -> str:
-        ticks = {
-            True: '<:toggle_on:857842924729270282>',
-            False: '<:toggle_off:857842924544065536>',
-            None: '<:toggle_off:857842924544065536>',
-        }
-        emoji = ticks.get(opt, "<:toggle_off:857842924544065536>")
-        if text:
-            return f"{emoji} {text}"
-        return emoji
-
-    async def send(self, content: str = None, embed: discord.Embed = None,
-                   reply: bool = True, footer: bool = True, **kwargs):
-
-        if embed and footer is True:
-            if not embed.footer:
-                embed.set_footer(text=f"Command requested by {self.author}",
-                                 icon_url=self.author.display_avatar.url)
-                embed.timestamp = discord.utils.utcnow()
-
-        return await super().send(content=content, embed=embed, **kwargs) if not reply \
-            else await self.reply(content=content, embed=embed, **kwargs)
+client.reddit = asyncpraw.Reddit(
+    client_id = "zrJUgDUtW8lfumULcVcbEg",
+    client_secret = "TRsZAPbYE4klNKqWvc2vfqJd3iLRyQ",
+    user_agent = "Yo mom",
+)
 
 	# Functions and stuff
 
@@ -177,7 +110,7 @@ async def on_ready():
 
     await channel.send(embed=embed) # Sends the embed in the channel
 
-    await tracker.cache_invites() # Caches the invites
+    await client.tracker.cache_invites() # Caches the invites
 
 client.load_extension('jishaku')
 
@@ -190,54 +123,14 @@ print('-------------================----------------')
 
 @client.event
 async def on_invite_create(invite):
-    if invite.id not in moderated_servers: # If the guild ID isn't in the list of the moderated servers then:
-        return # Return
-    else: # If the invite wasn't created in any of those 2 servers, then:
+    if invite.guild.id == 799330949686231050 or invite.guild.id == 882341595528175686:
         await tracker.update_invite_cache(invite)
 
 @client.event
 async def on_invite_delete(invite):
-    if invite.id not in moderated_servers: # If the guild ID isn't in the list of the moderated servers then:
-        return # Return
-    else: # If the invite wasn't deleted in any of those 2 servers, then:
+    if invite.guild.id == 799330949686231050 or invite.guild.id == 882341595528175686:
         await tracker.remove_invite_cache(invite)
 
-@client.event
-async def on_member_join(member): # If a member joined the server then:
-    if member.guild.id not in moderated_servers: # If the guild ID isn't in the list of the moderated servers then:
-        return # Return
-    else: # If the guild ID is in the list of moderated servers then:
-        inviter = await tracker.fetch_inviter(member) # Fetches the inviter that invited the member
-        channel = client.get_channel(843503882226499634) # Gets the channel called "welcome_and_goodbye" (843503882226499634) and store it as the variable "channel"
-        stealth_logs = client.get_channel(836232733126426666) # Get the channel called "stealth_logs" (836232733126426666) and store it as the variable "stealth_logs"
-
-        embed = discord.Embed(title=f"<:join:876880818616827954> Someone joined the server", colour=discord.Color.green()) # Creates a embed with the title being "Someone joined the server" and the color being "0x2F3136"
-        embed.add_field(name="<:members:858326990725709854> Member name", value=f"{member}") # Adds a new field to the embed which says who joined the server
-        embed.add_field(name="Invited by", value=f"{inviter}") # Adds a new field to the embed which says who the new user has been invited by
-        embed.add_field(name="<:join:876880818616827954> Account created at", value=f"{discord.utils.format_dt(member.created_at, style='f')} ({discord.utils.format_dt(member.created_at, style='R')})") # Adds a new field to the embed that says when the new member joined discord
-
-        await channel.send(embed=embed) # Sends the embed to the "welcome_and_goodbye" channel (843503882226499634)
-        await stealth_logs.send(embed=embed) # Sends the embed to the "stealth_logs" channel (836232733126426666)
-
-@client.command()
-async def test(ctx, member : discord.Member):
-    inviter = await tracker.fetch_inviter(member) # Fetches the inviter that invited the member
-    await ctx.send(f"inviter: {inviter}")
-
-@client.event
-async def on_member_remove(member): # If a member left the server then:
-    if member.guild.id not in moderated_servers: # If the guild ID isn't in the list of the moderated servers then:
-        return # Return
-    else: # If the guild ID is in the list of moderated servers then:
-        channel = client.get_channel(843503882226499634) # Gets the channel called "welcome_and_goodbye" (843503882226499634) and store it as the variable "channel"
-        stealth_logs = client.get_channel(836232733126426666) # Get the channel called "stealth_logs" (836232733126426666) and store it as the variable "stealth_logs"
-
-        embed = discord.Embed(title=f"<:leave:876880812061098044> Someone left the server", colour=discord.Color.red()) # Creates a embed with the title being "Someone left the server" and the color being "0x2F3136"
-        embed.add_field(name="<:members:858326990725709854> Member name", value=f"{member}") # Adds a new field to the embed which says who joined the server
-        embed.add_field(name="<:join:876880818616827954> Account created at", value=f"{discord.utils.format_dt(member.created_at, style='f')} ({discord.utils.format_dt(member.created_at, style='R')})") # Adds a new field to the embed that says when the new member joined discord
-
-        await channel.send(embed=embed) # Sends the embed to the "welcome_and_goodbye" channel (843503882226499634)
-        await stealth_logs.send(embed=embed) # Sends the embed to the "stealth_logs" channel (836232733126426666)
 
 # @client.event
 # async def on_message(message):

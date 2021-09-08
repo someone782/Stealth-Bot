@@ -15,6 +15,24 @@ class fun(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+    async def reddit(self, subreddit: str, title: bool = False) -> discord.Embed:
+        post = await (await self.client.reddit.subreddit(subreddit)).random()
+
+        while 'i.redd.it' not in post.url or post.over_18:
+            post = await (await self.client.reddit.subreddit(subreddit)).random()#
+
+        title = post.title if title is True else None
+
+        embed = discord.Embed(title=f"{title}", url=f"https://reddit.com{post.permalink}", color=0x2F3136, description=f"<:upvote:274492025678856192> Upvotes: {post.score}\nComments: soon")
+
+        embed.set_image(url=post.url)
+        return embed
+
+    @commands.command()
+    async def test(self, ctx) -> discord.Message:
+        async with ctx.typing():
+            return await ctx.send(embed=await self.reddit('memes'))
+
     @commands.command(aliases=['guess_the_number'])
     async def number(self, ctx):
         number = random.randint(1, 3)
@@ -371,6 +389,28 @@ class fun(commands.Cog):
         message = await ctx.reply(embed=embed)
 
         sebreddit_list = ["ProgrammerHumor", "ProgrammerHumor"]
+        subreddit = random.choice(sebreddit_list)
+
+        async with self.client.session.get(f"https://www.reddit.com/r/{subreddit}/hot.json") as r:
+            response = await r.json()
+            redditDict = dict(random.choice(response['data']['children']))
+            redditDict = redditDict['data']
+
+            embed = discord.Embed(title=f"{redditDict['title'].upper()}", url=f"https://reddit.com{redditDict['permalink']}", description=f"<:upvote:274492025678856192> Upvotes: {redditDict['ups']}\nComments: {redditDict['num_comments']}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+            embed.set_image(url=redditDict['url'])
+            embed.set_footer(text=f"Command requested by: {ctx.author} • Subreddit: {subreddit}", icon_url=ctx.author.avatar.url)
+
+            await message.edit(embed=embed)
+
+    @commands.command(help="Shows you a random piece of art from the subreddit r/Art", aliases=['drawing', 'arts', 'artist'])
+    @commands.cooldown(1, 5, commands.BucketType.member)
+    async def art(self, ctx):
+        embed = discord.Embed(title="<a:loading:747680523459231834> Getting piece of art...", timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
+
+        message = await ctx.reply(embed=embed)
+
+        sebreddit_list = ["Art", "ArtBattle"]
         subreddit = random.choice(sebreddit_list)
 
         async with self.client.session.get(f"https://www.reddit.com/r/{subreddit}/hot.json") as r:
