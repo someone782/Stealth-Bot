@@ -5,4 +5,4 @@
     <img alt="My Most Used Languages" height="160em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=Ender2K89&hide=html&layout=compact&theme=material-palenight">
 </p>
 ----------------------------------------------------------------------
-### Vote for Stealth Bot: [top.gg](https://top.gg/bot/760179628122964008) | [bots.gg](https://discord.bots.gg/bots/760179628122964008)
+Vote for Stealth Bot: [top.gg](https://top.gg/bot/760179628122964008) | [bots.gg](https://discord.bots.gg/bots/760179628122964008)
