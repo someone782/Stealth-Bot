@@ -473,6 +473,35 @@ Average server bot percentage: {round(sum(avg) / len(avg), 2)}%
 
         await ctx.reply(embed=embed)
 
+    @commands.command(help="Shows how many servers the bot is in", aliases=['server'])
+    async def servers(self, ctx):
+        embed = discord.Embed(title=f'I\' in `{self.client.guilds}` servers.', timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+
+        await ctx.reply(embed=embed)
+
+    @commands.command(help="Shows you a list of commands the bot has", aliases=['commands', 'command'])
+    async def cmds(self, ctx):
+        ignored_cogs = ['Jishaku', 'nsfw']
+
+        def divide_chunks(str_list, n):
+            for i in range(0, len(str_list), n):
+                yield str_list[i:i + n]
+
+        shown_commands = [c.name for c in self.client.commands if c.cog_name not in ignored_cogs]
+        ml = max([len(c.name) for c in self.client.commands if c.cog_name not in ignored_cogs]) + 1
+
+        all_commands = list(divide_chunks(shown_commands, 3))
+        all_commands = '\n'.join([''.join([f"{x}{' ' * (ml - len(x))}" for x in c]).strip() for c in all_commands])
+
+        embed = discord.Embed(title=f"Here's a list of my commands [{len(shown_commands)}]", description=f"""
+```fix
+{all_commands}
+```
+        """, timestamp=discord.utils.utcnow(), color=0x2F3136)
+
+        await ctx.reply(embed=embed)
+
     @commands.command(help="Sends a suggestion", aliases=['bot_suggestion', 'suggestion', 'make_suggestion', 'botsuggestion', 'makesuggestion'])
     async def suggest(self, ctx, *, suggestion):
         if len(suggestion) > 750:

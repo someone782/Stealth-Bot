@@ -201,9 +201,9 @@ class fun(commands.Cog):
 
         length = random.randint(10, 25)
 
-        embed = discord.Embed(title=f"PP Size - {member}", description=f"8{'=' * length}D\n{member}'s pp is {length} cm", timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed = discord.Embed(title=f"PP Size - {member}", description=f"8{'=' * length}D\n{member.name}'s :eggplant: is {length} cm", timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
 
-        embed.set_footer(icon_url=ctx.author.avatar.url, text='​')
         await ctx.reply(embed=embed)
 
     @commands.command(aliases=['8ball', 'magicball', 'magic_ball', 'eight_ball'], description="Answers with yes or no to your question")
@@ -233,6 +233,8 @@ class fun(commands.Cog):
         embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
         embed.add_field(name="Question: ", value=question, inline=True)
         embed.add_field(name="Answer:",value=random.choice(responses), inline=True)
+        embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
+
         await ctx.reply(embed=embed)
 
     @commands.command(description="Tells you if someone is a furry or not! (This command is a joke)")

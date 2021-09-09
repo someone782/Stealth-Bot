@@ -121,7 +121,7 @@ class music(commands.Cog):
 
     async def cog_command_error(self, ctx, error):
         if isinstance(error, commands.CommandInvokeError):
-            await ctx.send(error.original)
+            await ctx.reply(error.original)
 
         if isinstance(error, IncorrectChannelError):
             return
@@ -131,11 +131,11 @@ class music(commands.Cog):
             return await ctx.reply(message)
 
         if isinstance(error, AlreadyConnectedToChannel):
-            embed.description = "I'm already connected to a voice channel."
+            message = "I'm already connected to a voice channel."
             return await ctx.reply(message)
 
         if isinstance(error, QueueIsEmpty):
-            embed.description = "There are no tracks in the queue."
+            message = "There are no tracks in the queue."
             return await ctx.reply(message)
 
         if isinstance(error, PlayerIsAlreadyPaused):
@@ -195,9 +195,8 @@ class music(commands.Cog):
             await ctx.guild.change_voice_state(channel=ctx.author.voice.channel)
         else:
             if int(player.channel_id) != ctx.author.voice.channel.id:
-                embed = discord.Embed(color=0x2F3136)
-                embed.description = f'{ctx.author.mention}, you must be in {player.channel.mention} for this session.'
-                await ctx.send(embed=embed)
+                message = f'{ctx.author.mention}, you must be in {player.channel.mention} for this session.'
+                await ctx.reply(message)
                 raise IncorrectChannelError()
 
     @commands.Cog.listener()
@@ -250,8 +249,8 @@ class music(commands.Cog):
         else:
             return False
 
-    @commands.command(name="play", aliases=['p'])
-    async def play_command(self, ctx, *, query: str):
+    @commands.command(help="Adds a song to queue", aliases=['p', 'sing'])
+    async def play(self, ctx, *, query: str):
         """Loads your input and adds it to the queue; If there is no playing track, then it will start playing"""
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
         query = query.strip('<>')
@@ -264,9 +263,9 @@ class music(commands.Cog):
         if not results or not results['tracks']:
             embed_var = discord.Embed(color=0x2F3136)
             embed_var.description = 'No songs were found with that query. Please try again.'
-            return await ctx.send(embed=embed_var)
+            return await ctx.reply(embed=embed_var)
 
-        embed = discord.Embed(color=discord.Color.blurple())
+        embed = discord.Embed(color=0x2F3136)
 
         # Valid loadTypes are:
         #   TRACK_LOADED    - single video/direct URL)
@@ -277,11 +276,11 @@ class music(commands.Cog):
         if results['loadType'] == 'NO_MATCHES':
             embed_var = discord.Embed(color=0x2F3136)
             embed_var.description = 'No songs were found with that query. Please try again.'
-            return await ctx.send(embed=embed_var)
+            return await ctx.reply(embed=embed_var)
         if results['loadType'] == 'LOAD_FAILED':
             embed_var = discord.Embed(color=0x2F3136)
             embed_var.description = 'Failed loading your song.'
-            return await ctx.send(embed=embed_var)
+            return await ctx.reply(embed=embed_var)
         if results['loadType'] == 'PLAYLIST_LOADED':
             tracks = results['tracks']
 
@@ -296,14 +295,13 @@ class music(commands.Cog):
             track = lavalink.models.AudioTrack(track, ctx.author, recommended=True)
             player.add(requester=ctx.author, track=track)
 
-        await ctx.send(embed=embed)
+        await ctx.reply(embed=embed)
 
         if not player.is_playing:
             await player.play()
 
-    @commands.command(name="disconnect", aliases=['dc'])
-    async def disconnect_command(self, ctx):
-        """Disconnects the bot from your voice channel and clears the queue"""
+    @commands.command(help="Leaves the current voice channel", aliases=['dc', 'leave', 'fuckoff', 'dis'])
+    async def disconnect(self, ctx):
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
 
         if not player.is_connected:
@@ -332,9 +330,8 @@ class music(commands.Cog):
             embed.description = "Only the DJ or an Admin can perform this action."
             return await ctx.reply(embed=embed)
 
-    @commands.command(name="pause")
-    async def pause_command(self, ctx):
-        """Pauses playback"""
+    @commands.command(help="Pauses the current song", aliases=['pa'])
+    async def pause(self, ctx):
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
         if self.is_privileged(ctx) == 'DJ':
             if player.paused:
@@ -357,9 +354,8 @@ class music(commands.Cog):
             embed.description = "Only the DJ or an Admin can perform this action."
             return await ctx.reply(embed=embed)
 
-    @commands.command(name="resume", aliases=['unpause'])
-    async def resume_command(self, ctx):
-        """Resumes playback"""
+    @commands.command(help="Resumes the current song", aliases=['re', 'continue', 'unpause'])
+    async def resume(self, ctx):
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
         if self.is_privileged(ctx) == 'DJ':
             if not player.paused:
@@ -382,9 +378,8 @@ class music(commands.Cog):
             embed.description = "Only the DJ or an Admin can perform this action."
             return await ctx.reply(embed=embed)
 
-    @commands.command(name="stop")
-    async def stop_command(self, ctx):
-        """Stops the currently playing track and removes all tracks from the queue"""
+    @commands.command(help="Stops the current song and removes all songs in queue", aliases=['st'])
+    async def stop(self, ctx):
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
         if self.is_privileged(ctx) == 'DJ':
             player.queue.clear()
@@ -405,9 +400,8 @@ class music(commands.Cog):
             embed.description = "Only the DJ or an Admin can perform this action."
             return await ctx.reply(embed=embed)
 
-    @commands.command(name="remove")
-    async def remove_command(self, ctx):
-        """Removes all tracks from the queue"""
+    @commands.command(help="Removes all songs from the queue", aliases=['rem'])
+    async def remove(self, ctx):
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
         if self.is_privileged(ctx) == 'DJ':
             if not len(player.queue) > 0:
@@ -428,9 +422,8 @@ class music(commands.Cog):
             embed.description = "Only the DJ or an Admin can perform this action."
             return await ctx.reply(embed=embed)
 
-    @commands.command(name="skip", aliases=["next"])
-    async def skip_command(self, ctx):
-        """Skips to the next song"""
+    @commands.command(help="Skips the current song to the next one in queue", aliases=['next', 'sk'])
+    async def skip(self, ctx):
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
         if self.is_privileged(ctx) == 'DJ':
             if len(player.queue) == 0:
@@ -453,9 +446,8 @@ class music(commands.Cog):
             embed.description = "Only the DJ or an Admin can perform this action."
             return await ctx.reply(embed=embed)
 
-    @commands.command(name="shuffle")
-    async def shuffle_command(self, ctx):
-        """Randomizes the current order of tracks in the queue"""
+    @commands.command(help="Shuffles the entire queue", aliases=['random'])
+    async def shuffle(self, ctx):
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
         if self.is_privileged(ctx) == 'DJ':
             random.shuffle(player.queue)
@@ -474,9 +466,10 @@ class music(commands.Cog):
             embed.description = "Only the DJ or an Admin can perform this action."
             return await ctx.reply(embed=embed)
 
-    @commands.command(name="loop")
-    async def loop_command(self, ctx, mode: bool = None):
-        """Starts/Stops looping your currently playing track"""
+    @commands.command(help="Loops the queue", aliases=['repeat'])
+    async def loop(self, ctx, mode: bool = None):
+        prefix = await self.bot.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1', ctx.guild.id)
+        prefix = prefix or 'sb!'
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
         if not player.is_connected:
             embed = discord.Embed(color=0x2F3136)
@@ -485,7 +478,7 @@ class music(commands.Cog):
 
         if not mode:
             embed = discord.Embed(color=0x2F3136)
-            embed.description = f"Current loop mode: `{player.repeat}`."
+            embed.description = f"Current loop mode: `{player.repeat}`. To change this do `{prefix}loop on/off`"
             return await ctx.reply(embed=embed)
 
         if self.is_privileged(ctx) in ('DJ', 'ADMIM'):
@@ -500,9 +493,8 @@ class music(commands.Cog):
             embed.description = "Only the DJ or an Admin can perform this action."
             return await ctx.reply(embed=embed)
 
-    @commands.command(name="queue", aliases=['q', 'que', 'list', 'upcoming'])
-    async def queue_command(self, ctx: commands.Context):
-        """Displays the current song queue"""
+    @commands.command(help="Shows you the queue", aliases=['q', 'que', 'list', 'upcoming'])
+    async def queue(self, ctx: commands.Context):
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
 
         if not player.is_connected:
@@ -525,36 +517,50 @@ class music(commands.Cog):
 
         await paginator.start(ctx)
 
-    @commands.command(name="current", aliases=["np", "playing", "track"])
-    async def playing_command(self, ctx):
-        """Displays info about the current track in the queue"""
+    @commands.command(help="Shows information about the current song", aliases=['np', 'playing', 'now_playing', 'track', 'current'])
+    async def nowplaying(self, ctx):
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
         if not player.is_playing:
             raise NoCurrentTrack
         thumnail = f"https://img.youtube.com/vi/{player.current.identifier}/maxresdefault.jpg"
-        embed = discord.Embed(title=f'Playback Information', color=0x2F3136)
+        embed = discord.Embed(title='Now playing', timestamp=discord.utils.utcnow(), color=0x2F3136)
         embed.set_image(url=thumnail)
-        embed.add_field(name="Current Track:", value=f'**[{player.current.title.upper()}]({player.current.uri})**',
-                        inline=False)
-        embed.add_field(name="Artist:", value=f'{player.current.author}\n_ \u200b _', inline=True)
-        embed.add_field(name='Duration:',
-                        value=f'{str(dt.timedelta(milliseconds=int(player.current.duration)))}\n_ \u200b _',
-                        inline=True)
-        embed.add_field(name='Requested By:', value=f'{player.current.requester.mention}\n_ \u200b _', inline=True)
-        if len(player.queue) > 0:
-            embed.add_field(name='Next Track:', value=f'**[{player.queue[0].title.upper()}]({player.queue[0].uri})**',
-                            inline=False)
-            embed.add_field(name="Artist:", value=f'{player.queue[0].author}\n_ \u200b _', inline=True)
-            embed.add_field(name='Duration:',
-                            value=f'{str(dt.timedelta(milliseconds=int(player.queue[0].duration)))}\n_ \u200b _',
-                            inline=True)
-            embed.add_field(name='Requested By:', value=f'{player.queue[0].requester.mention}\n_ \u200b _', inline=True)
-        embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
-        await ctx.send(embed=embed)
+        # embed.add_field(name="Current Track:", value=f'**[{player.current.title.upper()}]({player.current.uri})**',
+        #                 inline=False)
+        # embed.add_field(name="Artist:", value=f'{player.current.author}\n_ \u200b _', inline=True)
+        # embed.add_field(name='Duration:',
+        #                 value=f'{str(dt.timedelta(milliseconds=int(player.current.duration)))}\n_ \u200b _',
+        #                 inline=True)
 
-    @commands.command(name="restart")
-    async def restart_command(self, ctx):
-        """Restarts the current track in the queue"""
+        embed.description = f"""
+Song name: [{player.current.title.upper()}]({player.current.uri})
+Artist: {player.current.author}
+Duration: {str(dt.timedelta(milliseconds=int(player.current.duration)))}
+Requested by: {player.current.requester.mention}
+        """
+
+        #embed.add_field(name='Requested By:', value=f'{player.current.requester.mention}\n_ \u200b _', inline=True)
+        if len(player.queue) > 0:
+            # embed.add_field(name='Next Track:', value=f'**[{player.queue[0].title.upper()}]({player.queue[0].uri})**',
+            #                 inline=False)
+            # embed.add_field(name="Artist:", value=f'{player.queue[0].author}\n_ \u200b _', inline=True)
+            # embed.add_field(name='Duration:',
+            #                 value=f'{str(dt.timedelta(milliseconds=int(player.queue[0].duration)))}\n_ \u200b _',
+            #                 inline=True)
+            # embed.add_field(name='Requested By:', value=f'{player.queue[0].requester.mention}\n_ \u200b _', inline=True)
+
+            embed.description = f"""
+Next song name: [{player.queue[0].title.upper()}]({player.queue[0].uri})
+Artist: {player.queue[0].author}
+Duration: {str(dt.timedelta(milliseconds=int(player.queue[0].duration)))}
+Requested by: {player.queue[0].requester.mention}
+            """
+
+        embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+        await ctx.reply(embed=embed)
+
+    @commands.command(help="Restarts the songs in the queue", aliases=['res'])
+    async def restart(self, ctx):
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
         if self.is_privileged(ctx) in ('DJ', 'ADMIN'):
             if not player.current:
@@ -569,9 +575,8 @@ class music(commands.Cog):
             embed.description = "Only the DJ or an Admin can perform this action."
             return await ctx.reply(embed=embed)
 
-    @commands.command(name="seek")
-    async def seek_command(self, ctx, position: str):
-        """Skips to the specified timestamp in the currently playing track"""
+    @commands.command(help="Seeks to a certain point in the current song")
+    async def seek(self, ctx, position : str):
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
         if self.is_privileged(ctx) in ('DJ', 'ADMIN'):
             if not player.current:
@@ -593,9 +598,8 @@ class music(commands.Cog):
             embed.description = "Only the DJ or an Admin can perform this action."
             return await ctx.reply(embed=embed)
 
-    @commands.command(name="volume", aliases=['vol'])
-    async def volume_command(self, ctx, volume: int = None):
-        """Sets the player's volume; If you don\'t input new value, it will show current value"""
+    @commands.command(help="Changes the current volume", aliases=['vol'])
+    async def volume(self, ctx, volume : int = None):
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
 
         if not player.is_connected:
@@ -605,29 +609,29 @@ class music(commands.Cog):
 
         if volume is None:
             embed = discord.Embed(color=0x2F3136)
-            embed.description = f'Current volume: **{player.volume}**.'
+            embed.description = f'Current volume: `{player.volume}`.'
             return await ctx.reply(embed=embed)
 
         if self.is_privileged(ctx) == 'DJ':
             if not 0 < volume < 101:
                 embed = discord.Embed(color=0x2F3136)
-                embed.description = 'Please enter a value between 1 and 100.'
+                embed.description = 'Please enter a value between `1` and `100`.'
                 return await ctx.reply(embed=embed)
 
             await player.set_volume(volume)
             embed = discord.Embed(color=0x2F3136)
-            embed.description = f'The volume was set to **{volume}** by the DJ.'
+            embed.description = f'The volume was set to `{volume}` by the DJ.'
             return await ctx.reply(embed=embed)
 
         if self.is_privileged(ctx) == 'ADMIN':
             if not 0 < volume < 101:
                 embed = discord.Embed(color=0x2F3136)
-                embed.description = 'Please enter a value between 1 and 100.'
+                embed.description = 'Please enter a value between `1` and `100`.'
                 return await ctx.reply(embed=embed)
 
             await player.set_volume(volume)
             embed = discord.Embed(color=0x2F3136)
-            embed.description = f'The volume was set to **{volume}** by an Admin.'
+            embed.description = f'The volume was set to `{volume}` by an Admin.'
             return await ctx.reply(embed=embed)
 
         else:

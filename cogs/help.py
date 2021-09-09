@@ -52,7 +52,7 @@ Commands usable by you (in this server): {len(await self.filter_commands(list(se
 
         allcogs = []
         cogindex = []
-        ignored_cogs=['help','test', 'Jishaku']
+        ignored_cogs=['help', 'Jishaku']
         iter = 1
         for cog, commands in mapping.items():
             if cog is None or cog.qualified_name in ignored_cogs: continue

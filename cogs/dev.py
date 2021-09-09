@@ -141,7 +141,7 @@ git push origin main
 
             await message.edit(embed=embed)
 
-    @commands.command(help="Reloads an cog", aliases=['rel', 're', 'rc'])
+    @commands.command(help="Reloads an cog", aliases=['rel', 'rc'])
     @commands.is_owner()
     async def reload(self, ctx, extension):
         embed = discord.Embed(description=f"<a:loading:747680523459231834> {extension}", timestamp=discord.utils.utcnow(), color=0x2F3136)

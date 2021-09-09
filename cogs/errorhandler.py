@@ -3,6 +3,7 @@ import datetime
 from discord.ext import commands
 import helpers
 import traceback
+from cogs import music
 
 class errorhandler(commands.Cog):
     def __init__(self, client):
@@ -16,20 +17,19 @@ class errorhandler(commands.Cog):
         prefix = prefix or 'sb!'
 
         ignored = (
-        commands.CommandNotFound,
-        music_cog.FullVoiceChannel,
-        music_cog.IncorrectChannelError,
-        music_cog.AlreadyConnectedToChannel,
-        music_cog.NoVoiceChannel,
-        music_cog.QueueIsEmpty,
-        music_cog.NoCurrentTrack,
-        music_cog.PlayerIsAlreadyPaused,
-        music_cog.PlayerIsNotPaused,
-        music_cog.NoMoreTracks,
-        music_cog.InvalidRepeatMode,
-        music_cog.InvalidTimeString,
-        music_cog.NoPerms,
-        music_cog.NoConnection
+            music.FullVoiceChannel,
+            music.IncorrectChannelError,
+            music.AlreadyConnectedToChannel,
+            music.NoVoiceChannel,
+            music.QueueIsEmpty,
+            music.NoCurrentTrack,
+            music.PlayerIsAlreadyPaused,
+            music.PlayerIsNotPaused,
+            music.NoMoreTracks,
+            music.InvalidRepeatMode,
+            music.InvalidTimeString,
+            music.NoPerms,
+            music.NoConnection
         )
         if isinstance(error, ignored):
             return

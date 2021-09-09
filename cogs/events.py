@@ -71,7 +71,7 @@ class events(commands.Cog):
             channel = self.client.get_channel(843503882226499634) # Gets the channel called "welcome_and_goodbye" (843503882226499634) and store it as the variable "channel"
             stealth_logs = self.client.get_channel(836232733126426666) # Get the channel called "stealth_logs" (885181872777334844) and store it as the variable "stealth_logs"
 
-            embed = discord.Embed(title=f"<:join:876880818616827954> Someone joined the server", colour=discord.Color.green()) # Creates a embed with the title being "Someone joined the server" and the color being red
+            embed = discord.Embed(title=f"<:left:849392885785821224> Someone left the server", colour=discord.Color.red()) # Creates a embed with the title being "Someone joined the server" and the color being red
             embed.add_field(name="<:members:858326990725709854> Member name", value=f"{member}") # Adds a new field to the embed which says who joined the server
             embed.add_field(name="<:join:876880818616827954> Account created at", value=f"{discord.utils.format_dt(member.created_at, style='f')} ({discord.utils.format_dt(member.created_at, style='R')})") # Adds a new field to the embed that says when the new member joined discord
 
@@ -82,7 +82,7 @@ class events(commands.Cog):
             channel = self.client.get_channel(882345183813980220) # Gets the channel called "welcome_and_goodbye" (882345183813980220) and store it as the variable "channel"
             stealth_logs = self.client.get_channel(885181872777334844) # Get the channel called "stealth_logs" (885181872777334844) and store it as the variable "stealth_logs"
 
-            embed = discord.Embed(title=f"<:join:876880818616827954> Someone lfet the server", colour=discord.Color.red()) # Creates a embed with the title being "Someone joined the server" and the color being red
+            embed = discord.Embed(title=f"<:left:849392885785821224> Someone left the server", colour=discord.Color.red()) # Creates a embed with the title being "Someone joined the server" and the color being red
             embed.add_field(name="<:members:858326990725709854> Member name", value=f"{member}") # Adds a new field to the embed which says who joined the server
             embed.add_field(name="<:join:876880818616827954> Account created at", value=f"{discord.utils.format_dt(member.created_at, style='f')} ({discord.utils.format_dt(member.created_at, style='R')})") # Adds a new field to the embed that says when the new member joined discord
 
