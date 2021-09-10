@@ -9,6 +9,20 @@ class mod(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+    @commands.command(help="Announces a message in a specified channel")
+    @commands.check_any(commands.has_permissions(manage_messages=True), commands.is_owner())
+    @commands.bot_has_permissions(send_messages=True, embed_links=True)
+    async def announce(self, ctx, channel : discord.TextChannel, *, message):
+        channelid = channel.id
+        channel = self.client.get_channel(channelid)
+
+        try:
+            await ctx.message.delete()
+        except:
+            pass
+
+        await channel.send(message)
+
     @commands.command(help="Bans the person you mention")
     @commands.check_any(commands.has_permissions(ban_members=True), commands.is_owner())
     @commands.bot_has_permissions(send_messages=True, embed_links=True, ban_members=True)
@@ -64,9 +78,31 @@ class mod(commands.Cog):
             channel = ctx.channel
 
         await channel.purge(limit=amount)
-        await ctx.reply(f"Successfully deleted `{amount}` messages in {channel}", delete_after=5.0)
+        await ctx.reply(f"Successfully deleted `{amount}` messages in {channel.mention}.", delete_after=5.0)
         await ctx.message.delete()
 
+    @commands.command(help="Changes the slowmode of a channel", aliases=['sm', 'slowm', 'slowness'])
+    @commands.check_any(commands.has_permissions(manage_channels=True), commands.is_owner())
+    @commands.bot_has_permissions(send_messages=True, embed_links=True, manage_channels=True)
+    async def slowmode(self, ctx, number : int, channel : discord.TextChannel=None):
+        if number > 21600:
+            return await ctx.reply("Number cannot be more than 21600.")
+
+        if channel == None:
+            channel = ctx.channel
+
+        await channel.edit(slowmode_delay=number, reason=f'Changed by `{ctx.author}`  using command')
+        await ctx.reply(f"Successfully changed the slowmode of {channel.mention} to `{number}`.", delete_after=5.0)
+        await ctx.message.delete()
+
+    @commands.command(help="Creates a new role", aliases=['create_role', 'addrole', 'add_role',' newrole', 'new_role'])
+    @commands.check_any(commands.has_permissions(manage_roles=True), commands.is_owner())
+    @commands.bot_has_permissions(send_messages=True, embed_links=True, manage_roles=True)
+    async def createrole(self, ctx, color : discord.Color, *, name):
+        server = ctx.guild
+
+        await server.create_role(name=name, color=color, reason=f'Made by `{ctx.author}` using command')
+        await ctx.reply(f"Successfully created a role called `{name}` with the color being `{color}`.")
 
 def setup(client):
     client.add_cog(mod(client))

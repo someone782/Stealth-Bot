@@ -26,7 +26,7 @@ class events(commands.Cog):
                 await message.author.edit(nick=remove(message.author.display_name))
             except:
                 pass
-            await message.channel.send(f"Welcome back {message.author.mention}, I've removed your AFK status.")
+            await message.channel.send(f":wave: Welcome back {message.author.mention}, I've removed your AFK status.")
 
         for id, reason in afks.items():
             member = get(message.guild.members, id = id)

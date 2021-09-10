@@ -145,6 +145,38 @@ class info(commands.Cog):
         else:
             afkStatus = "No"
 
+        # copied code :troll: \/ \/ \/
+
+        joined = sorted(ctx.guild.members, key=lambda mem: mem.joined_at)
+        pos = joined.index(member)
+        positions = []
+        for i in range(-3, 4):
+            line_pos = pos + i
+            if line_pos < 0:
+                continue
+            if line_pos >= len(joined):
+                break
+            positions.append("{0:<4}{1}{2:<20}".format(str(line_pos + 1) + ".", " " * 4 + (">" if joined[line_pos] == member else " "), str(joined[line_pos])))
+        join_seq = "{}".format("\n".join(positions))
+
+        # members = [*sorted(ctx.guild.members, key=lambda m: m.joined_at)]
+        # x = members.index(ctx.author)
+        # join_pos = "\n".join(map(str, members[x - 3: x + 3]))
+
+        # copied code :troll: /\ /\ /\
+
+
+    # {sorted(ctx.guild.members, key=lambda member : member.joined_at).index(member) + 1}
+
+        acknowledgments = "None"
+        if member.id == 564890536947875868:
+            acknowledgments = ":crown: Owner"
+        elif member.id == 349373972103561218:
+            acknowledgments = "Helped with a lot of stuff"
+        elif member.id == 636292554416979979:
+            acknowledgments = "retard"
+
+
         embed = discord.Embed(title=f"{member}", url=f"https://discord.com/users/{member.id}", description=f"""
 <:nickname:876507754917929020> Nickname: {member.nick}
 :hash: Discriminator:  #{member.discriminator}
@@ -159,7 +191,10 @@ Banner url: {banner}
 <a:nitro_wumpus:857636144875175936> Boosting: {premiumText}
 <:invite:860644752281436171> Created: {discord.utils.format_dt(member.created_at, style="f")} ({discord.utils.format_dt(member.created_at, style="R")})
 <:member_join:596576726163914752> Joined: {discord.utils.format_dt(member.joined_at, style="f")} ({discord.utils.format_dt(member.joined_at, style="R")})
-<:moved:848312880666640394> Join position: {sorted(ctx.guild.members, key=lambda member : member.joined_at).index(member) + 1}
+<:moved:848312880666640394> Join position:
+```yaml
+{join_seq}
+```
 Mutual guilds: {len(member.mutual_guilds)}
 
 {statusEmote} Current status: {str(member.status).title()}
@@ -170,6 +205,7 @@ Mutual guilds: {len(member.mutual_guilds)}
 <:role:876507395839381514> Roles: {roles}
 <:store_tag:860644620857507901> Staff permissions: {perms}
 <:store_tag:860644620857507901> Badges: {badges}
+Acknowledgments: {acknowledgments}
 
 :rainbow: Color: {member.color}
 :rainbow: Accent color: {fetchedMember.accent_color}
@@ -323,7 +359,29 @@ Features:
 
         await ctx.reply(embed=embed)
 
+    @commands.command(help="Shows information about the channel", aliases=['ci', 'channel'])
+    async def channelinfo(self, ctx, channel : discord.TextChannel=None):
+        if channel == None:
+            channel = ctx.channel
+
+        pins = await channel.pins()
+
+        embed = discord.Embed(title=f"{channel}", description=f"""
+Mention: {channel.mention}
+ID: {channel.id}
+Topic: {channel.topic}
+
+Pins: {len(pins)}
+Position: {channel.position}
+Server: {channel.guild}
+Slowmode: {channel.slowmode_delay}
+Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discord.utils.format_dt(channel.created_at, style="R")})
+        """)
+
+        await ctx.reply(embed=embed)
+
     @commands.command(help="Shows information about the bot", aliases=['bi', 'bot', 'info', 'about', 'bisexual'])
+    @commands.cooldown(1, 5, BucketType.member)
     async def botinfo(self, ctx):
         prefix = await self.client.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1', ctx.guild.id)
         prefix = prefix or 'sb!'
