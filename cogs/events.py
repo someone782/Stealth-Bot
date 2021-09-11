@@ -10,14 +10,24 @@ def remove(afk):
     else:
         return afk
 
+def setup(client):
+    client.add_cog(events(client))
+
 class events(commands.Cog):
     def __init__(self, client):
         self.hidden = True
         self.client = client
+        self.messages = 0
+        self.edited_messages = 0
+
+    @commands.command()
+    async def messages(self, ctx):
+        await ctx.reply(f"I've a total of `{self.messages}` messages since last restart and `{self.edited_messages}` edits.")
 
 
     @commands.Cog.listener()
     async def on_message(self, message):
+        self.messages = self.messages + 1
         if message.content in [f'<@!{self.client.user.id}>', f'<@{self.client.user.id}>']:
             await message.reply("fuck off")
         if message.author.id in afks.keys():
@@ -35,6 +45,11 @@ class events(commands.Cog):
                     return
                 else:
                     await message.reply(f"{member.name} is AFK for {reason}.")
+
+    @commands.Cog.listener()
+    async def on_message_edit(self, message):
+        self.edited_messages = self.edited_messages + 1
+        return
 
 
     @commands.Cog.listener()
@@ -102,7 +117,3 @@ class events(commands.Cog):
         embed = discord.Embed(title="I've been removed from a guild", description=f"Guild name: {guild.name}\nGuild ID: {guild.id}", timestamp=discord.utils.utcnow(), color=0x2F3136)
 
         await channel.send(embed=embed)
-
-
-def setup(client):
-    client.add_cog(events(client))

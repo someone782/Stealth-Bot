@@ -10,15 +10,12 @@ import datetime as dt
 from discord.ext import commands, menus
 
 lavalink_node_settings = ['lava.link', 80, 'anything as a password', 'eu', 'default-node']
-bot_user_id = 788278464474120202
 url_rx = re.compile(r'https?://(?:www\.)?.+')
 TIME_REGEX = r"([0-9]{1,2})[:ms](([0-9]{1,2})s?)?"
-
 
 def setup(bot):
     bot.add_cog(SocketFix(bot))
     bot.add_cog(music(bot))
-
 
 class FullVoiceChannel(commands.CommandError):
     pass

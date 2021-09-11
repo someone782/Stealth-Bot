@@ -104,7 +104,7 @@ async def on_ready():
     print(f"Bot ID: {client.user.id}") # Prints "Bot ID {ID of the bot}"
     print('-------------================----------------') # Prints some lines to make it look better
 
-    channel = client.get_channel(836232733126426666) # Get the channel called "stealth_logs" (836232733126426666) and store it as the variable "channel"
+    channel = client.get_channel(883658687867158529) # Get the channel called "bot_logs" (883658687867158529) and store it as the variable "channel"
 
     embed = discord.Embed(title="Bot started", color=0x2F3136) # Creates a embed with the title being "Bot started" and the color being 0x2F3136
 

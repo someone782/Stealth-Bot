@@ -2,8 +2,12 @@ import discord
 import datetime
 from discord.ext import commands
 import helpers
+from difflib import get_close_matches
 import traceback
 from cogs import music
+
+def setup(client):
+    client.add_cog(errorhandler(client))
 
 class errorhandler(commands.Cog):
     def __init__(self, client):
@@ -35,8 +39,16 @@ class errorhandler(commands.Cog):
             return
 
         elif isinstance(error, commands.CommandNotFound):
-            if ctx.author.id == 564890536947875868 and ctx.bot.no_prefix is True: return
+            if ctx.author.id == 564890536947875868 and ctx.bot.no_prefix is True:
+                return
+
+
             message = f"I couldn't find that command, do `{prefix}help` to see a list of all commands."
+            command_names = [str(x) for x in ctx.bot.commands]
+            matches = get_close_matches(ctx.invoked_with, command_names)
+            if matches:
+                matches = "\n".join(matches)
+                message = f"I couldn't find that command. Did you mean...\n{matches}"
 
         elif isinstance(error, helpers.NotSH):
             message = f"You can only use this command in `Stealth Hangout`!\ndiscord.gg/ktkXwmD2kF"
@@ -120,11 +132,4 @@ Note: I can't edit the owner of the server
         else:
             message = f"An unexpected error occurred.\n{error}"
 
-        # errormessage = f"{error}"
-        # embed = discord.Embed(description=message, timestamp=discord.utils.utcnow(), color=0x2F3136)
         await ctx.reply(message)
-        # await ctx.send(error)
-
-
-def setup(client):
-    client.add_cog(errorhandler(client))

@@ -3,6 +3,21 @@ import discord
 import datetime
 import helpers
 import random
+import os
+
+# copied code from stella
+
+def reading_recursive(root: str, /) -> int:
+    for x in os.listdir(root):
+        if os.path.isdir(x):
+            yield from reading_recursive(root + "/" + x)
+        else:
+            if x.endswith((".py", ".c")):
+                with open(f"{root}/{x}") as r:
+                    yield len(r.readlines())
+
+def count_python(root: str) -> int:
+    return sum(reading_recursive(root))
 
 class VoteButtons(discord.ui.View):
     def __init__(self):
@@ -41,8 +56,9 @@ class MyHelp(commands.HelpCommand):
             new1 = f"{newsFileContext}"
             news = new1.replace("%%PREFIX%%", f"{prefix}")
         embed = discord.Embed(title="Help", description=f"""
-Total commands: {len(list(self.context.bot.commands))}
-Commands usable by you (in this server): {len(await self.filter_commands(list(self.context.bot.commands), sort=True))}
+Total commands: `{len(list(self.context.bot.commands))}`
+Commands usable by you (in this server): `{len(await self.filter_commands(list(self.context.bot.commands), sort=True))}`
+Written with `{count_python('.'):,}` lines.
 ```diff
 + Type {prefix}help [command/category] for help on a command/category
 - <> = required argument
@@ -52,7 +68,7 @@ Commands usable by you (in this server): {len(await self.filter_commands(list(se
 
         allcogs = []
         cogindex = []
-        ignored_cogs=['help', 'Jishaku']
+        ignored_cogs=['help', 'Jishaku', 'events']
         iter = 1
         for cog, commands in mapping.items():
             if cog is None or cog.qualified_name in ignored_cogs: continue
@@ -74,7 +90,7 @@ Commands usable by you (in this server): {len(await self.filter_commands(list(se
 {news}
                         """)
 
-        embed.set_footer(text=f"Suggested command: {random.choice(list(self.context.bot.commands))} • Credits given in {prefix}credits")
+        embed.set_footer(text=f"Suggested command: {prefix}{random.choice(list(self.context.bot.commands))} • Credits given in {prefix}credits")
 
         await ctx.reply(embed=embed, view=Buttons())
 
@@ -118,7 +134,8 @@ Usage: {self.get_minimal_command_signature(command)}
         entries = cog.get_commands()
         command_signatures = [self.get_minimal_command_signature(c) for c in entries]
         if command_signatures:
-            val = "\n".join(command_signatures)
+            val1 = "\n".join(command_signatures)
+            val = val1.replace('10️⃣', '1️⃣0️⃣')
             embed=discord.Embed(title=f"Help - {cog.qualified_name}", description=f"""
 Total commands: {len(cog.get_commands())}
 Commands usable by you (in this server): {len(await self.filter_commands(cog.get_commands(), sort=True))}
@@ -128,6 +145,7 @@ Commands usable by you (in this server): {len(await self.filter_commands(cog.get
 + Type {prefix}help [command] for help on a command
 + Description: {cog.description}
 ```
+__**Available commands**__ [{len(cog.get_commands())}]
 ```fix
 {val}
 ```

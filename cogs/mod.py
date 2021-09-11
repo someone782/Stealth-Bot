@@ -1,13 +1,65 @@
 import discord
 import asyncio
+import itertools
 import datetime
 from discord.ext import commands, menus
 from discord.ext.commands.cooldowns import BucketType
+
+def setup(client):
+    client.add_cog(mod(client))
 
 class mod(commands.Cog):
     "<:staff:858326975869485077> Moderation commands"
     def __init__(self, client):
         self.client = client
+
+    @commands.command()
+    async def punish(self, ctx):
+        valid_punishments = ['kick', 'ban']
+
+        def check(m: discord.Message):  # m = discord.Message.
+            return m.author.id == ctx.author.id and m.channel.id == ctx.channel.id
+
+        await ctx.reply("What do you want the punishment to be? (kick/ban)")
+
+        try:
+            punishment = await self.client.wait_for(event='message', timeout=15, check=check)
+        except asyncio.TimeoutError:
+            await message.delete()
+            await ctx.message.delete(delay=5.0)
+            return await ctx.reply("It's been over 15 seconds, please try again by doing `-punish`", delete_after=5.0)
+        else:
+            await ctx.reply("Who do you want me to punish?")
+
+            try:
+                member = await self.client.wait_for(event='message', timeout=15, check=check)
+            except asyncio.TimeoutError:
+                await message.delete()
+                await ctx.message.delete(delay=5.0)
+                return await ctx.reply("It's been over 15 seconds, please try again by doing `-punish`", delete_after=5.0)
+            else:
+                    await ctx.reply("What's the reason for this punishment?")
+
+                    try:
+                        reason = await self.client.wait_for(event='message', timeout=15, check=check)
+                    except asyncio.TimeoutError:
+                        await message.delete()
+                        await ctx.message.delete(delay=5.0)
+                        return await ctx.reply("It's been over 15 seconds, please try again by doing `-punish`", delete_after=5.0)
+                    else:
+                        await ctx.reply(f"{punishment.content} {member.content} {reason.content}")
+
+                        punishment = punishment.content
+                        member = commands.MemberConverter().convert(ctx, member.content)
+                        reason = reason.content
+
+                        if punishment not in valid_punishments:
+                            return await ctx.reply(f"That's not a valid punishment. Please try again by doing `-punish`.")
+
+                        if reason > 500:
+                            return await ctx.reply(f"Your reason has exceeded the 500-character limit. Please try again by doing `-punish`")
+
+                        await member.send(f'punishment: {punishment}\nmember: {member}\n{reason}')
 
     @commands.command(help="Announces a message in a specified channel")
     @commands.check_any(commands.has_permissions(manage_messages=True), commands.is_owner())
@@ -103,6 +155,3 @@ class mod(commands.Cog):
 
         await server.create_role(name=name, color=color, reason=f'Made by `{ctx.author}` using command')
         await ctx.reply(f"Successfully created a role called `{name}` with the color being `{color}`.")
-
-def setup(client):
-    client.add_cog(mod(client))

@@ -3,6 +3,9 @@ import random
 import asyncio
 from discord.ext import commands
 
+def setup(client):
+    client.add_cog(custom(client))
+
 class custom(commands.Cog):
     "Commands that are made by members that won a giveaway called \"Custom command for Stealth Bot\""
     def __init__(self, client):
@@ -145,7 +148,3 @@ class custom(commands.Cog):
     @commands.command(description="idiot")
     async def me(self, ctx):
         await ctx.reply(f"fuck you")
-
-
-def setup(client):
-    client.add_cog(custom(client))

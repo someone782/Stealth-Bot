@@ -52,8 +52,11 @@ class EmbedPageSource(menus.ListPageSource):
 
         return embed
 
+def setup(client):
+    client.add_cog(info(client))
+
 class info(commands.Cog):
-    ":information_source: All informative commands like `serverinfo`, `userinfo` and more!"
+    "ℹ️ All informative commands like `serverinfo`, `userinfo` and more!"
     def __init__(self, client):
         self.client = client
         client.session = aiohttp.ClientSession()
@@ -159,9 +162,9 @@ class info(commands.Cog):
             positions.append("{0:<4}{1}{2:<20}".format(str(line_pos + 1) + ".", " " * 4 + (">" if joined[line_pos] == member else " "), str(joined[line_pos])))
         join_seq = "{}".format("\n".join(positions))
 
-        # members = [*sorted(ctx.guild.members, key=lambda m: m.joined_at)]
-        # x = members.index(ctx.author)
-        # join_pos = "\n".join(map(str, members[x - 3: x + 3]))
+        members = [*sorted(ctx.guild.members, key=lambda m: m.joined_at)]
+        x = members.index(ctx.author)
+        join_pos = "\n".join(map(str, members[x - 3: x + 3]))
 
         # copied code :troll: /\ /\ /\
 
@@ -341,7 +344,7 @@ Created: {discord.utils.format_dt(server.created_at, style="f")} ({discord.utils
 
 Features:
 {features}
-        """)
+        """, timestamp=discord.utils.utcnow(), color=0x2F3136)
 
         if server.banner:
             url1 = server.banner.url
@@ -356,6 +359,23 @@ Features:
             embed.set_thumbnail(url=url)
 
         #embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+
+        await ctx.reply(embed=embed)
+
+    @commands.command(help="Shows you the emotes of a server", aliases=['emote', 'emoji', 'emojilist', 'emote_list', 'emoji_list'])
+    async def emotelist(self, ctx, id : int=None):
+        if id:
+            server = self.client.get_guild(id)
+            if not server:
+                return await ctx.reply("I couldn't find that server. Make sure the ID you entered was correct.")
+        else:
+            server = ctx.guild
+
+        emojis = [str(x) for x in server.emojis]
+
+        embed = discord.Embed(title=f"{server}'s emotes'", description=f"""
+{" ".join(emojis)}
+        """, timestamp=discord.utils.utcnow(), color=0x2F3136)
 
         await ctx.reply(embed=embed)
 
@@ -377,43 +397,6 @@ Server: {channel.guild}
 Slowmode: {channel.slowmode_delay}
 Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discord.utils.format_dt(channel.created_at, style="R")})
         """)
-
-        await ctx.reply(embed=embed)
-
-    @commands.command(help="Shows information about the bot", aliases=['bi', 'bot', 'info', 'about', 'bisexual'])
-    @commands.cooldown(1, 5, BucketType.member)
-    async def botinfo(self, ctx):
-        prefix = await self.client.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1', ctx.guild.id)
-        prefix = prefix or 'sb!'
-
-        text_channels = [channel for channel in self.client.get_all_channels() if isinstance(channel, discord.TextChannel)]
-        voice_channels = [channel for channel in self.client.get_all_channels() if isinstance(channel, discord.VoiceChannel)]
-        categories = [channel for channel in self.client.get_all_channels() if isinstance(channel, discord.CategoryChannel)]
-        stage_channels = [channel for channel in self.client.get_all_channels() if isinstance(channel, discord.StageChannel)]
-        threads = [channel for channel in self.client.get_all_channels() if isinstance(channel, discord.Thread)]
-
-        avg = [(sum(m.bot for m in g.members) / g.member_count) * 100 for g in self.client.guilds]
-        version = pkg_resources.get_distribution('pycord').version
-
-        memory_usage = psutil.Process().memory_full_info().uss / 1024 ** 2
-        cpu_usage = psutil.cpu_percent()
-
-        embed = discord.Embed(title=f"Bot info - Stealth Bot [-]#1082", description=f"""
-Developer: Ender2K89#9999
-Server prefix: {prefix}
-Pycord version: v{version}
-Uptime: since {discord.utils.format_dt(self.client.launch_time, style="f")} ({discord.utils.format_dt(self.client.launch_time, style="R")})
-Commands: {len(self.client.commands)}
-Memory usage: {memory_usage:.2f} MiB
-CPU usage: {cpu_usage:.2f}%
-Average server bot percentage: {round(sum(avg) / len(avg), 2)}%
-<:servers:870152102759006208> Servers: {len(self.client.guilds)}
-<:members:858326990725709854> Members: {sum([g.member_count for g in self.client.guilds])}
-<:text_channel:876503902554578984> Channels: <:text_channel:876503902554578984> {len(text_channels)} <:voice_channel:876503909512933396> {len(voice_channels)} <:category:882685952999428107> {len(categories)} <:stagechannel:824240882793447444> {len(stage_channels)} <:threadnew:833432474347372564> {len(threads)}
-        """, color=0x2F3136)
-
-        embed.set_thumbnail(url=self.client.user.avatar.url)
-        embed.set_footer(text=f"Command requested by {ctx.author}", icon_url = ctx.author.avatar.url)
 
         await ctx.reply(embed=embed)
 
@@ -623,7 +606,3 @@ Tested verify command: Eiiknostv#2016
         afks[member.id] = reason
 
         await ctx.reply(f"{member} went afk cause `{reason}`")
-
-
-def setup(client):
-    client.add_cog(info(client))

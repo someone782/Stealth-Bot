@@ -7,6 +7,9 @@ import typing
 import traceback
 from discord.ext import commands
 
+def setup(client):
+    client.add_cog(dev(client))
+
 class dev(commands.Cog):
     "<:earlybotdev:850843591756349450> Commands that only the developer of this client can use"
     def __init__(self, client):
@@ -245,6 +248,3 @@ git push origin main
         else:
             embed = discord.Embed(title = 'Reloaded all extensions', color=ctx.me.color, description = desc)
             await message.edit(embed=embed)
-
-def setup(client):
-    client.add_cog(dev(client))

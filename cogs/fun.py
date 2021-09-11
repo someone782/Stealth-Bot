@@ -10,6 +10,9 @@ import aiohttp
 import pyfiglet
 from discord.ext import commands
 
+def setup(client):
+    client.add_cog(fun(client))
+
 class fun(commands.Cog):
     ":zany_face: Fun commands like -meme, -hug and more"
     def __init__(self, client):
@@ -540,6 +543,9 @@ Original text: {text}
 
             await ctx.reply(f"{random.choice(responses)}")
 
+
+    # this command was removed due to top.gg not accepting my bot cause it "promotes suicide"
+
     # @commands.command(help="Let's you commit suicide", aliases=['suicied', 'suiced'])
     # async def suicide(self, ctx):
     #     responses = [f"{ctx.author.name} said, goodbye cruel world!",
@@ -566,7 +572,3 @@ Original text: {text}
     #                 f"{ctx.author.name} tried to swim in lava. Why would you ever try to do that?"]
     #
     #     await ctx.reply(f"{random.choice(responses)}")
-
-
-def setup(client):
-    client.add_cog(fun(client))

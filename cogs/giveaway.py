@@ -21,6 +21,9 @@ def convert(time):
 
     return timeVal*time_dict[unit]
 
+def setup(client):
+    client.add_cog(giveaway(client))
+
 class giveaway(commands.Cog):
     ":tada: Commands that are used to reroll/start a giveaway"
     def __init__(self, client):
@@ -139,7 +142,3 @@ class giveaway(commands.Cog):
         winner = random.choice(users) # Chooses a random person from the users
 
         await channel.send(f"Congratulations! The new winner is {winner.mention}! Contact {ctx.author.mention} for your prize!")
-
-
-def setup(client):
-    client.add_cog(giveaway(client))

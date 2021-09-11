@@ -8,6 +8,9 @@ from PIL import Image, ImageSequence
 import aiohttp
 from discord.ext import commands
 
+def setup(client):
+    client.add_cog(other(client))
+
 class other(commands.Cog):
     ":grey_question:  All other commands"
     def __init__(self, client):
@@ -139,10 +142,10 @@ class other(commands.Cog):
         embed = discord.Embed(title="ClassicSMP IP", description="""
 ```diff
 - Java Edition:
-+ Server address: 207.244.233.7:25565
++ Server address: play.classic-smp.com
 
 - Bedrock Edition:
-+ Server address: 207.244.233.7
++ Server address: play.classic-smp.com
 + Server port: 19132
 ```
         """, timestamp=discord.utils.utcnow(), color=0x2F3136)
@@ -451,45 +454,3 @@ class other(commands.Cog):
 🇿🇼"""
         bar = foo.split('\n')
         await ctx.reply(f"Here's a list of flags: {', '.join(bar)}")
-
-    @commands.command()
-    async def he(self, ctx):
-        embed = discord.Embed(title="Help Panel", description="""
-Hi there! My name is Stealth Bot. I'm a discord bot made by Ender2K89#9999.
-
-My prefix for this server is sb!, to change the prefix do sb!prefix.
-
-To get help on a category or command do sb!help [category/command].
-        """, timestamp=discord.utils.utcnow(), color=0x2F3136)
-
-        embed.add_field(name="__**Categories [8]**__", value=f"""
-```diff
-+ info
-+ fun
-+ mod
-+ giveaway
-+ dev
-+ other
-+ animals
-+ custom
-```
-        """)
-
-        embed.add_field(name="__**News []**__", value=f"""
-```yaml
-info
-fun
-mod
-giveaway
-dev
-other
-animals
-custom
-```
-        """)
-
-        await ctx.reply(embed=embed)
-
-
-def setup(client):
-    client.add_cog(other(client))

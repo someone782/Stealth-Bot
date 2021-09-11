@@ -5,8 +5,11 @@ import datetime
 from discord.ext import commands
 import random
 
+def setup(client):
+    client.add_cog(animals(client))
+
 class animals(commands.Cog):
-    ":dog: Commands that show you pictures of certain animals & facts about them"
+    "🐶 Commands that show you pictures of certain animals & facts about them"
     def __init__(self, client):
         self.client = client
 
@@ -164,7 +167,3 @@ class animals(commands.Cog):
        embed = discord.Embed(title="Pikachu!", timestamp=discord.utils.utcnow(), color=0x2F3136)
        embed.set_image(url=dogjson['link'])
        await ctx.reply(embed=embed)
-
-
-def setup(client):
-    client.add_cog(animals(client))

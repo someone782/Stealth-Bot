@@ -4,6 +4,9 @@ import aiohttp
 from discord.ext import commands, menus
 from discord.ext.commands.cooldowns import BucketType
 
+def setup(client):
+    client.add_cog(nsfw(client))
+
 class nsfw(commands.Cog):
     ":underage: NSFW commands"
     def __init__(self, client):
@@ -38,7 +41,3 @@ class nsfw(commands.Cog):
             embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
 
             await ctx.reply(embed=embed)
-
-
-def setup(client):
-    client.add_cog(nsfw(client))
