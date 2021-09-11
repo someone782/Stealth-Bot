@@ -43,12 +43,12 @@ class errorhandler(commands.Cog):
                 return
 
 
-            message = f"I couldn't find that command, do `{prefix}help` to see a list of all commands."
+            message = f"I couldn't find that command."
             command_names = [str(x) for x in ctx.bot.commands]
             matches = get_close_matches(ctx.invoked_with, command_names)
             if matches:
-                matches = "\n".join(matches)
-                message = f"I couldn't find that command. Did you mean...\n{matches}"
+                #matches = "\n".join(matches)
+                message = f"I couldn't find that command. Did you mean...\n{matches[0]}"
 
         elif isinstance(error, helpers.NotSH):
             message = f"You can only use this command in `Stealth Hangout`!\ndiscord.gg/ktkXwmD2kF"
@@ -100,6 +100,11 @@ Note: I can't edit the owner of the server
         elif isinstance(error, commands.NSFWChannelRequired):
             message = "This command can only be used in a NSFW channel."
 
+            embed = discord.Embed(title=message, color=0x2F3136)
+            embed.set_image(url="https://i.imgur.com/oe4iK5i.gif")
+
+            return await ctx.reply(embed=embed)
+
         elif isinstance(error, discord.ext.commands.MissingRequiredArgument):
             missing=f"{str(error.param).split(':')[0]}"
             command = f"{ctx.prefix}{ctx.command} {ctx.command.signature}"
@@ -132,4 +137,6 @@ Note: I can't edit the owner of the server
         else:
             message = f"An unexpected error occurred.\n{error}"
 
-        await ctx.reply(message)
+        embed = discord.Embed(description=message, color=0x2F3136)
+
+        await ctx.reply(embed=embed)

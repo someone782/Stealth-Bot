@@ -47,10 +47,9 @@ class events(commands.Cog):
                     await message.reply(f"{member.name} is AFK for {reason}.")
 
     @commands.Cog.listener()
-    async def on_message_edit(self, message):
+    async def on_message_edit(self, before, after):
         self.edited_messages = self.edited_messages + 1
-        return
-
+        await self.client.process_commands(after)
 
     @commands.Cog.listener()
     async def on_member_join(self, member): # If a member joined the server then:
