@@ -16,17 +16,6 @@ class other(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command(help="Sends the source code of the bot", aliases=['code', 'sourcecode', 'source_code'])
-    async def source(self, ctx):
-        view = discord.ui.View()
-        style = discord.ButtonStyle.gray
-        item = discord.ui.Button(style=style, emoji="<:github:744345792172654643>", label="Source Code", url="https://github.com/Ender2K89/Stealth-Bot")
-        view.add_item(item=item)
-
-        embed = discord.Embed(title="Click here for the source code of this bot", url="https://github.com/Ender2K89/Stealth-Bot", timestamp=discord.utils.utcnow(), color=0x2F3136)
-        embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
-        await ctx.reply(embed=embed, view=view)
-
     @commands.command(help="Sends a invite of the bot", alises=['inv', 'invite_me', 'inviteme'])
     async def invite(self, ctx):
         view = discord.ui.View()

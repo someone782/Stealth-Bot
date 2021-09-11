@@ -4,7 +4,6 @@ import random
 import helpers
 import asyncio
 import io
-from asyncdagpi import Client, ImageFeatures
 import datetime
 import aiohttp
 import pyfiglet
@@ -32,9 +31,9 @@ class fun(commands.Cog):
         return embed
 
     @commands.command()
-    async def test(self, ctx) -> discord.Message:
-        async with ctx.typing():
-            return await ctx.send(embed=await self.reddit('memes'))
+    @helpers.is_user_blacklisted()
+    async def test(self, ctx):
+        await ctx.reply("hello :D")
 
     @commands.command(aliases=['guess_the_number'])
     async def number(self, ctx):

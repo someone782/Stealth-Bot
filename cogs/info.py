@@ -6,7 +6,9 @@ import helpers
 import os
 import unicodedata
 import sys
+import inspect
 import time
+import pathlib
 import pkg_resources
 import math
 import aiohttp
@@ -45,10 +47,17 @@ def pretty_size(bytes, units=UNITS_MAPPING):
             suffix = multiple
     return str(amount) + suffix
 
+class EmbedPageSourceTwo(menus.ListPageSource):
+    async def format_page(self, menu, item):
+        embed = discord.Embed(title=f"{menu.ctx.guild}'s emotes [{len(menu.ctx.guild.emojis)}]", description="\n".join(item), timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed.set_footer(text=f"Command requested by {menu.ctx.author}", icon_url=menu.ctx.author.avatar.url)
+
+        return embed
+
 class EmbedPageSource(menus.ListPageSource):
     async def format_page(self, menu, item):
         embed = discord.Embed(title="Character information", description="\n".join(item), timestamp=discord.utils.utcnow(), color=0x2F3136)
-        #embed.set_footer(text=f"Command requested by {self.context.author}", icon_url=self.context.author.avatar.url)
+        embed.set_footer(text=f"Command requested by {menu.ctx.author}", icon_url=menu.ctx.author.avatar.url)
 
         return embed
 
@@ -105,25 +114,25 @@ class info(commands.Cog):
 
         perms = helpers.get_perms(member.guild_permissions)
         if perms:
-            perms = f"{', '.join(perms)}"
+            perms = f"{' **|** '.join(perms)}"
         else:
             perms = ''
 
         if member.avatar.is_animated() == True:
-            text1 = f"[PNG]({member.avatar.replace(format='png', size=2048).url}) | [JPG]({member.avatar.replace(format='jpg', size=2048).url}) | [WEBP]({member.avatar.replace(format='webp', size=2048).url}) | [GIF]({member.avatar.replace(format='gif', size=2048).url})"
+            text1 = f"[PNG]({member.avatar.replace(format='png', size=2048).url}) **|** [JPG]({member.avatar.replace(format='jpg', size=2048).url}) **|** [JPEG]({member.avatar.replace(format='jpeg', size=2048).url}) **|** [WEBP]({member.avatar.replace(format='webp', size=2048).url}) **|** [GIF]({member.avatar.replace(format='gif', size=2048).url})"
             avatar = text1.replace("cdn.discordapp.com", "media.discordapp.net")
         else:
-            text1 = f"[PNG]({member.avatar.replace(format='png', size=2048).url}) | [JPG]({member.avatar.replace(format='jpg', size=2048).url}) | [WEBP]({member.avatar.replace(format='webp', size=2048).url})"
+            text1 = f"[PNG]({member.avatar.replace(format='png', size=2048).url}) **|** [JPG]({member.avatar.replace(format='jpg', size=2048).url}) **|** [JPEG]({member.avatar.replace(format='jpeg', size=2048).url}) **|** [WEBP]({member.avatar.replace(format='webp', size=2048).url})"
             avatar = text1.replace("cdn.discordapp.com", "media.discordapp.net")
 
         fetchedMember = await self.client.fetch_user(member.id)
 
         if fetchedMember.banner:
             if fetchedMember.banner.is_animated() == True:
-                text1 = f"[PNG]({fetchedMember.banner.replace(format='png', size=2048).url}) | [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) | [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url}) | [GIF]({fetchedMember.banner.replace(format='gif', size=2048).url})"
+                text1 = f"[PNG]({fetchedMember.banner.replace(format='png', size=2048).url}) **|** [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) **|** [JPEG]({fetchedMember.banner.replace(format='jpeg', size=2048).url}) **|** [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url}) **|** [GIF]({fetchedMember.banner.replace(format='gif', size=2048).url})"
                 banner = text1.replace("cdn.discordapp.com", "media.discordapp.net")
             else:
-                text1 = f"[PNG]({fetchedMember.avatar.replace(format='png', size=2048).url}) | [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) | [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url})"
+                text1 = f"[PNG]({fetchedMember.avatar.replace(format='png', size=2048).url}) **|** [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) **|** [JPEG]({fetchedMember.banner.replace(format='jpeg', size=2048).url}) **|** [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url})"
                 banner = text1.replace("cdn.discordapp.com", "media.discordapp.net")
         else:
             banner = "No banner found"
@@ -202,7 +211,7 @@ Mutual guilds: {len(member.mutual_guilds)}
 
 {statusEmote} Current status: {str(member.status).title()}
 :video_game: Current activity: {str(member.activity.type).split('.')[-1].title() if member.activity else 'Not playing'} {member.activity.name if member.activity else ''}
-<:discord:877926570512236564> Client: {desktopStatus} **–** {webStatus} **–** {mobileStatus}
+<:discord:877926570512236564> Client: {desktopStatus} **|** {webStatus} **|** {mobileStatus}
 
 <:role:876507395839381514> Top Role: {member.top_role.mention}
 <:role:876507395839381514> Roles: {roles}
@@ -332,7 +341,7 @@ Created: {discord.utils.format_dt(server.created_at, style="f")} ({discord.utils
 {helpers.get_server_region_emote(server)} Region: {helpers.get_server_region(server)}
 
 <:status_offline:596576752013279242> Statuses: <:status_online:596576749790429200> {statuses[0]} <:status_idle:596576773488115722> {statuses[1]} <:status_dnd:596576774364856321> {statuses[2]} <:status_streaming:596576747294818305> {statuses[3]} <:status_offline:596576752013279242> {statuses[4]}
-<:text_channel:876503902554578984> Channels: <:text_channel:876503902554578984> {len(server.text_channels)} <:voice_channel:876503909512933396> {len(server.voice_channels)} <:category:882685952999428107> {len(server.categories)} <:stagechannel:824240882793447444> {len(server.stage_channels)} <:threadnew:833432474347372564> {len(server.threads)}
+<:text_channel:876503902554578984> Channels: <:text_channel:876503902554578984> {len(server.text_channels)} <:voice:860330111377866774> {len(server.voice_channels)} <:category:882685952999428107> {len(server.categories)} <:stagechannel:824240882793447444> {len(server.stage_channels)} <:threadnew:833432474347372564> {len(server.threads)}
 <:role:876507395839381514> Roles: {len(server.roles)}
 
 <:emoji_ghost:658538492321595393> Animated emojis: {len([x for x in server.emojis if x.animated])}/{server.emoji_limit}
@@ -358,11 +367,55 @@ Features:
             url = url1.replace("cdn.discordapp.com", "media.discordapp.net")
             embed.set_thumbnail(url=url)
 
-        #embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+        embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
         await ctx.reply(embed=embed)
 
-    @commands.command(help="Shows you the emotes of a server", aliases=['emote', 'emoji', 'emojilist', 'emote_list', 'emoji_list'])
+    @commands.command(help="Shows information about the bot", aliases=['bi'])
+    async def botinfo(self, ctx):
+        p = pathlib.Path('./')
+        cm = cr = fn = cl = ls = fc = 0
+        for f in p.rglob('*.py'):
+            if str(f).startswith("venv"):
+                continue
+            fc += 1
+            with f.open() as of:
+                for l in of.readlines():
+                    l = l.strip()
+                    if l.startswith('class'):
+                        cl += 1
+                    if l.startswith('def'):
+                        fn += 1
+                    if l.startswith('async def'):
+                        cr += 1
+                    if '#' in l:
+                        cm += 1
+                    ls += 1
+        text_channels = len([channel for channel in self.client.get_all_channels() if isinstance(channel, discord.TextChannel)])
+        voice_channels = len([channel for channel in self.client.get_all_channels() if isinstance(channel, discord.VoiceChannel)])
+        categories = len([channel for channel in self.client.get_all_channels() if isinstance(channel, discord.CategoryChannel)])
+        stage_channels = len([channel for channel in self.client.get_all_channels() if isinstance(channel, discord.StageChannel)])
+        threads = channels = len([channel for channel in self.client.get_all_channels() if isinstance(channel, discord.Thread)])
+
+        embed = discord.Embed(title=f"{self.client.user.name}", description=f"""
+<:members:858326990725709854> Members: {len(self.client.users)} (:robot: )
+<:servers:870152102759006208> Servers: {len(self.client.guilds)}
+<:text_channel:876503902554578984> Channels: <:text_channel:876503902554578984> {text_channels} <:voice:860330111377866774> {voice_channels} <:category:882685952999428107> {categories} <:stagechannel:824240882793447444> {stage_channels} <:threadnew:833432474347372564> {threads}
+
+:file_folder: Files: {fc}
+Lines: {ls:,}
+Classes: {cl}
+Functions: {fn}
+Coroutine: {cr}
+:hash: Comments: {cm:,}
+
+        """, timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed.set_thumbnail(url=self.client.user.avatar.url)
+        embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+
+        await ctx.reply(embed=embed)
+
+    @commands.command(help="Shows you a list of emotes from this server", aliases=['emojilist', 'emote_list', 'emoji_list', 'emote', 'emoji', 'emotes', 'emojis'])
     async def emotelist(self, ctx, id : int=None):
         if id:
             server = self.client.get_guild(id)
@@ -371,13 +424,19 @@ Features:
         else:
             server = ctx.guild
 
-        emojis = [str(x) for x in server.emojis]
+        guildEmotes = server.emojis
+        emotes = []
 
-        embed = discord.Embed(title=f"{server}'s emotes'", description=f"""
-{" ".join(emojis)}
-        """, timestamp=discord.utils.utcnow(), color=0x2F3136)
+        for emoji in guildEmotes:
 
-        await ctx.reply(embed=embed)
+          if emoji.animated:
+             emotes.append(f"<a:{emoji.name}:{emoji.id}> **|** {emoji.name} **|** `<a:{emoji.name}:{emoji.id}>`")
+
+          if not emoji.animated:
+              emotes.append(f"<:{emoji.name}:{emoji.id}> **|** {emoji.name} **|** `<:{emoji.name}:{emoji.id}>`")
+
+        menu = menus.MenuPages(EmbedPageSourceTwo(emotes, per_page=10))
+        await menu.start(ctx)
 
     @commands.command(help="Shows information about the channel", aliases=['ci', 'channel'])
     async def channelinfo(self, ctx, channel : discord.TextChannel=None):
@@ -406,10 +465,10 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
             member = ctx.author
         if member.avatar:
             if member.avatar.is_animated() == True:
-                text1 = f"[PNG]({member.avatar.replace(format='png', size=2048).url}) | [JPG]({member.avatar.replace(format='jpg', size=2048).url}) | [WEBP]({member.avatar.replace(format='webp', size=2048).url}) | [GIF]({member.avatar.replace(format='gif', size=2048).url})"
+                text1 = f"[PNG]({member.avatar.replace(format='png', size=2048).url}) | [JPG]({member.avatar.replace(format='jpg', size=2048).url}) | [JPEG]({member.avatar.replace(format='jpeg', size=2048).url}) | [WEBP]({member.avatar.replace(format='webp', size=2048).url}) | [GIF]({member.avatar.replace(format='gif', size=2048).url})"
                 text = text1.replace("cdn.discordapp.com", "media.discordapp.net")
             else:
-                text1 = f"[PNG]({member.avatar.replace(format='png', size=2048).url}) | [JPG]({member.avatar.replace(format='jpg', size=2048).url}) | [WEBP]({member.avatar.replace(format='webp', size=2048).url})"
+                text1 = f"[PNG]({member.avatar.replace(format='png', size=2048).url}) | [JPG]({member.avatar.replace(format='jpg', size=2048).url}) | [JPEG]({member.avatar.replace(format='jpeg', size=2048).url}) | [WEBP]({member.avatar.replace(format='webp', size=2048).url})"
                 text = text1.replace("cdn.discordapp.com", "media.discordapp.net")
             embed=discord.Embed(title=f"{member}'s avatar", description=f"{text}", timestamp=discord.utils.utcnow(), color=0x2F3136)
             url1 = member.avatar.url
@@ -606,3 +665,62 @@ Tested verify command: Eiiknostv#2016
         afks[member.id] = reason
 
         await ctx.reply(f"{member} went afk cause `{reason}`")
+
+    @commands.command(help="Sends the source code of the bot/a command")
+    @commands.bot_has_permissions(send_messages=True, embed_links=True)
+    async def source(self, ctx, *, command : str=None):
+        prefix = await self.client.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1', ctx.guild.id)
+        prefix = prefix or 'sb!'
+        source_url = 'https://github.com/Ender2K89/Stealth-Bot'
+
+        if command is None:
+            embed = discord.Embed(title=f"Click here for the source code of this bot", url=f"{source_url}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+
+            view = discord.ui.View()
+            style = discord.ButtonStyle.gray
+            item = discord.ui.Button(style=style, emoji="<:github:744345792172654643>", label="Source code", url=f"{source_url}")
+            view.add_item(item=item)
+
+            return await ctx.reply(embed=embed, view=view)
+
+        if command == 'help':
+            src = type(self.client.help_command)
+            module = src.__module__
+            filename = inspect.getsourcefile(src)
+
+        else:
+            obj = self.client.get_command(command.replace('.', ' '))
+
+            if obj is None:
+                embed = discord.Embed(title=f"Click here for the source code of this bot", description="I couldn't find that command", url=f"{source_url}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+
+                view = discord.ui.View()
+                style = discord.ButtonStyle.gray
+                item = discord.ui.Button(style=style, emoji="<:github:744345792172654643>", label="Source code", url=f"{source_url}")
+                view.add_item(item=item)
+                return await ctx.reply(embed=embed, view=view)
+
+            src = obj.callback.__code__
+            module = obj.callback.__module__
+            filename = src.co_filename
+
+        lines, firstlineno = inspect.getsourcelines(src)
+
+        if not module.startswith('discord'):
+            location = os.path.relpath(filename).replace('\\', '/')
+
+        else:
+            location = module.replace('.', '/') + '.py'
+            source_url = 'https://github.com/Rapptz/discord.py'
+            branch = 'master'
+
+        final_url = f'{source_url}/tree/main/{location}#L{firstlineno}-L{firstlineno + len(lines) - 1}'
+        embed = discord.Embed(title=f"Click here for the source code of the `{prefix}{command}` command", url=f"{final_url}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed.set_footer(text=f"{location}#L{firstlineno}-L{firstlineno + len(lines) - 1}")
+
+        view = discord.ui.View()
+        style = discord.ButtonStyle.gray
+        item = discord.ui.Button(style=style, emoji="<:github:744345792172654643>", label="Source code", url=f"{final_url}")
+        view.add_item(item=item)
+
+        await ctx.reply(embed=embed, view=view)

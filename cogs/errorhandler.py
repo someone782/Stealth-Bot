@@ -56,6 +56,9 @@ class errorhandler(commands.Cog):
         elif isinstance(error, helpers.NotCSMP):
             message = f"You can only use this command in `ClassicSMP`!\nhttps://discord.gg/afBDa2Kqc9"
 
+        elif isinstance(error, helpers.Blacklisted):
+            message = f"It appears that you're blacklisted from this bot. Contact Ender2K89#9999 if you think this is a mistake."
+
         elif isinstance(error, commands.CommandOnCooldown):
             message = f"This command is on cooldown. Please try again after {round(error.retry_after, 1)} seconds."
 

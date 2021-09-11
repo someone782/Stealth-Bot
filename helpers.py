@@ -202,3 +202,16 @@ def is_csmp_server():
         else:
             raise NotCSMP("You can only use this command in `ClassicSMP`!\nhttps://discord.gg/afBDa2Kqc9")
     return commands.check(predicate)
+
+#blacklisted_ids = []
+
+class Blacklisted(commands.CheckFailure):
+    pass
+
+def is_user_blacklisted():
+    blacklisted_ids = []
+    def predicate(ctx):
+        if ctx.author.id not in blacklisted_ids: return True
+        else:
+            raise Blacklisted("It appears that you're blacklisted from this bot. Contact Ender2K89#9999 if you think this is a mistake.")
+    return commands.check(predicate)
