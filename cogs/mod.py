@@ -129,9 +129,14 @@ class mod(commands.Cog):
         if channel == None:
             channel = ctx.channel
 
-        await channel.purge(limit=amount)
-        await ctx.reply(f"Successfully deleted `{amount}` messages in {channel.mention}.", delete_after=5.0)
+        text = 'messages'
+        if amount == 1:
+            text = 'message'
+
         await ctx.message.delete()
+        await channel.purge(limit=amount)
+        await ctx.send(f"Successfully deleted `{amount}` {text} in {channel.mention}.", delete_after=5.0)
+
 
     @commands.command(help="Changes the slowmode of a channel", aliases=['sm', 'slowm', 'slowness'])
     @commands.check_any(commands.has_permissions(manage_channels=True), commands.is_owner())

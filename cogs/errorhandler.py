@@ -22,6 +22,7 @@ class errorhandler(commands.Cog):
 
         ignored = (
             music.FullVoiceChannel,
+            music.NotAuthorized,
             music.IncorrectChannelError,
             music.AlreadyConnectedToChannel,
             music.NoVoiceChannel,
@@ -30,10 +31,14 @@ class errorhandler(commands.Cog):
             music.PlayerIsAlreadyPaused,
             music.PlayerIsNotPaused,
             music.NoMoreTracks,
-            music.InvalidRepeatMode,
             music.InvalidTimeString,
             music.NoPerms,
-            music.NoConnection
+            music.NoConnection,
+            music.AfkChannel,
+            music.SkipInLoopMode,
+            music.InvalidTrack,
+            music.InvalidPosition,
+            music.InvalidVolume
         )
         if isinstance(error, ignored):
             return

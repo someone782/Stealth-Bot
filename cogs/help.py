@@ -80,13 +80,13 @@ Written with `{count_python('.'):,}` lines.
                 allcogs.append(f"{num} {cog.qualified_name}")
                 iter+=1
         nl = '\n'
-        embed.add_field(name=f"<:category:882685952999428107> __**Available categories**__ [{len(allcogs)}]", value=f"""
+        embed.add_field(name=f"<:category:882685952999428107> __**Available categories**__ **[{len(allcogs)}]**", value=f"""
 ```fix
 {nl.join(allcogs)}
 ```
         """)
 
-        embed.add_field(name="📰 __**Latest News**__ - <t:1631130337:d> (<t:1631130337:R>)", value = f"""
+        embed.add_field(name="📰 __**Latest News**__ - **<t:1631130337:d> (<t:1631130337:R>)**", value = f"""
 {news}
                         """)
 
@@ -145,7 +145,7 @@ Commands usable by you (in this server): {len(await self.filter_commands(cog.get
 + Type {prefix}help [command] for help on a command
 + Description: {cog.description}
 ```
-__**Available commands**__ [{len(cog.get_commands())}]
+__**Available commands**__ **[{len(cog.get_commands())}]**
 ```fix
 {val}
 ```

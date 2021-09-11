@@ -47,9 +47,37 @@ def pretty_size(bytes, units=UNITS_MAPPING):
             suffix = multiple
     return str(amount) + suffix
 
-class EmbedPageSourceTwo(menus.ListPageSource):
+class ServerEmotesEmbedPage(menus.ListPageSource):
     async def format_page(self, menu, item):
         embed = discord.Embed(title=f"{menu.ctx.guild}'s emotes [{len(menu.ctx.guild.emojis)}]", description="\n".join(item), timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed.set_footer(text=f"Command requested by {menu.ctx.author}", icon_url=menu.ctx.author.avatar.url)
+
+        return embed
+
+class ServerMembersEmbedPage(menus.ListPageSource):
+    async def format_page(self, menu, item):
+        embed = discord.Embed(title=f"{menu.ctx.guild}'s members [{len(menu.ctx.guild.members)}]", description="\n".join(item), timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed.set_footer(text=f"Command requested by {menu.ctx.author}", icon_url=menu.ctx.author.avatar.url)
+
+        return embed
+
+class ServerBotsEmbedPage(menus.ListPageSource):
+    async def format_page(self, menu, item):
+        embed = discord.Embed(title=f"{menu.ctx.guild}'s bots [{len(list(filter(lambda m : m.bot, menu.ctx.guild.members)))}]", description="\n".join(item), timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed.set_footer(text=f"Command requested by {menu.ctx.author}", icon_url=menu.ctx.author.avatar.url)
+
+        return embed
+
+class ServerRolesEmbedPage(menus.ListPageSource):
+    async def format_page(self, menu, item):
+        embed = discord.Embed(title=f"{menu.ctx.guild}'s roles [{len(menu.ctx.guild.roles)}]", description="\n".join(item), timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed.set_footer(text=f"Command requested by {menu.ctx.author}", icon_url=menu.ctx.author.avatar.url)
+
+        return embed
+
+class BotCommandsEmbedPage(menus.ListPageSource):
+    async def format_page(self, menu, item):
+        embed = discord.Embed(title=f"{menu.ctx.bot.user.name}'s commands [{len(list(menu.ctx.bot.commands))}]", description="\n".join(item), timestamp=discord.utils.utcnow(), color=0x2F3136)
         embed.set_footer(text=f"Command requested by {menu.ctx.author}", icon_url=menu.ctx.author.avatar.url)
 
         return embed
@@ -64,6 +92,35 @@ class EmbedPageSource(menus.ListPageSource):
 def setup(client):
     client.add_cog(info(client))
 
+class Dropdown(discord.ui.Select):
+    def __init__(self):
+
+        # Set the options that will be presented inside the dropdown
+        options = [
+            discord.SelectOption(label='Red', description='Your favourite colour is red', emoji='🟥'),
+            discord.SelectOption(label='Green', description='Your favourite colour is green', emoji='🟩'),
+            discord.SelectOption(label='Blue', description='Your favourite colour is blue', emoji='🟦')
+        ]
+
+        # The placeholder is what will be shown when no option is chosen
+        # The min and max values indicate we can only pick one of the three options
+        # The options parameter defines the dropdown options. We defined this above
+        super().__init__(placeholder='Choose your favourite colour...', min_values=1, max_values=1, options=options)
+
+    async def callback(self, interaction: discord.Interaction):
+        # Use the interaction object to send a response message containing
+        # the user's favourite colour or choice. The self object refers to the
+        # Select object, and the values attribute gets a list of the user's
+        # selected options. We only want the first one.
+        await interaction.response.send_message(f'Your favourite colour is {self.values[0]}', ephemeral=True)
+
+class DropdownView(discord.ui.View):
+    def __init__(self):
+        super().__init__()
+
+        # Adds the dropdown to our view object.
+        self.add_item(Dropdown())
+
 class info(commands.Cog):
     "ℹ️ All informative commands like `serverinfo`, `userinfo` and more!"
     def __init__(self, client):
@@ -72,6 +129,7 @@ class info(commands.Cog):
 
     @commands.command(help="Shows you information about the member you mentioned", aliases=['ui', 'user', 'member', 'memberinfo'], brief="https://cdn.discordapp.com/attachments/878984821081272401/878986523423416370/userinfo.gif")
     @commands.cooldown(1, 5, BucketType.member)
+    @helpers.is_user_blacklisted()
     async def userinfo(self, ctx, member : discord.Member=None):
         if member == None:
             member = ctx.author
@@ -225,11 +283,14 @@ Acknowledgments: {acknowledgments}
         embed.set_thumbnail(url=member.avatar.url)
         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
+
+        view = DropdownView()
         await ctx.reply(embed=embed)
 
 
     @commands.command(help="Shows you information about the server", aliases=['si', 'guild', 'guildinfo'])
     @commands.cooldown(1, 5, BucketType.member)
+    @helpers.is_user_blacklisted()
     async def serverinfo(self, ctx, id : int=None):
         if id:
             server = self.client.get_guild(id)
@@ -372,7 +433,10 @@ Features:
         await ctx.reply(embed=embed)
 
     @commands.command(help="Shows information about the bot", aliases=['bi'])
+    @helpers.is_user_blacklisted()
     async def botinfo(self, ctx):
+        prefix = await self.client.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1', ctx.guild.id)
+        prefix = prefix or 'sb!'
         p = pathlib.Path('./')
         cm = cr = fn = cl = ls = fc = 0
         for f in p.rglob('*.py'):
@@ -391,6 +455,7 @@ Features:
                     if '#' in l:
                         cm += 1
                     ls += 1
+
         text_channels = len([channel for channel in self.client.get_all_channels() if isinstance(channel, discord.TextChannel)])
         voice_channels = len([channel for channel in self.client.get_all_channels() if isinstance(channel, discord.VoiceChannel)])
         categories = len([channel for channel in self.client.get_all_channels() if isinstance(channel, discord.CategoryChannel)])
@@ -398,9 +463,11 @@ Features:
         threads = channels = len([channel for channel in self.client.get_all_channels() if isinstance(channel, discord.Thread)])
 
         embed = discord.Embed(title=f"{self.client.user.name}", description=f"""
-<:members:858326990725709854> Members: {len(self.client.users)} (:robot: )
+<:members:858326990725709854> Members: {len(self.client.users)} (:robot: {len(list(filter(lambda m : m.bot, self.client.users)))})
 <:servers:870152102759006208> Servers: {len(self.client.guilds)}
 <:text_channel:876503902554578984> Channels: <:text_channel:876503902554578984> {text_channels} <:voice:860330111377866774> {voice_channels} <:category:882685952999428107> {categories} <:stagechannel:824240882793447444> {stage_channels} <:threadnew:833432474347372564> {threads}
+Prefix: {prefix}
+Messages seen: {self.client.messages} ({self.client.edited_messages} edited)
 
 :file_folder: Files: {fc}
 Lines: {ls:,}
@@ -415,7 +482,22 @@ Coroutine: {cr}
 
         await ctx.reply(embed=embed)
 
+    @commands.command(help="Shows a list of commands this bot has", aliases=['commands', 'command', 'cmds', 'commandslist', 'cmdslist', 'commands_list', 'cmds_list', 'commandlist', 'cmdlist', 'command_list', 'cmd_list'])
+    @helpers.is_user_blacklisted()
+    async def _commands(self, ctx):
+        botCommands = self.client.commands
+        commands = []
+
+        for command in botCommands:
+            commands.append(f"{command.name} **|** {command.help}")
+
+        commands = [sub.replace('hentai', '||hentai||') for sub in commands]
+
+        menu = menus.MenuPages(BotCommandsEmbedPage(commands, per_page=10))
+        await menu.start(ctx)
+
     @commands.command(help="Shows you a list of emotes from this server", aliases=['emojilist', 'emote_list', 'emoji_list', 'emote', 'emoji', 'emotes', 'emojis'])
+    @helpers.is_user_blacklisted()
     async def emotelist(self, ctx, id : int=None):
         if id:
             server = self.client.get_guild(id)
@@ -435,10 +517,68 @@ Coroutine: {cr}
           if not emoji.animated:
               emotes.append(f"<:{emoji.name}:{emoji.id}> **|** {emoji.name} **|** `<:{emoji.name}:{emoji.id}>`")
 
-        menu = menus.MenuPages(EmbedPageSourceTwo(emotes, per_page=10))
+        menu = menus.MenuPages(ServerEmotesEmbedPage(emotes, per_page=10))
+        await menu.start(ctx)
+
+    @commands.command(help="Shows you a list of members from this server", aliases=['member_list', 'memlist', 'mem_list'])
+    @helpers.is_user_blacklisted()
+    async def memberlist(self, ctx, id : int=None):
+        if id:
+            server = self.client.get_guild(id)
+            if not server:
+                return await ctx.reply("I couldn't find that server. Make sure the ID you entered was correct.")
+        else:
+            server = ctx.guild
+
+        guildMembers = server.members
+        members = []
+
+        for member in guildMembers:
+            members.append(f"{member.name} **|** {member.mention} **|** `{member.id}`")
+
+        menu = menus.MenuPages(ServerMembersEmbedPage(members, per_page=10))
+        await menu.start(ctx)
+
+    @commands.command(help="Shows you a list of bots from this server", aliases=['bot_list', 'bolist', 'bo_list'])
+    @helpers.is_user_blacklisted()
+    async def botlist(self, ctx, id : int=None):
+        if id:
+            server = self.client.get_guild(id)
+            if not server:
+                return await ctx.reply("I couldn't find that server. Make sure the ID you entered was correct.")
+        else:
+            server = ctx.guild
+
+        guildBots = list(filter(lambda m : m.bot, server.members))
+        bots = []
+
+        for bot in guildBots:
+            bots.append(f"{bot.name} **|** {bot.mention} **|** `{bot.id}`")
+
+        menu = menus.MenuPages(ServerBotsEmbedPage(bots, per_page=10))
+        await menu.start(ctx)
+
+    @commands.command(help="Shows you a list of roles from this server", aliases=['role_list', 'rolist', 'ro_list'])
+    @helpers.is_user_blacklisted()
+    async def rolelist(self, ctx, id : int=None):
+        if id:
+            server = self.client.get_guild(id)
+            if not server:
+                return await ctx.reply("I couldn't find that server. Make sure the ID you entered was correct.")
+        else:
+            server = ctx.guild
+
+        guildRoles = server.roles
+        roles = []
+
+        for role in guildRoles:
+            roles.append(f"{role.name} **|** {role.mention} **|** `{role.id}`")
+
+        menu = menus.MenuPages(ServerRolesEmbedPage(roles, per_page=10))
         await menu.start(ctx)
 
     @commands.command(help="Shows information about the channel", aliases=['ci', 'channel'])
+    @helpers.is_user_blacklisted()
     async def channelinfo(self, ctx, channel : discord.TextChannel=None):
         if channel == None:
             channel = ctx.channel
@@ -460,6 +600,7 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         await ctx.reply(embed=embed)
 
     @commands.command(help="Shows the avatar of the member you mentioned", aliases=['av'])
+    @helpers.is_user_blacklisted()
     async def avatar(self, ctx, member : discord.Member=None):
         if member == None:
             member = ctx.author
@@ -482,6 +623,7 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
 
     @commands.command(help="Shows the banner of the member you mentioned", aliases=['bn'])
     @commands.cooldown(1, 5, BucketType.member)
+    @helpers.is_user_blacklisted()
     async def banner(self, ctx, member : discord.Member=None):
         errorMessage = f"{member} doesn't have a banner."
         if member == None or member == ctx.author:
@@ -509,6 +651,7 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
 
     @commands.command(help="Shows you the bot's latency")
     @commands.cooldown(1, 5, BucketType.member)
+    @helpers.is_user_blacklisted()
     async def ping(self, ctx):
         pings = []
         number = 0
@@ -567,6 +710,7 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         await message.edit(content="Received ping!", embed=embed)
 
     @commands.command(help="Shows you the uptime of the bot", aliases=['up'])
+    @helpers.is_user_blacklisted()
     async def uptime(self, ctx):
         embed = discord.Embed(title=f'I\'ve been online since {discord.utils.format_dt(self.client.launch_time, style="f")} ({discord.utils.format_dt(self.client.launch_time, style="R")})', timestamp=discord.utils.utcnow(), color=0x2F3136)
         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
@@ -574,35 +718,19 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         await ctx.reply(embed=embed)
 
     @commands.command(help="Shows how many servers the bot is in", aliases=['server'])
+    @helpers.is_user_blacklisted()
     async def servers(self, ctx):
         embed = discord.Embed(title=f'I\' in `{self.client.guilds}` servers.', timestamp=discord.utils.utcnow(), color=0x2F3136)
         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
         await ctx.reply(embed=embed)
 
-    @commands.command(help="Shows you a list of commands the bot has", aliases=['commands', 'command'])
-    async def cmds(self, ctx):
-        ignored_cogs = ['Jishaku', 'nsfw']
-
-        def divide_chunks(str_list, n):
-            for i in range(0, len(str_list), n):
-                yield str_list[i:i + n]
-
-        shown_commands = [c.name for c in self.client.commands if c.cog_name not in ignored_cogs]
-        ml = max([len(c.name) for c in self.client.commands if c.cog_name not in ignored_cogs]) + 1
-
-        all_commands = list(divide_chunks(shown_commands, 3))
-        all_commands = '\n'.join([''.join([f"{x}{' ' * (ml - len(x))}" for x in c]).strip() for c in all_commands])
-
-        embed = discord.Embed(title=f"Here's a list of my commands [{len(shown_commands)}]", description=f"""
-```fix
-{all_commands}
-```
-        """, timestamp=discord.utils.utcnow(), color=0x2F3136)
-
-        await ctx.reply(embed=embed)
+    @commands.command(help="Shows how many messages the bot has seen", aliases=['msg', 'msgs', 'message'])
+    async def messages(self, ctx):
+        await ctx.reply(f"I've a total of `{self.client.messages}` messages and `{self.client.edited_messages}` edits.")
 
     @commands.command(help="Sends a suggestion", aliases=['bot_suggestion', 'suggestion', 'make_suggestion', 'botsuggestion', 'makesuggestion'])
+    @helpers.is_user_blacklisted()
     async def suggest(self, ctx, *, suggestion):
         if len(suggestion) > 750:
             return await ctx.reply("Your suggestion exceeded the 750-character limit.")
@@ -622,6 +750,7 @@ Suggestion: {suggestion}
 
     @commands.command(help="Shows you information about a character", aliases=['characterinfo', 'character_info', 'char_info'])
     @commands.cooldown(1, 5, BucketType.member)
+    @helpers.is_user_blacklisted()
     async def charinfo(self, ctx, *, characters: str):
         def to_string(c):
             digit = f'{ord(c):x}'
@@ -633,6 +762,7 @@ Suggestion: {suggestion}
         await menu.start(ctx)
 
     @commands.command(help="Shows you who helped with the making of this bot", aliases=['credit'])
+    @helpers.is_user_blacklisted()
     async def credits(self, ctx):
         embed = discord.Embed(title="Credits", description="""
 Owner: Ender2K89#9999
@@ -645,10 +775,12 @@ Tested verify command: Eiiknostv#2016
         await ctx.reply(embed=embed)
 
     @commands.command(help="Shows the current time", aliases=['date'])
+    @helpers.is_user_blacklisted()
     async def time(self, ctx):
         await ctx.reply(f"The current time is {discord.utils.format_dt(discord.utils.utcnow(), style='T')}")
 
     @commands.command()
+    @helpers.is_user_blacklisted()
     async def afk(self, ctx, *, reason=None):
         member = ctx.author
         if reason == None:
@@ -668,6 +800,7 @@ Tested verify command: Eiiknostv#2016
 
     @commands.command(help="Sends the source code of the bot/a command")
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
+    @helpers.is_user_blacklisted()
     async def source(self, ctx, *, command : str=None):
         prefix = await self.client.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1', ctx.guild.id)
         prefix = prefix or 'sb!'

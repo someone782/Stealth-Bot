@@ -17,17 +17,14 @@ class events(commands.Cog):
     def __init__(self, client):
         self.hidden = True
         self.client = client
-        self.messages = 0
-        self.edited_messages = 0
-
-    @commands.command()
-    async def messages(self, ctx):
-        await ctx.reply(f"I've a total of `{self.messages}` messages since last restart and `{self.edited_messages}` edits.")
-
+        if not hasattr(self.client, 'messages'):
+            self.client.messages = 0
+        if not hasattr(self.client, 'edited_messages'):
+            self.client.edited_messages = 0
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        self.messages = self.messages + 1
+        self.client.messages = self.client.messages + 1
         if message.content in [f'<@!{self.client.user.id}>', f'<@{self.client.user.id}>']:
             await message.reply("fuck off")
         if message.author.id in afks.keys():
@@ -48,7 +45,7 @@ class events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
-        self.edited_messages = self.edited_messages + 1
+        self.client.edited_messages = self.client.edited_messages + 1
         await self.client.process_commands(after)
 
     @commands.Cog.listener()

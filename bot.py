@@ -62,6 +62,8 @@ client.reddit = asyncpraw.Reddit(
     user_agent = "Yo mom",
 )
 
+client.user_id = int('760179628122964008')
+
 	# Functions and stuff
 
 async def create_db_pool():
