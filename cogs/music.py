@@ -11,8 +11,8 @@ TIME_REGEX = r"([0-9]{1,2})[:ms](([0-9]{1,2})s?)?"
 cancel_emote = "❌"
 
 def setup(bot):
-    bot.add_cog(SocketFix(bot))
-    bot.add_cog(Music(bot))
+    bot.add_cog(socketfix(bot))
+    bot.add_cog(music(bot))
 
 # ERRORS
 class FullVoiceChannel(commands.CommandError):
@@ -475,10 +475,8 @@ class CustomPlayer(lavalink.BasePlayer):
 
         await self.node._dispatch_event(NodeChangedEvent(self, old_node, node))
 
-class Music(commands.Cog):
-    """
-    🎵 Commands related to playing music through the bot in a voice channel (made by DaPandaOfficial🐼#5684).
-    """
+class music(commands.Cog):
+    "Commands used for playing music"
     def __init__(self, bot):
         self.bot = bot
         if not hasattr(bot, 'lavalink'):  # This ensures the client isn't overwritten during cog reloads.
@@ -961,7 +959,7 @@ class Music(commands.Cog):
         embed = discord.Embed(color = discord.Color.red(),description='Track not found.')
         return await ctx.send(embed=embed)
 
-class SocketFix(commands.Cog):
+class socketfix(commands.Cog):
     """
     🖥️ Socket Fix For The Music Player.
     """

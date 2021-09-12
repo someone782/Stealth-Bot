@@ -20,28 +20,10 @@ class errorhandler(commands.Cog):
         prefix = await self.client.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1', ctx.guild.id)
         prefix = prefix or 'sb!'
 
-        ignored = (
-            music.FullVoiceChannel,
-            music.NotAuthorized,
-            music.IncorrectChannelError,
-            music.AlreadyConnectedToChannel,
-            music.NoVoiceChannel,
-            music.QueueIsEmpty,
-            music.NoCurrentTrack,
-            music.PlayerIsAlreadyPaused,
-            music.PlayerIsNotPaused,
-            music.NoMoreTracks,
-            music.InvalidTimeString,
-            music.NoPerms,
-            music.NoConnection,
-            music.AfkChannel,
-            music.SkipInLoopMode,
-            music.InvalidTrack,
-            music.InvalidPosition,
-            music.InvalidVolume
-        )
-        if isinstance(error, ignored):
-            return
+        cog = ctx.cog
+        if cog:
+            if cog._get_overriden_method(cog.cog_command_error) is not None:
+                return
 
         elif isinstance(error, commands.CommandNotFound):
             if ctx.author.id == 564890536947875868 and ctx.bot.no_prefix is True:
