@@ -34,8 +34,8 @@ class errorhandler(commands.Cog):
             command_names = [str(x) for x in ctx.bot.commands]
             matches = get_close_matches(ctx.invoked_with, command_names)
             if matches:
-                #matches = "\n".join(matches)
-                message = f"I couldn't find that command. Did you mean...\n{matches[0]}"
+                matches = "\n".join(matches)
+                message = f"I couldn't find that command. Did you mean...\n{matches}"
 
         elif isinstance(error, helpers.NotSH):
             message = f"You can only use this command in `Stealth Hangout`!\ndiscord.gg/ktkXwmD2kF"
@@ -100,11 +100,8 @@ Note: I can't edit the owner of the server
             command = f"{ctx.prefix}{ctx.command} {ctx.command.signature}"
             separator = (' ' * (len(command.split(missing)[0])-1))
             indicator = ('^' * (len(missing)+2))
-            print(f"`{separator}`  `{indicator}`")
-            print(error.param)
-            print()
-            await ctx.send(f"""```{command}\n{separator}{indicator}\n{missing} is a required argument that is missing.```""")
-            return
+            message = f"```{command}\n{separator}{indicator}\n{missing} is a required argument that is missing.```"
+            return await ctx.send(f"""```{command}\n{separator}{indicator}\n{missing} is a required argument that is missing.```""")
 
         elif isinstance(error, commands.RoleNotFound):
             message = "I couldn't find that role."

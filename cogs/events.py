@@ -21,12 +21,18 @@ class events(commands.Cog):
             self.client.messages = 0
         if not hasattr(self.client, 'edited_messages'):
             self.client.edited_messages = 0
+        if not hasattr(self.client, 'last_message'):
+            self.client.last_message = None
+        if not hasattr(self.client, 'last_message_author'):
+            self.client.last_message_author = None
 
     @commands.Cog.listener()
     async def on_message(self, message):
         self.client.messages = self.client.messages + 1
         if message.content in [f'<@!{self.client.user.id}>', f'<@{self.client.user.id}>']:
             await message.reply("fuck off")
+        if message.content in ['oi whois']:
+            await message.reply("bruh")
         if message.author.id in afks.keys():
             afks.pop(message.author.id)
             try:
@@ -47,6 +53,11 @@ class events(commands.Cog):
     async def on_message_edit(self, before, after):
         self.client.edited_messages = self.client.edited_messages + 1
         await self.client.process_commands(after)
+
+    @commands.Cog.listener()
+    async def on_message_delete(self, message):
+        self.client.last_message = message.content
+        self.client.last_message_author = message.author
 
     @commands.Cog.listener()
     async def on_member_join(self, member): # If a member joined the server then:

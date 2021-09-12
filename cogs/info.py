@@ -512,10 +512,10 @@ Coroutine: {cr}
         for emoji in guildEmotes:
 
           if emoji.animated:
-             emotes.append(f"<a:{emoji.name}:{emoji.id}> **|** {emoji.name} **|** `<a:{emoji.name}:{emoji.id}>`")
+             emotes.append(f"<a:{emoji.name}:{emoji.id}> **|** {emoji.name} **|** [`<a:{emoji.name}:{emoji.id}>`](https://cdn.discordapp.com/emojis/{emoji.id}.gif)")
 
           if not emoji.animated:
-              emotes.append(f"<:{emoji.name}:{emoji.id}> **|** {emoji.name} **|** `<:{emoji.name}:{emoji.id}>`")
+              emotes.append(f"<:{emoji.name}:{emoji.id}> **|** {emoji.name} **|** [`<:{emoji.name}:{emoji.id}>`](https://cdn.discordapp.com/emojis/{emoji.id}.png)")
 
         menu = menus.MenuPages(ServerEmotesEmbedPage(emotes, per_page=10))
         await menu.start(ctx)
@@ -536,7 +536,7 @@ Coroutine: {cr}
         for member in guildMembers:
             members.append(f"{member.name} **|** {member.mention} **|** `{member.id}`")
 
-        menu = menus.MenuPages(ServerMembersEmbedPage(members, per_page=10))
+        menu = menus.MenuPages(ServerMembersEmbedPage(members, per_page=20))
         await menu.start(ctx)
 
     @commands.command(help="Shows you a list of bots from this server", aliases=['bot_list', 'bolist', 'bo_list'])
@@ -729,6 +729,13 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
     async def messages(self, ctx):
         await ctx.reply(f"I've a total of `{self.client.messages}` messages and `{self.client.edited_messages}` edits.")
 
+    @commands.command()
+    async def snipe(self, ctx):
+        embed = discord.Embed(title="Sniped message", description=f"Message: {self.client.last_message}\nAuthor: {self.client.last_message_author} **|** {self.client.last_message_author.id}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+
+        await ctx.reply(embed=embed)
+
     @commands.command(help="Sends a suggestion", aliases=['bot_suggestion', 'suggestion', 'make_suggestion', 'botsuggestion', 'makesuggestion'])
     @helpers.is_user_blacklisted()
     async def suggest(self, ctx, *, suggestion):
@@ -771,6 +778,7 @@ Helped with a lot: LeoCx1000#9999
 Main help command page inspired by: Charles#5244
 Made music cog: DaPandaOfficial🐼#5684
 A lot of command ideas: Vicente0670 YT#0670
+A lot of command ideas too: ROLEX#0009
 Tested verify command: Eiiknostv#2016
 ```
         """, timestamp=discord.utils.utcnow(), color=0x2F3136)
