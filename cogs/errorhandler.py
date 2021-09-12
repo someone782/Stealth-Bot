@@ -143,8 +143,22 @@ Note: I can't edit the owner of the server
             message = "I couldn't find that extension/cog."
 
         else:
-            message = f"An unexpected error occurred.\n{error}"
+            message = f"An unexpected error occurred.\nI've reported it to the devs."
 
+            traceback_string = "".join(traceback.format_exception(etype=None, value=error, tb=error.__traceback__))
+
+            channel = self.client.get_channel(886572124477730848)
+
+            await channel.send(f"""
+Author: {ctx.author} **|** {ctx.author.id} **|** {ctx.author.mention}
+Channel: {ctx.channel} **|** {ctx.channel.id} **|** {ctx.channel.mention}
+Server: {ctx.guild} **|** {ctx.guild.id}
+
+Traceback:
+```
+{traceback_string}
+```
+            """)
         embed = discord.Embed(description=message, color=0x2F3136)
 
         await ctx.reply(embed=embed)

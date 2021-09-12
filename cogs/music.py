@@ -1,4 +1,4 @@
-import re, random, discord, lavalink, datetime as dt, typing, random
+import re, random, discord, lavalink, datetime as dt, typing, random, asyncio, zlib ,json
 from time import time
 from lavalink.events import (NodeChangedEvent, PlayerUpdateEvent,  # noqa: F401
                             QueueEndEvent, TrackEndEvent, TrackExceptionEvent,
@@ -8,10 +8,13 @@ from discord.ext.menus.views import ViewMenuPages
 
 url_rx = re.compile(r'https?://(?:www\.)?.+')
 TIME_REGEX = r"([0-9]{1,2})[:ms](([0-9]{1,2})s?)?"
+cancel_emote = "❌"
 
 def setup(bot):
-    bot.add_cog(music(bot))
+    bot.add_cog(SocketFix(bot))
+    bot.add_cog(Music(bot))
 
+# ERRORS
 class FullVoiceChannel(commands.CommandError):
     pass
 
@@ -66,6 +69,20 @@ class InvalidPosition(commands.CommandError):
 class InvalidVolume(commands.CommandError):
     pass
 
+class OutOfTrack(commands.CommandError):
+    pass
+
+class NegativeSeek(commands.CommandError):
+    pass
+#CUSTOM FUNCTIONS
+def seconds(stringTime):
+    return sum(
+        [
+            {"s":1, "m":60, "h":3600, "d":86400}[k]*int(v)
+            for v, k in re.findall(r"(\d{1,5}(?:[.,]?\d{1,5})?)([smhd])", stringTime)
+        ]
+    )
+
 #MENUS / DROPDOWNS
 class QueueMenu(menus.ListPageSource):
     """Player queue paginator class."""
@@ -97,7 +114,7 @@ class PlayMenu(discord.ui.Select):
             author = track['info']['author']
             id = track['info']['identifier']
             values.append(discord.SelectOption(label=title , value = id,description=author, emoji=f'{integer}\U0000fe0f\U000020e3'))
-        values.append(discord.SelectOption(label='Cancel',description = 'Cancels the action and disconnects the player, if the queue remains empty.', emoji=f'<:redTick:596576672149667840>'))
+        values.append(discord.SelectOption(label='Cancel',description = 'Cancels the action and disconnects the player, if the queue remains empty.', emoji=cancel_emote))
         super().__init__(placeholder='Select a track', min_values=1, max_values=1, options=values)
 
     async def callback(self, interaction: discord.Interaction):
@@ -140,7 +157,7 @@ class LoopMenu(discord.ui.Select):
             discord.SelectOption(label='Off',emoji=f'➡️'
         ))
         values.append(
-            discord.SelectOption(label='Cancel',emoji=f'<:tickNo:885222934036226068>'
+            discord.SelectOption(label='Cancel',emoji=cancel_emote
         ))
         super().__init__(placeholder='Select a loop mode', min_values=1, max_values=1, options=values)
 
@@ -458,7 +475,7 @@ class CustomPlayer(lavalink.BasePlayer):
 
         await self.node._dispatch_event(NodeChangedEvent(self, old_node, node))
 
-class music(commands.Cog):
+class Music(commands.Cog):
     """
     🎵 Commands related to playing music through the bot in a voice channel (made by DaPandaOfficial🐼#5684).
     """
@@ -551,6 +568,14 @@ class music(commands.Cog):
             embed = discord.Embed(color = discord.Color.red(),description = 'Please enter a value between 1 and 100')
             return await ctx.send(embed=embed)
 
+        if isinstance(error, OutOfTrack):
+            embed = discord.Embed(color = discord.Color.red(),description = 'Can\'t seek out of the track')
+            return await ctx.send(embed=embed)
+
+        if isinstance(error, NegativeSeek):
+            embed = discord.Embed(color = discord.Color.red(),description = 'Can\'t seek on negative timestamp')
+            return await ctx.send(embed=embed)
+
     async def ensure_voice(self, ctx):
         """ This check ensures that the bot and command author are in the same voicechannel. """
         player = self.bot.lavalink.player_manager.create(ctx.guild.id, endpoint=str(ctx.guild.region))
@@ -580,34 +605,56 @@ class music(commands.Cog):
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member: discord.Member, before: discord.VoiceState, after: discord.VoiceState):
-        if member.bot:
-            return
-
+        if member.bot: return
         player = self.bot.lavalink.player_manager.get(member.guild.id)
-        if player is None:
-            return
-        if not player.channel_id or not player:
-            self.bot.lavalink.player_manager.remove(member.guild.id)
-            return
+        if player is None: return
+        if not player.channel_id or not player: return self.bot.lavalink.player_manager.remove(member.guild.id)
         channel = self.bot.get_channel(int(player.channel_id))
-        if member == player.dj and after.channel is None:
-            for m in channel.members:
-                if m.bot:
-                    continue
+        text_channel = self.bot.get_channel(int(player.text_channel))
+        members = 0
+        for m in channel.members:
+            if not m.bot:
+                members += 1
+        if members > 0:
+            if member.id == player.dj:
+                if after.channel is None:
+                    members = []
+                    for m in channel.members:
+                        if not m.bot:
+                            members.append(m.id)
+                    player.dj = random.choice(members)
+                    new_dj = member.guild.get_member(player.dj)
+                    embed = discord.Embed(title=f'New DJ',color=discord.Color.blurple(),description=f'Now {new_dj.mention} is in charge!')
+                    await text_channel.send(embed=embed)
                 else:
-                    player.dj =m
-                    return
-
-        elif after.channel == channel and player.dj not in channel.members:
-            player.dj = member
-
-        if player.is_connected:
-            if len(channel.members) == 1:
-                player.queue.clear()
-                await player.stop()
-                await member.guild.change_voice_state(channel=None)
+                    if after.channel.id != int(player.channel_id):
+                        members = []
+                        for m in channel.members:
+                            if not m.bot:
+                                members.append(m.id)
+                        player.dj = random.choice(members)
+                        new_dj = member.guild.get_member(player.dj)
+                        embed = discord.Embed(title=f'New DJ',color=discord.Color.blurple(),description=f'Now {new_dj.mention} is in charge!')
+                        await text_channel.send(embed=embed)
+        else:
+            player.queue.clear()
+            await player.stop()
+            await member.guild.change_voice_state(channel=None)
 
     async def track_hook(self, event):
+        if isinstance(event, QueueEndEvent):
+                time = 0
+                while time < 180:
+                    if event.player.is_playing:
+                        return
+                    else:
+                        await asyncio.sleep(5)
+                        time += 5
+                guild = self.bot.get_guild(int(event.player.guild_id))
+                await guild.change_voice_state(channel=None)
+                channel = self.bot.get_channel(int(event.player.text_channel))
+                embed = discord.Embed(title=f'Inactive player', color=discord.Color.red(),description = 'There were no tracks played in the past 3 minutes.' )
+                await channel.send(embed=embed)
         if isinstance(event, TrackStartEvent):
             if event.player.loop != 1:
                 channel = self.bot.get_channel(int(event.player.text_channel))
@@ -622,8 +669,7 @@ class music(commands.Cog):
     def is_privileged(self, ctx: commands.Context):
         """Check whether the user is an Admin or DJ or alone in a VC."""
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
-        if len(ctx.author.voice.channel.members) == 2:return True #Already giving the dj perms if the original dj disconnects ?
-        elif player.dj == ctx.author.id: return True
+        if player.dj == ctx.author.id: return True
         elif ctx.author.guild_permissions.manage_messages: return True
         else: return False
 
@@ -738,8 +784,8 @@ class music(commands.Cog):
         embed = discord.Embed(color = discord.Color.blurple(),description = "The playback was stopped.")
         return await ctx.send(embed=embed)
 
-    @commands.command(name="clear_queue")
-    async def clear_queue_command(self,ctx: commands.Context):
+    @commands.command(name="clear")
+    async def clear_command(self,ctx: commands.Context):
         """Removes all tracks from the queue"""
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
         #CHECKING
@@ -784,11 +830,11 @@ class music(commands.Cog):
         if not player.is_connected: raise NoVoiceChannel
         if not self.is_privileged(ctx): raise NotAuthorized
         #ACTUAL PART
-        embed = discord.Embed(color = discord.Color.blurple(),description = "Choose loop mode\
+        embed = discord.Embed(color = discord.Color.blurple(),description = f"Choose loop mode\
             \n**:repeat_one: Track** - Starts looping your currently playing track.\
             \n**:repeat: Queue** - Starts looping your current queue.\
             \n **:arrow_right: Off** - Stops looping.\
-            \n**<:tickNo:885222934036226068> Cancel** - Cancels the action.")
+            \n**{cancel_emote} Cancel** - Cancels the action.")
         await ctx.send(embed=embed,view = LoopMenuView(self.bot, ctx))
 
     @commands.command(name="queue",aliases=['q', 'que', 'list', 'upcoming'])
@@ -836,18 +882,30 @@ class music(commands.Cog):
 
     @commands.command(name="seek")
     async def seek_command(self,ctx: commands.Context, position: str):
-        """Skips to the specified timestamp in the currently playing track"""
+        """Skips to the specified timestamp in the currently playing track (input: H:M:S)"""
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
         #CHECKING
         if not player.is_connected: raise NoVoiceChannel
         if not self.is_privileged(ctx): raise NotAuthorized
-        if not player.current:raise NoCurrentTrack()
-        if not (match := re.match(TIME_REGEX, position)): raise InvalidTimeString
-        if match.group(3): secs = (int(match.group(1)) * 60) + (int(match.group(3)))
-        else: secs = int(match.group(1))
-        #ACTUAL PART
+        time_stamp = ''
+        try:
+            position = position.split(':')
+            if len(position) == 1:
+                time_stamp = f"{position[0]}s"
+            if len(position) == 2:
+                time_stamp = f"{position[0]}m:{position[1]}s"
+            if len(position) == 3:
+                time_stamp = f"{position[0]}h:{position[1]}m:{position[2]}s"
+        except:
+            pass
+        if not player.current: raise NoCurrentTrack()
+        if not (secs := seconds(time_stamp)): raise InvalidTimeString()
+        if (secs * 1000) > player.current.duration:
+            raise OutOfTrack
+        if secs < 0:
+            raise NegativeSeek
         await player.seek(secs * 1000)
-        embed = discord.Embed(color = discord.Color.blurple(),description = f"The current track was seeked to **{position}**.")
+        embed = discord.Embed(color = discord.Color.blurple(),description = f"The current track was seeked to **{str(dt.timedelta(seconds=secs))}**")
         return await ctx.send(embed=embed)
 
     @commands.command(name="volume",aliases=['vol'])
@@ -883,7 +941,7 @@ class music(commands.Cog):
         else:
             embed = discord.Embed(color = discord.Color.blurple(),description=f'Successfully removed tracks **`{start}`** to **`{end}`** from the queue ({len(player.queue[start-1:end-1])} tracks)')
             del player.queue[start-1:end]
-        await ctx.send(embed=embed,footer = False)
+        await ctx.send(embed=embed)
 
     @commands.command(name="move")
     async def move_command(self,ctx: commands.Context,position: int,*,track: str):
@@ -902,3 +960,33 @@ class music(commands.Cog):
                 return await ctx.send(embed=embed)
         embed = discord.Embed(color = discord.Color.red(),description='Track not found.')
         return await ctx.send(embed=embed)
+
+class SocketFix(commands.Cog):
+    """
+    🖥️ Socket Fix For The Music Player.
+    """
+    def __init__(self, bot):
+        self.bot = bot
+        self._zlib = zlib.decompressobj()
+        self._buffer = bytearray()
+
+    @commands.Cog.listener()
+    async def on_socket_raw_receive(self, msg):
+        """ This is to replicate discord.py's 'on_socket_response' that was removed from discord.py v2 """
+        if type(msg) is bytes:
+            self._buffer.extend(msg)
+
+            if len(msg) < 4 or msg[-4:] != b'\x00\x00\xff\xff':
+                return
+
+            try:
+                msg = self._zlib.decompress(self._buffer)
+            except Exception:
+                self._buffer = bytearray()  # Reset buffer on fail just in case...
+                return
+
+            msg = msg.decode('utf-8')
+            self._buffer = bytearray()
+
+        msg = json.loads(msg)
+        self.bot.dispatch('socket_custom_receive', msg)

@@ -119,10 +119,10 @@ class mod(commands.Cog):
         except:
             return await member.kick(reason=reason)
 
-    @commands.command(help="Bulk deletes a certain amount of messages", aliases=['purge', 'cls', 'clr'])
+    @commands.command(help="Bulk deletes a certain amount of messages", aliases=['cls', 'clr'])
     @commands.check_any(commands.has_permissions(manage_messages=True), commands.is_owner())
     @commands.bot_has_permissions(send_messages=True, embed_links=True, manage_messages=True)
-    async def clear(self, ctx, amount : int, channel : discord.TextChannel=None):
+    async def purge(self, ctx, amount : int, channel : discord.TextChannel=None):
         if amount > 1000:
             return await ctx.reply("Amount cannot be more than 1000.")
 

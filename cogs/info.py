@@ -127,7 +127,7 @@ class info(commands.Cog):
         self.client = client
         client.session = aiohttp.ClientSession()
 
-    @commands.command(help="Shows you information about the member you mentioned", aliases=['ui', 'user', 'member', 'memberinfo'], brief="https://cdn.discordapp.com/attachments/878984821081272401/878986523423416370/userinfo.gif")
+    @commands.command(help="Shows you information about the member you mentioned", aliases=['ui', 'user', 'member', 'memberinfo'], brief="https://cdn.discordapp.com/attachments/876937268609290300/886407195279884318/userinfo.gif")
     @commands.cooldown(1, 5, BucketType.member)
     @helpers.is_user_blacklisted()
     async def userinfo(self, ctx, member : discord.Member=None):
@@ -765,12 +765,16 @@ Suggestion: {suggestion}
     @helpers.is_user_blacklisted()
     async def credits(self, ctx):
         embed = discord.Embed(title="Credits", description="""
+```yaml
 Owner: Ender2K89#9999
-Helped make bot open-source and with a lot of other things: LeoCx1000#9999
+Helped with a lot: LeoCx1000#9999
 Main help command page inspired by: Charles#5244
+Made music cog: DaPandaOfficial🐼#5684
 A lot of command ideas: Vicente0670 YT#0670
 Tested verify command: Eiiknostv#2016
+```
         """, timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
         await ctx.reply(embed=embed)
 
