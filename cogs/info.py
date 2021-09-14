@@ -141,6 +141,11 @@ class info(commands.Cog):
         else:
             botText = "No"
 
+        if member.pending == True:
+            pendingText = "Yes"
+        else:
+            pendingText = "No"
+
         if member.premium_since == None:
             premiumText = "Not boosting"
         else:
@@ -254,6 +259,7 @@ Mention: {member.mention}
 <:greyTick:596576672900186113> ID: {member.id}
 
 :robot: Bot?: {botText}
+Pending verification?: {pendingText}
 AFK?: {afkStatus}
 Avatar url: {avatar}
 Banner url: {banner}
@@ -283,8 +289,6 @@ Acknowledgments: {acknowledgments}
         embed.set_thumbnail(url=member.avatar.url)
         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-
-        view = DropdownView()
         await ctx.reply(embed=embed)
 
 

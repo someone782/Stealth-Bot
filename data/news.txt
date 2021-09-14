@@ -1,9 +1,7 @@
-_ _
-> :musical_note: New music system!
-• Do `%%PREFIX%%help music` to view all the music commands!
+> 🇫 The bot might get less updates for a bit.
 
-> <:pog_cat:859833551419998218> New AFK system!
-• Use the `%%PREFIX%%AFK` command to go AFK!
+> 🎵 New music system!
+• Do %%PREFIX%%help music to view all the music commands!
 
-> :frog: Improved the meme commands!
-• Both meme commands now show popular memes only!
+> 🅰️ New AFK system!
+• Use the %%PREFIX%%AFK command to go AFK!

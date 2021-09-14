@@ -31,8 +31,6 @@ class events(commands.Cog):
         self.client.messages = self.client.messages + 1
         if message.content in [f'<@!{self.client.user.id}>', f'<@{self.client.user.id}>']:
             await message.reply("fuck off")
-        if message.content in ['oi whois']:
-            await message.reply("bruh")
         if message.author.id in afks.keys():
             afks.pop(message.author.id)
             try:

@@ -55,6 +55,7 @@ client.vote_bots_gg = "https://discord.bots.gg/bots/760179628122964008"
 client.repo = "https://github.com/Ender2K89/Stealth-Bot"
 client.allowed_mentions = discord.AllowedMentions(replied_user=False)
 client.session = aiohttp.ClientSession()
+client.blacklist = {}
 
 client.reddit = asyncpraw.Reddit(
     client_id = "zrJUgDUtW8lfumULcVcbEg",
@@ -73,7 +74,7 @@ async def create_db_pool():
                    "host": "localhost"}
 
     client.db = await asyncpg.create_pool(**credentials)
-    print("Connected to PostgreSQL")
+    print("connected to PostgreSQL")
 
     await client.db.execute("CREATE TABLE IF NOT EXISTS guilds(guild_id bigint PRIMARY KEY, prefix text);")
 
@@ -94,16 +95,11 @@ async def change_vc(): # Makes a task called "change_vc"
 
 @client.event
 async def on_ready():
-    #try:
-        #change_status.start() # Starts the task called "change_status"
-        #print("Started task: change_status") # Prints "Started task: change_status"
-    #except Exception as e:
-      #print("change_status task is already active therefor we can't start it again | on_ready")
     change_vc.start() # Starts the task called "change_vc"
-    print("Started task: change_vc") # Prints "Started task: change_vc"
+    print("started task: change_vc") # Prints "Started task: change_vc"
     print('-------------================----------------') # Prints some lines to make it look better
-    print(f"Connected to bot: {client.user.name}") # Prints "Connected to the bot {Name of the bot}"
-    print(f"Bot ID: {client.user.id}") # Prints "Bot ID {ID of the bot}"
+    print(f"connected to bot: {client.user.name}") # Prints "Connected to the bot {Name of the bot}"
+    print(f"bot ID: {client.user.id}") # Prints "Bot ID {ID of the bot}"
     print('-------------================----------------') # Prints some lines to make it look better
 
     channel = client.get_channel(883658687867158529) # Get the channel called "bot_logs" (883658687867158529) and store it as the variable "channel"
@@ -114,7 +110,10 @@ async def on_ready():
 
     await client.tracker.cache_invites() # Caches the invites
 
+    print("tracker has been loaded")
+
 client.load_extension('jishaku')
+print("jishaku has been loaded")
 
 
 for filename in os.listdir('./cogs'): # For every file in the folder called "cogs"
@@ -122,6 +121,23 @@ for filename in os.listdir('./cogs'): # For every file in the folder called "cog
         client.load_extension(f'cogs.{filename[:-3]}') # Load the file as a extension/cog
         print(f'{filename[:-3]}.py has been loaded')
 print('-------------================----------------')
+
+async def run_once_when_ready():
+    await client.wait_until_ready()
+    values = await client.db.fetch("SELECT user_id, is_blacklisted FROM blacklist")
+
+    for value in values:
+        client.blacklist[value['user_id']] = (value['is_blacklisted'] or False)
+    print("blacklist system has been loaded")
+
+@client.check
+async def blacklist(ctx: commands.Context):
+    if ctx.author.id in client.owner_ids:
+        return True
+    try:
+        return client.blacklist[ctx.author.id] is False
+    except KeyError:
+        return True
 
 @client.event
 async def on_invite_create(invite):
@@ -213,6 +229,6 @@ async def disable_vc(ctx):
     except: # If something went wrong while starting the "change_vc" task then:
       await ctx.send("Couldn't stop the task bump cause it's already stopped") # Sends "Couldn't start the task change_vc cause it's already active"
 
-
 client.loop.run_until_complete(create_db_pool())
+client.loop.create_task(run_once_when_ready())
 client.run(yaml_data['TOKEN'], reconnect=True) # Runs the bot with the token being the variable "TOKEN"

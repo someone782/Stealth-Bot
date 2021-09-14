@@ -20,10 +20,16 @@ class errorhandler(commands.Cog):
         prefix = await self.client.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1', ctx.guild.id)
         prefix = prefix or 'sb!'
 
-        cog = ctx.cog
-        if cog:
-            if cog._get_overriden_method(cog.cog_command_error) is not None:
-                return
+        error = getattr(error, "original", error)
+
+        ignored = (
+        )
+
+        if isinstance(error, ignored):
+            return
+
+        elif isinstance(error, commands.CheckFailure):
+            message = f"It appears that you're blacklisted from this bot. Contact Ender2K89#9999 if you think this is a mistake."
 
         elif isinstance(error, commands.CommandNotFound):
             if ctx.author.id == 564890536947875868 and ctx.bot.no_prefix is True:

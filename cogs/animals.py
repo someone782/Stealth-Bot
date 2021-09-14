@@ -14,6 +14,21 @@ class animals(commands.Cog):
         self.client = client
 
 
+    @commands.command()
+    @commands.bot_has_permissions(send_messages=True, embed_links=True)
+    async def waifu(self, ctx):
+        async with aiohttp.ClientSession() as session:
+            request = await session.get('https://api.hori.ovh/sfw/waifu/')
+            overjson = await request.json()
+            request2 = await session.get('https://some-random-api.ml/facts/cat')
+            factjson = await request2.json()
+
+        embed = discord.Embed(title="Meow", timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed.set_image(url=dogjson['link'])
+        embed.set_footer(text=factjson['fact'])
+        await ctx.reply(embed=embed)
+
+
     @commands.command(help="🐱 Shows a picture of a cat and a random fact about cats")
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
     async def cat(self, ctx):

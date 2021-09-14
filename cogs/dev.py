@@ -248,3 +248,47 @@ git push origin main
         else:
             embed = discord.Embed(title = 'Reloaded all extensions', color=ctx.me.color, description = desc)
             await message.edit(embed=embed)
+
+    @commands.group(invoke_without_command=True, help="Blacklist command", aliases=['bl'])
+    @commands.is_owner()
+    async def blacklist(self, ctx):
+        if ctx.invoked_subcommand is None:
+            return await ctx.reply("youre so retarded")
+
+    @blacklist.command(name="add", help="Adds a member to the blacklist", aliases=['a'])
+    async def blacklist_add(self, ctx, member : discord.User):
+
+        await self.client.db.execute(
+            "INSERT INTO blacklist(user_id, is_blacklisted) VALUES ($1, $2) "
+            "ON CONFLICT (user_id) DO UPDATE SET is_blacklisted = $2",
+            member.id, True)
+
+        self.client.blacklist[member.id] = True
+
+        embed = discord.Embed(description=f"Successfully added {member} to the blacklist", timestamp=discord.utils.utcnow(), color=0x2F3136)
+
+        return await ctx.reply(embed=embed)
+
+    @blacklist.command(name="remove", help="Removes a member from the blacklist", aliases=['r', 'rm'])
+    async def blacklist_remove(self, ctx, member : discord.User):
+
+        await self.client.db.execute(
+            "DELETE FROM blacklist where user_id = $1",
+            member.id)
+
+        self.client.blacklist[member.id] = False
+
+        embed = discord.Embed(description=f"Successfully removed {member} from the blacklist", timestamp=discord.utils.utcnow(), color=0x2F3136)
+
+        return await ctx.reply(embed=embed)
+
+    @blacklist.command(name='check', help="Checks if a member is blacklisted", aliases=['c'])
+    async def blacklist_check(self, ctx, member : discord.User):
+        try:
+            status = self.client.blacklist[member.id]
+
+        except KeyError:
+            status = False
+        embed = discord.Embed(description=f"{member} {'is' if status is True else 'is not'} blacklisted", timestamp=discord.utils.utcnow(), color=0x2F3136)
+
+        return await ctx.reply(embed=embed)

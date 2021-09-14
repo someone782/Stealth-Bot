@@ -19,17 +19,40 @@ def reading_recursive(root: str, /) -> int:
 def count_python(root: str) -> int:
     return sum(reading_recursive(root))
 
+class Dropdown(discord.ui.Select):
+    def __init__(self):
+
+        # Set the options that will be presented inside the dropdown
+        options = [
+            discord.SelectOption(label='Red', description='Your favourite colour is red', emoji='🟥'),
+            discord.SelectOption(label='Green', description='Your favourite colour is green', emoji='🟩'),
+            discord.SelectOption(label='Blue', description='Your favourite colour is blue', emoji='🟦')
+        ]
+
+        # The placeholder is what will be shown when no option is chosen
+        # The min and max values indicate we can only pick one of the three options
+        # The options parameter defines the dropdown options. We defined this above
+        super().__init__(placeholder='Select a category...', min_values=1, max_values=1, options=options)
+
+    async def callback(self, interaction: discord.Interaction):
+        # Use the interaction object to send a response message containing
+        # the user's favourite colour or choice. The self object refers to the
+        # Select object, and the values attribute gets a list of the user's
+        # selected options. We only want the first one.
+        await interaction.response.send_message(f'Your favourite colour is {self.values[0]}', ephemeral=True)
+
 class VoteButtons(discord.ui.View):
     def __init__(self):
         super().__init__()
         self.add_item(discord.ui.Button(emoji="<:topgg:870133913102721045>", label='top.gg', url="https://top.gg/bot/760179628122964008"))
         self.add_item(discord.ui.Button(emoji="<:botsgg:870134146972938310>", label='bots.gg', url="https://discord.bots.gg/bots/760179628122964008"))
 
-class Buttons(discord.ui.View):
+class Stuff(discord.ui.View):
     def __init__(self):
         super().__init__()
         self.add_item(discord.ui.Button(emoji="<:invite:860644752281436171>", label='Invite me', url="https://discord.com/api/oauth2/authorize?client_id=760179628122964008&permissions=8&scope=bot"))
         self.add_item(discord.ui.Button(emoji="<:github:744345792172654643>", label='Source code', url="https://github.com/Ender2K89/Stealth-Bot"))
+        self.add_item(Dropdown())
 
     @discord.ui.button(label='Vote', style=discord.ButtonStyle.gray, emoji="<:topgg:870133913102721045>")
     async def receive(self, button: discord.ui.Button, interaction: discord.Interaction):
@@ -86,13 +109,15 @@ Written with `{count_python('.'):,}` lines.
 ```
         """)
 
-        embed.add_field(name="📰 __**Latest News**__ - **<t:1631130337:d> (<t:1631130337:R>)**", value = f"""
+        embed.add_field(name="📰 __**Latest News**__ - **<t:1631558059:d> (<t:1631558059:R>)**", value = f"""
+```fix
 {news}
+```
                         """)
 
         embed.set_footer(text=f"Suggested command: {prefix}{random.choice(list(self.context.bot.commands))} • Credits given in {prefix}credits")
 
-        await ctx.reply(embed=embed, view=Buttons())
+        await ctx.reply(embed=embed, view=Stuff())
 
 
 
