@@ -62,7 +62,7 @@ class StealthBot(commands.Bot):
         try:
             prefix = self.prefixes[message.guild.id]
         except KeyError:
-            prefix = (await self.db.fetchval('SELECT prefix FROM prefixes WHERE guild_id = $1',
+            prefix = (await self.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1',
                                              message.guild.id)) or self.PRE
             prefix = prefix if prefix[0] else self.PRE
 
