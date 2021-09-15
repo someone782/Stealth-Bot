@@ -49,25 +49,29 @@ moderated_servers = [799330949686231050]
 #         prefix = DEFAULT_PREFIX
 #     return commands.when_mentioned_or(prefix)(client, message)
 
-async def get_prefix(client, message : discord.Message, raw_prefix : Optional[bool] = False) -> List[str]:
-    if not message:
-        return commands.when_mentioned_or(*PRE)(client, message) if not raw_prefix else PRE
-    if not message.guild:
-        return commands.when_mentioned_or(*PRE)(client, message) if not raw_prefix else PRE
-    try:
-        prefix = client.prefixes[message.guild.id]
-    except KeyError:
-        prefix = (await client.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1',
-                                         message.guild.id)) or PRE
-        prefix = prefix if prefix[0] else PRE
+class StealthBot(commands.Bot):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+    async def get_prefix(client, message : discord.Message, raw_prefix : Optional[bool] = False) -> List[str]:
+        if not message:
+            return commands.when_mentioned_or(*PRE)(client, message) if not raw_prefix else PRE
+        if not message.guild:
+            return commands.when_mentioned_or(*PRE)(client, message) if not raw_prefix else PRE
+        try:
+            prefix = client.prefixes[message.guild.id]
+        except KeyError:
+            prefix = (await client.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1',
+                                             message.guild.id)) or PRE
+            prefix = prefix if prefix[0] else PRE
+    
+            client.prefixes[message.guild.id] = prefix
+    
+        if await client.is_owner(message.author) and client.no_prefix is True:
+            return commands.when_mentioned_or(*prefix, "")(client, message) if not raw_prefix else prefix
+        return commands.when_mentioned_or(*prefix)(client, message) if not raw_prefix else prefix
 
-        client.prefixes[message.guild.id] = prefix
+client = StealthBot(command_prefix=get_prefix, intents=discord.Intents.all(), activity=activity, status=status, case_insensitive=True, help_command=None, enable_debug_events = True) # Initializes the client object
 
-    if await client.is_owner(message.author) and client.no_prefix is True:
-        return commands.when_mentioned_or(*prefix, "")(client, message) if not raw_prefix else prefix
-    return commands.when_mentioned_or(*prefix)(client, message) if not raw_prefix else prefix
-
-client = commands.Bot(command_prefix=get_prefix, intents=discord.Intents.all(), activity=activity, status=status, case_insensitive=True, help_command=None, enable_debug_events = True) # Initializes the client object
 client.tracker = DiscordUtils.InviteTracker(client) # Initializes the tracker object
 client.owner_ids = [564890536947875868] # 349373972103561218 (LeoCx1000)
 client.launch_time = discord.utils.utcnow()
