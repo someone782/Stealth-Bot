@@ -5,6 +5,7 @@ import helpers
 from difflib import get_close_matches
 import traceback
 from cogs import music
+import errors
 
 def setup(client):
     client.add_cog(errorhandler(client))
@@ -28,7 +29,7 @@ class errorhandler(commands.Cog):
         if isinstance(error, ignored):
             return
 
-        elif isinstance(error, commands.CheckFailure):
+        elif isinstance(error, errors.AuthorBlacklisted):
             message = f"It appears that you're blacklisted from this bot. Contact Ender2K89#9999 if you think this is a mistake."
 
         elif isinstance(error, commands.CommandNotFound):

@@ -6,6 +6,7 @@ from unidecode import unidecode
 import os
 import aiohttp
 import random
+import errors
 import datetime
 import yaml
 import pickle
@@ -16,12 +17,16 @@ from discord.ext import commands, tasks
 import DiscordUtils
 import asyncpg
 import asyncpraw
+from typing import (
+    List,
+    Optional
+)
 
 with open(r'config.yaml') as file:
     full_yaml = yaml.load(file)
 yaml_data = full_yaml
 
-DEFAULT_PREFIX = 'sb!'
+PRE = ('sb!',)
 activity = discord.Game(name="@Stealth Bot help")
 status = "online"
 prof.load_censor_words_from_file("/root/stealthbot/data/badwords.txt") # Loads the badwords.txt file
@@ -31,31 +36,50 @@ fun_stuff_category = [829419667873333248, 829419746843426886, 799662507484119071
 no_mic_channel = [843135406589476885]
 moderated_servers = [799330949686231050]
 
-async def get_prefix(client, message):
+# async def get_prefix(client, message):
+#     if not message.guild:
+#         return commands.when_mentioned_or(DEFAULT_PREFIX)(client, message)
+#     prefix = await client.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1', message.guild.id)
+#     if await client.is_owner(message.author) and client.no_prefix == True:
+#         if prefix:
+#             return commands.when_mentioned_or(prefix, "")(client, message)
+#         else:
+#             return commands.when_mentioned_or(DEFAULT_PREFIX, "")(client, message)
+#     if not prefix:
+#         prefix = DEFAULT_PREFIX
+#     return commands.when_mentioned_or(prefix)(client, message)
+
+async def get_prefix(client, message : discord.Message, raw_prefix : Optional[bool] = False) -> List[str]:
+    if not message:
+        return commands.when_mentioned_or(*PRE)(client, message) if not raw_prefix else PRE
     if not message.guild:
-        return commands.when_mentioned_or(DEFAULT_PREFIX)(client, message)
-    prefix = await client.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1', message.guild.id)
-    if await client.is_owner(message.author) and client.no_prefix == True:
-        if prefix:
-            return commands.when_mentioned_or(prefix, "")(client, message)
-        else:
-            return commands.when_mentioned_or(DEFAULT_PREFIX, "")(client, message)
-    if not prefix:
-        prefix = DEFAULT_PREFIX
-    return commands.when_mentioned_or(prefix)(client ,message)
+        return commands.when_mentioned_or(*PRE)(client, message) if not raw_prefix else PRE
+    try:
+        prefix = client.prefixes[message.guild.id]
+    except KeyError:
+        prefix = (await client.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1',
+                                         message.guild.id)) or PRE
+        prefix = prefix if prefix[0] else PRE
+
+        client.prefixes[message.guild.id] = prefix
+
+    if await client.is_owner(message.author) and client.no_prefix is True:
+        return commands.when_mentioned_or(*prefix, "")(client, message) if not raw_prefix else prefix
+    return commands.when_mentioned_or(*prefix)(client, message) if not raw_prefix else prefix
 
 client = commands.Bot(command_prefix=get_prefix, intents=discord.Intents.all(), activity=activity, status=status, case_insensitive=True, help_command=None, enable_debug_events = True) # Initializes the client object
 client.tracker = DiscordUtils.InviteTracker(client) # Initializes the tracker object
-# client.owner_ids = [349373972103561218, 564890536947875868]
+client.owner_ids = [564890536947875868] # 349373972103561218 (LeoCx1000)
 client.launch_time = discord.utils.utcnow()
 client.no_prefix = False
 client.invite_url = "https://discord.com/api/oauth2/authorize?client_id=760179628122964008&permissions=8&scope=bot"
-client.vote_top_gg = "Soon"
-client.vote_bots_gg = "https://discord.bots.gg/bots/760179628122964008"
-client.repo = "https://github.com/Ender2K89/Stealth-Bot"
+client.top_gg = "https://top.gg/bot/760179628122964008"
+client.bots_gg = "https://discord.bots.gg/bots/760179628122964008"
+client.github = "https://github.com/Ender2K89/Stealth-Bot"
 client.allowed_mentions = discord.AllowedMentions(replied_user=False)
 client.session = aiohttp.ClientSession()
 client.blacklist = {}
+client.prefixes = {}
 
 client.reddit = asyncpraw.Reddit(
     client_id = "zrJUgDUtW8lfumULcVcbEg",
@@ -130,14 +154,32 @@ async def run_once_when_ready():
         client.blacklist[value['user_id']] = (value['is_blacklisted'] or False)
     print("blacklist system has been loaded")
 
+    values = await client.db.fetch("SELECT guild_id, prefix FROM guilds")
+
+    for value in values:
+        if value['prefix']:
+            client.prefixes[value['guild_id']] = ((value['prefix'] if value['prefix'][0] else PRE) or PRE)
+
+    for guild in client.guilds:
+        if not guild.unavailable:
+            try:
+                client.prefixes[guild.id]
+            except KeyError:
+                client.prefixes[guild.id] = PRE
+
 @client.check
-async def blacklist(ctx: commands.Context):
-    if ctx.author.id in client.owner_ids:
-        return True
+def blacklist(ctx):
     try:
-        return client.blacklist[ctx.author.id] is False
+        is_blacklisted = client.blacklist[ctx.author.id]
     except KeyError:
+        is_blacklisted = False
+    if ctx.author.id == client.owner_id:
+        is_blacklisted = False
+
+    if is_blacklisted is False:
         return True
+    else:
+        raise errors.AuthorBlacklisted
 
 @client.event
 async def on_invite_create(invite):

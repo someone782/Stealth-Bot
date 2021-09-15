@@ -8,10 +8,37 @@ from discord.ext.commands.cooldowns import BucketType
 def setup(client):
     client.add_cog(mod(client))
 
+class BanEmbed(menus.ListPageSource):
+    def __init__(self, data, per_page=15):
+        super().__init__(data, per_page=per_page)
+
+    @staticmethod
+    async def format_page(entries):
+        embed = discord.Embed(title=f"Server bans ({len(entries)})",
+                              description="\n".join(entries))
+        embed.set_footer(text=f"To unban do db.unban [entry]\nMore user info do db.baninfo [entry]")
+        return embed
+
 class mod(commands.Cog):
     "<:staff:858326975869485077> Moderation commands"
     def __init__(self, client):
         self.client = client
+
+    @commands.command(help="Gets the current guild's list of bans")
+    @commands.has_permissions(ban_members=True)
+    @commands.bot_has_permissions(send_messages=True, embed_links=True, ban_members=True)
+    @commands.cooldown(1, 3.0, commands.BucketType.user)
+    async def bans(self, ctx: commands.Context) -> discord.Message:
+        bans = await ctx.guild.bans()
+        if not bans:
+            return await ctx.send(embed=discord.Embed(title="There are no banned users in this server"))
+        desc = []
+        number = 1
+        for ban_entry in bans:
+            desc.append(f"**{number}) {ban_entry.user}**")
+            number = number + 1
+        pages = menus.MenuPages(source=BanEmbed(desc), clear_reactions_after=True)
+        await pages.start(ctx)
 
     @commands.command()
     async def punish(self, ctx):

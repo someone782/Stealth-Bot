@@ -38,25 +38,93 @@ class other(commands.Cog):
         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
         await ctx.reply(embed=embed, view=view)
 
-    @commands.command(help="Changes the prefix for the current server", aliases=['pre', 'setprefix', 'set_prefix'])
-    @commands.check_any(commands.has_permissions(manage_guild=True), commands.is_owner())
-    async def prefix(self, ctx, prefix=None):
-        old = await self.client.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1', ctx.guild.id)
-        if not prefix:
-            old = old or 'sb!'
-            await ctx.send(f"My prefix in this server is `{old}`.")
-            return
+    # @commands.command(help="Changes the prefix for the current server", aliases=['pre', 'setprefix', 'set_prefix'])
+    # @commands.check_any(commands.has_permissions(manage_guild=True), commands.is_owner())
+    # async def prefix(self, ctx, prefix=None):
+    #     old = await self.client.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1', ctx.guild.id)
+    #     if not prefix:
+    #         old = old or 'sb!'
+    #         await ctx.send(f"My prefix in this server is `{old}`.")
+    #         return
+    #
+    #     if len(prefix) > 10:
+    #         return await ctx.send("Prefix cannot be more than 10 characters.")
+    #     if not old:
+    #         await self.client.db.execute('INSERT INTO guilds(guild_id, prefix) VALUES ($1, $2)', ctx.guild.id, prefix)
+    #         await ctx.send(f"Changed prefix from `{old}` to `{prefix}`.")
+    #     elif old != prefix:
+    #         await self.client.db.execute('UPDATE guilds SET prefix = $1 WHERE guild_id = $2', prefix, ctx.guild.id)
+    #         await ctx.send(f"Changed prefix from `{old}` to `{prefix}`.")
+    #     else:
+    #         await ctx.send(f"`{prefix}` is already the prefix.")
 
-        if len(prefix) > 10:
-            return await ctx.send("Prefix cannot be more than 10 characters.")
-        if not old:
-            await self.client.db.execute('INSERT INTO guilds(guild_id, prefix) VALUES ($1, $2)', ctx.guild.id, prefix)
-            await ctx.send(f"Changed prefix from `{old}` to `{prefix}`.")
-        elif old != prefix:
-            await self.client.db.execute('UPDATE guilds SET prefix = $1 WHERE guild_id = $2', prefix, ctx.guild.id)
-            await ctx.send(f"Changed prefix from `{old}` to `{prefix}`.")
+    @commands.group(invoke_without_command=True, aliases=['prefix'])
+    async def prefixes(self, ctx: commands.Context) -> discord.Message:
+        """ Lists all the bots prefixes. """
+        prefixes = await self.client.get_prefix(self.client, ctx.message, raw_prefix=True)
+        embed = discord.Embed(title="Here are my prefixes:",
+                              description=ctx.me.mention + '\n' + '\n'.join(prefixes),
+                              color=ctx.me.color)
+        return await ctx.send(embed=embed)
+
+    @commands.check_any(commands.has_permissions(manage_guild=True), commands.is_owner())
+    @prefixes.command(name="add")
+    async def prefixes_add(self, ctx: commands.Context,
+                           new: str) -> discord.Message:
+        """Adds a prefix to the bots prefixes.\nuse quotes to add spaces: %PRE%prefix \"duck \" """
+
+        old = list(await self.client.get_prefix(self.client, ctx.message, raw_prefix=True))
+
+        if len(new) > 50:
+            return await ctx.send("Prefixes can only be up to 50 characters!")
+
+        if len(old) > 30:
+            return await ctx.send("You can only have up to 20 prefixes!")
+
+        if new not in old:
+            old.append(new)
+            await self.client.db.execute(
+                "INSERT INTO guilds(guild_id, prefix) VALUES ($1, $2) "
+                "ON CONFLICT (guild_id) DO UPDATE SET prefix = $2",
+                ctx.guild.id, old)
+
+            self.client.prefixes[ctx.guild.id] = old
+
+            return await ctx.send(f"**Successfully added `{new}`**\nMy prefixes are: `{'`, `'.join(old)}`")
         else:
-            await ctx.send(f"`{prefix}` is already the prefix.")
+            return await ctx.send(f"That is already one of my prefixes!")
+
+    @commands.check_any(commands.has_permissions(manage_guild=True), commands.is_owner())
+    @prefixes.command(name="remove", aliases=['delete'])
+    async def prefixes_remove(self, ctx: commands.Context,
+                              prefix: str) -> discord.Message:
+        """Removes a prefix from the bots prefixes.\nuse quotes to add spaces: %PRE%prefix \"duck \" """
+
+        old = list(await self.client.get_prefix(self.client, ctx.message, raw_prefix=True))
+
+        if prefix in old:
+            old.remove(prefix)
+            await self.client.db.execute(
+                "INSERT INTO guilds(guild_id, prefix) VALUES ($1, $2) "
+                "ON CONFLICT (guild_id) DO UPDATE SET prefix = $2",
+                ctx.guild.id, old)
+
+            self.client.prefixes[ctx.guild.id] = old
+
+            return await ctx.send(f"**Successfully removed `{prefix}`**\nMy prefixes are: `{'`, `'.join(old)}`")
+        else:
+            return await ctx.send(f"That is not one of my prefixes!")
+
+    @commands.check_any(commands.has_permissions(manage_guild=True), commands.is_owner())
+    @prefixes.command(name="clear", aliases=['delall'])
+    async def prefixes_clear(self, ctx):
+        """ Clears the bots prefixes, resetting it to default. """
+        await self.client.db.execute(
+            "INSERT INTO guilds(guild_id, prefix) VALUES ($1, $2) "
+            "ON CONFLICT (guild_id) DO UPDATE SET prefix = $2",
+            ctx.guild.id, None)
+        self.client.prefixes[ctx.guild.id] = self.client.PRE
+        return await ctx.send("**Cleared prefixes!**")
 
 
     @commands.command()
