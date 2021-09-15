@@ -50,27 +50,29 @@ moderated_servers = [799330949686231050]
 #     return commands.when_mentioned_or(prefix)(client, message)
 
 class StealthBot(commands.Bot):
+    PRE: tuple = ('sb!',)
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-    async def get_prefix(client, message : discord.Message, raw_prefix : Optional[bool] = False) -> List[str]:
-        if not message:
-            return commands.when_mentioned_or(*PRE)(client, message) if not raw_prefix else PRE
-        if not message.guild:
-            return commands.when_mentioned_or(*PRE)(client, message) if not raw_prefix else PRE
-        try:
-            prefix = client.prefixes[message.guild.id]
-        except KeyError:
-            prefix = (await client.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1',
-                                             message.guild.id)) or PRE
-            prefix = prefix if prefix[0] else PRE
-    
-            client.prefixes[message.guild.id] = prefix
-    
-        if await client.is_owner(message.author) and client.no_prefix is True:
-            return commands.when_mentioned_or(*prefix, "")(client, message) if not raw_prefix else prefix
-        return commands.when_mentioned_or(*prefix)(client, message) if not raw_prefix else prefix
+        super().__init__(command_prefix=self.get_prefix, *args, **kwargs)
 
-client = StealthBot(command_prefix=get_prefix, intents=discord.Intents.all(), activity=activity, status=status, case_insensitive=True, help_command=None, enable_debug_events = True) # Initializes the client object
+    async def get_prefix(self, bot, message: discord.Message, raw_prefix: Optional[bool] = False) -> List[str]:
+        if not message:
+            return commands.when_mentioned_or(*self.PRE)(bot, message) if not raw_prefix else self.PRE
+        if not message.guild:
+            return commands.when_mentioned_or(*self.PRE)(bot, message) if not raw_prefix else self.PRE
+        try:
+            prefix = self.prefixes[message.guild.id]
+        except KeyError:
+            prefix = (await self.db.fetchval('SELECT prefix FROM prefixes WHERE guild_id = $1',
+                                             message.guild.id)) or self.PRE
+            prefix = prefix if prefix[0] else self.PRE
+
+            self.prefixes[message.guild.id] = prefix
+
+        if await bot.is_owner(message.author) and bot.noprefix is True:
+            return commands.when_mentioned_or(*prefix, "")(bot, message) if not raw_prefix else prefix
+        return commands.when_mentioned_or(*prefix)(bot, message) if not raw_prefix else prefix
+
+client = StealthBot(intents=discord.Intents.all(), activity=activity, status=status, case_insensitive=True, help_command=None, enable_debug_events = True) # Initializes the client object
 
 client.tracker = DiscordUtils.InviteTracker(client) # Initializes the tracker object
 client.owner_ids = [564890536947875868] # 349373972103561218 (LeoCx1000)
