@@ -47,7 +47,7 @@ class ErrorHandler(commands.Cog):
         )
         
         if isinstance(error, ignored):
-            return
+            return await ctx.send("test")
 
         elif isinstance(error, commands.CommandNotFound):
             if ctx.author.id == 564890536947875868 and self.client.no_prefix is True:
