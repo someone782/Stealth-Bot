@@ -11,9 +11,9 @@ from discord.ext import commands
 from discord.ext.commands.cooldowns import BucketType
 
 def setup(client):
-    client.add_cog(fun(client))
+    client.add_cog(Fun(client))
 
-class fun(commands.Cog):
+class Fun(commands.Cog):
     "🤪 Fun commands like -meme, -hug and more"
     def __init__(self, client):
         self.client = client

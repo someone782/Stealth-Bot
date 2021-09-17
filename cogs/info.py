@@ -90,9 +90,9 @@ class EmbedPageSource(menus.ListPageSource):
         return embed
 
 def setup(client):
-    client.add_cog(info(client))
+    client.add_cog(Info(client))
 
-class info(commands.Cog):
+class Info(commands.Cog):
     "ℹ️ All informative commands like `serverinfo`, `userinfo` and more!"
     def __init__(self, client):
         self.client = client
