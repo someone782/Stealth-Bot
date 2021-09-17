@@ -488,3 +488,41 @@ class Other(commands.Cog):
 🇿🇼"""
         bar = foo.split('\n')
         await ctx.send(f"Here's a list of flags: {', '.join(bar)}")
+
+    @commands.command()
+    async def helpo(self, ctx):
+        embed = discord.Embed(title="Help Panel")
+        embed.add_field(name="-help CogName", value=f"`CogDescriptipn`", inline=True)
+        embed.add_field(name="-help CogName", value=f"`CogDescriptipn`", inline=True)
+        embed.add_field(name="-help CogName", value=f"`CogDescriptipn`", inline=True)
+        embed.add_field(name="-help CogName", value=f"`CogDescriptipn`", inline=True)
+        
+        await ctx.send(embed=embed)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
