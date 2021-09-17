@@ -575,7 +575,7 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
     @commands.command(help="Shows the avatar of the member you mentioned", aliases=['av'])
     @commands.cooldown(1, 5, BucketType.member)
     async def avatar(self, ctx, member : discord.Member=None):
-        errorMessage f"{member} doesnt have a avatar."
+        errorMessage = f"{member} doesnt have a avatar."
         if member == None:
             member = ctx.author
             errorMessage = "You don't have a avatar."
