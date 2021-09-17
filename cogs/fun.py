@@ -12,6 +12,9 @@ from discord.ext.commands.cooldowns import BucketType
 
 def setup(client):
     client.add_cog(Fun(client))
+    
+def addCounter():
+    self.client.counter = self.client.counter + 1
 
 class Fun(commands.Cog):
     "🤪 Fun commands like -meme, -hug and more"
@@ -19,9 +22,6 @@ class Fun(commands.Cog):
         self.client = client
         if not hasattr(self.client, 'counter'):
             self.client.counter = 0
-            
-    def addCounter():
-        self.client.counter = self.client.counter + 1
             
     @commands.command(help="Adds a number to the global counter")
     async def count(self, ctx):
