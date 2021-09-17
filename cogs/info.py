@@ -443,7 +443,6 @@ Features:
 <:text_channel:876503902554578984> Channels: <:text_channel:876503902554578984> {text_channels} <:voice:860330111377866774> {voice_channels} <:category:882685952999428107> {categories} <:stagechannel:824240882793447444> {stage_channels} <:threadnew:833432474347372564> {threads}
 Prefixes:
 {text}
-
 Messages seen: {self.client.messages} ({self.client.edited_messages} edited)
 
 :file_folder: Files: {fc}
