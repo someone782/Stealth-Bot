@@ -23,8 +23,6 @@ class Animals(commands.Cog):
       embed = discord.Embed(title="Waifu", timestamp=discord.utils.utcnow(), color=0x2F3136)
       embed.set_image(url=json['url'])
       
-      
-      ctx.tick(True, "bruh")
       await ctx.send(embed=embed)
 
    @commands.command(help="🐱 Shows a picture of a cat and a random fact about cats")
