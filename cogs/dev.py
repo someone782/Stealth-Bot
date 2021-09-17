@@ -200,10 +200,9 @@ git push origin main
                 await message.edit()
             raise e
 
-    @commands.command(help="Reloads all extensions", aliases=['relall', 'rall'], usage="[silent|channel]")
+    @commands.command(help="Reloads all cogs", aliases=['relall', 'rall'])
     @commands.is_owner()
     async def reloadall(self, ctx, argument: typing.Optional[str]):
-        self.client.last_rall = discord.utils.utcnow()
         list = ""
         desc = ""
         err = False
@@ -217,7 +216,8 @@ git push origin main
             if filename.endswith(".py"):
                 list = f"{list} \n🔃 {filename[:-3]}"
 
-        embed = discord.Embed(color=ctx.me.color, description = list)
+        embed = discord.Embed(description=list)
+        
         message = await ctx.send(embed=embed)
 
         for filename in os.listdir("./cogs"):
@@ -238,11 +238,11 @@ git push origin main
             except discord.ext.commands.ExtensionNotFound:
                 desc = f"{desc} \n❌ {filename[:-3]} - Not found"
             except discord.ext.commands.NoEntryPointError:
-                desc = f"{desc} \n❌ {filename[:-3]} - No setup func"
+                desc = f"{desc} \n❌ {filename[:-3]} - No setup function"
             except discord.ext.commands.ExtensionFailed as e:
                 traceback_string = "".join(traceback.format_exception(etype=None, value=e, tb=e.__traceback__))
                 desc = f"{desc} \n❌ {filename[:-3]} - Execution error"
-                embederr = discord.Embed(color=ctx.me.color, description = f"\n❌ {filename[:-3]} Execution error - Traceback\n```\n{traceback_string}\n```")
+                embederr = discord.Embed(description=f"\n❌ {filename[:-3]} Execution error - Traceback\n```\n{traceback_string}\n```")
                 if silent == False:
                     if channel == False: await ctx.author.send(embed=embederr)
                     else: await ctx.send(embed=embederr)
@@ -253,10 +253,13 @@ git push origin main
                 if channel == False: desc = f"{desc} \n\n📬 {ctx.author.mention}, I sent you all the tracebacks."
                 else: desc = f"{desc} \n\n📬 Sent all tracebacks here."
             if silent == True: desc = f"{desc} \n\n📭 silent, no tracebacks sent."
-            embed = discord.Embed(color=ctx.me.color, description = desc, title = 'Reloaded some extensions')
+            embed = discord.Embed(title="Reloaded some cogs", description=desc)
+            
             await message.edit(embed=embed)
+            
         else:
-            embed = discord.Embed(title = 'Reloaded all extensions', color=ctx.me.color, description = desc)
+            embed = discord.Embed(title="Reloaded all extensions", description=desc)
+            
             await message.edit(embed=embed)
 
     @commands.group(invoke_without_command=True, help="Blacklist command", aliases=['bl'])
