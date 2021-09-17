@@ -16,7 +16,7 @@ import re
 from discord.ext import commands, tasks
 import DiscordUtils
 import asyncpg
-import asyncpraw
+import asyncpraw # :troll:
 from typing import (
     List,
     Optional
