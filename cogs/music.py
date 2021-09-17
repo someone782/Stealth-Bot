@@ -130,7 +130,12 @@ def seconds(stringTime):
 
 
 def color(context):
-    return 0x2F3136
+    if isinstance(context, commands.Context):
+        return context.guild.me.color if context.guild.me.color != discord.Color.default() else discord.Color.blurple()
+    elif isinstance(context, discord.Guild):
+        return context.me.color if context.me.color != discord.Color.default() else discord.Color.blurple()
+    else:
+        raise TypeError('Invalid context')
 
 
 def convert_bytes(size):
@@ -219,14 +224,14 @@ class PlayMenu(discord.ui.Select):
             if not self.player.is_playing:
                 return await self.ctx.guild.change_voice_state(channel=None)
         await interaction.response.defer(ephemeral=False)
-        embed = discord.Embed(description='Loading tracks...')
+        embed = discord.Embed(color=color(self.ctx), description='Loading tracks...')
         hook = await interaction.followup.send(embed=embed)
         for track in self.info:
             if self.values[0] == track['info']['identifier']:
                 track = lavalink.models.AudioTrack(track, interaction.user, recommended=True)
                 self.player.add(requester=interaction.user, track=track)
                 await interaction.message.edit(view=None)
-                await hook.edit(embed=discord.Embed(title="Added a track to the queue",
+                await hook.edit(embed=discord.Embed(color=color(self.ctx), title="Added a track to the queue",
                                                     description=f"**[{track.title}]({track.uri})**"))
                 if not self.player.is_playing:
                     await self.player.play()
@@ -275,19 +280,19 @@ class LoopMenu(discord.ui.Select):
     async def callback(self, interaction: discord.Interaction):
         if self.values[0] == 'Track':
             self.player.set_loop(1)
-            embed = discord.Embed(description=f'Loop mode was set to `Track`')
+            embed = discord.Embed(color=color(self.ctx), description=f'Loop mode was set to `Track`')
             await interaction.response.send_message(embed=embed)
             await interaction.message.edit(view=None)
 
         if self.values[0] == 'Queue':
             self.player.set_loop(2)
-            embed = discord.Embed(description=f'Loop mode was set to `Queue`')
+            embed = discord.Embed(color=color(self.ctx), description=f'Loop mode was set to `Queue`')
             await interaction.response.send_message(embed=embed)
             await interaction.message.edit(view=None)
 
         if self.values[0] == 'Off':
             self.player.set_loop(0)
-            embed = discord.Embed(description='Loop mode disabled')
+            embed = discord.Embed(color=color(self.ctx), description='Loop mode disabled')
             await interaction.response.send_message(embed=embed)
             await interaction.message.edit(view=None)
 
@@ -613,7 +618,7 @@ class Music(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         if not hasattr(bot, 'lavalink'):
-            bot.lavalink = lavalink.Client(760179628122964008, CustomPlayer)
+            bot.lavalink = lavalink.Client(config['user_id'], CustomPlayer)
             for node in config['nodes']:
                 bot.lavalink.add_node(**node)
             bot.add_listener(bot.lavalink.voice_update_handler, 'on_socket_custom_receive')
@@ -647,7 +652,7 @@ class Music(commands.Cog):
         if isinstance(error, IncorrectTextChannelError):
             player = self.bot.lavalink.player_manager.create(ctx.guild.id, endpoint=str(ctx.guild.region))
             channel = self.bot.get_channel(int(player.text_channel))
-            return await ctx.send(embed=discord.Embed(title='Error occured',
+            return await ctx.send(embed=discord.Embed(title='Error occured', color=0xD7332A,
                                                       description=f'{ctx.author.mention}, you can only use commands in '
                                                                   f'{channel.mention} for this session.'))
 
@@ -754,7 +759,7 @@ class Music(commands.Cog):
             guild = self.bot.get_guild(int(event.player.guild_id))
             await guild.change_voice_state(channel=None)
             channel = self.bot.get_channel(int(event.player.text_channel))
-            embed = discord.Embed(title=f'Inactive player',
+            embed = discord.Embed(title=f'Inactive player', color=0xD7332A,
                                   description='There were no tracks played in the past 3 minutes.')
             await channel.send(embed=embed)
         if isinstance(event, TrackStartEvent):
@@ -1182,7 +1187,7 @@ class Music(commands.Cog):
 
         elif isinstance(track, int):
             try:
-                x = queue[track]
+                x = queue[track-1]
                 queue.insert(position - 1, queue.pop(queue.index(x)))
                 embed = discord.Embed(color=(color(ctx)),
                                       description=f'Successfully moved **[{x["title"]}]({x["uri"]})** to position `{position}`')
@@ -1236,11 +1241,11 @@ class Music(commands.Cog):
                                                 color=(color(ctx))))
                     else:
                         return await ctx.send(
-                            embed=discord.Embed(title=f'{node} is currently unavailable'))
+                            embed=discord.Embed(title=f'{node} is currently unavailable', color=0xD7332A))
         else:
             return await ctx.send(
-                embed=discord.Embed(title=f'There are no nodes connected with this server'))
-        return await ctx.send(embed=discord.Embed(title=f'Unknown node'))
+                embed=discord.Embed(title=f'There are no nodes connected with this server', color=0xD7332A))
+        return await ctx.send(embed=discord.Embed(title=f'Unknown node', color=0xD7332A))
 
 
 class SocketFix(commands.Cog):
