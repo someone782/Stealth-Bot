@@ -8,6 +8,7 @@ import datetime
 import aiohttp
 import pyfiglet
 from discord.ext import commands
+from discord.ext.commands.cooldowns import BucketType
 
 def setup(client):
     client.add_cog(fun(client))
