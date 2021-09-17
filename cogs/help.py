@@ -72,8 +72,7 @@ class MyHelp(commands.HelpCommand):
 
     async def send_bot_help(self, mapping):
         ctx = self.context
-        prefix = await self.context.bot.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1', ctx.guild.id)
-        prefix = prefix or 'sb!'
+        prefix = self.context.clean_prefix
         with open('./data/news.txt') as f:
             newsFileContext = f.read()
             new1 = f"{newsFileContext}"
@@ -154,8 +153,7 @@ Usage: {self.get_minimal_command_signature(command)}
 
     async def send_cog_help(self, cog):
         ctx = self.context
-        prefix = await self.context.bot.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1', ctx.guild.id)
-        prefix = prefix or 'sb!'
+        prefix = self.context.clean_prefix
         entries = cog.get_commands()
         command_signatures = [self.get_minimal_command_signature(c) for c in entries]
         if command_signatures:

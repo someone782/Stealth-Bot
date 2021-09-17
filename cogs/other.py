@@ -61,7 +61,7 @@ class other(commands.Cog):
     @commands.group(invoke_without_command=True, aliases=['prefix'])
     async def prefixes(self, ctx: commands.Context) -> discord.Message:
         """ Lists all the bots prefixes. """
-        prefixes = await self.client.get_prefix(self.client, ctx.message, raw_prefix=True)
+        prefixes = await self.client.get_pre(self.client, ctx.message, raw_prefix=True)
         embed = discord.Embed(title="Here are my prefixes:",
                               description=ctx.me.mention + '\n' + '\n'.join(prefixes),
                               color=ctx.me.color)
@@ -73,7 +73,7 @@ class other(commands.Cog):
                            new: str) -> discord.Message:
         """Adds a prefix to the bots prefixes.\nuse quotes to add spaces: %PRE%prefix \"duck \" """
 
-        old = list(await self.client.get_prefix(self.client, ctx.message, raw_prefix=True))
+        old = list(await self.client.get_pre(self.client, ctx.message, raw_prefix=True))
 
         if len(new) > 50:
             return await ctx.send("Prefixes can only be up to 50 characters!")
@@ -100,7 +100,7 @@ class other(commands.Cog):
                               prefix: str) -> discord.Message:
         """Removes a prefix from the bots prefixes.\nuse quotes to add spaces: %PRE%prefix \"duck \" """
 
-        old = list(await self.client.get_prefix(self.client, ctx.message, raw_prefix=True))
+        old = list(await self.client.get_pre(self.client, ctx.message, raw_prefix=True))
 
         if prefix in old:
             old.remove(prefix)

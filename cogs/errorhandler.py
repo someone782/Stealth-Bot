@@ -15,11 +15,9 @@ class errorhandler(commands.Cog):
         self.hidden = True
         self.client = client
 
-
     @commands.Cog.listener()
     async def on_command_error(self, ctx : commands.Context, error : commands.CommandError):
-        prefix = await self.client.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1', ctx.guild.id)
-        prefix = prefix or 'sb!'
+        prefix = ctx.clean_prefix
 
         error = getattr(error, "original", error)
 

@@ -36,7 +36,7 @@ fun_stuff_category = [829419667873333248, 829419746843426886, 799662507484119071
 no_mic_channel = [843135406589476885]
 moderated_servers = [799330949686231050]
 
-# async def get_prefix(client, message):
+# async def get_pre(client, message):
 #     if not message.guild:
 #         return commands.when_mentioned_or(DEFAULT_PREFIX)(client, message)
 #     prefix = await client.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1', message.guild.id)
@@ -52,9 +52,9 @@ moderated_servers = [799330949686231050]
 class StealthBot(commands.Bot):
     PRE: tuple = ('sb!',)
     def __init__(self, *args, **kwargs):
-        super().__init__(command_prefix=self.get_prefix, *args, **kwargs)
+        super().__init__(command_prefix=self.get_pre, *args, **kwargs)
 
-    async def get_prefix(self, bot, message: discord.Message, raw_prefix: Optional[bool] = False) -> List[str]:
+    async def get_pre(self, bot, message: discord.Message, raw_prefix: Optional[bool] = False) -> List[str]:
         if not message:
             return commands.when_mentioned_or(*self.PRE)(bot, message) if not raw_prefix else self.PRE
         if not message.guild:
@@ -68,7 +68,7 @@ class StealthBot(commands.Bot):
 
             self.prefixes[message.guild.id] = prefix
 
-        if await bot.is_owner(message.author) and bot.noprefix is True:
+        if await bot.is_owner(message.author) and bot.no_prefix is True:
             return commands.when_mentioned_or(*prefix, "")(bot, message) if not raw_prefix else prefix
         return commands.when_mentioned_or(*prefix)(bot, message) if not raw_prefix else prefix
 
