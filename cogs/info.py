@@ -695,7 +695,7 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         text = f"{days} days, {hours} hours, {minutes} minutes and {seconds} seconds"
 
         # {discord.utils.format_dt(self.client.launch_time, style="f")} ({discord.utils.format_dt(self.client.launch_time, style="R")})
-        embed = discord.Embed(title=f"I've been online for {text}\n{discord.utils.format_dt(self.client.launch_time, style="f")} ({discord.utils.format_dt(self.client.launch_time, style="R")})", timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed = discord.Embed(title=f"I've been online for {text}\n{discord.utils.format_dt(self.client.launch_time, style='f')} ({discord.utils.format_dt(self.client.launch_time, style='R')})", timestamp=discord.utils.utcnow(), color=0x2F3136)
         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
         await ctx.reply(embed=embed)
