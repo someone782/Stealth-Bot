@@ -63,18 +63,15 @@ class Mod(commands.Cog):
             else:
                 await ctx.send(to_send, delete_after=10, reply=False)
         
-    @commands.command()
-    async def cleanup(self, ctx: commands.Context, amount: int = 25):
-        """
-        Cleans up the bots messages. it defaults to 25 messages. if you or the bot don't have manage_messages permission, the search will be limited to 25 messages.
-        """
+    @commands.command(help="Cleans up the bots messages. Defaults to 25 messages. If you or the bot don't have manage messages permissions the search will be limited to 25 messages")
+    async def cleanup(self, ctx, amount : int=25):
         if amount > 25:
+            
             if not ctx.channel.permissions_for(ctx.author).manage_messages:
-                await ctx.send("You must have `manage_messages` permission to perform a search greater than 25")
-                return
+                return await ctx.send("You must have `manage_messages` permission to perform a search greater than 25")
+            
             if not ctx.channel.permissions_for(ctx.me).manage_messages:
-                await ctx.send("I need the `manage_messages` permission to perform a search greater than 25")
-                return
+                return await ctx.send("I need the `manage_messages` permission to perform a search greater than 25")
 
         if ctx.channel.permissions_for(ctx.me).manage_messages:
             prefix = tuple(await self.client.get_pre(self.client, ctx.message))

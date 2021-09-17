@@ -1,8 +1,8 @@
+> 🐛 Fixed a lot of bugs and more!
+• New clean-up command and a lot of bugs were fixed!
+
 > ❗ Support for multiple prefixes!
 • Do %%PREFIX%%help prefix to view how to add/remove prefixes!
 
 > 🎵 New music system!
 • Do %%PREFIX%%help music to view all the music commands!
-
-> 🅰️ New AFK system!
-• Use the %%PREFIX%%AFK command to go AFK!
