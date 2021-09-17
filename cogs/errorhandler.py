@@ -4,7 +4,7 @@ from discord.ext import commands
 import helpers
 from difflib import get_close_matches
 import traceback
-from cogs import music
+from cogs import music as music
 import errors
 
 def setup(client):
@@ -22,16 +22,35 @@ class errorhandler(commands.Cog):
         error = getattr(error, "original", error)
 
         ignored = (
+        music.NoPlayer,
+        music.FullVoiceChannel,
+        music.NotAuthorized,
+        music.IncorrectChannelError,
+        music.IncorrectTextChannelError,
+        music.AlreadyConnectedToChannel,
+        music.NoVoiceChannel,
+        music.QueueIsEmpty,
+        music.NoCurrentTrack,
+        music.PlayerIsAlreadyPaused,
+        music.PlayerIsNotPaused,
+        music.NoMoreTracks,
+        music.InvalidTimeString,
+        music.NoPerms,
+        music.NoConnection,
+        music.AfkChannel,
+        music.SkipInLoopMode,
+        music.InvalidTrack,
+        music.InvalidPosition,
+        music.InvalidVolume,
+        music.OutOfTrack,
+        music.NegativeSeek
         )
 
         if isinstance(error, ignored):
             return
 
-        elif isinstance(error, errors.AuthorBlacklisted):
-            message = f"It appears that you're blacklisted from this bot. Contact Ender2K89#9999 if you think this is a mistake."
-
         elif isinstance(error, commands.CommandNotFound):
-            if ctx.author.id == 564890536947875868 and ctx.bot.no_prefix is True:
+            if ctx.author.id == 564890536947875868 and self.client.no_prefix is True:
                 return
 
 
@@ -42,11 +61,29 @@ class errorhandler(commands.Cog):
                 matches = "\n".join(matches)
                 message = f"I couldn't find that command. Did you mean...\n{matches}"
 
+        elif isinstance(error, errors.AuthorBlacklisted):
+            message = f"It appears that you're blacklisted from this bot. Contact Ender2K89#9999 if you think this is a mistake."
+
         elif isinstance(error, helpers.NotSH):
             message = f"You can only use this command in `Stealth Hangout`!\ndiscord.gg/ktkXwmD2kF"
 
         elif isinstance(error, helpers.NotCSMP):
             message = f"You can only use this command in `ClassicSMP`!\nhttps://discord.gg/afBDa2Kqc9"
+
+        elif isinstance(error, errors.TooLongPrefix):
+            message = f"Prefixes can only be up to 50 characters!"
+
+        elif isinstance(error, errors.TooManyPrefixes):
+            message = f"You can only have 20 prefixes!"
+
+        elif isinstance(error, errors.PrefixAlreadyExists):
+            message = f"That's already one of my prefixes!"
+
+        elif isinstance(error, errors.PrefixDoesntExist):
+            message = f"That's not one of my prefixes!"
+
+        elif isinstance(error, errors.CommandDoesntExist):
+            message = f"I couldn't find that category/command."
 
         elif isinstance(error, helpers.Blacklisted):
             message = f"It appears that you're blacklisted from this bot. Contact Ender2K89#9999 if you think this is a mistake."

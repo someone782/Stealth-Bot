@@ -1,4 +1,5 @@
-> 🇫 The bot might get less updates for a bit.
+> ❗ Support for multiple prefixes!
+• Do %%PREFIX%%help prefix to view how to add/remove prefixes!
 
 > 🎵 New music system!
 • Do %%PREFIX%%help music to view all the music commands!

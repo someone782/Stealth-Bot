@@ -7,7 +7,7 @@ import os
 import aiohttp
 import random
 import errors
-import datetime
+from datetime import datetime
 import yaml
 import pickle
 from pathlib import Path
@@ -76,7 +76,7 @@ client = StealthBot(intents=discord.Intents.all(), activity=activity, status=sta
 
 client.tracker = DiscordUtils.InviteTracker(client) # Initializes the tracker object
 client.owner_ids = [564890536947875868] # 349373972103561218 (LeoCx1000)
-client.launch_time = discord.utils.utcnow()
+client.launch_time = datetime.utcnow()
 client.no_prefix = False
 client.invite_url = "https://discord.com/api/oauth2/authorize?client_id=760179628122964008&permissions=8&scope=bot"
 client.top_gg = "https://top.gg/bot/760179628122964008"
@@ -126,6 +126,7 @@ async def change_vc(): # Makes a task called "change_vc"
 @client.event
 async def on_ready():
     change_vc.start() # Starts the task called "change_vc"
+
     print("started task: change_vc") # Prints "Started task: change_vc"
     print('-------------================----------------') # Prints some lines to make it look better
     print(f"connected to bot: {client.user.name}") # Prints "Connected to the bot {Name of the bot}"
@@ -142,6 +143,10 @@ async def on_ready():
 
     print("tracker has been loaded")
 
+# ---------------------------------------------------------------------------------------------- #
+
+os.system('clear')
+
 client.load_extension('jishaku')
 print("jishaku has been loaded")
 
@@ -151,6 +156,8 @@ for filename in os.listdir('./cogs'): # For every file in the folder called "cog
         client.load_extension(f'cogs.{filename[:-3]}') # Load the file as a extension/cog
         print(f'{filename[:-3]}.py has been loaded')
 print('-------------================----------------')
+
+# ---------------------------------------------------------------------------------------------- #
 
 async def run_once_when_ready():
     await client.wait_until_ready()

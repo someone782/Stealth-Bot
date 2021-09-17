@@ -3,7 +3,10 @@ import discord
 import datetime
 import helpers
 import random
+import asyncio
+import errors
 import os
+from typing import Any, Dict, List, Optional, Union
 
 # copied code from stella
 
@@ -21,24 +24,15 @@ def count_python(root: str) -> int:
 
 class Dropdown(discord.ui.Select):
     def __init__(self):
-
-        # Set the options that will be presented inside the dropdown
         options = [
             discord.SelectOption(label='Red', description='Your favourite colour is red', emoji='🟥'),
             discord.SelectOption(label='Green', description='Your favourite colour is green', emoji='🟩'),
             discord.SelectOption(label='Blue', description='Your favourite colour is blue', emoji='🟦')
         ]
 
-        # The placeholder is what will be shown when no option is chosen
-        # The min and max values indicate we can only pick one of the three options
-        # The options parameter defines the dropdown options. We defined this above
         super().__init__(placeholder='Select a category...', min_values=1, max_values=1, options=options)
 
     async def callback(self, interaction: discord.Interaction):
-        # Use the interaction object to send a response message containing
-        # the user's favourite colour or choice. The self object refers to the
-        # Select object, and the values attribute gets a list of the user's
-        # selected options. We only want the first one.
         await interaction.response.send_message(f'Your favourite colour is {self.values[0]}', ephemeral=True)
 
 class VoteButtons(discord.ui.View):
@@ -50,9 +44,9 @@ class VoteButtons(discord.ui.View):
 class Stuff(discord.ui.View):
     def __init__(self):
         super().__init__()
+        self.add_item(Dropdown())
         self.add_item(discord.ui.Button(emoji="<:invite:860644752281436171>", label='Invite me', url="https://discord.com/api/oauth2/authorize?client_id=760179628122964008&permissions=8&scope=bot"))
         self.add_item(discord.ui.Button(emoji="<:github:744345792172654643>", label='Source code', url="https://github.com/Ender2K89/Stealth-Bot"))
-        self.add_item(Dropdown())
 
     @discord.ui.button(label='Vote', style=discord.ButtonStyle.gray, emoji="<:topgg:870133913102721045>")
     async def receive(self, button: discord.ui.Button, interaction: discord.Interaction):
@@ -63,12 +57,8 @@ class MyHelp(commands.HelpCommand):
     def get_minimal_command_signature(self, command):
         return '%s%s %s' % (self.context.clean_prefix, command.qualified_name, command.signature)
 
-
-
     def get_command_name(self, command):
         return '%s' % (command.qualified_name)
-
-
 
     async def send_bot_help(self, mapping):
         ctx = self.context
@@ -119,7 +109,6 @@ Written with `{count_python('.'):,}` lines.
         await ctx.reply(embed=embed, view=Stuff())
 
 
-
     async def send_command_help(self, command):
         ctx = self.context
         alias = command.aliases
@@ -148,7 +137,6 @@ Usage: {self.get_minimal_command_signature(command)}
         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
         await ctx.reply(embed=embed)
-
 
 
     async def send_cog_help(self, cog):
@@ -180,6 +168,16 @@ __**Available commands**__ **[{len(cog.get_commands())}]**
             embed=discord.Embed(title=f"Help - {cog.qualified_name}", description=f"""
 This cog has no commands.
                                 """, timestamp=discord.utils.utcnow(), color=0x2F3136)
+            await ctx.reply(embed=embed)
+
+    async def send_error_message(self, error):
+        raise errors.CommandDoesntExist
+
+    async def on_help_command_error(self, ctx, error):
+        if isinstance(error, commands.CommandInvokeError):
+            embed = discord.Embed(description=f"{str(error.original)}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+            embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+
             await ctx.reply(embed=embed)
 
 

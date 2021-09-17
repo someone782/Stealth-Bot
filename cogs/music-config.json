@@ -5,8 +5,11 @@
             "host": "lava.link",
             "port": 80,
             "password": "anything as a password",
-            "name": "Node 2",
-            "region": "Germany"
+            "region": "Germany",
+            "resume_key": "Node 1 KEY",
+            "resume_timeout": 120,
+            "name": "Node 69",
+            "reconnect_attempts": -1
         }],
     "ignored_commands": [
         "queue",

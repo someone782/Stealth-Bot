@@ -13,8 +13,8 @@ with open('cogs/music-config.json', "r+") as file:
     config = json.load(file)
 
 def setup(bot):
-    bot.add_cog(SocketFix(bot))
-    bot.add_cog(Music(bot))
+    bot.add_cog(socketfix(bot))
+    bot.add_cog(music(bot))
 
 # ERRORS
 class NoPlayer(commands.CommandError):
@@ -27,6 +27,9 @@ class NotAuthorized(commands.CommandError):
     pass
 
 class IncorrectChannelError(commands.CommandError):
+    pass
+
+class IncorrectTextChannelError(commands.CommandError):
     pass
 
 class AlreadyConnectedToChannel(commands.CommandError):
@@ -79,6 +82,7 @@ class OutOfTrack(commands.CommandError):
 
 class NegativeSeek(commands.CommandError):
     pass
+
 #CUSTOM FUNCTIONS
 
 def seconds(stringTime):
@@ -90,12 +94,13 @@ def seconds(stringTime):
     )
 
 def color(context):
-    if isinstance(context, commands.Context):
-        return context.guild.me.color if context.guild.me.color != discord.Color.default() else discord.Color.blurple()
-    elif isinstance(context, discord.Guild):
-        return context.me.color if context.me.color != discord.Color.default() else discord.Color.blurple()
-    else:
-        raise TypeError('Invalid context')
+    return 0x2F3136
+    # if isinstance(context, commands.Context):
+    #     return context.guild.me.color if context.guild.me.color != discord.Color.default() else discord.Color.blurple()
+    # elif isinstance(context, discord.Guild):
+    #     return context.me.color if context.me.color != discord.Color.default() else discord.Color.blurple()
+    # else:
+    #     raise TypeError('Invalid context')
 
 def convert_bytes(size):
     for x in ['bytes', 'KB', 'MB', 'GB', 'TB']:
@@ -122,7 +127,10 @@ class QueueMenu(menus.ListPageSource):
             embed.add_field(name='\u200b',value=f'`{i+1}.` {v}',inline=False)
         return embed
     def is_paginating(self):
-        return True
+        if len(self.data) > self.per_page:
+            return True
+        else:
+            return False
 
 class NodesMenu(menus.ListPageSource):
     """Nodes paginator class."""
@@ -130,7 +138,7 @@ class NodesMenu(menus.ListPageSource):
         self.data = data
         self.currentNode = currentNode
         self.ctx = ctx
-        super().__init__(data, per_page=3)
+        super().__init__(data, per_page=2)
 
     async def format_page(self, menu, entries):
         offset = menu.current_page * self.per_page
@@ -139,7 +147,10 @@ class NodesMenu(menus.ListPageSource):
             embed.add_field(name='\u200b',value=v, inline=False)
         return embed
     def is_paginating(self):
-        return True
+        if len(self.data) > self.per_page:
+            return True
+        else:
+            return False
 
 class PlayMenu(discord.ui.Select):
     def __init__(self, data, bot, ctx):
@@ -321,6 +332,13 @@ class CustomPlayer(lavalink.BasePlayer):
             self.queue.append(at)
         else:
             self.queue.insert(index, at)
+
+    async def destroy(self,guild: int):
+        self.dj = None
+        self.text_channel = None
+        self.queue.clear()
+        await self.stop()
+        await guild.change_voice_state(channel=None)
 
     async def play(self, track: typing.Union[lavalink.AudioTrack, dict] = None, start_time: int = 0, end_time: int = 0, no_replace: bool = False):
         """
@@ -516,13 +534,11 @@ class CustomPlayer(lavalink.BasePlayer):
 
         await self.node._dispatch_event(NodeChangedEvent(self, old_node, node))
 
-class Music(commands.Cog):
-    """
-    🎵 Commands related to playing music through the bot in a voice channel (made by DaPandaOfficial🐼#5684).
-    """
+class music(commands.Cog):
+    "🎵 Commands used to play music"
     def __init__(self, bot):
         self.bot = bot
-        if not hasattr(bot, 'lavalink'):  # This ensures the client isn't overwritten during cog reloads.
+        if not hasattr(bot, 'lavalink'):
             bot.lavalink = lavalink.Client(bot.user_id,CustomPlayer)
             for node in config['nodes']:
                 bot.lavalink.add_node(**node)
@@ -543,63 +559,70 @@ class Music(commands.Cog):
     async def cog_command_error(self, ctx, error):
         if isinstance(error, commands.CommandInvokeError):
             await ctx.send(error.original)
+
         if isinstance(error, NoPlayer):
-            return await ctx.send(embed=discord.Embed(color = 0xe74c3c,description = f'There isn\'t an active player in your server.'))
+            return await ctx.send(embed=discord.Embed(title='Error occured',color = 0x2F3136,description = f'There isn\'t an active player in your server.'))
+
         if isinstance(error, IncorrectChannelError):
             player = self.bot.lavalink.player_manager.create(ctx.guild.id, endpoint=str(ctx.guild.region))
             channel = self.bot.get_channel(int(player.channel_id))
-            return await ctx.send(embed=discord.Embed(color = 0xe74c3c,description = f'{ctx.author.mention}, you must be in {channel.mention} for this session.'))
+            return await ctx.send(embed=discord.Embed(title='Error occured',color = 0x2F3136,description = f'{ctx.author.mention}, you must be in {channel.mention} for this session.'))
+
+        if isinstance(error, IncorrectTextChannelError):
+            player = self.bot.lavalink.player_manager.create(ctx.guild.id, endpoint=str(ctx.guild.region))
+            channel = self.bot.get_channel(int(player.text_channel))
+            return await ctx.send(embed=discord.Embed(title='Error occured',color = 0x2F3136,description = f'{ctx.author.mention}, you can only use commands in {channel.mention} for this session.'))
 
         if isinstance(error, NoVoiceChannel):
-            return await ctx.send(embed=discord.Embed(color = 0xe74c3c,description = "I'm not connected to any voice channels."))
+            return await ctx.send(embed=discord.Embed(title='Error occured',color = 0x2F3136,description = "I'm not connected to any voice channels."))
 
         if isinstance(error, AlreadyConnectedToChannel):
-            return await ctx.send(embed=discord.Embed(color = 0xe74c3c,description = "Already connected to a voice channel."))
+            return await ctx.send(embed=discord.Embed(title='Error occured',color = 0x2F3136,description = "Already connected to a voice channel."))
 
         if isinstance(error, QueueIsEmpty):
-            return await ctx.send(embed=discord.Embed(color = 0xe74c3c,description = "There are no tracks in the queue."))
+            return await ctx.send(embed=discord.Embed(title='Error occured',color = 0x2F3136,description = "There are no tracks in the queue."))
 
         if isinstance(error, PlayerIsAlreadyPaused):
-            return await ctx.send(embed=discord.Embed(color = 0xe74c3c,description = "The current track is already paused."))
+            return await ctx.send(embed=discord.Embed(title='Error occured',color = 0x2F3136,description = "The current track is already paused."))
 
         if isinstance(error, NoMoreTracks):
-            return await ctx.send(embed=discord.Embed(color = 0xe74c3c,description = "There are no more tracks in the queue."))
+            return await ctx.send(embed=discord.Embed(title='Error occured',color = 0x2F3136,description = "There are no more tracks in the queue."))
 
         if isinstance(error, NoCurrentTrack):
-            return await ctx.send(embed=discord.Embed(color = 0xe74c3c,description = "There is no track currently playing."))
+            return await ctx.send(embed=discord.Embed(title='Error occured',color = 0x2F3136,description = "There is no track currently playing."))
 
         if isinstance(error, FullVoiceChannel):
-            return await ctx.send(embed=discord.Embed(color = 0xe74c3c,description = f'I can\'t join {ctx.author.voice.channel.mention}, because it\'s full.'))
+            return await ctx.send(embed=discord.Embed(title='Error occured',color = 0x2F3136,description = f'I can\'t join {ctx.author.voice.channel.mention}, because it\'s full.'))
 
         if isinstance(error, NoPerms):
-            return await ctx.send(embed=discord.Embed(color = 0xe74c3c,description = "I don't have permissions to `CONNECT` or `SPEAK`."))
+            return await ctx.send(embed=discord.Embed(title='Error occured',color = 0x2F3136,description = "I don't have permissions to `CONNECT` or `SPEAK`."))
 
         if isinstance(error, NoConnection):
-            return await ctx.send(embed=discord.Embed(color = 0xe74c3c,description = "You must be connected to a voice channel to use voice commands."))
+            return await ctx.send(embed=discord.Embed(title='Error occured',color = 0x2F3136,description = "You must be connected to a voice channel to use voice commands."))
 
         if isinstance(error, PlayerIsNotPaused):
-            return await ctx.send(embed=discord.Embed(color = 0xe74c3c,description = "The current track is not paused."))
+            return await ctx.send(embed=discord.Embed(title='Error occured',color = 0x2F3136,description = "The current track is not paused."))
 
         if isinstance(error, AfkChannel):
-            return await ctx.send(embed=discord.Embed(color=0xe74c3c,description="I can't play music in the afk channel."))
+            return await ctx.send(embed=discord.Embed(title='Error occured',color=0x2F3136,description="I can't play music in the afk channel."))
 
         if isinstance(error, NotAuthorized):
-            return await ctx.send(embed=discord.Embed(colour = 0xe74c3c,description = "You cannot perform this action."))
+            return await ctx.send(embed=discord.Embed(title='Error occured',color = 0x2F3136,description = "You cannot perform this action."))
 
         if isinstance(error, InvalidTrack):
-            return await ctx.send(embed=discord.Embed(colour = 0xe74c3c,description = "Can't perform action on track that is out of the queue."))
+            return await ctx.send(embed=discord.Embed(title='Error occured',color = 0x2F3136,description = "Can't perform action on track that is out of the queue."))
 
         if isinstance(error, InvalidPosition):
-            return await ctx.send(embed=discord.Embed(colour = 0xe74c3c,description = "Can't perform action with invalid position in the queue."))
+            return await ctx.send(embed=discord.Embed(title='Error occured',color = 0x2F3136,description = "Can't perform action with invalid position in the queue."))
 
         if isinstance(error, InvalidVolume):
-            return await ctx.send(embed=discord.Embed(color = 0xe74c3c,description = 'Please enter a value between 1 and 100'))
+            return await ctx.send(embed=discord.Embed(title='Error occured',color = 0x2F3136,description = 'Please enter a value between 1 and 100'))
 
         if isinstance(error, OutOfTrack):
-            return await ctx.send(embed=discord.Embed(color = 0xe74c3c,description = 'Can\'t seek out of the track'))
+            return await ctx.send(embed=discord.Embed(title='Error occured',color = 0x2F3136,description = 'Can\'t seek out of the track'))
 
         if isinstance(error, NegativeSeek):
-            return await ctx.send(embed=discord.Embed(color = 0xe74c3c,description = 'Can\'t seek on negative timestamp'))
+            return await ctx.send(embed=discord.Embed(title='Error occured',color = 0x2F3136,description = 'Can\'t seek on negative timestamp'))
 
     async def ensure_voice(self, ctx):
         """ This check ensures that the bot and command author are in the same voicechannel. """
@@ -607,26 +630,28 @@ class Music(commands.Cog):
         should_connect = ctx.command.name in ('play',)
 
         if not ctx.author.voice or not ctx.author.voice.channel:
-            raise NoConnection()
+            raise NoConnection
         if not player.is_connected:
             if not should_connect:
-                raise NoVoiceChannel()
+                raise NoVoiceChannel
             if ctx.guild.afk_channel:
                 if ctx.author.voice.channel.id == ctx.guild.afk_channel.id:
-                    raise AfkChannel()
+                    raise AfkChannel
             permissions = ctx.author.voice.channel.permissions_for(ctx.me)
             if ctx.author.voice.channel.user_limit != 0:
                 limit = ctx.author.voice.channel.user_limit
                 if len(ctx.author.voice.channel.members) == limit:
-                    raise FullVoiceChannel()
+                    raise FullVoiceChannel
             if not permissions.connect or not permissions.speak:
-                raise NoPerms()
+                raise NoPerms
             player.text_channel = ctx.channel.id
             player.dj = ctx.author.id
             await ctx.guild.change_voice_state(channel=ctx.author.voice.channel,self_deaf=True)
         else:
             if int(player.channel_id) != ctx.author.voice.channel.id:
-                raise IncorrectChannelError()
+                raise IncorrectChannelError
+            if int(player.text_channel) != ctx.channel.id:
+                raise IncorrectTextChannelError
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member: discord.Member, before: discord.VoiceState, after: discord.VoiceState):
@@ -652,9 +677,7 @@ class Music(commands.Cog):
                     embed = discord.Embed(title=f'New DJ',color=(member.guild.me.color if member.guild.me.color != discord.Color.default() else discord.Color.random()),description=f'Now {new_dj.mention} is in charge!')
                     await text_channel.send(embed=embed)
         else:
-            player.queue.clear()
-            await player.stop()
-            await member.guild.change_voice_state(channel=None)
+            await player.destroy(member.guild)
 
     async def track_hook(self, event):
         if isinstance(event, QueueEndEvent):
@@ -669,17 +692,15 @@ class Music(commands.Cog):
                 guild = self.bot.get_guild(int(event.player.guild_id))
                 await guild.change_voice_state(channel=None)
                 channel = self.bot.get_channel(int(event.player.text_channel))
-                embed = discord.Embed(title=f'Inactive player',color=0xe74c3c,description = 'There were no tracks played in the past 3 minutes.' )
+                embed = discord.Embed(title=f'Inactive player',color=0x2F3136,description = 'There were no tracks played in the past 3 minutes.' )
                 await channel.send(embed=embed)
         if isinstance(event, TrackStartEvent):
             if event.player.loop != 1:
                 channel = self.bot.get_channel(int(event.player.text_channel))
-                thumnail = f'https://img.youtube.com/vi/{event.track.identifier}/maxresdefault.jpg'
-                embed = discord.Embed(title=f'Now playing',color=color(self.bot.get_guild(int(event.player.guild_id))),description = f'**[{event.track.title.upper()}]({event.track.uri})**' )
+                thumnail = f"https://img.youtube.com/vi/{event.track.identifier}/maxresdefault.jpg"
+                info = f'**Title**: **[{event.track.title.upper()}]({event.track.uri})**\n\n**Artist**: {event.track.author}\n\n**Duration**: {str(dt.timedelta(milliseconds=int(event.track.duration)))}\n\n**Requested By**: {event.track.requester.mention}\n\n'
+                embed = discord.Embed(title='Now playing',color=color(self.bot.get_guild(int(event.player.guild_id))),description = info)
                 embed.set_thumbnail(url=thumnail)
-                embed.add_field(name="Artist:", value=f'{event.track.author}', inline=True)
-                embed.add_field(name='Duration:', value=f'{str(dt.timedelta(milliseconds=int(event.track.duration)))}', inline=True)
-                embed.add_field(name='Requested by:', value=event.track.requester.mention, inline=True)
                 await channel.send(embed=embed)
 
     def is_privileged(self, ctx: commands.Context):
@@ -700,7 +721,7 @@ class Music(commands.Cog):
         # Results could be None if Lavalink returns an invalid response (non-JSON/non-200 (OK)).
         # ALternatively, resullts['tracks'] could be an empty array if the query yielded no tracks.
         if not results or not results['tracks']:
-            embedVar = discord.Embed(colour=0xe74c3c)
+            embedVar = discord.Embed(colour=0x2F3136)
             embedVar.description = 'No songs were found with that query. Please try again.'
             return await ctx.send(embed=embedVar)
         # Valid loadTypes are:
@@ -739,11 +760,11 @@ class Music(commands.Cog):
             await ctx.send(embed=embed, view = PlayMenuView(tracks,self.bot,ctx))
 
         if results['loadType'] == 'NO_MATCHES':
-            embedVar = discord.Embed(colour=0xe74c3c,description = 'No songs were found with that query. Please try again.')
+            embedVar = discord.Embed(colour=0x2F3136,description = 'No songs were found with that query. Please try again.')
             await ctx.send(embed=embedVar)
 
         if results['loadType'] == 'LOAD_FAILED':
-            embedVar = discord.Embed(colour=0xe74c3c,description = 'Failed loading your query.')
+            embedVar = discord.Embed(colour=0x2F3136,description = 'Failed loading your query.')
             await ctx.send(embed=embedVar)
 
     @commands.command(name="disconnect", aliases=['dc'])
@@ -754,11 +775,8 @@ class Music(commands.Cog):
         if not player.is_connected: raise NoVoiceChannel
         if not self.is_privileged(ctx): raise NotAuthorized
         #ACTUAL PART
-        embed = discord.Embed(colour = (color(ctx)),description = 'The player was disconnected.')
-        player.queue.clear()
-        await player.stop()
-        await ctx.guild.change_voice_state(channel=None)
-        return await ctx.send(embed=embed)
+        await player.destroy(ctx.guild)
+        return await ctx.send(embed=discord.Embed(colour = (color(ctx)),description = 'The player was disconnected.'))
 
     @commands.command(name="pause")
     async def pause_command(self,ctx: commands.Context):
@@ -875,12 +893,12 @@ class Music(commands.Cog):
         if not player.is_connected: raise NoVoiceChannel
         if not player.is_playing: raise NoCurrentTrack
         #ACTUAL PART
+        position = str(dt.timedelta(milliseconds=player.position))
+        position = position.split('.')
         thumnail = f"https://img.youtube.com/vi/{player.current.identifier}/maxresdefault.jpg"
-        embed = discord.Embed(title=f'Current Track',color=(color(ctx)),description = f'**[{player.current.title.upper()}]({player.current.uri})**')
+        info = f'**Title**: **[{player.current.title.upper()}]({player.current.uri})**\n\n**Artist**: {player.current.author}\n\n**Position**: {position[0]} / {str(dt.timedelta(milliseconds=int(player.current.duration)))}\n\n**Requested By**: {player.current.requester.mention}\n\n'
+        embed = discord.Embed(title=f'Current Track',color=color(ctx),description = info)
         embed.set_thumbnail(url=thumnail)
-        embed.add_field(name="Artist:", value=f'{player.current.author}', inline=True)
-        embed.add_field(name='Duration:', value=f'{str(dt.timedelta(milliseconds=int(player.current.duration)))}', inline=True)
-        embed.add_field(name='Requested By:', value=f'{player.current.requester.mention}', inline=True)
         await ctx.send(embed=embed)
 
     @commands.command(name="restart")
@@ -916,7 +934,7 @@ class Music(commands.Cog):
             pass
         if not player.current: raise NoCurrentTrack()
         if not (secs := seconds(time_stamp)): raise InvalidTimeString()
-        if (secs * 1000) > player.current.duration:
+        if (secs * 1000) > player.current.duration - 5:
             raise OutOfTrack
         if secs < 0:
             raise NegativeSeek
@@ -974,7 +992,7 @@ class Music(commands.Cog):
                 queue.insert(position-1, queue.pop(queue.index(x)))
                 embed = discord.Embed(color = (color(ctx)),description=f'Successfully moved **[{x["title"]}]({x["uri"]})** to position `{position}`')
                 return await ctx.send(embed=embed)
-        embed = discord.Embed(color = 0xe74c3c,description='Track not found.')
+        embed = discord.Embed(color = 0x2F3136,description='Track not found.')
         return await ctx.send(embed=embed)
 
     @commands.command(name='nodes')
@@ -1011,15 +1029,13 @@ class Music(commands.Cog):
                         await player.change_node(nodes)
                         return await ctx.send(embed=discord.Embed(title=f'Successfuly changed the current node to `{node}`',color=(color(ctx))))
                     else:
-                        return await ctx.send(embed=discord.Embed(title=f'{node} is currently unavailable',color=0xe74c3c))
+                        return await ctx.send(embed=discord.Embed(title=f'{node} is currently unavailable',color=0x2F3136))
         else:
-            return await ctx.send(embed=discord.Embed(title=f'There are no nodes connected with this server',color=0xe74c3c))
-        return await ctx.send(embed=discord.Embed(title=f'Unknown node',color=0xe74c3c))
+            return await ctx.send(embed=discord.Embed(title=f'There are no nodes connected with this server',color=0x2F3136))
+        return await ctx.send(embed=discord.Embed(title=f'Unknown node',color=0x2F3136))
 
-class SocketFix(commands.Cog):
-    """
-    🖥️ Socket Fix For The Music Player.
-    """
+class socketfix(commands.Cog):
+    "🖥️ Socket Fix For The Music Player"
     def __init__(self, bot):
         self.bot = bot
         self._zlib = zlib.decompressobj()

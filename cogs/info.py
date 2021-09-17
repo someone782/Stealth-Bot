@@ -1,5 +1,5 @@
 import discord
-import datetime
+from datetime import datetime
 import io
 import psutil
 import helpers
@@ -687,7 +687,15 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
     @commands.command(help="Shows you the uptime of the bot", aliases=['up'])
     @helpers.is_user_blacklisted()
     async def uptime(self, ctx):
-        embed = discord.Embed(title=f'I\'ve been online since {discord.utils.format_dt(self.client.launch_time, style="f")} ({discord.utils.format_dt(self.client.launch_time, style="R")})', timestamp=discord.utils.utcnow(), color=0x2F3136)
+        delta_uptime = datetime.utcnow() - self.client.launch_time
+        hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
+        minutes, seconds = divmod(remainder, 60)
+        days, hours = divmod(hours, 24)
+
+        text = f"{days} days, {hours} hours, {minutes} minutes and {seconds} seconds"
+
+        # {discord.utils.format_dt(self.client.launch_time, style="f")} ({discord.utils.format_dt(self.client.launch_time, style="R")})
+        embed = discord.Embed(title=f"I've been online for {text}", timestamp=discord.utils.utcnow(), color=0x2F3136)
         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
         await ctx.reply(embed=embed)
