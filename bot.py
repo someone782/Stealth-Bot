@@ -76,7 +76,7 @@ client = StealthBot(intents=discord.Intents.all(), activity=activity, status=sta
 
 client.tracker = DiscordUtils.InviteTracker(client) # Initializes the tracker object
 client.owner_ids = [564890536947875868] # 349373972103561218 (LeoCx1000)
-client.launch_time = datetime.utcnow()
+client.launch_time = discord.utils.utcnow()
 client.no_prefix = False
 client.invite_url = "https://discord.com/api/oauth2/authorize?client_id=760179628122964008&permissions=8&scope=bot"
 client.top_gg = "https://top.gg/bot/760179628122964008"

@@ -687,7 +687,7 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
     @commands.command(help="Shows you the uptime of the bot", aliases=['up'])
     @helpers.is_user_blacklisted()
     async def uptime(self, ctx):
-        delta_uptime = datetime.utcnow() - self.client.launch_time
+        delta_uptime = discord.utils.utcnow() - self.client.launch_time
         hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
         minutes, seconds = divmod(remainder, 60)
         days, hours = divmod(hours, 24)
