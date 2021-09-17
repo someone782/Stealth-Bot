@@ -13,7 +13,7 @@ def setup(client):
     client.add_cog(other(client))
 
 class other(commands.Cog):
-    ":grey_question: All other commands"
+    "❓ All other commands"
     def __init__(self, client):
         self.client = client
 

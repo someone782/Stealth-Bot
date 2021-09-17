@@ -6,9 +6,9 @@ from discord.ext import commands
 import random
 
 def setup(client):
-    client.add_cog(animals(client))
+    client.add_cog(Animals(client))
     
-class animals(commands.Cog):
+class Animals(commands.Cog):
    "🐶 Commands that show you pictures of certain animals & facts about them"
    def __init__(self, client):
       self.client = client

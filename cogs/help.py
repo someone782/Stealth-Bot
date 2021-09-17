@@ -181,7 +181,8 @@ This cog has no commands.
             await ctx.send(embed=embed)
 
 
-class help(commands.Cog):
+class Help(commands.Cog):
+    "❓ The help command, how did you find this though..."
     def __init__(self, client):
         self.client = client
         help_command = MyHelp()
@@ -189,4 +190,4 @@ class help(commands.Cog):
         client.help_command = help_command
 
 def setup(client):
-    client.add_cog(help(client))
+    client.add_cog(Help(client))

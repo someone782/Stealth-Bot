@@ -9,9 +9,9 @@ import errors
 from discord.ext import commands
 
 def setup(client):
-    client.add_cog(dev(client))
+    client.add_cog(Dev(client))
 
-class dev(commands.Cog):
+class Dev(commands.Cog):
     "<:earlybotdev:850843591756349450> Commands that only the developer of this client can use"
     def __init__(self, client):
         self.hidden = True

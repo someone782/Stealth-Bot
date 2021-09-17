@@ -4,10 +4,10 @@ import asyncio
 from discord.ext import commands
 
 def setup(client):
-    client.add_cog(custom(client))
+    client.add_cog(Custom(client))
 
-class custom(commands.Cog):
-    "Commands that are made by members that won a giveaway called \"Custom command for Stealth Bot\""
+class Custom(commands.Cog):
+    "🎉 Commands that are made by members that won a giveaway called \"Custom command for Stealth Bot\""
     def __init__(self, client):
         self.hidden = True
         self.client = client

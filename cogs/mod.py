@@ -20,7 +20,7 @@ class BanEmbed(menus.ListPageSource):
         return embed
 
 class mod(commands.Cog):
-    "<:staff:858326975869485077> Moderation commands"
+    "⚒️ Moderation commands"
     def __init__(self, client):
         self.client = client
 

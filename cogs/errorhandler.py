@@ -8,9 +8,10 @@ from cogs import music as music_cog
 import errors
 
 def setup(client):
-    client.add_cog(errorhandler(client))
+    client.add_cog(ErrorHandler(client))
 
-class errorhandler(commands.Cog):
+class ErrorHandler(commands.Cog):
+    "❓ Handles them errors.. but how did you find this cog?..."
     def __init__(self, client):
         self.hidden = True
         self.client = client

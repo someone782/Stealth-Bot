@@ -8,7 +8,7 @@ def setup(client):
     client.add_cog(nsfw(client))
 
 class nsfw(commands.Cog):
-    ":underage: NSFW commands"
+    "🔞 NSFW commands"
     def __init__(self, client):
         self.client = client
 

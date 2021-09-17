@@ -11,9 +11,10 @@ def remove(afk):
         return afk
 
 def setup(client):
-    client.add_cog(events(client))
+    client.add_cog(Events(client))
 
-class events(commands.Cog):
+class Events(commands.Cog):
+    "⭐ Just some events.. but how did you find this cog?..."
     def __init__(self, client):
         self.hidden = True
         self.client = client
