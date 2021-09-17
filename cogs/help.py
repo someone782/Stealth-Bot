@@ -140,6 +140,7 @@ Usage: {self.get_minimal_command_signature(command)}
 
 
     async def send_cog_help(self, cog):
+        await ctx.send(cog)
         ctx = self.context
         prefix = self.context.clean_prefix
         entries = cog.get_commands()
