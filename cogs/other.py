@@ -154,12 +154,12 @@ class Other(commands.Cog):
             msg = await self.client.wait_for(event='message', check=check, timeout=15)
         except asyncio.TimeoutError:
             await message.delete()
-            await ctx.message.delete(delay=5.0)
+            await ctx.message.delete()
             await ctx.send("It's been over 15 seconds, please try again by doing `-verify`", delete_after=5.0)
         else:
             await ctx.message.delete()
             await message.delete()
-            await msg.delete(delay=5.0)
+            await msg.delete()
             await ctx.send("You've successfully verified!", delete_after=5.0)
 
             if ctx.guild.id == 799330949686231050: # stealth hangout
