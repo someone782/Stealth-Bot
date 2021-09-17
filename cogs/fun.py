@@ -12,9 +12,6 @@ from discord.ext.commands.cooldowns import BucketType
 
 def setup(client):
     client.add_cog(Fun(client))
-    
-def addCounter():
-    self.client.counter = self.client.counter + 1
 
 class Fun(commands.Cog):
     "🤪 Fun commands like -meme, -hug and more"
@@ -25,7 +22,7 @@ class Fun(commands.Cog):
             
     @commands.command(help="Adds a number to the global counter")
     async def count(self, ctx):
-        addCounter()
+        self.client.counter += 1
         await ctx.reply(f"The counter is now at {self.client.counter}!")
 
     @commands.command(help="Turns any text into ASCII", aliases=['asciitext', 'ascii_text', 'gen_ascii', 'generator_ascii'])
