@@ -20,12 +20,9 @@ class animals(commands.Cog):
         async with aiohttp.ClientSession() as session:
             request = await session.get('https://api.hori.ovh/sfw/waifu/')
             overjson = await request.json()
-            request2 = await session.get('https://some-random-api.ml/facts/cat')
-            factjson = await request2.json()
 
         embed = discord.Embed(title="Meow", timestamp=discord.utils.utcnow(), color=0x2F3136)
-        embed.set_image(url=dogjson['link'])
-        embed.set_footer(text=factjson['fact'])
+        embed.set_image(url=overjson['url'])
         await ctx.reply(embed=embed)
 
 
