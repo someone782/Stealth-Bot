@@ -19,11 +19,15 @@ class animals(commands.Cog):
     async def waifu(self, ctx):
         async with aiohttp.ClientSession() as session:
             request = await session.get('https://api.hori.ovh/sfw/waifu/')
-            overjson = await request.json()
+            json = await request.json()
+            
+         over_18 = "No"
+         if json['is_over18'] == "true":
+            over_18 = "Yes"
 
         embed = discord.Embed(title="Waifu", timestamp=discord.utils.utcnow(), color=0x2F3136)
-        embed.set_image(url=overjson['url'])
-        embed.set_footer(text=f"over 18: {overjson['is_over18']}")        
+        embed.set_image(url=json['url'])
+        embed.set_footer(text=f"🔞 Over 18?: {over_18}")        
         
         await ctx.reply(embed=embed)
 
