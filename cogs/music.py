@@ -130,12 +130,7 @@ def seconds(stringTime):
 
 
 def color(context):
-    if isinstance(context, commands.Context):
-        return context.guild.me.color if context.guild.me.color != discord.Color.default() else discord.Color.blurple()
-    elif isinstance(context, discord.Guild):
-        return context.me.color if context.me.color != discord.Color.default() else discord.Color.blurple()
-    else:
-        raise TypeError('Invalid context')
+    return 0x2F3136
 
 
 def convert_bytes(size):
