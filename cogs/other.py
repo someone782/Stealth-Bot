@@ -26,7 +26,7 @@ class other(commands.Cog):
 
         embed = discord.Embed(title="Click here for the invite to this bot", url="https://discord.com/api/oauth2/authorize?client_id=760179628122964008&permissions=8&scope=bot")
         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
-        await ctx.reply(embed=embed, view=view)
+        await ctx.send(embed=embed, view=view)
 
     @commands.command(help="Sends the support server of the bot", aliases=['supportserver', 'support_server'])
     async def support(self, ctx):
@@ -37,7 +37,7 @@ class other(commands.Cog):
 
         embed = discord.Embed(title="Click here for the invite to the support server", url="https://discord.gg/MrBcA6PZPw")
         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
-        await ctx.reply(embed=embed, view=view)
+        await ctx.send(embed=embed, view=view)
 
     @commands.group(invoke_without_command=True, help="Shows you a list of the bot's prefixes", aliases=['prefix'])
     async def prefixes(self, ctx):
@@ -45,7 +45,7 @@ class other(commands.Cog):
         embed = discord.Embed(title="Here's a list of my prefixes for this server:", description=ctx.me.mention + '\n' + '\n'.join(prefixes))
         embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
 
-        return await ctx.reply(embed=embed)
+        return await ctx.send(embed=embed)
 
     @commands.check_any(commands.has_permissions(manage_guild=True), commands.is_owner())
     @prefixes.command(name="add", help="Adds a prefix to the bot's prefixes (To add a prefix with a space put quotation marks around it)", aliases=['a', 'create'])
@@ -54,11 +54,11 @@ class other(commands.Cog):
 
         if len(new) > 50:
             raise errors.TooLongPrefix
-            # return await ctx.reply("Prefixes can only be up to 50 characters!")
+            # return await ctx.send("Prefixes can only be up to 50 characters!")
 
         if len(old) > 30:
             raise errors.TooManyPrefixes
-            # return await ctx.reply("You can only have 20 prefixes!")
+            # return await ctx.send("You can only have 20 prefixes!")
 
         if new not in old:
             old.append(new)
@@ -69,10 +69,10 @@ class other(commands.Cog):
 
             self.client.prefixes[ctx.guild.id] = old
 
-            return await ctx.reply(f"Successfully added `{new}` to the prefixes.\nMy prefixes are: `{'`, `'.join(old)}`")
+            return await ctx.send(f"Successfully added `{new}` to the prefixes.\nMy prefixes are: `{'`, `'.join(old)}`")
         else:
             raise errors.PrefixAlreadyExists
-            # return await ctx.reply("That's already one of my prefixes!")
+            # return await ctx.send("That's already one of my prefixes!")
 
     @commands.check_any(commands.has_permissions(manage_guild=True), commands.is_owner())
     @prefixes.command(name="remove", help="Removes a prefix from the bot's prefixes (To remove a prefix with a space put quotation marks around it)", aliases=['r', 'delete'])
@@ -88,7 +88,7 @@ class other(commands.Cog):
 
             self.client.prefixes[ctx.guild.id] = old
 
-            return await ctx.reply(f"Successfully removed `{prefix}`.\nMy prefixes are: `{'`, `'.join(old)}`")
+            return await ctx.send(f"Successfully removed `{prefix}`.\nMy prefixes are: `{'`, `'.join(old)}`")
         else:
             raise errors.PrefixDoesntExist
             # return await ctx.send(f"That is not one of my prefixes!")
@@ -101,7 +101,7 @@ class other(commands.Cog):
             "ON CONFLICT (guild_id) DO UPDATE SET prefix = $2",
             ctx.guild.id, None)
         self.client.prefixes[ctx.guild.id] = self.client.PRE
-        return await ctx.reply("Cleared prefixes!")
+        return await ctx.send("Cleared prefixes!")
 
 
     @commands.command()
@@ -129,7 +129,7 @@ class other(commands.Cog):
         else:
             embed = discord.Embed(title="You can only use this command in the `Stealth Hangout` server.")
             embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
-            await ctx.reply(embed=embed)
+            await ctx.send(embed=embed)
 
     @commands.command(help="Verifies you", hidden=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
@@ -155,12 +155,12 @@ class other(commands.Cog):
         except asyncio.TimeoutError:
             await message.delete()
             await ctx.message.delete(delay=5.0)
-            await ctx.reply("It's been over 15 seconds, please try again by doing `-verify`", delete_after=5.0)
+            await ctx.send("It's been over 15 seconds, please try again by doing `-verify`", delete_after=5.0)
         else:
             await ctx.message.delete()
             await message.delete()
             await msg.delete(delay=5.0)
-            await msg.reply("You've successfully verified!", delete_after=5.0)
+            await msg.send("You've successfully verified!", delete_after=5.0)
 
             if ctx.guild.id == 799330949686231050: # stealth hangout
                 await member.add_roles(discord.utils.get(member.guild.roles, name=stealth_hangout_role))
@@ -185,7 +185,7 @@ class other(commands.Cog):
         """)
         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command(aliases=['giveaway_ping', 'ping_giveaway'], help="Pings the Giveaways role", hidden=True)
     @commands.has_role("Staff")
@@ -213,9 +213,9 @@ class other(commands.Cog):
         embed.set_image(url="attachment://ss.png")
 
         if "ip" in url.lower() or "test" in url.lower() or "speed" in url.lower() or "address" in url.lower():
-            await ctx.reply("no.")
+            await ctx.send("no.")
         else:
-            await ctx.reply(embed=embed, file=discord.File(io.BytesIO(res), filename="ss.png"))
+            await ctx.send(embed=embed, file=discord.File(io.BytesIO(res), filename="ss.png"))
 
     @commands.command(help="secret command", hidden=True)
     @commands.is_owner()
@@ -229,7 +229,7 @@ class other(commands.Cog):
 
     @commands.command(help="Average embed fields enjoyer vs average embed description enjoyer", hidden=True)
     async def embed(self, ctx):
-        await ctx.reply("https://cdn.upload.systems/uploads/udt7Bv0U.gif")
+        await ctx.send("https://cdn.upload.systems/uploads/udt7Bv0U.gif")
 
     @commands.command(help="Shows you a list of flags", aliases=['flags'])
     async def flag(self, ctx):
@@ -487,4 +487,4 @@ class other(commands.Cog):
 🇿🇲
 🇿🇼"""
         bar = foo.split('\n')
-        await ctx.reply(f"Here's a list of flags: {', '.join(bar)}")
+        await ctx.send(f"Here's a list of flags: {', '.join(bar)}")

@@ -30,7 +30,7 @@ class events(commands.Cog):
     async def on_message(self, message):
         self.client.messages = self.client.messages + 1
         if message.content in [f'<@!{self.client.user.id}>', f'<@{self.client.user.id}>']:
-            await message.reply("fuck off")
+            await message.send("fuck off")
         if message.author.id in afks.keys():
             afks.pop(message.author.id)
             try:
@@ -45,7 +45,7 @@ class events(commands.Cog):
                 if message.author.id == 760179628122964008:
                     return
                 else:
-                    await message.reply(f"{member.name} is AFK for {reason}.")
+                    await message.send(f"{member.name} is AFK for {reason}.")
 
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):

@@ -47,44 +47,44 @@ class mod(commands.Cog):
         def check(m: discord.Message):  # m = discord.Message.
             return m.author.id == ctx.author.id and m.channel.id == ctx.channel.id
 
-        await ctx.reply("What do you want the punishment to be? (kick/ban)")
+        await ctx.send("What do you want the punishment to be? (kick/ban)")
 
         try:
             punishment = await self.client.wait_for(event='message', timeout=15, check=check)
         except asyncio.TimeoutError:
             await message.delete()
             await ctx.message.delete(delay=5.0)
-            return await ctx.reply("It's been over 15 seconds, please try again by doing `-punish`", delete_after=5.0)
+            return await ctx.send("It's been over 15 seconds, please try again by doing `-punish`", delete_after=5.0)
         else:
-            await ctx.reply("Who do you want me to punish?")
+            await ctx.send("Who do you want me to punish?")
 
             try:
                 member = await self.client.wait_for(event='message', timeout=15, check=check)
             except asyncio.TimeoutError:
                 await message.delete()
                 await ctx.message.delete(delay=5.0)
-                return await ctx.reply("It's been over 15 seconds, please try again by doing `-punish`", delete_after=5.0)
+                return await ctx.send("It's been over 15 seconds, please try again by doing `-punish`", delete_after=5.0)
             else:
-                    await ctx.reply("What's the reason for this punishment?")
+                    await ctx.send("What's the reason for this punishment?")
 
                     try:
                         reason = await self.client.wait_for(event='message', timeout=15, check=check)
                     except asyncio.TimeoutError:
                         await message.delete()
                         await ctx.message.delete(delay=5.0)
-                        return await ctx.reply("It's been over 15 seconds, please try again by doing `-punish`", delete_after=5.0)
+                        return await ctx.send("It's been over 15 seconds, please try again by doing `-punish`", delete_after=5.0)
                     else:
-                        await ctx.reply(f"{punishment.content} {member.content} {reason.content}")
+                        await ctx.send(f"{punishment.content} {member.content} {reason.content}")
 
                         punishment = punishment.content
                         member = commands.MemberConverter().convert(ctx, member.content)
                         reason = reason.content
 
                         if punishment not in valid_punishments:
-                            return await ctx.reply(f"That's not a valid punishment. Please try again by doing `-punish`.")
+                            return await ctx.send(f"That's not a valid punishment. Please try again by doing `-punish`.")
 
                         if reason > 500:
-                            return await ctx.reply(f"Your reason has exceeded the 500-character limit. Please try again by doing `-punish`")
+                            return await ctx.send(f"Your reason has exceeded the 500-character limit. Please try again by doing `-punish`")
 
                         await member.send(f'punishment: {punishment}\nmember: {member}\n{reason}')
 
@@ -111,11 +111,11 @@ class mod(commands.Cog):
 
         if isinstance(member, discord.Member):
             if member.top_role >= ctx.me.top_role:
-                return await ctx.reply(ctx, "I cannot ban that member. Try moving my role to the top.")
+                return await ctx.send(ctx, "I cannot ban that member. Try moving my role to the top.")
 
         if reason == None or reason > 500:
             reason = "Reason was not provided or it exceeded the 500-character limit."
-        await ctx.reply(f"Successfully banned `{member}` for `{reason}`")
+        await ctx.send(f"Successfully banned `{member}` for `{reason}`")
 
         try:
             await member.message(f"You have been banned from {ctx.guild}\nReason: {reason}")
@@ -133,11 +133,11 @@ class mod(commands.Cog):
 
         if isinstance(member, discord.Member):
             if member.top_role >= ctx.me.top_role:
-                return await ctx.reply(ctx, "I cannot kick that member. Try moving my role to the top.")
+                return await ctx.send(ctx, "I cannot kick that member. Try moving my role to the top.")
 
         if reason == None or reason > 500:
             reason = "Reason was not provided or it exceeded the 500-character limit."
-        await ctx.reply(f"Successfully kicked `{member}` for `{reason}`")
+        await ctx.send(f"Successfully kicked `{member}` for `{reason}`")
 
         try:
             await member.message(f"You have been kicked from {ctx.guild}\nReason: {reason}")
@@ -151,7 +151,7 @@ class mod(commands.Cog):
     @commands.bot_has_permissions(send_messages=True, embed_links=True, manage_messages=True)
     async def purge(self, ctx, amount : int, channel : discord.TextChannel=None):
         if amount > 1000:
-            return await ctx.reply("Amount cannot be more than 1000.")
+            return await ctx.send("Amount cannot be more than 1000.")
 
         if channel == None:
             channel = ctx.channel
@@ -170,13 +170,13 @@ class mod(commands.Cog):
     @commands.bot_has_permissions(send_messages=True, embed_links=True, manage_channels=True)
     async def slowmode(self, ctx, number : int, channel : discord.TextChannel=None):
         if number > 21600:
-            return await ctx.reply("Number cannot be more than 21600.")
+            return await ctx.send("Number cannot be more than 21600.")
 
         if channel == None:
             channel = ctx.channel
 
         await channel.edit(slowmode_delay=number, reason=f'Changed by `{ctx.author}`  using command')
-        await ctx.reply(f"Successfully changed the slowmode of {channel.mention} to `{number}`.", delete_after=5.0)
+        await ctx.send(f"Successfully changed the slowmode of {channel.mention} to `{number}`.", delete_after=5.0)
         await ctx.message.delete()
 
     @commands.command(help="Creates a new role", aliases=['create_role', 'addrole', 'add_role',' newrole', 'new_role'])
@@ -186,4 +186,4 @@ class mod(commands.Cog):
         server = ctx.guild
 
         await server.create_role(name=name, color=color, reason=f'Made by `{ctx.author}` using command')
-        await ctx.reply(f"Successfully created a role called `{name}` with the color being `{color}`.")
+        await ctx.send(f"Successfully created a role called `{name}` with the color being `{color}`.")

@@ -21,7 +21,7 @@ class fun(commands.Cog):
     @commands.command(help="Turns any text into ASCII", aliases=['asciitext', 'ascii_text', 'gen_ascii', 'generator_ascii'])
     async def ascii(self, ctx, *, text):
         if len(text) > 10:
-            return await ctx.reply("Your ASCII text exceeded the 10-character limit.")
+            return await ctx.send("Your ASCII text exceeded the 10-character limit.")
         
         ascii = pyfiglet.figlet_format(text)
 
@@ -33,7 +33,7 @@ ASCII Text:
 ```
                               """)
 
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command(help="Sends a image of the member you mention but triggered")
     @commands.cooldown(1, 5, BucketType.member)
@@ -48,7 +48,7 @@ ASCII Text:
                     file = discord.File(fp, "triggered.gif")
                     embed = discord.Embed(title=f"<a:loading:747680523459231834> Processing image...")
                     
-                    message = await ctx.reply(embed=embed, file=file)
+                    message = await ctx.send(embed=embed, file=file)
                     embed = discord.Embed(title=f"{member.name} is triggered")
                     embed.set_image(url="attachment://triggered.gif")
 
@@ -67,7 +67,7 @@ ASCII Text:
                     file = discord.File(fp, "horny.png")
                     embed = discord.Embed(title=f"<a:loading:747680523459231834> Processing image...")
                     
-                    message = await ctx.reply(embed=embed, file=file)
+                    message = await ctx.send(embed=embed, file=file)
                     embed = discord.Embed(title=f"{member.name} has the license to be horny")
                     embed.set_image(url="attachment://horny.png")
 
@@ -86,7 +86,7 @@ ASCII Text:
                     file = discord.File(fp, "jail.png")
                     embed = discord.Embed(title=f"<a:loading:747680523459231834> Processing image...")
                     
-                    message = await ctx.reply(embed=embed, file=file)
+                    message = await ctx.send(embed=embed, file=file)
                     embed = discord.Embed(title=f"{member.name} has been sent to jail for 69420 years")
                     embed.set_image(url="attachment://jail.png")
 
@@ -105,7 +105,7 @@ ASCII Text:
                     file = discord.File(fp, "wasted.png")
                     embed = discord.Embed(title=f"<a:loading:747680523459231834> Processing image...")
                     
-                    message = await ctx.reply(embed=embed, file=file)
+                    message = await ctx.send(embed=embed, file=file)
                     embed = discord.Embed(title=f"WASTED.")
                     embed.set_image(url="attachment://wasted.png")
 
@@ -124,7 +124,7 @@ ASCII Text:
                     file = discord.File(fp, "gay.png")
                     embed = discord.Embed(title=f"<a:loading:747680523459231834> Processing image...")
                     
-                    message = await ctx.reply(embed=embed, file=file)
+                    message = await ctx.send(embed=embed, file=file)
                     embed = discord.Embed(title=f"{member.name} is now gay")
                     embed.set_image(url="attachment://gay.png")
 
@@ -144,7 +144,7 @@ ASCII Text:
                     file = discord.File(fp, "glass.png")
                     embed = discord.Embed(title=f"<a:loading:747680523459231834> Processing image...")
                     
-                    message = await ctx.reply(embed=embed, file=file)
+                    message = await ctx.send(embed=embed, file=file)
                     embed = discord.Embed(title=f"{member.name} is now **glass**")
                     embed.set_image(url="attachment://glass.png")
                     
@@ -155,7 +155,7 @@ ASCII Text:
     async def token(self, ctx):
         embed = discord.Embed(title=f"<a:loading:747680523459231834> Getting token...")
         
-        message = await ctx.reply(embed=embed)
+        message = await ctx.send(embed=embed)
 
         async with aiohttp.ClientSession() as session:
             request1 = await session.get('https://some-random-api.ml/bottoken')
@@ -175,7 +175,7 @@ Token: {tokenjson['token']}
 
         embed = discord.Embed(title=f"PP Size - {member}", description=f"8{'=' * length}D\n{member.name}'s :eggplant: is {length} cm")
 
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command(help="Answers with yes or no to your question", aliases=['8ball', 'magicball', 'magic_ball', 'eight_ball'])
     async def eightball(self, ctx, *, question):
@@ -189,13 +189,13 @@ Token: {tokenjson['token']}
                     'Outlook good.',
                     'Yes.',
                     'Signs point to yes.',
-                    'Reply hazy, try again.',
+                    'send hazy, try again.',
                     'Ask again later.',
                     'Better not tell you now.',
                     'Cannot predict now.',
                     'Concentrate and ask again.',
                     'Dont count on it.',
-                    'My reply is no.',
+                    'My send is no.',
                     'My sources say no',
                     'Outlook not so good.',
                     'Very doubtful.']
@@ -205,7 +205,7 @@ Question: {question}
 Answer: {random.choice(responses)}
                               """)
         
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command(help="Tells you if someone is a furry or not")
     async def furrydetector(self, ctx, member : discord.Member=None):
@@ -215,14 +215,14 @@ Answer: {random.choice(responses)}
         responses = ['is a furry.',
                     'is not a furry.']
         
-        await ctx.reply(f"{member} {random.choice(responses)}")
+        await ctx.send(f"{member} {random.choice(responses)}")
 
     @commands.command(help="Tells you how gay someone is")
     async def gayrate(self, ctx, member : discord.Member=None):
         if member == None:
             member = ctx.author
 
-        await ctx.reply(f"{member} is {random.randint(0, 100)}% gay!")
+        await ctx.send(f"{member} is {random.randint(0, 100)}% gay!")
 
     @commands.command(help="Generates a random number", aliases=['rm'])
     async def randomnumber(self, ctx, minimum : int=None, maximum : int=None):
@@ -233,11 +233,11 @@ Answer: {random.choice(responses)}
             maximum = 10
 
         if maximum > 1000000:
-            return await ctx.reply("Number cannot be more than `1000000`.")
+            return await ctx.send("Number cannot be more than `1000000`.")
 
         number = random.randint(minimum, maximum)
 
-        await ctx.reply(f"Randomly generated number between `{minimum}` and `{maximum}`: `{number}`")
+        await ctx.send(f"Randomly generated number between `{minimum}` and `{maximum}`: `{number}`")
 
     @commands.command(help="Generates a random word", aliases=['rw'])
     async def randomword(self, ctx):
@@ -247,7 +247,7 @@ Answer: {random.choice(responses)}
 
         randomWord = random.choice(wordsList)
 
-        await ctx.reply(f"Here's a randomly generated word: `{randomWord}`")
+        await ctx.send(f"Here's a randomly generated word: `{randomWord}`")
 
     @commands.command(help="Sends a random meme from the r/meme subreddit", aliases=['m'])
     @commands.cooldown(1, 5, commands.BucketType.member)
@@ -255,7 +255,7 @@ Answer: {random.choice(responses)}
         embed = discord.Embed(title="<a:loading:747680523459231834> Getting meme...")
         embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
 
-        message = await ctx.reply(embed=embed)
+        message = await ctx.send(embed=embed)
 
         sebreddit_list = ["dankmemes", "memes"]
         subreddit = random.choice(sebreddit_list)
@@ -276,7 +276,7 @@ Answer: {random.choice(responses)}
         embed = discord.Embed(title="<a:loading:747680523459231834> Getting programmer meme...")
         embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
 
-        message = await ctx.reply(embed=embed)
+        message = await ctx.send(embed=embed)
 
         sebreddit_list = ["ProgrammerHumor", "ProgrammerHumor"]
         subreddit = random.choice(sebreddit_list)
@@ -297,7 +297,7 @@ Answer: {random.choice(responses)}
         embed = discord.Embed(title="<a:loading:747680523459231834> Getting piece of art...")
         embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
 
-        message = await ctx.reply(embed=embed)
+        message = await ctx.send(embed=embed)
 
         sebreddit_list = ["Art", "ArtBattle"]
         subreddit = random.choice(sebreddit_list)
@@ -316,16 +316,16 @@ Answer: {random.choice(responses)}
     async def msgme(self, ctx, *, content):
         try:
             await ctx.author.send(content)
-            await ctx.reply("Successfully messaged you.")
+            await ctx.send("Successfully messaged you.")
             
         except:
-            await ctx.reply("I couldn't message you, make sure your private messages are enabled.")
+            await ctx.send("I couldn't message you, make sure your private messages are enabled.")
 
     @commands.command(help="Let's you hug someone!")
     @commands.cooldown(1, 5, BucketType.member)
     async def hug(self, ctx, member : discord.Member):
         if member == None:
-            return await ctx.reply("You can't hug yourself!")
+            return await ctx.send("You can't hug yourself!")
             
         async with aiohttp.ClientSession() as session:
             request = await session.get('https://some-random-api.ml/animu/hug')
@@ -334,13 +334,13 @@ Answer: {random.choice(responses)}
         embed = discord.Embed(title=f"{ctx.author} hugged {member}")
         embed.set_image(url=hugjson['link'])
         
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command(description="Let's you pat someone!")
     @commands.cooldown(1, 5, BucketType.member)
     async def pat(self, ctx, member : discord.Member=None):
         if member == None:
-            return await ctx.reply("You can't pat yourself!")
+            return await ctx.send("You can't pat yourself!")
         
         async with aiohttp.ClientSession() as session:
             request = await session.get('https://some-random-api.ml/animu/pat')
@@ -349,13 +349,13 @@ Answer: {random.choice(responses)}
         embed = discord.Embed(title=f"{ctx.author} patted {member}")
         embed.set_image(url=patjson['link'])
         
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command(description="Let's you wink at someone!")
     @commands.cooldown(1, 5, BucketType.member)
     async def wink(self, ctx, member : discord.Member=None):
         if member == None:
-            return await ctx.reply("You can't wink at yourself!")
+            return await ctx.send("You can't wink at yourself!")
             
         async with aiohttp.ClientSession() as session:
             request = await session.get('https://some-random-api.ml/animu/wink')
@@ -364,7 +364,7 @@ Answer: {random.choice(responses)}
         embed = discord.Embed(title=f"{ctx.author} winked at {member}")
         embed.set_image(url=winkjson['link'])
         
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command(description="Let's you reverse some text")
     async def reverse(self, ctx, *, text):
@@ -373,7 +373,7 @@ Original text: {text}
 <:reverse:879724816834375791> Reveresd text: {text[::-1]}
         """)
         
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command(help="OOF's the person you mentioned", aliases=['commitoof', 'commit_oof'])
     async def oof(self, ctx, member : discord.Member=None):
@@ -400,7 +400,7 @@ Original text: {text}
             f"{ctx.author.name} chewed 5 gum.",
             f"{ctx.author.name} ate too many vitamin gummy bears.",
             f"{ctx.author.name} tried to swim in lava. Why would you ever try to do that?"]
-            return await ctx.reply(f"{random.choice(responses)}")
+            return await ctx.send(f"{random.choice(responses)}")
         
         else:
             responses = [f"{ctx.author.name} exploded {member.name}.",
@@ -429,7 +429,7 @@ Original text: {text}
                         f"{ctx.author.name} tossed {member.name} off an airplane.",
                         f"{ctx.author.name} broke {member.name}'s neck."]
 
-            await ctx.reply(f"{random.choice(responses)}")
+            await ctx.send(f"{random.choice(responses)}")
 
 
     # this command was removed due to top.gg not accepting my bot cause it "promotes suicide"
@@ -459,4 +459,4 @@ Original text: {text}
     #                 f"{ctx.author.name} ate too many vitamin gummy bear.",
     #                 f"{ctx.author.name} tried to swim in lava. Why would you ever try to do that?"]
     #
-    #     await ctx.reply(f"{random.choice(responses)}")
+    #     await ctx.send(f"{random.choice(responses)}")

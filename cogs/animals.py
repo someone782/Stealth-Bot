@@ -23,7 +23,7 @@ class animals(commands.Cog):
       embed = discord.Embed(title="Waifu", timestamp=discord.utils.utcnow(), color=0x2F3136)
       embed.set_image(url=json['url'])
 
-      await ctx.reply(embed=embed)
+      await ctx.send(embed=embed)
 
    @commands.command(help="🐱 Shows a picture of a cat and a random fact about cats")
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
@@ -38,7 +38,7 @@ class animals(commands.Cog):
       embed.set_image(url=dogjson['link'])
       embed.set_footer(text=factjson['fact'])
       
-      await ctx.reply(embed=embed)
+      await ctx.send(embed=embed)
 
    @commands.command(help="🐶 Shows a picture of a dog and a random fact about dogs")
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
@@ -53,7 +53,7 @@ class animals(commands.Cog):
       embed.set_image(url=dogjson['link'])
       embed.set_footer(text=factjson['fact'])
       
-      await ctx.reply(embed=embed)
+      await ctx.send(embed=embed)
 
    @commands.command(help="🐼 Shows a picture of a panda and a random fact about pandas")
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
@@ -68,7 +68,7 @@ class animals(commands.Cog):
       embed.set_image(url=dogjson['link'])
       embed.set_footer(text=factjson['fact'])
       
-      await ctx.reply(embed=embed)
+      await ctx.send(embed=embed)
 
    @commands.command(help="🦊 Shows a picture of a fox and a random fact about foxes")
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
@@ -83,7 +83,7 @@ class animals(commands.Cog):
       embed.set_image(url=dogjson['link'])
       embed.set_footer(text=factjson['fact'])
       
-      await ctx.reply(embed=embed)
+      await ctx.send(embed=embed)
 
    @commands.command(help="🐦 Shows a picture of a bird and a random fact about birds")
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
@@ -98,7 +98,7 @@ class animals(commands.Cog):
       embed.set_image(url=dogjson['link'])
       embed.set_footer(text=factjson['fact'])
       
-      await ctx.reply(embed=embed)
+      await ctx.send(embed=embed)
 
    @commands.command(help="🐨 Shows a picture of a koala and a random fact about koalas")
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
@@ -113,7 +113,7 @@ class animals(commands.Cog):
       embed.set_image(url=dogjson['link'])
       embed.set_footer(text=factjson['fact'])
       
-      await ctx.reply(embed=embed)
+      await ctx.send(embed=embed)
 
    @commands.command(help="🦘 Shows a picture of a kangaroo and a random fact about kangaroos")
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
@@ -128,7 +128,7 @@ class animals(commands.Cog):
       embed.set_image(url=dogjson['link'])
       embed.set_footer(text=factjson['fact'])
       
-      await ctx.reply(embed=embed)
+      await ctx.send(embed=embed)
 
    @commands.command(help="🦝 Shows a picture of a raccoon and a random fact about raccoons")
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
@@ -143,7 +143,7 @@ class animals(commands.Cog):
       embed.set_image(url=dogjson['link'])
       embed.set_footer(text=factjson['fact'])
       
-      await ctx.reply(embed=embed)
+      await ctx.send(embed=embed)
 
    @commands.command(help="🐳 Shows a picture of a whale and a random fact about whales", aliases=['urmom', 'ur_mom', 'yourmom', 'your_mom'])
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
@@ -158,7 +158,7 @@ class animals(commands.Cog):
       embed.set_image(url=dogjson['link'])
       embed.set_footer(text=factjson['fact'])
       
-      await ctx.reply(embed=embed)
+      await ctx.send(embed=embed)
 
    @commands.command(help="Shows a picture of a pikachu")
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
@@ -170,4 +170,4 @@ class animals(commands.Cog):
       embed = discord.Embed(title="Pikachu!", timestamp=discord.utils.utcnow(), color=0x2F3136)
       embed.set_image(url=dogjson['link'])
       
-      await ctx.reply(embed=embed)
+      await ctx.send(embed=embed)

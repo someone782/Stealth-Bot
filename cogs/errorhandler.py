@@ -137,7 +137,7 @@ Note: I can't edit the owner of the server
             embed = discord.Embed(title=message, color=0x2F3136)
             embed.set_image(url="https://i.imgur.com/oe4iK5i.gif")
 
-            return await ctx.reply(embed=embed)
+            return await ctx.send(embed=embed)
 
         elif isinstance(error, discord.ext.commands.MissingRequiredArgument):
             missing=f"{str(error.param).split(':')[0]}"
@@ -182,6 +182,6 @@ Traceback:
 {traceback_string}
 ```
             """)
-        embed = discord.Embed(description=message, color=0x2F3136)
+        embed = discord.Embed(description=message)
 
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)

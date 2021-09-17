@@ -106,7 +106,7 @@ Written with `{count_python('.'):,}` lines.
 
         embed.set_footer(text=f"Suggested command: {prefix}{random.choice(list(self.context.bot.commands))} • Credits given in {prefix}credits")
 
-        await ctx.reply(embed=embed, view=Stuff())
+        await ctx.send(embed=embed, view=Stuff())
 
 
     async def send_command_help(self, command):
@@ -136,7 +136,7 @@ Usage: {self.get_minimal_command_signature(command)}
 
         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
 
     async def send_cog_help(self, cog):
@@ -163,12 +163,12 @@ __**Available commands**__ **[{len(cog.get_commands())}]**
                                 """)
             embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-            await ctx.reply(embed=embed)
+            await ctx.send(embed=embed)
         else:
             embed=discord.Embed(title=f"Help - {cog.qualified_name}", description=f"""
 This cog has no commands.
                                 """)
-            await ctx.reply(embed=embed)
+            await ctx.send(embed=embed)
 
     async def send_error_message(self, error):
         raise errors.CommandDoesntExist
@@ -178,7 +178,7 @@ This cog has no commands.
             embed = discord.Embed(description=f"{str(error.original)}")
             embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-            await ctx.reply(embed=embed)
+            await ctx.send(embed=embed)
 
 
 class help(commands.Cog):

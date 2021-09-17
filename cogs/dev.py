@@ -24,7 +24,7 @@ class dev(commands.Cog):
             message = "No message provided"
         prefix = ctx.clean_prefix
 
-        await ctx.reply(f'''
+        await ctx.send(f'''
 ```yaml
 {prefix}jsk git add .
 git commit -m "{message}"
@@ -50,7 +50,7 @@ git push origin main
 
         embed = discord.Embed(title=f"Sent to do!", description=f"What was sent: {text}", timestamp=discord.utils.utcnow(), color=0x2F3136)
         embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command(help="toggles no-prefix mode on or off", aliases=["no_prefix", "silentprefix", "silent_prefix"])
     @commands.is_owner()
@@ -76,7 +76,7 @@ git push origin main
         embed = discord.Embed(description=f"<a:loading:747680523459231834> Loading {extension}...")
         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-        message = await ctx.reply(embed=embed)
+        message = await ctx.send(embed=embed)
 
         try:
             self.client.load_extension(f"cogs.{extension}")
@@ -122,7 +122,7 @@ git push origin main
     @commands.is_owner()
     async def unload(self, ctx, extension):
         embed = discord.Embed(description=f"⬇ {extension}", timestamp=discord.utils.utcnow(), color=0x2F3136)
-        message = await ctx.reply(embed=embed)
+        message = await ctx.send(embed=embed)
 
         try:
             self.client.unload_extension("cogs.{}".format(extension))
@@ -147,7 +147,7 @@ git push origin main
     @commands.is_owner()
     async def reload(self, ctx, extension):
         embed = discord.Embed(description=f"<a:loading:747680523459231834> {extension}", timestamp=discord.utils.utcnow(), color=0x2F3136)
-        message = await ctx.reply(embed=embed)
+        message = await ctx.send(embed=embed)
 
         try:
             self.client.reload_extension("cogs.{}".format(extension))
@@ -252,7 +252,7 @@ git push origin main
     @commands.is_owner()
     async def blacklist(self, ctx):
         if ctx.invoked_subcommand is None:
-            return await ctx.reply("youre so retarded")
+            return await ctx.send("youre so retarded")
 
     @blacklist.command(name="add", help="Adds a member to the blacklist", aliases=['a'])
     async def blacklist_add(self, ctx, member : discord.User):
@@ -266,7 +266,7 @@ git push origin main
 
         embed = discord.Embed(description=f"Successfully added {member} to the blacklist", timestamp=discord.utils.utcnow(), color=0x2F3136)
 
-        return await ctx.reply(embed=embed)
+        return await ctx.send(embed=embed)
 
     @blacklist.command(name="remove", help="Removes a member from the blacklist", aliases=['r', 'rm'])
     async def blacklist_remove(self, ctx, member : discord.User):
@@ -279,7 +279,7 @@ git push origin main
 
         embed = discord.Embed(description=f"Successfully removed {member} from the blacklist", timestamp=discord.utils.utcnow(), color=0x2F3136)
 
-        return await ctx.reply(embed=embed)
+        return await ctx.send(embed=embed)
 
     @blacklist.command(name='check', help="Checks if a member is blacklisted", aliases=['c'])
     async def blacklist_check(self, ctx, member : discord.User):
@@ -290,4 +290,4 @@ git push origin main
             status = False
         embed = discord.Embed(description=f"{member} {'is' if status is True else 'is not'} blacklisted", timestamp=discord.utils.utcnow(), color=0x2F3136)
 
-        return await ctx.reply(embed=embed)
+        return await ctx.send(embed=embed)

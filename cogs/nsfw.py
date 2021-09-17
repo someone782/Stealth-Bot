@@ -25,7 +25,7 @@ class nsfw(commands.Cog):
             embed.set_image(url=subredditDict['url'])
             embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
 
-            await ctx.reply(embed=embed)
+            await ctx.send(embed=embed)
 
     @commands.command(help="Shows you a random post from the subreddit r/HENTAI_GIF", aliases=['hentaigif'])
     @commands.is_nsfw()
@@ -40,4 +40,4 @@ class nsfw(commands.Cog):
             embed.set_image(url=subredditDict['url'])
             embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
 
-            await ctx.reply(embed=embed)
+            await ctx.send(embed=embed)
