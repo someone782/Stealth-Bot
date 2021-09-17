@@ -104,6 +104,9 @@ class info(commands.Cog):
     async def userinfo(self, ctx, member : discord.Member=None):
         if member == None:
             member = ctx.author
+            
+        if ctx.message.reference:
+            member = ctx.message.reference.author
 
         fetchedMember = await self.client.fetch_user(member.id)
 
