@@ -100,7 +100,6 @@ class info(commands.Cog):
 
     @commands.command(help="Shows you information about the member you mentioned", aliases=['ui', 'user', 'member', 'memberinfo'], brief="https://cdn.discordapp.com/attachments/876937268609290300/886407195279884318/userinfo.gif")
     @commands.cooldown(1, 5, BucketType.member)
-    @helpers.is_user_blacklisted()
     async def userinfo(self, ctx, member : discord.Member=None):
         # if member == None:
         #     member = ctx.author
@@ -271,7 +270,6 @@ Acknowledgments: {acknowledgments}
 
     @commands.command(help="Shows you information about the server", aliases=['si', 'guild', 'guildinfo'])
     @commands.cooldown(1, 5, BucketType.member)
-    @helpers.is_user_blacklisted()
     async def serverinfo(self, ctx, id : int=None):
         if id:
             server = self.client.get_guild(id)
@@ -414,7 +412,6 @@ Features:
         await ctx.reply(embed=embed)
 
     @commands.command(help="Shows information about the bot", aliases=['bi'])
-    @helpers.is_user_blacklisted()
     async def botinfo(self, ctx):
         prefix = await self.client.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1', ctx.guild.id)
         prefix = prefix or 'sb!'
@@ -464,7 +461,6 @@ Coroutine: {cr}
         await ctx.reply(embed=embed)
 
     @commands.command(help="Shows a list of commands this bot has", aliases=['commands', 'command', 'cmds', 'commandslist', 'cmdslist', 'commands_list', 'cmds_list', 'commandlist', 'cmdlist', 'command_list', 'cmd_list'])
-    @helpers.is_user_blacklisted()
     async def _commands(self, ctx):
         botCommands = self.client.commands
         commands = []
@@ -478,7 +474,6 @@ Coroutine: {cr}
         await menu.start(ctx)
 
     @commands.command(help="Shows you a list of emotes from this server", aliases=['emojilist', 'emote_list', 'emoji_list', 'emote', 'emoji', 'emotes', 'emojis'])
-    @helpers.is_user_blacklisted()
     async def emotelist(self, ctx, id : int=None):
         if id:
             server = self.client.get_guild(id)
@@ -502,7 +497,6 @@ Coroutine: {cr}
         await menu.start(ctx)
 
     @commands.command(help="Shows you a list of members from this server", aliases=['member_list', 'memlist', 'mem_list'])
-    @helpers.is_user_blacklisted()
     async def memberlist(self, ctx, id : int=None):
         if id:
             server = self.client.get_guild(id)
@@ -521,7 +515,6 @@ Coroutine: {cr}
         await menu.start(ctx)
 
     @commands.command(help="Shows you a list of bots from this server", aliases=['bot_list', 'bolist', 'bo_list'])
-    @helpers.is_user_blacklisted()
     async def botlist(self, ctx, id : int=None):
         if id:
             server = self.client.get_guild(id)
@@ -540,7 +533,6 @@ Coroutine: {cr}
         await menu.start(ctx)
 
     @commands.command(help="Shows you a list of roles from this server", aliases=['role_list', 'rolist', 'ro_list'])
-    @helpers.is_user_blacklisted()
     async def rolelist(self, ctx, id : int=None):
         if id:
             server = self.client.get_guild(id)
@@ -559,7 +551,6 @@ Coroutine: {cr}
         await menu.start(ctx)
 
     @commands.command(help="Shows information about the channel", aliases=['ci', 'channel'])
-    @helpers.is_user_blacklisted()
     async def channelinfo(self, ctx, channel : discord.TextChannel=None):
         if channel == None:
             channel = ctx.channel
@@ -581,7 +572,6 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         await ctx.reply(embed=embed)
 
     @commands.command(help="Shows the avatar of the member you mentioned", aliases=['av'])
-    @helpers.is_user_blacklisted()
     async def avatar(self, ctx, member : discord.Member=None):
         if member == None:
             member = ctx.author
@@ -604,7 +594,6 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
 
     @commands.command(help="Shows the banner of the member you mentioned", aliases=['bn'])
     @commands.cooldown(1, 5, BucketType.member)
-    @helpers.is_user_blacklisted()
     async def banner(self, ctx, member : discord.Member=None):
         errorMessage = f"{member} doesn't have a banner."
         if member == None or member == ctx.author:
@@ -632,7 +621,6 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
 
     @commands.command(help="Shows you the bot's latency")
     @commands.cooldown(1, 5, BucketType.member)
-    @helpers.is_user_blacklisted()
     async def ping(self, ctx):
         pings = []
         number = 0
@@ -691,7 +679,6 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         await message.edit(content="Received ping!", embed=embed)
 
     @commands.command(help="Shows you the uptime of the bot", aliases=['up'])
-    @helpers.is_user_blacklisted()
     async def uptime(self, ctx):
         delta_uptime = discord.utils.utcnow() - self.client.launch_time
         hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
@@ -707,9 +694,8 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         await ctx.reply(embed=embed)
 
     @commands.command(help="Shows how many servers the bot is in", aliases=['server'])
-    @helpers.is_user_blacklisted()
     async def servers(self, ctx):
-        embed = discord.Embed(title=f'I\' in `{self.client.guilds}` servers.', timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed = discord.Embed(title=f"I' in `{self.client.guilds}` servers.", timestamp=discord.utils.utcnow(), color=0x2F3136)
         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
         await ctx.reply(embed=embed)
@@ -726,7 +712,6 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         await ctx.reply(embed=embed)
 
     @commands.command(help="Sends a suggestion", aliases=['bot_suggestion', 'suggestion', 'make_suggestion', 'botsuggestion', 'makesuggestion'])
-    @helpers.is_user_blacklisted()
     async def suggest(self, ctx, *, suggestion):
         if len(suggestion) > 750:
             return await ctx.reply("Your suggestion exceeded the 750-character limit.")
@@ -746,7 +731,6 @@ Suggestion: {suggestion}
 
     @commands.command(help="Shows you information about a character", aliases=['characterinfo', 'character_info', 'char_info'])
     @commands.cooldown(1, 5, BucketType.member)
-    @helpers.is_user_blacklisted()
     async def charinfo(self, ctx, *, characters: str):
         def to_string(c):
             digit = f'{ord(c):x}'
@@ -758,7 +742,6 @@ Suggestion: {suggestion}
         await menu.start(ctx)
 
     @commands.command(help="Shows you who helped with the making of this bot", aliases=['credit'])
-    @helpers.is_user_blacklisted()
     async def credits(self, ctx):
         embed = discord.Embed(title="Credits", description="""
 ```yaml
@@ -776,12 +759,10 @@ Tested verify command: Eiiknostv#2016
         await ctx.reply(embed=embed)
 
     @commands.command(help="Shows the current time", aliases=['date'])
-    @helpers.is_user_blacklisted()
     async def time(self, ctx):
         await ctx.reply(f"The current time is {discord.utils.format_dt(discord.utils.utcnow(), style='T')}")
 
     @commands.command()
-    @helpers.is_user_blacklisted()
     async def afk(self, ctx, *, reason=None):
         member = ctx.author
         if reason == None:
@@ -801,7 +782,6 @@ Tested verify command: Eiiknostv#2016
 
     @commands.command(help="Sends the source code of the bot/a command")
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
-    @helpers.is_user_blacklisted()
     async def source(self, ctx, *, command : str=None):
         prefix = ctx.clean_prefix
         source_url = 'https://github.com/Ender2K89/Stealth-Bot'
