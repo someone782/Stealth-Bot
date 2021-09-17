@@ -410,8 +410,8 @@ Features:
 
     @commands.command(help="Shows information about the bot", aliases=['bi'])
     async def botinfo(self, ctx):
-        prefix = await self.client.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1', ctx.guild.id)
-        prefix = prefix or 'sb!'
+        prefixes = await self.client.get_pre(self.client, ctx.message, raw_prefix=True)
+        text = ctx.me.mention + '\n' + '\n'.join(prefixes)
         p = pathlib.Path('./')
         cm = cr = fn = cl = ls = fc = 0
         for f in p.rglob('*.py'):
@@ -441,7 +441,8 @@ Features:
 <:members:858326990725709854> Members: {len(self.client.users)} (:robot: {len(list(filter(lambda m : m.bot, self.client.users)))})
 <:servers:870152102759006208> Servers: {len(self.client.guilds)}
 <:text_channel:876503902554578984> Channels: <:text_channel:876503902554578984> {text_channels} <:voice:860330111377866774> {voice_channels} <:category:882685952999428107> {categories} <:stagechannel:824240882793447444> {stage_channels} <:threadnew:833432474347372564> {threads}
-Prefix: {prefix}
+Prefix:
+{text}
 Messages seen: {self.client.messages} ({self.client.edited_messages} edited)
 
 :file_folder: Files: {fc}
