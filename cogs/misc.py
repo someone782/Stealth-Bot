@@ -10,10 +10,10 @@ import aiohttp
 from discord.ext import commands
 
 def setup(client):
-    client.add_cog(Other(client))
+    client.add_cog(Misc(client))
 
-class Other(commands.Cog):
-    "❓ All other commands"
+class Misc(commands.Cog):
+    "❓ Miscellaneous commands"
     def __init__(self, client):
         self.client = client
 
