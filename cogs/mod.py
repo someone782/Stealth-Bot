@@ -1,6 +1,9 @@
 import discord
 import asyncio
+import typing
 import itertools
+from collections import Counter
+import re
 import datetime
 from discord.ext import commands, menus
 from discord.ext.commands.cooldowns import BucketType
@@ -23,6 +26,69 @@ class Mod(commands.Cog):
     "⚒️ Moderation commands"
     def __init__(self, client):
         self.client = client
+        
+    @staticmethod
+    async def do_removal(ctx: commands.Context, limit: int, predicate, *, before=None, after=None, bulk: bool = True):
+        if limit > 2000:
+            return await ctx.send(f'Too many messages to search given ({limit}/2000)')
+
+        async with ctx.typing():
+            if before is None:
+                before = ctx.message
+            else:
+                before = discord.Object(id=before)
+
+            if after is not None:
+                after = discord.Object(id=after)
+
+            try:
+                deleted = await ctx.channel.purge(limit=limit, before=before, after=after, check=predicate, bulk=bulk)
+            except discord.Forbidden:
+                return await ctx.send('I do not have permissions to delete messages.')
+            except discord.HTTPException as e:
+                return await ctx.send(f'Error: {e} (try a smaller search?)')
+
+            spammers = Counter(m.author.display_name for m in deleted)
+            deleted = len(deleted)
+            messages = [f'{deleted} message{" was" if deleted == 1 else "s were"} removed.']
+            if deleted:
+                messages.append('')
+                spammers = sorted(spammers.items(), key=lambda t: t[1], reverse=True)
+                messages.extend(f'**{name}**: {count}' for name, count in spammers)
+
+            to_send = '\n'.join(messages)
+
+            if len(to_send) > 2000:
+                await ctx.send(f'Successfully removed {deleted} messages.', delete_after=10, reply=False)
+            else:
+                await ctx.send(to_send, delete_after=10, reply=False)
+        
+    @commands.command()
+    async def cleanup(self, ctx: commands.Context, amount: int = 25):
+        """
+        Cleans up the bots messages. it defaults to 25 messages. if you or the bot don't have manage_messages permission, the search will be limited to 25 messages.
+        """
+        if amount > 25:
+            if not ctx.channel.permissions_for(ctx.author).manage_messages:
+                await ctx.send("You must have `manage_messages` permission to perform a search greater than 25")
+                return
+            if not ctx.channel.permissions_for(ctx.me).manage_messages:
+                await ctx.send("I need the `manage_messages` permission to perform a search greater than 25")
+                return
+
+        if ctx.channel.permissions_for(ctx.me).manage_messages:
+            prefix = tuple(await self.client.get_pre(self.client, ctx.message))
+            bulk = True
+
+            def check(msg):
+                return msg.author == ctx.me or msg.content.startswith(prefix)
+        else:
+            bulk = False
+
+            def check(msg):
+                return msg.author == ctx.me
+
+        await self.do_removal(ctx, predicate=check, bulk=bulk, limit=amount)
 
     @commands.command(help="Gets the current guild's list of bans")
     @commands.has_permissions(ban_members=True)
