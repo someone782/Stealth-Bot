@@ -7,11 +7,11 @@ import random
 
 def setup(client):
     client.add_cog(animals(client))
-
+    
 class animals(commands.Cog):
-    "🐶 Commands that show you pictures of certain animals & facts about them"
-    def __init__(self, client):
-        self.client = client
+   "🐶 Commands that show you pictures of certain animals & facts about them"
+   def __init__(self, client):
+      self.client = client
 
    @commands.command(help="Shows a picture of a waifu")
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
