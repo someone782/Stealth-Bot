@@ -140,8 +140,8 @@ Usage: {self.get_minimal_command_signature(command)}
 
 
     async def send_cog_help(self, cog):
-        await ctx.send(cog)
         ctx = self.context
+        await ctx.send(cog)
         prefix = self.context.clean_prefix
         entries = cog.get_commands()
         command_signatures = [self.get_minimal_command_signature(c) for c in entries]
