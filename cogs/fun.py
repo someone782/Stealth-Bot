@@ -23,7 +23,7 @@ class Fun(commands.Cog):
     @commands.command(help="Adds a number to the global counter")
     async def count(self, ctx):
         self.client.counter = self.client.counter + 1
-        await ctx.reply(f"The counter is now at {self.client.counter}!")
+        await ctx.reply("POG?")
 
     @commands.command(help="Turns any text into ASCII", aliases=['asciitext', 'ascii_text', 'gen_ascii', 'generator_ascii'])
     async def ascii(self, ctx, *, text):
