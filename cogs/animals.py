@@ -21,8 +21,10 @@ class animals(commands.Cog):
             request = await session.get('https://api.hori.ovh/sfw/waifu/')
             overjson = await request.json()
 
-        embed = discord.Embed(title="Meow", timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed = discord.Embed(title="Waifu", timestamp=discord.utils.utcnow(), color=0x2F3136)
         embed.set_image(url=overjson['url'])
+        embed.set_footer(text=f"over 18: {overjson['is_over18']}")        
+        
         await ctx.reply(embed=embed)
 
 
