@@ -120,7 +120,7 @@ class CustomContext(commands.Context):
 
         if embed and footer is True:
             if not embed.footer:
-                embed.set_footer(text=f"Requested by {self.author}",
+                embed.set_footer(text=f"Command requested by {self.author}",
                                  icon_url=self.author.display_avatar.url)
                 embed.timestamp = discord.utils.utcnow()
 
@@ -158,7 +158,7 @@ class StealthBot(commands.Bot):
     async def get_context(self, message, *, cls=CustomContext):
         return await super().get_context(message, cls=cls)
 
-client = StealthBot(intents=discord.Intents.all(), activity=activity, status=status, case_insensitive=True, help_command=None, enable_debug_events = True) # Initializes the client object
+client = StealthBot(intents=discord.Intents.all(), activity=activity, status=status, case_insensitive=True, help_command=None, enable_debug_events = True, strip_after_prefix=True) # Initializes the client object
 
 client.tracker = DiscordUtils.InviteTracker(client) # Initializes the tracker object
 client.owner_ids = [564890536947875868] # 349373972103561218 (LeoCx1000)
@@ -173,13 +173,7 @@ client.session = aiohttp.ClientSession()
 client.blacklist = {}
 client.prefixes = {}
 client.brain_cells = 0
-
-client.reddit = asyncpraw.Reddit(
-    client_id = "zrJUgDUtW8lfumULcVcbEg",
-    client_secret = "TRsZAPbYE4klNKqWvc2vfqJd3iLRyQ",
-    user_agent = "Yo mom",
-)
-
+client._BotBase__cogs = commands.core._CaseInsensitiveDict()
 client.user_id = int('760179628122964008')
 
 	# Functions and stuff

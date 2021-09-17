@@ -21,7 +21,7 @@ class nsfw(commands.Cog):
         async with self.client.session.get(f"https://reddit.com/r/{subreddit}/random.json?limit=1") as r:
             res = await r.json()
             subredditDict = dict(res[0]['data']['children'][0]['data'])
-            embed = discord.Embed(title=f"{subredditDict['title']}", url=f"https://reddit.com{subredditDict['permalink']}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+            embed = discord.Embed(title=f"{subredditDict['title']}", url=f"https://reddit.com{subredditDict['permalink']}")
             embed.set_image(url=subredditDict['url'])
             embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
 
@@ -36,7 +36,7 @@ class nsfw(commands.Cog):
         async with self.client.session.get(f"https://reddit.com/r/{subreddit}/random.json?limit=1") as r:
             res = await r.json()
             subredditDict = dict(res[0]['data']['children'][0]['data'])
-            embed = discord.Embed(title=f"{subredditDict['title']}", url=f"https://reddit.com{subredditDict['permalink']}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+            embed = discord.Embed(title=f"{subredditDict['title']}", url=f"https://reddit.com{subredditDict['permalink']}")
             embed.set_image(url=subredditDict['url'])
             embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
 

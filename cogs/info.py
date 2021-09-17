@@ -49,42 +49,42 @@ def pretty_size(bytes, units=UNITS_MAPPING):
 
 class ServerEmotesEmbedPage(menus.ListPageSource):
     async def format_page(self, menu, item):
-        embed = discord.Embed(title=f"{menu.ctx.guild}'s emotes [{len(menu.ctx.guild.emojis)}]", description="\n".join(item), timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed = discord.Embed(title=f"{menu.ctx.guild}'s emotes [{len(menu.ctx.guild.emojis)}]", description="\n".join(item))
         embed.set_footer(text=f"Command requested by {menu.ctx.author}", icon_url=menu.ctx.author.avatar.url)
 
         return embed
 
 class ServerMembersEmbedPage(menus.ListPageSource):
     async def format_page(self, menu, item):
-        embed = discord.Embed(title=f"{menu.ctx.guild}'s members [{len(menu.ctx.guild.members)}]", description="\n".join(item), timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed = discord.Embed(title=f"{menu.ctx.guild}'s members [{len(menu.ctx.guild.members)}]", description="\n".join(item))
         embed.set_footer(text=f"Command requested by {menu.ctx.author}", icon_url=menu.ctx.author.avatar.url)
 
         return embed
 
 class ServerBotsEmbedPage(menus.ListPageSource):
     async def format_page(self, menu, item):
-        embed = discord.Embed(title=f"{menu.ctx.guild}'s bots [{len(list(filter(lambda m : m.bot, menu.ctx.guild.members)))}]", description="\n".join(item), timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed = discord.Embed(title=f"{menu.ctx.guild}'s bots [{len(list(filter(lambda m : m.bot, menu.ctx.guild.members)))}]", description="\n".join(item))
         embed.set_footer(text=f"Command requested by {menu.ctx.author}", icon_url=menu.ctx.author.avatar.url)
 
         return embed
 
 class ServerRolesEmbedPage(menus.ListPageSource):
     async def format_page(self, menu, item):
-        embed = discord.Embed(title=f"{menu.ctx.guild}'s roles [{len(menu.ctx.guild.roles)}]", description="\n".join(item), timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed = discord.Embed(title=f"{menu.ctx.guild}'s roles [{len(menu.ctx.guild.roles)}]", description="\n".join(item))
         embed.set_footer(text=f"Command requested by {menu.ctx.author}", icon_url=menu.ctx.author.avatar.url)
 
         return embed
 
 class BotCommandsEmbedPage(menus.ListPageSource):
     async def format_page(self, menu, item):
-        embed = discord.Embed(title=f"{menu.ctx.bot.user.name}'s commands [{len(list(menu.ctx.bot.commands))}]", description="\n".join(item), timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed = discord.Embed(title=f"{menu.ctx.bot.user.name}'s commands [{len(list(menu.ctx.bot.commands))}]", description="\n".join(item))
         embed.set_footer(text=f"Command requested by {menu.ctx.author}", icon_url=menu.ctx.author.avatar.url)
 
         return embed
 
 class EmbedPageSource(menus.ListPageSource):
     async def format_page(self, menu, item):
-        embed = discord.Embed(title="Character information", description="\n".join(item), timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed = discord.Embed(title="Character information", description="\n".join(item))
         embed.set_footer(text=f"Command requested by {menu.ctx.author}", icon_url=menu.ctx.author.avatar.url)
 
         return embed
@@ -261,9 +261,8 @@ Acknowledgments: {acknowledgments}
 
 :rainbow: Color: {member.color}
 :rainbow: Accent color: {fetchedMember.accent_color}
-        """, timestamp=discord.utils.utcnow(), color=0x2F3136)
+        """)
         embed.set_thumbnail(url=member.avatar.url)
-        embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
         await ctx.reply(embed=embed)
 
@@ -393,7 +392,7 @@ Created: {discord.utils.format_dt(server.created_at, style="f")} ({discord.utils
 
 Features:
 {features}
-        """, timestamp=discord.utils.utcnow(), color=0x2F3136)
+        """)
 
         if server.banner:
             url1 = server.banner.url
@@ -406,8 +405,6 @@ Features:
             url1 = server.icon.url
             url = url1.replace("cdn.discordapp.com", "media.discordapp.net")
             embed.set_thumbnail(url=url)
-
-        embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
         await ctx.reply(embed=embed)
 
@@ -454,9 +451,8 @@ Functions: {fn}
 Coroutine: {cr}
 :hash: Comments: {cm:,}
 
-        """, timestamp=discord.utils.utcnow(), color=0x2F3136)
+        """)
         embed.set_thumbnail(url=self.client.user.avatar.url)
-        embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
         await ctx.reply(embed=embed)
 
@@ -471,6 +467,7 @@ Coroutine: {cr}
         commands = [sub.replace('hentai', '||hentai||') for sub in commands]
 
         menu = menus.MenuPages(BotCommandsEmbedPage(commands, per_page=10))
+        
         await menu.start(ctx)
 
     @commands.command(help="Shows you a list of emotes from this server", aliases=['emojilist', 'emote_list', 'emoji_list', 'emote', 'emoji', 'emotes', 'emojis'])
@@ -494,6 +491,7 @@ Coroutine: {cr}
               emotes.append(f"<:{emoji.name}:{emoji.id}> **|** {emoji.name} **|** [`<:{emoji.name}:{emoji.id}>`](https://cdn.discordapp.com/emojis/{emoji.id}.png)")
 
         menu = menus.MenuPages(ServerEmotesEmbedPage(emotes, per_page=10))
+        
         await menu.start(ctx)
 
     @commands.command(help="Shows you a list of members from this server", aliases=['member_list', 'memlist', 'mem_list'])
@@ -512,6 +510,7 @@ Coroutine: {cr}
             members.append(f"{member.name} **|** {member.mention} **|** `{member.id}`")
 
         menu = menus.MenuPages(ServerMembersEmbedPage(members, per_page=20))
+        
         await menu.start(ctx)
 
     @commands.command(help="Shows you a list of bots from this server", aliases=['bot_list', 'bolist', 'bo_list'])
@@ -530,6 +529,7 @@ Coroutine: {cr}
             bots.append(f"{bot.name} **|** {bot.mention} **|** `{bot.id}`")
 
         menu = menus.MenuPages(ServerBotsEmbedPage(bots, per_page=10))
+        
         await menu.start(ctx)
 
     @commands.command(help="Shows you a list of roles from this server", aliases=['role_list', 'rolist', 'ro_list'])
@@ -548,6 +548,7 @@ Coroutine: {cr}
             roles.append(f"{role.name} **|** {role.mention} **|** `{role.id}`")
 
         menu = menus.MenuPages(ServerRolesEmbedPage(roles, per_page=10))
+        
         await menu.start(ctx)
 
     @commands.command(help="Shows information about the channel", aliases=['ci', 'channel'])
@@ -572,25 +573,32 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         await ctx.reply(embed=embed)
 
     @commands.command(help="Shows the avatar of the member you mentioned", aliases=['av'])
+    @commands.cooldown(1, 5, BucketType.member)
     async def avatar(self, ctx, member : discord.Member=None):
+        errorMessage f"{member} doesnt have a avatar."
         if member == None:
             member = ctx.author
+            errorMessage = "You don't have a avatar."
+            
+            
         if member.avatar:
+            
             if member.avatar.is_animated() == True:
                 text1 = f"[PNG]({member.avatar.replace(format='png', size=2048).url}) | [JPG]({member.avatar.replace(format='jpg', size=2048).url}) | [JPEG]({member.avatar.replace(format='jpeg', size=2048).url}) | [WEBP]({member.avatar.replace(format='webp', size=2048).url}) | [GIF]({member.avatar.replace(format='gif', size=2048).url})"
                 text = text1.replace("cdn.discordapp.com", "media.discordapp.net")
+                
             else:
                 text1 = f"[PNG]({member.avatar.replace(format='png', size=2048).url}) | [JPG]({member.avatar.replace(format='jpg', size=2048).url}) | [JPEG]({member.avatar.replace(format='jpeg', size=2048).url}) | [WEBP]({member.avatar.replace(format='webp', size=2048).url})"
                 text = text1.replace("cdn.discordapp.com", "media.discordapp.net")
-            embed=discord.Embed(title=f"{member}'s avatar", description=f"{text}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+                
+            embed=discord.Embed(title=f"{member}'s avatar", description=f"{text}")
             url1 = member.avatar.url
             url = url1.replace("cdn.discordapp.com", "media.discordapp.net")
             embed.set_image(url=url)
-            embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
             await ctx.reply(embed=embed)
         else:
-            await ctx.reply("You don't have a avatar.")
+            await ctx.reply(f"{errorMessage}")
 
     @commands.command(help="Shows the banner of the member you mentioned", aliases=['bn'])
     @commands.cooldown(1, 5, BucketType.member)
@@ -603,17 +611,19 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         fetchedMember = await self.client.fetch_user(member.id)
 
         if fetchedMember.banner:
+            
             if fetchedMember.banner.is_animated() == True:
-                text1 = f"[PNG]({fetchedMember.banner.replace(format='png', size=2048).url}) | [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) | [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url}) | [GIF]({fetchedMember.banner.replace(format='gif', size=2048).url})"
+                text1 = f"[PNG]({fetchedMember.banner.replace(format='png', size=2048).url}) | [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) | [JPEG]({fetchedMember.banner.replace(format='jpeg', size=2048).url}) | [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url}) | [GIF]({fetchedMember.banner.replace(format='gif', size=2048).url})"
                 text = text1.replace("cdn.discordapp.com", "media.discordapp.net")
+                
             else:
-                text1 = f"[PNG]({fetchedMember.avatar.replace(format='png', size=2048).url}) | [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) | [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url})"
+                text1 = f"[PNG]({fetchedMember.avatar.replace(format='png', size=2048).url}) | [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) | [JPEG]({fetchedMember.banner.replace(format='jpeg', size=2048).url}) | [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url})"
                 text = text1.replace("cdn.discordapp.com", "media.discordapp.net")
-            embed=discord.Embed(title=f"{member}'s avatar", description=f"{text}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+                
+            embed=discord.Embed(title=f"{member}'s avatar", description=f"{text}")
             url1 = fetchedMember.banner.url
             url = url1.replace("cdn.discordapp.com", "media.discordapp.net")
             embed.set_image(url=url)
-            embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
             await ctx.reply(embed=embed)
         else:
@@ -667,14 +677,13 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         database_latency = f"{round(psqlms)}ms{' ' * (9-len(str(round(psqlms, 3))))}"
         average_latency = f"{round(average)}ms{' ' * (9-len(str(round(average, 3))))}"
 
-        embed = discord.Embed(title="Pong!", timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed = discord.Embed(title="Pong!")
         embed.add_field(name=":globe_with_meridians: Websocket latency", value=f"{websocket_latency}")
         embed.add_field(name="<a:typing:597589448607399949> Typing latency", value=f"{typing_latency}")
         embed.add_field(name=":speech_balloon: Message latency", value=f"{message_latency}")
         embed.add_field(name="<:discord:877926570512236564> Discord latency", value=f"{discord_latency}")
         embed.add_field(name="<:psql:871758815345901619> Database latency", value=f"{database_latency}")
         embed.add_field(name=":infinity: Average latency", value=f"{average_latency}")
-        embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
         await message.edit(content="Received ping!", embed=embed)
 
@@ -687,27 +696,25 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
 
         text = f"{days} days, {hours} hours, {minutes} minutes and {seconds} seconds"
 
-        # {discord.utils.format_dt(self.client.launch_time, style="f")} ({discord.utils.format_dt(self.client.launch_time, style="R")})
-        embed = discord.Embed(title=f"I've been online for {text}\n{discord.utils.format_dt(self.client.launch_time, style='f')} ({discord.utils.format_dt(self.client.launch_time, style='R')})", timestamp=discord.utils.utcnow(), color=0x2F3136)
-        embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+        embed = discord.Embed(title=f"I've been online for {text}\n{discord.utils.format_dt(self.client.launch_time, style='f')} ({discord.utils.format_dt(self.client.launch_time, style='R')})")
 
         await ctx.reply(embed=embed)
 
     @commands.command(help="Shows how many servers the bot is in", aliases=['server'])
     async def servers(self, ctx):
-        embed = discord.Embed(title=f"I' in `{self.client.guilds}` servers.", timestamp=discord.utils.utcnow(), color=0x2F3136)
-        embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+        embed = discord.Embed(title=f"I' in `{self.client.guilds}` servers.")
 
         await ctx.reply(embed=embed)
 
     @commands.command(help="Shows how many messages the bot has seen", aliases=['msg', 'msgs', 'message'])
     async def messages(self, ctx):
-        await ctx.reply(f"I've a total of `{self.client.messages}` messages and `{self.client.edited_messages}` edits.")
+        embed = discord.Embed(title=f"I've a total of `{self.client.messages}` messages and `{self.client.edited_messages}` edits.")
+        
+        await ctx.reply(embed=embed)
 
     @commands.command()
     async def snipe(self, ctx):
-        embed = discord.Embed(title="Sniped message", description=f"Message: {self.client.last_message}\nAuthor: {self.client.last_message_author} **|** {self.client.last_message_author.id}", timestamp=discord.utils.utcnow(), color=0x2F3136)
-        embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+        embed = discord.Embed(title="Sniped message", description=f"Message: {self.client.last_message}\nAuthor: {self.client.last_message_author} **|** {self.client.last_message_author.id}")
 
         await ctx.reply(embed=embed)
 
@@ -715,6 +722,7 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
     async def suggest(self, ctx, *, suggestion):
         if len(suggestion) > 750:
             return await ctx.reply("Your suggestion exceeded the 750-character limit.")
+        
         else:
             embed = discord.Embed(title="Bot suggestion", description=f"""
 Suggestion by: {ctx.author} | {ctx.author.name} | {ctx.author.id}
@@ -724,9 +732,10 @@ Suggestion from server: {ctx.guild} | {ctx.guild.id}
 Suggestion from channel: {ctx.channel} | {ctx.channel.name} | {ctx.channel.id}
 
 Suggestion: {suggestion}
-            """, timestamp=discord.utils.utcnow(), color=0x2F3136)
+            """)
             channel = self.client.get_channel(879786064473129033)
             await channel.send(embed=embed)
+            
             await ctx.reply("Your suggestion has been sent! It will be reviewed by Ender2K89 soon.")
 
     @commands.command(help="Shows you information about a character", aliases=['characterinfo', 'character_info', 'char_info'])
@@ -739,6 +748,7 @@ Suggestion: {suggestion}
         msg = '\n'.join(map(to_string, characters))
 
         menu = menus.MenuPages(EmbedPageSource(msg.split("\n"), per_page=20), delete_message_after=True)
+        
         await menu.start(ctx)
 
     @commands.command(help="Shows you who helped with the making of this bot", aliases=['credit'])
@@ -753,14 +763,15 @@ A lot of command ideas: Vicente0670 YT#0670
 A lot of command ideas too: ROLEX#0009
 Tested verify command: Eiiknostv#2016
 ```
-        """, timestamp=discord.utils.utcnow(), color=0x2F3136)
-        embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+        """)
 
         await ctx.reply(embed=embed)
 
     @commands.command(help="Shows the current time", aliases=['date'])
     async def time(self, ctx):
-        await ctx.reply(f"The current time is {discord.utils.format_dt(discord.utils.utcnow(), style='T')}")
+        embed = discord.Embed(title=f"The current time is {discord.utils.format_dt(discord.utils.utcnow(), style='T')}")
+        
+        await ctx.reply(embed=embed)
 
     @commands.command()
     async def afk(self, ctx, *, reason=None):
@@ -787,7 +798,7 @@ Tested verify command: Eiiknostv#2016
         source_url = 'https://github.com/Ender2K89/Stealth-Bot'
 
         if command is None:
-            embed = discord.Embed(title=f"Click here for the source code of this bot", url=f"{source_url}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+            embed = discord.Embed(title=f"Click here for the source code of this bot", url=f"{source_url}")
 
             view = discord.ui.View()
             style = discord.ButtonStyle.gray
@@ -805,7 +816,7 @@ Tested verify command: Eiiknostv#2016
             obj = self.client.get_command(command.replace('.', ' '))
 
             if obj is None:
-                embed = discord.Embed(title=f"Click here for the source code of this bot", description="I couldn't find that command", url=f"{source_url}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+                embed = discord.Embed(title=f"Click here for the source code of this bot", description="I couldn't find that command", url=f"{source_url}")
 
                 view = discord.ui.View()
                 style = discord.ButtonStyle.gray
@@ -828,7 +839,7 @@ Tested verify command: Eiiknostv#2016
             branch = 'master'
 
         final_url = f'{source_url}/tree/main/{location}#L{firstlineno}-L{firstlineno + len(lines) - 1}'
-        embed = discord.Embed(title=f"Click here for the source code of the `{prefix}{command}` command", url=f"{final_url}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed = discord.Embed(title=f"Click here for the source code of the `{prefix}{command}` command", url=f"{final_url}")
         embed.set_footer(text=f"{location}#L{firstlineno}-L{firstlineno + len(lines) - 1}")
 
         view = discord.ui.View()

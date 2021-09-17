@@ -9,6 +9,7 @@ import time as t
 import typing
 import zlib
 from time import time
+from difflib import get_close_matches
 
 from discord.ext import commands, menus
 from discord.ext.menus.views import ViewMenuPages
@@ -223,14 +224,14 @@ class PlayMenu(discord.ui.Select):
             if not self.player.is_playing:
                 return await self.ctx.guild.change_voice_state(channel=None)
         await interaction.response.defer(ephemeral=False)
-        embed = discord.Embed(color=color(self.ctx), description='Loading tracks...')
+        embed = discord.Embed(description='Loading tracks...')
         hook = await interaction.followup.send(embed=embed)
         for track in self.info:
             if self.values[0] == track['info']['identifier']:
                 track = lavalink.models.AudioTrack(track, interaction.user, recommended=True)
                 self.player.add(requester=interaction.user, track=track)
                 await interaction.message.edit(view=None)
-                await hook.edit(embed=discord.Embed(color=color(self.ctx), title="Added a track to the queue",
+                await hook.edit(embed=discord.Embed(title="Added a track to the queue",
                                                     description=f"**[{track.title}]({track.uri})**"))
                 if not self.player.is_playing:
                     await self.player.play()
@@ -279,19 +280,19 @@ class LoopMenu(discord.ui.Select):
     async def callback(self, interaction: discord.Interaction):
         if self.values[0] == 'Track':
             self.player.set_loop(1)
-            embed = discord.Embed(color=color(self.ctx), description=f'Loop mode was set to `Track`')
+            embed = discord.Embed(description=f'Loop mode was set to `Track`')
             await interaction.response.send_message(embed=embed)
             await interaction.message.edit(view=None)
 
         if self.values[0] == 'Queue':
             self.player.set_loop(2)
-            embed = discord.Embed(color=color(self.ctx), description=f'Loop mode was set to `Queue`')
+            embed = discord.Embed(description=f'Loop mode was set to `Queue`')
             await interaction.response.send_message(embed=embed)
             await interaction.message.edit(view=None)
 
         if self.values[0] == 'Off':
             self.player.set_loop(0)
-            embed = discord.Embed(color=color(self.ctx), description='Loop mode disabled')
+            embed = discord.Embed(description='Loop mode disabled')
             await interaction.response.send_message(embed=embed)
             await interaction.message.edit(view=None)
 
@@ -617,7 +618,7 @@ class Music(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         if not hasattr(bot, 'lavalink'):
-            bot.lavalink = lavalink.Client(760179628122964008, CustomPlayer)
+            bot.lavalink = lavalink.Client(config['user_id'], CustomPlayer)
             for node in config['nodes']:
                 bot.lavalink.add_node(**node)
             bot.add_listener(bot.lavalink.voice_update_handler, 'on_socket_custom_receive')
@@ -639,7 +640,8 @@ class Music(commands.Cog):
             await ctx.send(error.original)
 
         if isinstance(error, NoPlayer):
-            return await ctx.send(embed=discord.Embed(description=f'There isn\'t an active player in your server.'))
+            return await ctx.send(embed=discord.Embed(description=f'There isn\'t an active player in your server.',
+                                                      color=0xD7332A))
 
         if isinstance(error, IncorrectChannelError):
             player = self.bot.lavalink.player_manager.create(ctx.guild.id, endpoint=str(ctx.guild.region))
@@ -650,7 +652,7 @@ class Music(commands.Cog):
         if isinstance(error, IncorrectTextChannelError):
             player = self.bot.lavalink.player_manager.create(ctx.guild.id, endpoint=str(ctx.guild.region))
             channel = self.bot.get_channel(int(player.text_channel))
-            return await ctx.send(embed=discord.Embed(title='Error occured', color=0xe74c3c,
+            return await ctx.send(embed=discord.Embed(title='Error occured',
                                                       description=f'{ctx.author.mention}, you can only use commands in '
                                                                   f'{channel.mention} for this session.'))
 
@@ -675,7 +677,7 @@ class Music(commands.Cog):
         }
 
         if isinstance(error, tuple(errors.keys())):
-            return await ctx.send(embed=discord.Embed(color=0xe74c3c, description=errors[type(error)]))
+            return await ctx.send(embed=discord.Embed(color=0xD7332A, description=errors[type(error)]))
 
     async def ensure_voice(self, ctx):
         """ This check ensures that the bot and command author are in the same voicechannel. """
@@ -757,7 +759,7 @@ class Music(commands.Cog):
             guild = self.bot.get_guild(int(event.player.guild_id))
             await guild.change_voice_state(channel=None)
             channel = self.bot.get_channel(int(event.player.text_channel))
-            embed = discord.Embed(title=f'Inactive player', color=0xe74c3c,
+            embed = discord.Embed(title=f'Inactive player',
                                   description='There were no tracks played in the past 3 minutes.')
             await channel.send(embed=embed)
         if isinstance(event, TrackStartEvent):
@@ -777,7 +779,7 @@ class Music(commands.Cog):
     async def is_privileged(self, ctx: commands.Context):
         """Check whether the user is an Admin or DJ or alone in a VC."""
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
-        role = (await self.bot.db.fetchval("SELECT dj_id FROM guilds WHERE guild_id = $1", ctx.guild.id)) or 1
+        role = (await self.bot.db.fetchval("SELECT dj_id FROM prefixes WHERE guild_id = $1", ctx.guild.id)) or 1
         if any([player.dj == ctx.author.id, ctx.author.guild_permissions.manage_messages,
                 ctx.author._roles.has(role), role == 1234, ctx.author.id in self.bot.owner_ids]):
             return True
@@ -796,7 +798,7 @@ class Music(commands.Cog):
         # Results could be None if Lavalink returns an invalid response (non-JSON/non-200 (OK)).
         # ALternatively, resullts['tracks'] could be an empty array if the query yielded no tracks.
         if not results or not results['tracks']:
-            embed_var = discord.Embed(colour=0xe74c3c)
+            embed_var = discord.Embed(colour=0xD7332A)
             embed_var.description = 'No songs were found with that query. Please try again.'
             return await ctx.send(embed=embed_var)
         # Valid loadTypes are:
@@ -839,12 +841,12 @@ class Music(commands.Cog):
             view.message = await ctx.send(embed=embed, view=view)
 
         if results['loadType'] == 'NO_MATCHES':
-            embed_var = discord.Embed(colour=0xe74c3c,
+            embed_var = discord.Embed(colour=0xD7332A,
                                       description='No songs were found with that query. Please try again.')
             await ctx.send(embed=embed_var)
 
         if results['loadType'] == 'LOAD_FAILED':
-            embed_var = discord.Embed(colour=0xe74c3c, description='Failed loading your query.')
+            embed_var = discord.Embed(colour=0xD7332A, description='Failed loading your query.')
             await ctx.send(embed=embed_var)
 
     @commands.command(name="disconnect", aliases=['dc'])
@@ -970,7 +972,7 @@ class Music(commands.Cog):
         return await ctx.send(embed=embed)
 
     @commands.command(name="loop", aliases=['repeat'])
-    async def loop_command(self, ctx: commands.Context):
+    async def loop_command(self, ctx: commands.Context, mode: str = None):
         """Starts/Stops looping your currently playing track"""
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
         if not player:
@@ -980,6 +982,27 @@ class Music(commands.Cog):
         if not await self.is_privileged(ctx):
             raise NotAuthorized
         # ACTUAL PART
+        mode = mode.lower() if mode else None
+        modes = {"off": 0,
+                 "0": 0,
+                 "o": 0,
+                 "track": 1,
+                 "1": 1,
+                 "t": 1,
+                 "queue": 2,
+                 "2": 2,
+                 "q": 2
+                 }
+        if mode.lower() in tuple(modes.keys()):
+            mode = modes[mode.lower()]
+            messages = {
+                0: "No longer looping.",
+                1: "Now looping the **current track**",
+                2: "Now looping the **queue**"
+            }
+            player.set_loop(mode)
+            return await ctx.send(messages[mode])
+
         embed = discord.Embed(color=(color(ctx)), description=f"Choose loop mode\
             \n**:repeat_one: Track** - Starts looping your currently playing track.\
             \n**:repeat: Queue** - Starts looping your current queue.\
@@ -1133,7 +1156,7 @@ class Music(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command(name="move")
-    async def move_command(self, ctx: commands.Context, position: int, *, track: str):
+    async def move_command(self, ctx: commands.Context, position: int, *, track: typing.Union[int, str]):
         """Moves the specified song to the specified position"""
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
         if not player:
@@ -1148,13 +1171,31 @@ class Music(commands.Cog):
             raise InvalidPosition
         # ACTUAL PART
         queue = player.queue
-        for x in queue:
-            if x['title'].upper() == track.upper():
+
+        if isinstance(track, str):
+            tracks = [str(x['title']) for x in queue]
+            matches = get_close_matches(track, tracks)
+            if matches:
+                track = matches[0]
+
+                for x in queue:
+                    if x['title'].upper() == track.upper():
+                        queue.insert(position - 1, queue.pop(queue.index(x)))
+                        embed = discord.Embed(color=(color(ctx)),
+                                              description=f'Successfully moved **[{x["title"]}]({x["uri"]})** to position `{position}`')
+                        return await ctx.send(embed=embed)
+
+        elif isinstance(track, int):
+            try:
+                x = queue[track]
                 queue.insert(position - 1, queue.pop(queue.index(x)))
                 embed = discord.Embed(color=(color(ctx)),
                                       description=f'Successfully moved **[{x["title"]}]({x["uri"]})** to position `{position}`')
                 return await ctx.send(embed=embed)
-        embed = discord.Embed(color=0xe74c3c, description='Track not found.')
+            except KeyError:
+                pass
+
+        embed = discord.Embed(color=0xD7332A, description='Track not found.')
         return await ctx.send(embed=embed)
 
     @commands.command(name='nodes')
@@ -1200,11 +1241,11 @@ class Music(commands.Cog):
                                                 color=(color(ctx))))
                     else:
                         return await ctx.send(
-                            embed=discord.Embed(title=f'{node} is currently unavailable', color=0xe74c3c))
+                            embed=discord.Embed(title=f'{node} is currently unavailable'))
         else:
             return await ctx.send(
-                embed=discord.Embed(title=f'There are no nodes connected with this server', color=0xe74c3c))
-        return await ctx.send(embed=discord.Embed(title=f'Unknown node', color=0xe74c3c))
+                embed=discord.Embed(title=f'There are no nodes connected with this server'))
+        return await ctx.send(embed=discord.Embed(title=f'Unknown node'))
 
 
 class SocketFix(commands.Cog):

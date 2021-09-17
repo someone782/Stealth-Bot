@@ -50,7 +50,7 @@ class Stuff(discord.ui.View):
 
     @discord.ui.button(label='Vote', style=discord.ButtonStyle.gray, emoji="<:topgg:870133913102721045>")
     async def receive(self, button: discord.ui.Button, interaction: discord.Interaction):
-        embed=discord.Embed(title="Vote for me", color=0x2F3136)
+        embed=discord.Embed(title="Vote for me")
         await interaction.response.send_message(embed=embed, ephemeral=True, view=VoteButtons())
 
 class MyHelp(commands.HelpCommand):
@@ -76,7 +76,7 @@ Written with `{count_python('.'):,}` lines.
 - <> = required argument
 - [] = optional argument
 ```
-                              """, timestamp=discord.utils.utcnow(), color=0x2F3136)
+                              """)
 
         allcogs = []
         cogindex = []
@@ -129,7 +129,7 @@ Usage: {self.get_minimal_command_signature(command)}
 {aliastext}
 {descriptiontext}
 ```
-                                  """, timestamp=discord.utils.utcnow(), color=0x2F3136)
+                                  """)
 
         if command.brief:
             embed.set_image(url=command.brief)
@@ -141,7 +141,6 @@ Usage: {self.get_minimal_command_signature(command)}
 
     async def send_cog_help(self, cog):
         ctx = self.context
-        await ctx.send()
         prefix = self.context.clean_prefix
         entries = cog.get_commands()
         command_signatures = [self.get_minimal_command_signature(c) for c in entries]
@@ -161,14 +160,14 @@ __**Available commands**__ **[{len(cog.get_commands())}]**
 ```fix
 {val}
 ```
-                                """, timestamp=discord.utils.utcnow(), color=0x2F3136)
+                                """)
             embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
             await ctx.reply(embed=embed)
         else:
             embed=discord.Embed(title=f"Help - {cog.qualified_name}", description=f"""
 This cog has no commands.
-                                """, timestamp=discord.utils.utcnow(), color=0x2F3136)
+                                """)
             await ctx.reply(embed=embed)
 
     async def send_error_message(self, error):
@@ -176,7 +175,7 @@ This cog has no commands.
 
     async def on_help_command_error(self, ctx, error):
         if isinstance(error, commands.CommandInvokeError):
-            embed = discord.Embed(description=f"{str(error.original)}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+            embed = discord.Embed(description=f"{str(error.original)}")
             embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
             await ctx.reply(embed=embed)

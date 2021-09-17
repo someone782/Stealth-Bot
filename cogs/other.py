@@ -24,7 +24,7 @@ class other(commands.Cog):
         item = discord.ui.Button(style=style, emoji="<:invite:860644752281436171>", label="Invite me", url="https://discord.com/api/oauth2/authorize?client_id=760179628122964008&permissions=8&scope=bot")
         view.add_item(item=item)
 
-        embed = discord.Embed(title="Click here for the invite to this bot", url="https://discord.com/api/oauth2/authorize?client_id=760179628122964008&permissions=8&scope=bot", timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed = discord.Embed(title="Click here for the invite to this bot", url="https://discord.com/api/oauth2/authorize?client_id=760179628122964008&permissions=8&scope=bot")
         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
         await ctx.reply(embed=embed, view=view)
 
@@ -35,14 +35,14 @@ class other(commands.Cog):
         item = discord.ui.Button(style=style, emoji="<:servers:870152102759006208>", label="Join support server", url="https://discord.gg/MrBcA6PZPw")
         view.add_item(item=item)
 
-        embed = discord.Embed(title="Click here for the invite to the support server", url="https://discord.gg/MrBcA6PZPw", timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed = discord.Embed(title="Click here for the invite to the support server", url="https://discord.gg/MrBcA6PZPw")
         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
         await ctx.reply(embed=embed, view=view)
 
     @commands.group(invoke_without_command=True, help="Shows you a list of the bot's prefixes", aliases=['prefix'])
     async def prefixes(self, ctx):
         prefixes = await self.client.get_pre(self.client, ctx.message, raw_prefix=True)
-        embed = discord.Embed(title="Here's a list of my prefixes for this server:", description=ctx.me.mention + '\n' + '\n'.join(prefixes), timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed = discord.Embed(title="Here's a list of my prefixes for this server:", description=ctx.me.mention + '\n' + '\n'.join(prefixes))
         embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
 
         return await ctx.reply(embed=embed)
@@ -127,7 +127,7 @@ class other(commands.Cog):
                             "╬═╬/▌\n" +
                             "╬═╬/ \ \n")
         else:
-            embed = discord.Embed(title="You can only use this command in the `Stealth Hangout` server.", timestamp=discord.utils.utcnow(), color=0x2F3136)
+            embed = discord.Embed(title="You can only use this command in the `Stealth Hangout` server.")
             embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
             await ctx.reply(embed=embed)
 
@@ -182,7 +182,7 @@ class other(commands.Cog):
 + Server address: play.classic-smp.com
 + Server port: 19132
 ```
-        """, timestamp=discord.utils.utcnow(), color=0x2F3136)
+        """)
         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
         await ctx.reply(embed=embed)
@@ -208,7 +208,7 @@ class other(commands.Cog):
         async with self.client.session.get(f'https://image.thum.io/get/width/1920/crop/675/maxAge/1/noanimate/{url}') as r:
             res = await r.read()
 
-        embed = discord.Embed(title=f"Screenshot of {url}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed = discord.Embed(title=f"Screenshot of {url}")
         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
         embed.set_image(url="attachment://ss.png")
 
@@ -221,7 +221,7 @@ class other(commands.Cog):
     @commands.is_owner()
     async def bypass_here(self, ctx):
         channel = self.client.get_channel(837348307570393218)
-        embed = discord.Embed(title="Welcome to `#bypass_here`!", url="https://discord.gg/5UsKEFKHtH", description="In this channel you're supposed to try to bypass the anti-swear or the anti-invite system.\n\n```diff\n- Misusing this channel will result in a mute\n+ All messages are deleted after a bit\n+ Only ping the owner if you find over 10 bypasses\n```", color=0x2F3136)
+        embed = discord.Embed(title="Welcome to `#bypass_here`!", url="https://discord.gg/5UsKEFKHtH", description="In this channel you're supposed to try to bypass the anti-swear or the anti-invite system.\n\n```diff\n- Misusing this channel will result in a mute\n+ All messages are deleted after a bit\n+ Only ping the owner if you find over 10 bypasses\n```")
         await ctx.message.delete()
         message = await channel.send(embed=embed)
         await message.pin()
