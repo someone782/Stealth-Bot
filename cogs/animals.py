@@ -20,10 +20,6 @@ class animals(commands.Cog):
          request = await session.get('https://api.hori.ovh/sfw/waifu/')
          json = await request.json()
 
-      over_18 = "No"
-      if json['is_over18'] == "true":
-         over_18 = "Yes"
-
       embed = discord.Embed(title="Waifu", timestamp=discord.utils.utcnow(), color=0x2F3136)
       embed.set_image(url=json['url'])
       embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)        
