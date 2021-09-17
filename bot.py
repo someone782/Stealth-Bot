@@ -86,6 +86,7 @@ client.allowed_mentions = discord.AllowedMentions(replied_user=False)
 client.session = aiohttp.ClientSession()
 client.blacklist = {}
 client.prefixes = {}
+client.brain_cells = 0
 
 client.reddit = asyncpraw.Reddit(
     client_id = "zrJUgDUtW8lfumULcVcbEg",

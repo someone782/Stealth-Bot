@@ -5,6 +5,7 @@ import asyncio
 import os
 import typing
 import traceback
+import errors
 from discord.ext import commands
 
 def setup(client):
@@ -21,8 +22,8 @@ class dev(commands.Cog):
     async def update(self, ctx, *, message=None):
         if message == None:
             message = "No message provided"
-        prefix = await self.client.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1', ctx.guild.id)
-        prefix = prefix or 'sb!'
+        prefix = ctx.clean_prefix
+
         await ctx.reply(f'''
 ```yaml
 {prefix}jsk git add .
@@ -38,9 +39,7 @@ git push origin main
 
     @commands.command(aliases=['borgor', 'burgor'])
     async def burger(self, ctx):
-        prefix = await self.client.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1', ctx.guild.id)
-        prefix = prefix or 'sb!'
-        await ctx.reply(f"I couldn't find that command, do `{prefix}oof` to kill yourself.")
+        raise errors.KillYourself
 
     @commands.command(aliases=['to_do'])
     @commands.is_owner()

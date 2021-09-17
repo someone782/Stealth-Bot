@@ -797,8 +797,7 @@ Tested verify command: Eiiknostv#2016
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
     @helpers.is_user_blacklisted()
     async def source(self, ctx, *, command : str=None):
-        prefix = await self.client.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1', ctx.guild.id)
-        prefix = prefix or 'sb!'
+        prefix = ctx.clean_prefix
         source_url = 'https://github.com/Ender2K89/Stealth-Bot'
 
         if command is None:

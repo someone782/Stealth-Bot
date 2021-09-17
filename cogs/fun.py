@@ -30,11 +30,6 @@ class fun(commands.Cog):
         embed.set_image(url=post.url)
         return embed
 
-    @commands.command()
-    @helpers.is_user_blacklisted()
-    async def test(self, ctx):
-        await ctx.reply("hello :D")
-
     @commands.command(aliases=['guess_the_number'])
     async def number(self, ctx):
         number = random.randint(1, 3)

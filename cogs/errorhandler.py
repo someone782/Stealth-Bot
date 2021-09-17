@@ -82,6 +82,9 @@ class errorhandler(commands.Cog):
         elif isinstance(error, errors.PrefixDoesntExist):
             message = f"That's not one of my prefixes!"
 
+        elif isinstance(error, errors.KillYourself):
+            message = f"I couldn't find that command. Did you mean...\nkill {ctx.author.mention}"
+
         elif isinstance(error, errors.CommandDoesntExist):
             message = f"I couldn't find that category/command."
 
