@@ -16,8 +16,8 @@ class ErrorHandler(commands.Cog):
         self.hidden = True
         self.client = client
 
-    @commands.Cog.listener()
-    async def on_command_error(self, ctx : commands.Context, error : commands.CommandError):
+    @commands.Cog.listener('on_command_error')
+    async def errorhandler(self, ctx : commands.Context, error):
         prefix = ctx.clean_prefix
 
         error = getattr(error, "original", error)
@@ -52,7 +52,6 @@ class ErrorHandler(commands.Cog):
         elif isinstance(error, commands.CommandNotFound):
             if ctx.author.id == 564890536947875868 and self.client.no_prefix is True:
                 return
-
 
             message = f"I couldn't find that command."
             command_names = [str(x) for x in ctx.bot.commands]
