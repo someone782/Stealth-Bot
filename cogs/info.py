@@ -102,11 +102,11 @@ class info(commands.Cog):
     @commands.cooldown(1, 5, BucketType.member)
     @helpers.is_user_blacklisted()
     async def userinfo(self, ctx, member : discord.Member=None):
-        if member == None:
-            member = ctx.author
+        # if member == None:
+        #     member = ctx.author
             
-        if ctx.message.reference:
-            member = ctx.message.reference.author
+        # if ctx.message.reference:
+        member = ctx.message.reference.author
 
         fetchedMember = await self.client.fetch_user(member.id)
 
