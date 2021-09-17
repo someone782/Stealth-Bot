@@ -40,6 +40,7 @@ git push origin main
     @commands.command()
     @commands.is_owner()
     async def spam(self, ctx, number, channel : discord.TextChannel, *, message):
+        number = range(number)
         for i in number:
             await channel.send(message)
 
