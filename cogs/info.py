@@ -264,7 +264,7 @@ Acknowledgments: {acknowledgments}
         """)
         embed.set_thumbnail(url=member.avatar.url)
 
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
 
     @commands.command(help="Shows you information about the server", aliases=['si', 'guild', 'guildinfo'])
@@ -273,7 +273,7 @@ Acknowledgments: {acknowledgments}
         if id:
             server = self.client.get_guild(id)
             if not server:
-                return await ctx.reply("I couldn't find that server. Make sure the ID you entered was correct.")
+                return await ctx.send("I couldn't find that server. Make sure the ID you entered was correct.")
         else:
             server = ctx.guild
 
@@ -406,7 +406,7 @@ Features:
             url = url1.replace("cdn.discordapp.com", "media.discordapp.net")
             embed.set_thumbnail(url=url)
 
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command(help="Shows information about the bot", aliases=['bi'])
     async def botinfo(self, ctx):
@@ -454,7 +454,7 @@ Coroutine: {cr}
         """)
         embed.set_thumbnail(url=self.client.user.avatar.url)
 
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command(help="Shows a list of commands this bot has", aliases=['commands', 'command', 'cmds', 'commandslist', 'cmdslist', 'commands_list', 'cmds_list', 'commandlist', 'cmdlist', 'command_list', 'cmd_list'])
     async def _commands(self, ctx):
@@ -475,7 +475,7 @@ Coroutine: {cr}
         if id:
             server = self.client.get_guild(id)
             if not server:
-                return await ctx.reply("I couldn't find that server. Make sure the ID you entered was correct.")
+                return await ctx.send("I couldn't find that server. Make sure the ID you entered was correct.")
         else:
             server = ctx.guild
 
@@ -499,7 +499,7 @@ Coroutine: {cr}
         if id:
             server = self.client.get_guild(id)
             if not server:
-                return await ctx.reply("I couldn't find that server. Make sure the ID you entered was correct.")
+                return await ctx.send("I couldn't find that server. Make sure the ID you entered was correct.")
         else:
             server = ctx.guild
 
@@ -518,7 +518,7 @@ Coroutine: {cr}
         if id:
             server = self.client.get_guild(id)
             if not server:
-                return await ctx.reply("I couldn't find that server. Make sure the ID you entered was correct.")
+                return await ctx.send("I couldn't find that server. Make sure the ID you entered was correct.")
         else:
             server = ctx.guild
 
@@ -537,7 +537,7 @@ Coroutine: {cr}
         if id:
             server = self.client.get_guild(id)
             if not server:
-                return await ctx.reply("I couldn't find that server. Make sure the ID you entered was correct.")
+                return await ctx.send("I couldn't find that server. Make sure the ID you entered was correct.")
         else:
             server = ctx.guild
 
@@ -570,7 +570,7 @@ Slowmode: {channel.slowmode_delay}
 Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discord.utils.format_dt(channel.created_at, style="R")})
         """)
 
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command(help="Shows the avatar of the member you mentioned", aliases=['av'])
     @commands.cooldown(1, 5, BucketType.member)
@@ -596,9 +596,9 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
             url = url1.replace("cdn.discordapp.com", "media.discordapp.net")
             embed.set_image(url=url)
 
-            await ctx.reply(embed=embed)
+            await ctx.send(embed=embed)
         else:
-            await ctx.reply(f"{errorMessage}")
+            await ctx.send(f"{errorMessage}")
 
     @commands.command(help="Shows the banner of the member you mentioned", aliases=['bn'])
     @commands.cooldown(1, 5, BucketType.member)
@@ -625,9 +625,9 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
             url = url1.replace("cdn.discordapp.com", "media.discordapp.net")
             embed.set_image(url=url)
 
-            await ctx.reply(embed=embed)
+            await ctx.send(embed=embed)
         else:
-            await ctx.reply(f"{errorMessage}")
+            await ctx.send(f"{errorMessage}")
 
     @commands.command(help="Shows you the bot's latency")
     @commands.cooldown(1, 5, BucketType.member)
@@ -642,7 +642,7 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         pings.append(typingms)
 
         start = time.perf_counter()
-        message = await ctx.reply("Getting ping...")
+        message = await ctx.send("Getting ping...")
         end = time.perf_counter()
         messagems = (end - start) * 1000
         pings.append(messagems)
@@ -698,30 +698,30 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
 
         embed = discord.Embed(title=f"I've been online for {text}\n{discord.utils.format_dt(self.client.launch_time, style='f')} ({discord.utils.format_dt(self.client.launch_time, style='R')})")
 
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command(help="Shows how many servers the bot is in", aliases=['server'])
     async def servers(self, ctx):
         embed = discord.Embed(title=f"I' in `{self.client.guilds}` servers.")
 
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command(help="Shows how many messages the bot has seen", aliases=['msg', 'msgs', 'message'])
     async def messages(self, ctx):
         embed = discord.Embed(title=f"I've a total of `{self.client.messages}` messages and `{self.client.edited_messages}` edits.")
         
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command()
     async def snipe(self, ctx):
         embed = discord.Embed(title="Sniped message", description=f"Message: {self.client.last_message}\nAuthor: {self.client.last_message_author} **|** {self.client.last_message_author.id}")
 
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command(help="Sends a suggestion", aliases=['bot_suggestion', 'suggestion', 'make_suggestion', 'botsuggestion', 'makesuggestion'])
     async def suggest(self, ctx, *, suggestion):
         if len(suggestion) > 750:
-            return await ctx.reply("Your suggestion exceeded the 750-character limit.")
+            return await ctx.send("Your suggestion exceeded the 750-character limit.")
         
         else:
             embed = discord.Embed(title="Bot suggestion", description=f"""
@@ -736,7 +736,7 @@ Suggestion: {suggestion}
             channel = self.client.get_channel(879786064473129033)
             await channel.send(embed=embed)
             
-            await ctx.reply("Your suggestion has been sent! It will be reviewed by Ender2K89 soon.")
+            await ctx.send("Your suggestion has been sent! It will be reviewed by Ender2K89 soon.")
 
     @commands.command(help="Shows you information about a character", aliases=['characterinfo', 'character_info', 'char_info'])
     @commands.cooldown(1, 5, BucketType.member)
@@ -765,13 +765,13 @@ Tested verify command: Eiiknostv#2016
 ```
         """)
 
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command(help="Shows the current time", aliases=['date'])
     async def time(self, ctx):
         embed = discord.Embed(title=f"The current time is {discord.utils.format_dt(discord.utils.utcnow(), style='T')}")
         
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command()
     async def afk(self, ctx, *, reason=None):
@@ -789,7 +789,7 @@ Tested verify command: Eiiknostv#2016
 
         afks[member.id] = reason
 
-        await ctx.reply(f"{member} went afk cause `{reason}`")
+        await ctx.send(f"{member} went afk cause `{reason}`")
 
     @commands.command(help="Sends the source code of the bot/a command")
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
@@ -805,7 +805,7 @@ Tested verify command: Eiiknostv#2016
             item = discord.ui.Button(style=style, emoji="<:github:744345792172654643>", label="Source code", url=f"{source_url}")
             view.add_item(item=item)
 
-            return await ctx.reply(embed=embed, view=view)
+            return await ctx.send(embed=embed, view=view)
 
         if command == 'help':
             src = type(self.client.help_command)
@@ -822,7 +822,7 @@ Tested verify command: Eiiknostv#2016
                 style = discord.ButtonStyle.gray
                 item = discord.ui.Button(style=style, emoji="<:github:744345792172654643>", label="Source code", url=f"{source_url}")
                 view.add_item(item=item)
-                return await ctx.reply(embed=embed, view=view)
+                return await ctx.send(embed=embed, view=view)
 
             src = obj.callback.__code__
             module = obj.callback.__module__
@@ -847,4 +847,4 @@ Tested verify command: Eiiknostv#2016
         item = discord.ui.Button(style=style, emoji="<:github:744345792172654643>", label="Source code", url=f"{final_url}")
         view.add_item(item=item)
 
-        await ctx.reply(embed=embed, view=view)
+        await ctx.send(embed=embed, view=view)
