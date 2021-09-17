@@ -105,9 +105,12 @@ class info(commands.Cog):
         # if member == None:
         #     member = ctx.author
             
-        # if ctx.message.reference:
-        member = ctx.message.reference.author
-
+        if member == None:
+            if ctx.message.reference:
+                member = ctx.message.reference.resolved.author
+            else:
+                member = ctx.author
+                
         fetchedMember = await self.client.fetch_user(member.id)
 
         if member.bot == True:
