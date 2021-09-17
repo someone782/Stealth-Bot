@@ -89,7 +89,7 @@ Written with `{count_python('.'):,}` lines.
             if command_signatures:
                 num = f"{iter}\U0000fe0f\U000020e3" if iter < 10 else "\U0001f51f"
                 cogindex.append(cog.qualified_name)
-                allcogs.append(f"{num} {cog.qualified_name}")
+                allcogs.append(f"{prefix}help {cog.qualified_name}")
                 iter+=1
         nl = '\n'
         embed.add_field(name=f"<:category:882685952999428107> __**Available categories**__ **[{len(allcogs)}]**", value=f"""
@@ -145,8 +145,7 @@ Usage: {self.get_minimal_command_signature(command)}
         entries = cog.get_commands()
         command_signatures = [self.get_minimal_command_signature(c) for c in entries]
         if command_signatures:
-            val1 = "\n".join(command_signatures)
-            val = val1.replace('10️⃣', '1️⃣0️⃣')
+            val = "\n".join(command_signatures)
             embed=discord.Embed(title=f"Help - {cog.qualified_name}", description=f"""
 Total commands: {len(cog.get_commands())}
 Commands usable by you (in this server): {len(await self.filter_commands(cog.get_commands(), sort=True))}
