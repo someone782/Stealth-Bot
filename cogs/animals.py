@@ -22,14 +22,13 @@ class animals(commands.Cog):
 
       over_18 = "No"
       if json['is_over18'] == "true":
-      over_18 = "Yes"
+         over_18 = "Yes"
 
       embed = discord.Embed(title="Waifu", timestamp=discord.utils.utcnow(), color=0x2F3136)
       embed.set_image(url=json['url'])
       embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)        
 
       await ctx.reply(embed=embed)
-
 
    @commands.command(help="🐱 Shows a picture of a cat and a random fact about cats")
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
@@ -58,25 +57,6 @@ class animals(commands.Cog):
       embed.set_image(url=dogjson['link'])
       embed.set_footer(text=factjson['fact'])
       await ctx.reply(embed=embed)
-
-   @commands.command(help="🐶 Sends you a random picture of a shiba")
-   @commands.bot_has_permissions(send_messages=True, embed_links=True)
-   async def shiba(self, ctx):
-      subreddit = "shiba"
-      url = f"https://reddit.com/r/{subreddit}/random.json?limit=1"
-
-      async with self.client.session.get(f"https://reddit.com/r/{subreddit}/random.json?limit=1") as r:
-         res = await r.json()
-         s = ""
-      try:
-         subredditDict = dict(res[0]['data']['children'][0]['data'])
-      except KeyError:
-         return await ctx.send("I couldn't find that subreddit.")
-      
-      embed = discord.Embed(title=f"{subredditDict['title']}", url=f"https://reddit.com{subredditDict['permalink']}", timestamp=discord.utils.utcnow(), color=0x2F3136)
-      embed.set_image(url=subredditDict['url'])
-      embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
-      await ctx.send(embed=embed)
 
    @commands.command(help="🐼 Shows a picture of a panda and a random fact about pandas")
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
