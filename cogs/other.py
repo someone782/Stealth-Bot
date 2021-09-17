@@ -157,10 +157,10 @@ class Other(commands.Cog):
             await ctx.reply("It's been over 15 seconds, please try again by doing `-verify`", delete_after=5.0) # Replies to the author's message
             await ctx.message.delete() # Deletes the author's message | -verify
         else:
+            await ctx.message.delete(delete_after=5.0) # Deletes the author's message | -verify
             await message.delete() # Deletes the bot's message | Please say ... to verify
             await msg.delete() # Delete the member's answer
             await ctx.reply("You've successfully verified!", delete_after=5.0)
-            await ctx.message.delete() # Deletes the author's message | -verify
 
             if ctx.guild.id == 799330949686231050: # stealth hangout
                 await member.add_roles(discord.utils.get(member.guild.roles, name=stealth_hangout_role))
