@@ -395,15 +395,11 @@ Features:
         """)
 
         if server.banner:
-            url1 = server.banner
-            url = url1.replace("cdn.discordapp.com", "media.discordapp.net")
-            embed.set_thumbnail(url=url)
+            embed.set_image(url=server.banner)
 
 
         if server.icon:
-            url1 = server.icon
-            url = url1.replace("cdn.discordapp.com", "media.discordapp.net")
-            embed.set_thumbnail(url=url)
+            embed.set_thumbnail(url=server.icon)
 
         await ctx.send(embed=embed)
 
