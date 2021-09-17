@@ -6,7 +6,7 @@ from discord.ext import commands, menus
 from discord.ext.commands.cooldowns import BucketType
 
 def setup(client):
-    client.add_cog(mod(client))
+    client.add_cog(Mod(client))
 
 class BanEmbed(menus.ListPageSource):
     def __init__(self, data, per_page=15):
@@ -19,7 +19,7 @@ class BanEmbed(menus.ListPageSource):
         embed.set_footer(text=f"To unban do db.unban [entry]\nMore user info do db.baninfo [entry]")
         return embed
 
-class mod(commands.Cog):
+class Mod(commands.Cog):
     "⚒️ Moderation commands"
     def __init__(self, client):
         self.client = client
