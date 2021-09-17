@@ -113,7 +113,7 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
         channel = self.client.get_channel(883658687867158529)
-        embed = discord.Embed(title="I've been added to a guild", description=f"Guild name: {guild.name}\nGuild ID: {guild.id}\nGuild Owner: {guild.owner.mention} **|** {guild.owner} **|** {guild.owner.name} **|** {guild.owner.id}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed = discord.Embed(title="I've been added to a guild", description=f"Guild name: {guild.name}\nGuild ID: {guild.id}\nGuild Owner: {guild.owner.mention} **|** {guild.owner} **|** {guild.owner.id}", timestamp=discord.utils.utcnow(), color=0x2F3136)
         embed.set_footer(text=f"I'm now in {len(self.client.guilds)} guilds", icon_url=self.client.user.avatar.url)
 
         await channel.send(embed=embed)
@@ -121,7 +121,7 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_guild_remove(self, guild):
         channel = self.client.get_channel(883658687867158529)
-        embed = discord.Embed(title="I've been removed from a guild", description=f"Guild name: {guild.name}\nGuild ID: {guild.id}\nGuild Owner: {guild.owner.mention} **|** {guild.owner} **|** {guild.owner.name} **|** {guild.owner.id}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed = discord.Embed(title="I've been removed from a guild", description=f"Guild name: {guild.name}\nGuild ID: {guild.id}\nGuild Owner: {guild.owner.mention} **|** {guild.owner} **|** {guild.owner.id}", timestamp=discord.utils.utcnow(), color=0x2F3136)
         embed.set_footer(text=f"I'm now in {len(self.client.guilds)} guilds", icon_url=self.client.user.avatar.url)
 
         await channel.send(embed=embed)
