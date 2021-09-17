@@ -18,7 +18,7 @@ class Fun(commands.Cog):
     def __init__(self, client):
         self.client = client
         if not hasattr(self.client, 'counter'):
-            self.client.counter = None
+            self.client.counter = 0
             
     @commands.command(help="Adds a number to the global counter")
     async def count(self, ctx):
