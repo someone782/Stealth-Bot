@@ -160,7 +160,7 @@ class Other(commands.Cog):
             await ctx.message.delete()
             await message.delete()
             await msg.delete(delay=5.0)
-            await msg.send("You've successfully verified!", delete_after=5.0)
+            await ctx.send("You've successfully verified!", delete_after=5.0)
 
             if ctx.guild.id == 799330949686231050: # stealth hangout
                 await member.add_roles(discord.utils.get(member.guild.roles, name=stealth_hangout_role))
@@ -488,41 +488,3 @@ class Other(commands.Cog):
 🇿🇼"""
         bar = foo.split('\n')
         await ctx.send(f"Here's a list of flags: {', '.join(bar)}")
-
-    @commands.command()
-    async def helpo(self, ctx):
-        embed = discord.Embed(title="Help Panel")
-        embed.add_field(name="-help CogName", value=f"`CogDescriptipn`", inline=True)
-        embed.add_field(name="-help CogName", value=f"`CogDescriptipn`", inline=True)
-        embed.add_field(name="-help CogName", value=f"`CogDescriptipn`", inline=True)
-        embed.add_field(name="-help CogName", value=f"`CogDescriptipn`", inline=True)
-        
-        await ctx.send(embed=embed)
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
