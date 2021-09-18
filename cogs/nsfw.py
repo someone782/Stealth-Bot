@@ -41,3 +41,15 @@ class nsfw(commands.Cog):
             embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
 
             await ctx.send(embed=embed)
+            
+   @commands.command(help="Shows a picture of a NSFW waifu", aliases=['nsfwwaifu', 'nsfwaifu', 'waifu_nsfw', 'waifunsfw'])
+   @commands.bot_has_permissions(send_messages=True, embed_links=True)
+   async def nsfw_waifu(self, ctx):
+      async with aiohttp.ClientSession() as session:
+         request = await session.get('https://api.hori.ovh/nsfw/waifu/')
+         json = await request.json()
+
+      embed = discord.Embed(title="NSFW Waifu", timestamp=discord.utils.utcnow(), color=0x2F3136)
+      embed.set_image(url=json['url'])
+      
+      await ctx.send(embed=embed)
