@@ -112,11 +112,11 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
-        welcomeChannel = discord.utils.get(guild.text_channels, name='general')
+        channel = discord.utils.get(guild.text_channels, name='general')
         
         if not channel:
             channels = [channel for channel in guild.text_channels if channel.permissions_for(guild.me).send_messages]
-            welcomeChannel = channels[0]
+            channel = channels[0]
             
         welcomeEmbed = discord.Embed(title="Thank you for adding `Stealth Bot` to your server", description="""
 We really appreciate you adding `Stealth Bot` to your server.
