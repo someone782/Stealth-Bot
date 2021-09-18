@@ -19,10 +19,10 @@ class NSFW(commands.Cog):
     @commands.command(aliases=['nsfw_ass', 'ass_nsfw'])
     @commands.is_nsfw()
     async def ass(self, ctx, type : str=None):
-      url = "https://api.waifu.im/nsfw/ass/"
+        url = "https://api.waifu.im/nsfw/ass/"
       
-      if str(type).lower() == "gif":
-         url = "https://api.waifu.im/nsfw/ass/?gif=True"
+        if str(type).lower() == "gif":
+            url = "https://api.waifu.im/nsfw/ass/?gif=True"
          
         async with aiohttp.ClientSession() as session:
             request = await session.get(url)
@@ -40,10 +40,10 @@ class NSFW(commands.Cog):
     @commands.command(aliases=['nsfw_ecchi', 'ecchi_nsfw'])
     @commands.is_nsfw()
     async def ecchi(self, ctx, type : str=None):
-      url = "https://api.waifu.im/nsfw/ecchi/"
-      
-      if str(type).lower() == "gif":
-         url = "https://api.waifu.im/nsfw/ecchi/?gif=True"
+        url = "https://api.waifu.im/nsfw/ass/"
+        
+        if str(type).lower() == "gif":
+            url = "https://api.waifu.im/nsfw/ecchi/?gif=True"
          
         async with aiohttp.ClientSession() as session:
             request = await session.get(url)
@@ -63,8 +63,8 @@ class NSFW(commands.Cog):
     async def ero(self, ctx, type : str=None):
         url = "https://api.waifu.im/nsfw/ero/"
       
-      if str(type).lower() == "gif":
-         url = "https://api.waifu.im/nsfw/ero/?gif=True"
+        if str(type).lower() == "gif":
+            url = "https://api.waifu.im/nsfw/ero/?gif=True"
          
         async with aiohttp.ClientSession() as session:
             request = await session.get(url)
@@ -84,8 +84,8 @@ class NSFW(commands.Cog):
     async def hentai(self, ctx, type : str=None):
         url = "https://api.waifu.im/nsfw/hentai/"
       
-      if str(type).lower() == "gif":
-         url = "https://api.waifu.im/nsfw/hentai/?gif=True"
+        if str(type).lower() == "gif":
+            url = "https://api.waifu.im/nsfw/ero/?gif=True"
          
         async with aiohttp.ClientSession() as session:
             request = await session.get(url)
@@ -105,8 +105,8 @@ class NSFW(commands.Cog):
     async def hmaid(self, ctx, type : str=None):
         url = "https://api.waifu.im/nsfw/hmaid/"
       
-      if str(type).lower() == "gif":
-         url = "https://api.waifu.im/nsfw/hmaid/?gif=True"
+        if str(type).lower() == "gif":
+            url = "https://api.waifu.im/nsfw/hmaid/?gif=True"
          
         async with aiohttp.ClientSession() as session:
             request = await session.get(url)
@@ -126,9 +126,9 @@ class NSFW(commands.Cog):
     async def milf(self, ctx, type : str=None):
         url = "https://api.waifu.im/nsfw/milf/"
       
-      if str(type).lower() == "gif":
-         url = "https://api.waifu.im/nsfw/milf/?gif=True"
-         
+        if str(type).lower() == "gif":
+            url = "https://api.waifu.im/nsfw/milf/?gif=True"
+            
         async with aiohttp.ClientSession() as session:
             request = await session.get(url)
             json = await request.json()
@@ -147,8 +147,8 @@ class NSFW(commands.Cog):
     async def oppai(self, ctx, type : str=None):
         url = "https://api.waifu.im/nsfw/oppai/"
       
-      if str(type).lower() == "gif":
-         url = "https://api.waifu.im/nsfw/oppai/?gif=True"
+        if str(type).lower() == "gif":
+            url = "https://api.waifu.im/nsfw/oppai/?gif=True"
          
         async with aiohttp.ClientSession() as session:
             request = await session.get(url)
@@ -168,8 +168,8 @@ class NSFW(commands.Cog):
     async def oral(self, ctx, type : str=None):
         url = "https://api.waifu.im/nsfw/oral/"
       
-      if str(type).lower() == "gif":
-         url = "https://api.waifu.im/nsfw/oral/?gif=True"
+        if str(type).lower() == "gif":
+            url = "https://api.waifu.im/nsfw/oral/?gif=True"
          
         async with aiohttp.ClientSession() as session:
             request = await session.get(url)
@@ -189,8 +189,8 @@ class NSFW(commands.Cog):
     async def paizuri(self, ctx, type : str=None):
         url = "https://api.waifu.im/nsfw/paizuri/"
       
-      if str(type).lower() == "gif":
-         url = "https://api.waifu.im/nsfw/paizuri/?gif=True"
+        if str(type).lower() == "gif":
+            url = "https://api.waifu.im/nsfw/paizuri/?gif=True"
          
         async with aiohttp.ClientSession() as session:
             request = await session.get(url)
@@ -210,8 +210,8 @@ class NSFW(commands.Cog):
     async def selfies(self, ctx, type : str=None):
         url = "https://api.waifu.im/nsfw/selfie/"
       
-      if str(type).lower() == "gif":
-         url = "https://api.waifu.im/nsfw/selfie/?gif=True"
+        if str(type).lower() == "gif":
+            url = "https://api.waifu.im/nsfw/selfie/?gif=True"
          
         async with aiohttp.ClientSession() as session:
             request = await session.get(url)
@@ -231,8 +231,8 @@ class NSFW(commands.Cog):
     async def uniform(self, ctx, type : str=None):
         url = "https://api.waifu.im/nsfw/uniform/"
       
-      if str(type).lower() == "gif":
-         url = "https://api.waifu.im/nsfw/uniform/?gif=True"
+        if str(type).lower() == "gif":
+            url = "https://api.waifu.im/nsfw/uniform/?gif=True"
          
         async with aiohttp.ClientSession() as session:
             request = await session.get(url)
