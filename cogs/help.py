@@ -189,7 +189,7 @@ This cog has no commands
 
 
 class Help(commands.Cog):
-    "❓ The help command, how did you find this though..."
+    ":question: | The help command, how did you find this though..."
     def __init__(self, client):
         self.client = client
         help_command = MyHelp()

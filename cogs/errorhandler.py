@@ -11,7 +11,7 @@ def setup(client):
     client.add_cog(ErrorHandler(client))
 
 class ErrorHandler(commands.Cog):
-    "❓ Handles them errors.. but how did you find this cog?..."
+    "<:error:888779034408927242> | Handles them errors.. but how did you find this cog?..."
     def __init__(self, client):
         self.hidden = True
         self.client = client

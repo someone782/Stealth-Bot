@@ -7,7 +7,7 @@ def setup(client):
     client.add_cog(Custom(client))
 
 class Custom(commands.Cog):
-    "🎉 Commands that are made by members that won a giveaway called \"Custom command for Stealth Bot\""
+    ":tada: | Commands that are made by members that won a giveaway called \"Custom command for Stealth Bot\""
     def __init__(self, client):
         self.hidden = True
         self.client = client

@@ -9,7 +9,7 @@ def setup(client):
     client.add_cog(Images(client))
     
 class Images(commands.Cog):
-   "🖼️ Commands that show you images?..."
+   ":frame_photo: | Commands that show you images?..."
    def __init__(self, client):
       self.client = client
       

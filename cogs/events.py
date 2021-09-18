@@ -14,7 +14,7 @@ def setup(client):
     client.add_cog(Events(client))
 
 class Events(commands.Cog):
-    "⭐ Just some events.. but how did you find this cog?..."
+    "<:hypesquad_events:585765895939424258> | Just some events.. but how did you find this cog?..."
     def __init__(self, client):
         self.hidden = True
         self.client = client

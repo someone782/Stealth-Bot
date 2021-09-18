@@ -12,7 +12,7 @@ def setup(client):
     client.add_cog(Owner(client))
 
 class Owner(commands.Cog):
-    "<:owner_crown:845946530452209734> Commands that only the developer of this client can use"
+    "<:owner_crown:845946530452209734> | Commands that only the developer of this client can use"
     def __init__(self, client):
         self.hidden = True
         self.client = client
