@@ -23,7 +23,7 @@ from typing import (
     Optional
 )
 
-with open(r'config.yaml') as file:
+with open(r'/root/stealthbot/config.yaml') as file:
     full_yaml = yaml.load(file)
 yaml_data = full_yaml
 
