@@ -90,7 +90,7 @@ Written with `{count_python('.'):,}` lines.
             if command_signatures:
                 num = f"{iter}\U0000fe0f\U000020e3" if iter < 10 else "\U0001f51f"
                 cogindex.append(cog.qualified_name)
-                allcogs.append(f"{cog.description.split('|')[0]} `{prefix}help {cog.qualified_name}`\n{cog.description}")
+                allcogs.append(f"`{prefix}help {cog.qualified_name}`\n{cog.description.split('|')[1]}")
                 iter+=1
         nl = '\n'
         embed.add_field(name=f"<:category:882685952999428107> __**Available categories**__ **[{len(allcogs)}]**", value=f"""
