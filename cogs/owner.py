@@ -17,12 +17,25 @@ class Owner(commands.Cog):
         self.hidden = True
         self.client = client
         
+    @commands.command(help="Shutdowns the bot", aliases=['shutdown_bot'])
+    @commands.is_owner()
+    async def shutdown(self, ctx):
+        message = await ctx.send("Shutting down...")
+        
+        asyncio.sleep(0.5)
+        
+        await message.edit("Goodbye!")
+        
+        os.system('sudo systemctl stop stealthbot')
+        
     @commands.command(help="Restarts the bot")
     @commands.is_owner()
     async def restart_bot(self, ctx):
         message = await ctx.send("Restarting...")
         
         os.system('sudo systemctl restart stealthbot')
+        
+        await message.edit("Restarted!")
 
     @commands.command(help="Updates the bot on github", aliases=['push'])
     @commands.is_owner()
