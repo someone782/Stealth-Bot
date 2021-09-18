@@ -13,21 +13,21 @@ class Images(commands.Cog):
    def __init__(self, client):
       self.client = client
       
-    @commands.command(aliases=['sfw_waifu', 'waifu_sfw'])
-    @commands.bot_has_permissions(send_messages=True, embed_links=True)
-    async def waifu(self, ctx):
-        async with aiohttp.ClientSession() as session:
-            request = await session.get('https://api.waifu.im/sfw/waifu/')
-            json = await request.json()
-            
-        dominant_color1 = str(json['dominant_color']).replace('#', '')
-        dominant_color = int(dominant_color1, 16)
+   @commands.command(aliases=['sfw_waifu', 'waifu_sfw'])
+   @commands.bot_has_permissions(send_messages=True, embed_links=True)
+   async def waifu(self, ctx):
+      async with aiohttp.ClientSession() as session:
+         request = await session.get('https://api.waifu.im/sfw/waifu/')
+         json = await request.json()
+         
+      dominant_color1 = str(json['dominant_color']).replace('#', '')
+      dominant_color = int(dominant_color1, 16)
 
-        embed = discord.Embed(title="Waifu", timestamp=discord.utils.utcnow(), color=dominant_color)
-        embed.set_image(url=json['url'])
-        embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+      embed = discord.Embed(title="Waifu", timestamp=discord.utils.utcnow(), color=dominant_color)
+      embed.set_image(url=json['url'])
+      embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-        await ctx.reply(embed=embed)
+      await ctx.reply(embed=embed)
 
    @commands.command(help="🐱 Shows a picture of a cat and a random fact about cats")
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
