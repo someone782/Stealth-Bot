@@ -312,14 +312,14 @@ Answer: {random.choice(responses)}
     @commands.command(help="Let's you hug someone!")
     @commands.cooldown(1, 5, BucketType.member)
     async def hug(self, ctx, member : discord.Member):
-        if member == None:
+        if member == ctx.author:
             return await ctx.send("You can't hug yourself!")
             
         async with aiohttp.ClientSession() as session:
             request = await session.get('https://api.waifu.pics/sfw/hug')
             json = await request.json()
 
-        embed = discord.Embed(title=f"{ctx.author} hugged {member}")
+        embed = discord.Embed(title=f"{ctx.author.name} hugged {member.name}")
         embed.set_image(url=json['url'])
         
         await ctx.send(embed=embed)
@@ -327,14 +327,14 @@ Answer: {random.choice(responses)}
     @commands.command(help="Let's you pat someone!")
     @commands.cooldown(1, 5, BucketType.member)
     async def pat(self, ctx, member : discord.Member):
-        if member == None:
+        if member == ctx.author:
             return await ctx.send("You can't pat yourself!")
             
         async with aiohttp.ClientSession() as session:
             request = await session.get('https://api.waifu.pics/sfw/pat')
             json = await request.json()
 
-        embed = discord.Embed(title=f"{ctx.author} patted {member}")
+        embed = discord.Embed(title=f"{ctx.author.name} patted {member.name}")
         embed.set_image(url=json['url'])
         
         await ctx.send(embed=embed)
@@ -342,14 +342,14 @@ Answer: {random.choice(responses)}
     @commands.command(help="Let's you kiss someone!")
     @commands.cooldown(1, 5, BucketType.member)
     async def kiss(self, ctx, member : discord.Member):
-        if member == None:
+        if member == ctx.author:
             return await ctx.send("You can't kiss yourself!")
             
         async with aiohttp.ClientSession() as session:
             request = await session.get('https://api.waifu.pics/sfw/kiss')
             json = await request.json()
 
-        embed = discord.Embed(title=f"{ctx.author} kissed {member}")
+        embed = discord.Embed(title=f"{ctx.author.name} kissed {member.name}")
         embed.set_image(url=json['url'])
         
         await ctx.send(embed=embed)
@@ -357,33 +357,123 @@ Answer: {random.choice(responses)}
     @commands.command(help="Let's you pat someone!")
     @commands.cooldown(1, 5, BucketType.member)
     async def pat(self, ctx, member : discord.Member):
-        if member == None:
+        if member == ctx.author:
             return await ctx.send("You can't pat yourself!")
             
         async with aiohttp.ClientSession() as session:
             request = await session.get('https://api.waifu.pics/sfw/pat')
             json = await request.json()
 
-        embed = discord.Embed(title=f"{ctx.author} patted {member}")
+        embed = discord.Embed(title=f"{ctx.author.name} patted {member.name}")
         embed.set_image(url=json['url'])
         
         await ctx.send(embed=embed)
         
-    @commands.command(help="Let's you pat someone!")
+    @commands.command(help="Let's you lick someone!")
     @commands.cooldown(1, 5, BucketType.member)
-    async def pat(self, ctx, member : discord.Member):
-        if member == None:
-            return await ctx.send("You can't pat yourself!")
+    async def lick(self, ctx, member : discord.Member):
+        if member == ctx.author:
+            return await ctx.send("You can't lick yourself!")
             
         async with aiohttp.ClientSession() as session:
-            request = await session.get('https://api.waifu.pics/sfw/pat')
+            request = await session.get('https://api.waifu.pics/sfw/lick')
             json = await request.json()
 
-        embed = discord.Embed(title=f"{ctx.author} patted {member}")
+        embed = discord.Embed(title=f"{ctx.author.name} licked {member.name}")
         embed.set_image(url=json['url'])
         
         await ctx.send(embed=embed)
+        
+    @commands.command(help="Let's you bonk someone!")
+    @commands.cooldown(1, 5, BucketType.member)
+    async def bonk(self, ctx, member : discord.Member):
+        if member == ctx.author:
+            return await ctx.send("You can't bonk yourself!")
+            
+        async with aiohttp.ClientSession() as session:
+            request = await session.get('https://api.waifu.pics/sfw/bonk')
+            json = await request.json()
 
+        embed = discord.Embed(title=f"{ctx.author.name} bonked {member.name}")
+        embed.set_image(url=json['url'])
+        
+        await ctx.send(embed=embed)
+        
+    @commands.command(help="Let's you yeet someone!")
+    @commands.cooldown(1, 5, BucketType.member)
+    async def yeet(self, ctx, member : discord.Member):
+        if member == ctx.author:
+            return await ctx.send("You can't yeet yourself!")
+
+        async with aiohttp.ClientSession() as session:
+            request = await session.get('https://api.waifu.pics/sfw/yeet')
+            json = await request.json()
+
+        embed = discord.Embed(title=f"{ctx.author.name} yeeted {member.name}")
+        embed.set_image(url=json['url'])
+        
+        await ctx.send(embed=embed)
+        
+    @commands.command(help="Let's you wave at someone!")
+    @commands.cooldown(1, 5, BucketType.member)
+    async def wave(self, ctx, member : discord.Member):
+        if member == ctx.author:
+            return await ctx.send("You can't wave at yourself!")
+
+        async with aiohttp.ClientSession() as session:
+            request = await session.get('https://api.waifu.pics/sfw/wave')
+            json = await request.json()
+
+        embed = discord.Embed(title=f"{ctx.author.name} waved at {member.name}")
+        embed.set_image(url=json['url'])
+        
+        await ctx.send(embed=embed)
+        
+    @commands.command(help="Let's you high five someone!", aliases=['high_five'])
+    @commands.cooldown(1, 5, BucketType.member)
+    async def highfive(self, ctx, member : discord.Member):
+        if member == ctx.author:
+            return await ctx.send("You can't high five yourself!")
+
+        async with aiohttp.ClientSession() as session:
+            request = await session.get('https://api.waifu.pics/sfw/highfive')
+            json = await request.json()
+
+        embed = discord.Embed(title=f"{ctx.author.name} high fived {member.name}")
+        embed.set_image(url=json['url'])
+        
+        await ctx.send(embed=embed)
+        
+    @commands.command(help="Let's you wave at someone!")
+    @commands.cooldown(1, 5, BucketType.member)
+    async def wave(self, ctx, member : discord.Member):
+        if member == ctx.author:
+            return await ctx.send("You can't wave at yourself!")
+
+        async with aiohttp.ClientSession() as session:
+            request = await session.get('https://api.waifu.pics/sfw/wave')
+            json = await request.json()
+
+        embed = discord.Embed(title=f"{ctx.author.name} waved at {member.name}")
+        embed.set_image(url=json['url'])
+        
+        await ctx.send(embed=embed)
+        
+    @commands.command(help="Let's you bite someone!")
+    @commands.cooldown(1, 5, BucketType.member)
+    async def bite(self, ctx, member : discord.Member):
+        if member == ctx.author:
+            return await ctx.send("You can't bite yourself!")
+
+        async with aiohttp.ClientSession() as session:
+            request = await session.get('https://api.waifu.pics/sfw/bite')
+            json = await request.json()
+
+        embed = discord.Embed(title=f"{ctx.author.name} bite {member.name}")
+        embed.set_image(url=json['url'])
+        
+        await ctx.send(embed=embed)
+        
     @commands.command(description="Let's you reverse some text")
     async def reverse(self, ctx, *, text):
         embed = discord.Embed(title=f"Text reversed", description=f"""
