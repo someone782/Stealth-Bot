@@ -229,7 +229,7 @@ class Info(commands.Cog):
             
         nickname = member.nick
         if member.nick == None:
-            nickname = member.name
+            nickname = f"{member.name} (No nickname)"
 
 
         embed = discord.Embed(title=f"{member}", url=f"https://discord.com/users/{member.id}", description=f"""
