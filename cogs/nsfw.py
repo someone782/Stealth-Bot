@@ -23,7 +23,7 @@ class NSFW(commands.Cog):
         dominant_color = int(dominant_color1, 16)
         
 
-        embed = discord.Embed(title="Ass", color=f"{dominant_color}")
+        embed = discord.Embed(title="Ass", color=dominant_color)
         embed.set_image(url=json['url'])
 
         await ctx.send(embed=embed)
