@@ -6,7 +6,7 @@ from discord.ext import commands
 import random
 
 def setup(client):
-    client.add_cog(Images(client)) # testing
+    client.add_cog(Images(client))
     
 class Images(commands.Cog):
    ":frame_photo: | Commands that show you images?..."
@@ -27,7 +27,8 @@ class Images(commands.Cog):
       embed.set_image(url=json['url'])
       embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-      await ctx.reply(embed=embed)
+      #await ctx.reply(embed=embed)
+      await ctx.send("if you see this then git pull is working")
       
    @commands.command(aliases=['sfw_maid', 'maid_sfw'])
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
