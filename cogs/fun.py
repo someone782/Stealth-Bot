@@ -17,13 +17,6 @@ class Fun(commands.Cog):
     ":soccer: | Fun commands like -meme, -hug and more"
     def __init__(self, client):
         self.client = client
-        if not hasattr(self.client, 'counter'):
-            self.client.counter = None
-            
-    @commands.command(help="Adds a number to the global counter")
-    async def count(self, ctx):
-        self.client.counter = self.client.counter + 1
-        await ctx.reply(f"The counter is now at {self.client.counter}")
 
     @commands.command(help="Turns any text into ASCII", aliases=['asciitext', 'ascii_text', 'gen_ascii', 'generator_ascii'])
     async def ascii(self, ctx, *, text):
@@ -44,7 +37,10 @@ class Fun(commands.Cog):
     @commands.cooldown(1, 5, BucketType.member)
     async def triggered(self, ctx, member : discord.Member=None):
         if member == None:
-            member = ctx.author
+            if ctx.message.reference:
+                member = ctx.message.reference.resolved.author
+            else:
+                member = ctx.author
 
         async with aiohttp.ClientSession() as session:
             async with session.get(f'https://some-random-api.ml/canvas/triggered?avatar={member.avatar.with_format("png")}') as af:
@@ -61,7 +57,10 @@ class Fun(commands.Cog):
     @commands.cooldown(1, 5, BucketType.member)
     async def horny(self, ctx, member : discord.Member=None):
         if member == None:
-            member = ctx.author
+            if ctx.message.reference:
+                member = ctx.message.reference.resolved.author
+            else:
+                member = ctx.author
 
         async with aiohttp.ClientSession() as session:
             async with session.get(f'https://some-random-api.ml/canvas/horny?avatar={member.avatar.with_format("png")}') as af:
@@ -78,7 +77,10 @@ class Fun(commands.Cog):
     @commands.cooldown(1, 5, BucketType.member)
     async def jail(self, ctx, member : discord.Member=None):
         if member == None:
-            member = ctx.author
+            if ctx.message.reference:
+                member = ctx.message.reference.resolved.author
+            else:
+                member = ctx.author
 
         async with aiohttp.ClientSession() as session:
             async with session.get(f'https://some-random-api.ml/canvas/jail?avatar={member.avatar.with_format("png")}') as af:
@@ -95,7 +97,10 @@ class Fun(commands.Cog):
     @commands.cooldown(1, 5, BucketType.member)
     async def wasted(self, ctx, member : discord.Member=None):
         if member == None:
-            member = ctx.author
+            if ctx.message.reference:
+                member = ctx.message.reference.resolved.author
+            else:
+                member = ctx.author
 
         async with aiohttp.ClientSession() as session:
             async with session.get(f'https://some-random-api.ml/canvas/wasted?avatar={member.avatar.with_format("png")}') as af:
@@ -112,7 +117,10 @@ class Fun(commands.Cog):
     @commands.cooldown(1, 5, BucketType.member)
     async def rainbow(self, ctx, member : discord.Member=None):
         if member == None:
-            member = ctx.author
+            if ctx.message.reference:
+                member = ctx.message.reference.resolved.author
+            else:
+                member = ctx.author
 
         async with aiohttp.ClientSession() as session:
             async with session.get(f'https://some-random-api.ml/canvas/gay?avatar={member.avatar.with_format("png")}') as af:
@@ -129,7 +137,10 @@ class Fun(commands.Cog):
     @commands.cooldown(1, 5, BucketType.member)
     async def glass(self, ctx, member : discord.Member=None):
         if member == None:
-            member = ctx.author
+            if ctx.message.reference:
+                member = ctx.message.reference.resolved.author
+            else:
+                member = ctx.author
 
         async with aiohttp.ClientSession() as session:
             async with session.get(f'https://some-random-api.ml/canvas/glass?avatar={member.avatar.with_format("png")}') as af:
@@ -155,7 +166,10 @@ class Fun(commands.Cog):
     @commands.command(help="Shows the size of someones pp!", aliases=['banana', 'eggplant', 'egg_plant'])
     async def pp(self, ctx, member : discord.Member=None):
         if member == None:
-            member = ctx.author
+            if ctx.message.reference:
+                member = ctx.message.reference.resolved.author
+            else:
+                member = ctx.author
 
         length = random.randint(10, 25)
 
@@ -196,7 +210,10 @@ Answer: {random.choice(responses)}
     @commands.command(help="Tells you if someone is a furry or not")
     async def furrydetector(self, ctx, member : discord.Member=None):
         if member == None:
-            member = ctx.author
+            if ctx.message.reference:
+                member = ctx.message.reference.resolved.author
+            else:
+                member = ctx.author
 
         responses = ['is a furry.',
                     'is not a furry.']
@@ -206,7 +223,10 @@ Answer: {random.choice(responses)}
     @commands.command(help="Tells you how gay someone is")
     async def gayrate(self, ctx, member : discord.Member=None):
         if member == None:
-            member = ctx.author
+            if ctx.message.reference:
+                member = ctx.message.reference.resolved.author
+            else:
+                member = ctx.author
 
         await ctx.send(f"{member} is {random.randint(0, 100)}% gay!")
 
@@ -309,9 +329,13 @@ Answer: {random.choice(responses)}
 
     @commands.command(help="Let's you hug someone!")
     @commands.cooldown(1, 5, BucketType.member)
-    async def hug(self, ctx, member : discord.Member):
-        if member == ctx.author:
-            return await ctx.send("You can't hug yourself!")
+    async def hug(self, ctx, member : discord.Member=None):
+        if member == None:
+            if ctx.message.reference:
+                member = ctx.message.reference.resolved.author
+            else:
+                member = ctx.author
+                return await ctx.send("You can't hug yourself!")
             
         async with aiohttp.ClientSession() as session:
             request = await session.get('https://api.waifu.pics/sfw/hug')
@@ -324,9 +348,13 @@ Answer: {random.choice(responses)}
 
     @commands.command(help="Let's you pat someone!")
     @commands.cooldown(1, 5, BucketType.member)
-    async def pat(self, ctx, member : discord.Member):
-        if member == ctx.author:
-            return await ctx.send("You can't pat yourself!")
+    async def pat(self, ctx, member : discord.Member=None):
+        if member == None:
+            if ctx.message.reference:
+                member = ctx.message.reference.resolved.author
+            else:
+                member = ctx.author
+                return await ctx.send("You can't pat yourself!")
             
         async with aiohttp.ClientSession() as session:
             request = await session.get('https://api.waifu.pics/sfw/pat')
@@ -339,9 +367,13 @@ Answer: {random.choice(responses)}
         
     @commands.command(help="Let's you kiss someone!")
     @commands.cooldown(1, 5, BucketType.member)
-    async def kiss(self, ctx, member : discord.Member):
-        if member == ctx.author:
-            return await ctx.send("You can't kiss yourself!")
+    async def kiss(self, ctx, member : discord.Member=None):
+        if member == None:
+            if ctx.message.reference:
+                member = ctx.message.reference.resolved.author
+            else:
+                member = ctx.author
+                return await ctx.send("You can't kiss yourself!")
             
         async with aiohttp.ClientSession() as session:
             request = await session.get('https://api.waifu.pics/sfw/kiss')
@@ -354,9 +386,13 @@ Answer: {random.choice(responses)}
         
     @commands.command(help="Let's you pat someone!")
     @commands.cooldown(1, 5, BucketType.member)
-    async def pat(self, ctx, member : discord.Member):
-        if member == ctx.author:
-            return await ctx.send("You can't pat yourself!")
+    async def pat(self, ctx, member : discord.Member=None):
+        if member == None:
+            if ctx.message.reference:
+                member = ctx.message.reference.resolved.author
+            else:
+                member = ctx.author
+                return await ctx.send("You can't pat yourself!")
             
         async with aiohttp.ClientSession() as session:
             request = await session.get('https://api.waifu.pics/sfw/pat')
@@ -369,9 +405,13 @@ Answer: {random.choice(responses)}
         
     @commands.command(help="Let's you lick someone!")
     @commands.cooldown(1, 5, BucketType.member)
-    async def lick(self, ctx, member : discord.Member):
-        if member == ctx.author:
-            return await ctx.send("You can't lick yourself!")
+    async def lick(self, ctx, member : discord.Member=None):
+        if member == None:
+            if ctx.message.reference:
+                member = ctx.message.reference.resolved.author
+            else:
+                member = ctx.author
+                return await ctx.send("You can't lick yourself!")
             
         async with aiohttp.ClientSession() as session:
             request = await session.get('https://api.waifu.pics/sfw/lick')
@@ -384,9 +424,13 @@ Answer: {random.choice(responses)}
         
     @commands.command(help="Let's you bonk someone!")
     @commands.cooldown(1, 5, BucketType.member)
-    async def bonk(self, ctx, member : discord.Member):
-        if member == ctx.author:
-            return await ctx.send("You can't bonk yourself!")
+    async def bonk(self, ctx, member : discord.Member=None):
+        if member == None:
+            if ctx.message.reference:
+                member = ctx.message.reference.resolved.author
+            else:
+                member = ctx.author
+                return await ctx.send("You can't bonk yourself!")
             
         async with aiohttp.ClientSession() as session:
             request = await session.get('https://api.waifu.pics/sfw/bonk')
@@ -399,9 +443,13 @@ Answer: {random.choice(responses)}
         
     @commands.command(help="Let's you yeet someone!")
     @commands.cooldown(1, 5, BucketType.member)
-    async def yeet(self, ctx, member : discord.Member):
-        if member == ctx.author:
-            return await ctx.send("You can't yeet yourself!")
+    async def yeet(self, ctx, member : discord.Member=None):
+        if member == None:
+            if ctx.message.reference:
+                member = ctx.message.reference.resolved.author
+            else:
+                member = ctx.author
+                return await ctx.send("You can't yeet yourself!")
 
         async with aiohttp.ClientSession() as session:
             request = await session.get('https://api.waifu.pics/sfw/yeet')
@@ -414,9 +462,13 @@ Answer: {random.choice(responses)}
         
     @commands.command(help="Let's you wave at someone!")
     @commands.cooldown(1, 5, BucketType.member)
-    async def wave(self, ctx, member : discord.Member):
-        if member == ctx.author:
-            return await ctx.send("You can't wave at yourself!")
+    async def wave(self, ctx, member : discord.Member=None):
+        if member == None:
+            if ctx.message.reference:
+                member = ctx.message.reference.resolved.author
+            else:
+                member = ctx.author
+                return await ctx.send("You can't hug yourself!")
 
         async with aiohttp.ClientSession() as session:
             request = await session.get('https://api.waifu.pics/sfw/wave')
@@ -429,9 +481,13 @@ Answer: {random.choice(responses)}
         
     @commands.command(help="Let's you high five someone!", aliases=['high_five'])
     @commands.cooldown(1, 5, BucketType.member)
-    async def highfive(self, ctx, member : discord.Member):
-        if member == ctx.author:
-            return await ctx.send("You can't high five yourself!")
+    async def highfive(self, ctx, member : discord.Member=None):
+        if member == None:
+            if ctx.message.reference:
+                member = ctx.message.reference.resolved.author
+            else:
+                member = ctx.author
+                return await ctx.send("You can't high five yourself!")
 
         async with aiohttp.ClientSession() as session:
             request = await session.get('https://api.waifu.pics/sfw/highfive')
@@ -441,27 +497,16 @@ Answer: {random.choice(responses)}
         embed.set_image(url=json['url'])
         
         await ctx.send(embed=embed)
-        
-    @commands.command(help="Let's you wave at someone!")
-    @commands.cooldown(1, 5, BucketType.member)
-    async def wave(self, ctx, member : discord.Member):
-        if member == ctx.author:
-            return await ctx.send("You can't wave at yourself!")
 
-        async with aiohttp.ClientSession() as session:
-            request = await session.get('https://api.waifu.pics/sfw/wave')
-            json = await request.json()
-
-        embed = discord.Embed(title=f"{ctx.author.name} waved at {member.name}")
-        embed.set_image(url=json['url'])
-        
-        await ctx.send(embed=embed)
-        
     @commands.command(help="Let's you bite someone!")
     @commands.cooldown(1, 5, BucketType.member)
-    async def bite(self, ctx, member : discord.Member):
-        if member == ctx.author:
-            return await ctx.send("You can't bite yourself!")
+    async def bite(self, ctx, member : discord.Member=None):
+        if member == None:
+            if ctx.message.reference:
+                member = ctx.message.reference.resolved.author
+            else:
+                member = ctx.author
+                return await ctx.send("You can't bite yourself!")
 
         async with aiohttp.ClientSession() as session:
             request = await session.get('https://api.waifu.pics/sfw/bite')
@@ -476,7 +521,7 @@ Answer: {random.choice(responses)}
     async def reverse(self, ctx, *, text):
         embed = discord.Embed(title=f"Text reversed", description=f"""
 Original text: {text}
-<:reverse:879724816834375791> Reveresd text: {text[::-1]}
+<:reverse:879724816834375791> Reversed text: {text[::-1]}
         """)
         
         await ctx.send(embed=embed)
