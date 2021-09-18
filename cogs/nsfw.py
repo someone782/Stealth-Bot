@@ -21,10 +21,8 @@ class NSFW(commands.Cog):
             
         dominant_color1 = str(json['dominant_color']).replace('#', '')
         dominant_color = int(dominant_color1, 16)
-        print(dominant_color)
-        
 
-        embed = discord.Embed(title="Ass")
+        embed = discord.Embed(title="Ass", color=dominant_color)
         embed.set_image(url=json['url'])
 
         await ctx.send(embed=embed)
