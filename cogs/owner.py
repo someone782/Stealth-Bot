@@ -31,11 +31,13 @@ class Owner(commands.Cog):
     @commands.command(help="Restarts the bot")
     @commands.is_owner()
     async def restart_bot(self, ctx):
-        message = await ctx.send("Restarting...")
+        embed = discord.Embed(title="Restarting...")
+        
+        message = await ctx.send(embed=embed)
+        
+        asyncio.sleep(0.5)
         
         os.system('sudo systemctl restart stealthbot')
-        
-        await message.edit("Restarted!")
 
     @commands.command(help="Updates the bot on github", aliases=['push'])
     @commands.is_owner()
