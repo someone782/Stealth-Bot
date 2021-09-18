@@ -80,7 +80,7 @@ Written with `{count_python('.'):,}` lines.
 
         allcogs = []
         cogindex = []
-        ignored_cogs=['help', 'Jishaku', 'events']
+        ignored_cogs = ['help', 'Jishaku', 'events']
         iter = 1
         for cog, commands in mapping.items():
             if cog is None or cog.qualified_name in ignored_cogs: continue
