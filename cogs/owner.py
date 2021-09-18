@@ -21,6 +21,7 @@ class Owner(commands.Cog):
     @commands.is_owner()
     async def shutdown(self, ctx):
         message = await ctx.send("Shutting down...")
+        asyncio.sleep(0.5)
         await message.edit("Goodbye!")
         
         await self.client.close()

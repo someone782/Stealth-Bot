@@ -1,8 +1,8 @@
-> 🔞 A lot of new NSFW commands!
-• Do %%PREFIX%%help NSFW to view a list of NSFW commands!
+> 🔞 `A lot of new NSFW commands!`
+• `Do %%PREFIX%%help NSFW to view a list of NSFW commands!`
 
-> 🐛 Fixed a lot of bugs and more!
-• New clean-up command and a lot of bugs were fixed!
+> 🐛 `Fixed a lot of bugs and more!`
+• `New clean-up command and a lot of bugs were fixed!`
 
-> 🎵 New music system!
-• Do %%PREFIX%%help music to view all the music commands!
+> 🎵 `New music system!`
+• `Do %%PREFIX%%help music to view all the music commands!`

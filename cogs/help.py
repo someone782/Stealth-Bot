@@ -97,9 +97,7 @@ Written with `{count_python('.'):,}` lines.
         """)
 
         embed.add_field(name="📰 __**Latest News**__ - **<t:1631558059:d> (<t:1631558059:R>)**", value = f"""
-```fix
 {news}
-```
         """)
 
         embed.set_footer(text=f"Suggested command: {prefix}{random.choice(list(self.context.bot.commands))} • Credits given in {prefix}credits")
