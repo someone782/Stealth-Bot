@@ -33,11 +33,11 @@ class Images(commands.Cog):
       
       end = time.perf_counter()
       
-      messagems = (end - start) * 1000
+      ms = (end - start) * 1000
 
       embed = discord.Embed(title="Waifu", url=json['url'], timestamp=discord.utils.utcnow(), color=dominant_color)
       embed.set_image(url=json['url'])
-      embed.set_footer(text=f"Requested by {ctx.author} | {messagems}", icon_url=ctx.author.avatar.url)
+      embed.set_footer(text=f"Requested by {ctx.author} • {round(ms)}ms{' ' * (9-len(str(round(ms, 3))))}ms", icon_url=ctx.author.avatar.url)
 
       await ctx.reply(embed=embed)
       
