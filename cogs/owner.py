@@ -17,7 +17,7 @@ class Owner(commands.Cog):
         self.hidden = True
         self.client = client
         
-    @commands.command(help="Shuts down the bot", alises=['logoff', 'log_off'])
+    @commands.command(help="Shuts down the bot", aliases=['logoff', 'log_off'])
     @commands.is_owner()
     async def shutdown(self, ctx):
         message = await ctx.send("Shutting down...")
