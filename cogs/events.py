@@ -112,12 +112,10 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
-        server = guild
-        
-        welcomeChannel = discord.utils.get(server.text_channels, name='general')
+        welcomeChannel = discord.utils.get(guild.text_channels, name='general')
         
         if not channel:
-            channels = [channel for channel in server.text_channels if channel.permissions_for(server.me).send_messages]
+            channels = [channel for channel in guild.text_channels if channel.permissions_for(guild.me).send_messages]
             welcomeChannel = channels[0]
             
         welcomeEmbed = discord.Embed(title="Thank you for adding `Stealth Bot` to your server", description="""
@@ -128,8 +126,8 @@ You can do `sb!help` to view a list of commands.
         await channel.send(embed=welcomeEmbed)
         
         channel = self.client.get_channel(883658687867158529)
-        embed = discord.Embed(title="I've been added to a guild", description=f"Name: {server.name}\nID: {server.id}\nOwner: {server.owner.mention} **|** {server.owner} **|** {server.owner.id}", timestamp=discord.utils.utcnow(), color=0x2F3136)
-        embed.set_thumbnail(url=server.icon)
+        embed = discord.Embed(title="I've been added to a guild", description=f"Name: {guild.name}\nID: {guild.id}\nOwner: {guild.owner.mention} **|** {guild.owner} **|** {guild.owner.id}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed.set_thumbnail(url=guild.icon)
         embed.set_footer(text=f"I'm now in {len(self.client.guilds)} guilds", icon_url=self.client.user.avatar.url)
 
         await channel.send(embed=embed)
@@ -137,8 +135,8 @@ You can do `sb!help` to view a list of commands.
     @commands.Cog.listener()
     async def on_guild_remove(self, guild):
         channel = self.client.get_channel(883658687867158529)
-        embed = discord.Embed(title="I've been removed from a guild", description=f"Name: {server.name}\nID: {server.id}\nOwner: {server.owner.mention} **|** {server.owner} **|** {server.owner.id}", timestamp=discord.utils.utcnow(), color=0x2F3136)
-        embed.set_thumbnail(url=server.icon)
+        embed = discord.Embed(title="I've been removed from a guild", description=f"Name: {guild.name}\nID: {guild.id}\nOwner: {guild.owner.mention} **|** {guild.owner} **|** {guild.owner.id}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed.set_thumbnail(url=guild.icon)
         embed.set_footer(text=f"I'm now in {len(self.client.guilds)} guilds", icon_url=self.client.user.avatar.url)
 
         await channel.send(embed=embed)
