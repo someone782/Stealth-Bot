@@ -21,7 +21,7 @@ class Images(commands.Cog):
       if str(type).lower() == "gif":
          url = "https://api.waifu.im/sfw/waifu/?gif=True"
          
-      async with aiohttp.ClientSession() as session:
+      async with self.client.session() as session:
          request = await session.get(url)
          json = await request.json()
          
