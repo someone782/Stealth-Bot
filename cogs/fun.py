@@ -9,7 +9,6 @@ import aiohttp
 import pyfiglet
 from discord.ext import commands
 from discord.ext.commands.cooldowns import BucketType
-from helpers.paginator import ViewPaginator, UrbanPageSource
 
 def setup(client):
     client.add_cog(Fun(client))
@@ -18,23 +17,13 @@ class Fun(commands.Cog):
     ":soccer: | Fun commands like -meme, -hug and more"
     def __init__(self, client):
         self.client = client
-
-    @commands.command(name='urban', aliases=['ud'])
-    async def _urban(self, ctx, *, word):
-        """Searches urban dictionary."""
-
-        url = 'http://api.urbandictionary.com/v0/define'
-        async with self.client.session.get(url, params={'term': word}) as resp:
-            if resp.status != 200:
-                return await ctx.send(f'An error occurred: {resp.status} {resp.reason}')
-
-            js = await resp.json()
-            data = js.get('list', [])
-            if not data:
-                return await ctx.send('No results found, sorry.')
-
-        pages = ViewPaginator(UrbanPageSource(data), ctx=ctx)
-        await pages.start()
+        if not hasattr(self.client, 'counter'):
+            self.client.counter = None
+            
+    @commands.command(help="Adds a number to the global counter")
+    async def count(self, ctx):
+        self.client.counter = self.client.counter + 1
+        await ctx.reply(f"The counter is now at {self.client.counter}")
 
     @commands.command(help="Turns any text into ASCII", aliases=['asciitext', 'ascii_text', 'gen_ascii', 'generator_ascii'])
     async def ascii(self, ctx, *, text):
