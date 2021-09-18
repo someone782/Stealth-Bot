@@ -80,9 +80,9 @@ class NSFW(commands.Cog):
 
         await ctx.reply(embed=embed)
         
-    @commands.command(aliases=['nsfw_maid', 'maid_nsfw'])
+    @commands.command(aliases=['maidn', 'nsfw_maid', 'maid_nsfw'])
     @commands.is_nsfw()
-    async def maid(self, ctx):
+    async def nmaid(self, ctx):
         async with aiohttp.ClientSession() as session:
             request = await session.get('https://api.waifu.im/nsfw/maid/')
             json = await request.json()
