@@ -62,7 +62,9 @@ class MyHelp(commands.HelpCommand):
 
     async def send_bot_help(self, mapping):
         ctx = self.context
-        prefix = self.context.clean_prefix
+        # prefix = self.context.clean_prefix
+        prefixes = await self.client.get_pre(self.client, ctx.message, raw_prefix=True)
+        prefix = prefixes[0]
         with open('./data/news.txt') as f:
             newsFileContext = f.read()
             new1 = f"{newsFileContext}"
