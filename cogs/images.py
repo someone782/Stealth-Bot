@@ -17,7 +17,7 @@ class Images(commands.Cog):
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
    async def waifu(self, ctx):
       async with aiohttp.ClientSession() as session:
-         request = await session.get('https://api.waifu.im/sfw/waifu/')
+         request = await session.get('https://api.waifu.im/sfw/waifu/?gif=True')
          json = await request.json()
          
       dominant_color1 = str(json['dominant_color']).replace('#', '')
