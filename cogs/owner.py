@@ -20,8 +20,8 @@ class Owner(commands.Cog):
     @commands.command(help="Shuts down the bot", alises=['logoff', 'log_off'])
     @commands.is_owner()
     async def shutdown(self, ctx):
-        await ctx.send("Shutting down...")
-        await ctx.send("Goodbye!")
+        message = await ctx.send("Shutting down...")
+        await message.edit("Goodbye!")
         
         await self.client.close()
 
