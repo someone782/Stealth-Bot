@@ -27,14 +27,12 @@ class Fun(commands.Cog):
 
     @commands.command(help="Turns any text into ASCII", aliases=['asciitext', 'ascii_text', 'gen_ascii', 'generator_ascii'])
     async def ascii(self, ctx, *, text):
-        if len(text) > 10:
-            return await ctx.send("Your ASCII text exceeded the 10-character limit.")
+        if len(text) > 20:
+            return await ctx.send("Your ASCII text exceeded the 20-character limit.")
         
         ascii = pyfiglet.figlet_format(text)
 
         embed = discord.Embed(title="ASCII", description=f"""
-Original text: {text}
-ASCII Text:
 ```
 {ascii}
 ```
