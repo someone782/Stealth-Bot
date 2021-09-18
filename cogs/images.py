@@ -1,5 +1,6 @@
 import discord
 import helpers
+import time
 import aiohttp
 import datetime
 from discord.ext import commands
@@ -21,16 +22,22 @@ class Images(commands.Cog):
       if str(type).lower() == "gif":
          url = "https://api.waifu.im/sfw/waifu/?gif=True"
          
+      start = time.perf_counter()
+         
       async with aiohttp.ClientSession() as session:
          request = await session.get(url)
          json = await request.json()
          
       dominant_color1 = str(json['dominant_color']).replace('#', '')
       dominant_color = int(dominant_color1, 16)
+      
+      end = time.perf_counter()
+      
+      messagems = (end - start) * 1000
 
       embed = discord.Embed(title="Waifu", url=json['url'], timestamp=discord.utils.utcnow(), color=dominant_color)
       embed.set_image(url=json['url'])
-      embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+      embed.set_footer(text=f"Requested by {ctx.author} | {messagems}", icon_url=ctx.author.avatar.url)
 
       await ctx.reply(embed=embed)
       
