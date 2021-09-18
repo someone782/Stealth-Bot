@@ -126,8 +126,12 @@ class NSFW(commands.Cog):
         async with aiohttp.ClientSession() as session:
             request = await session.get('https://api.waifu.im/nsfw/selfie/')
             json = await request.json()
+        
+        dominant_color1 = json['dominant_color']
+        dominant_color2 = int(dominant_color1.replace('#', '0x'))
+        print(dominant_color2)
 
-        embed = discord.Embed(title="Selfie", color=int(json['dominant_color'].replace('#',''),16))
+        embed = discord.Embed(title="Selfie")
         embed.set_image(url=json['url'])
 
         await ctx.send(embed=embed)
