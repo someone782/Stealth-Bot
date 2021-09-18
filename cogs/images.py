@@ -6,7 +6,7 @@ from discord.ext import commands
 import random
 
 def setup(client):
-    client.add_cog(Images(client))
+    client.add_cog(Images(client)) # testing
     
 class Images(commands.Cog):
    ":frame_photo: | Commands that show you images?..."
