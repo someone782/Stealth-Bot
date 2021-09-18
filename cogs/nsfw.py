@@ -25,7 +25,7 @@ class NSFW(commands.Cog):
         embed = discord.Embed(title="Ass", color=dominant_color)
         embed.set_image(url=json['url'])
 
-        await ctx.send(embed=embed)
+        await ctx.reply(embed=embed)
         
     @commands.command(aliases=['nsfw_ecchi', 'ecchi_nsfw'])
     @commands.is_nsfw()
