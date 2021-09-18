@@ -12,45 +12,134 @@ class nsfw(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command(help="Shows you a random post from the subreddit r/hentai")
+    @commands.command(aliases=['nsfw_ass', 'ass_nsfw'])
     @commands.is_nsfw()
-    async def hentai(self, ctx):
-        subreddit = "hentai"
-        url = f"https://reddit.com/r/{subreddit}/random.json?limit=1"
-
-        async with self.client.session.get(f"https://reddit.com/r/{subreddit}/random.json?limit=1") as r:
-            res = await r.json()
-            subredditDict = dict(res[0]['data']['children'][0]['data'])
-            embed = discord.Embed(title=f"{subredditDict['title']}", url=f"https://reddit.com{subredditDict['permalink']}")
-            embed.set_image(url=subredditDict['url'])
-            embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
-
-            await ctx.send(embed=embed)
-
-    @commands.command(help="Shows you a random post from the subreddit r/HENTAI_GIF", aliases=['hentaigif'])
-    @commands.is_nsfw()
-    async def hentai_gif(self, ctx):
-        subreddit = "HENTAI_GIF"
-        url = f"https://reddit.com/r/{subreddit}/random.json?limit=1"
-
-        async with self.client.session.get(f"https://reddit.com/r/{subreddit}/random.json?limit=1") as r:
-            res = await r.json()
-            subredditDict = dict(res[0]['data']['children'][0]['data'])
-            embed = discord.Embed(title=f"{subredditDict['title']}", url=f"https://reddit.com{subredditDict['permalink']}")
-            embed.set_image(url=subredditDict['url'])
-            embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
-
-            await ctx.send(embed=embed)
-
-
-    @commands.command(help="Shows a picture of a NSFW waifu", aliases=['nsfwwaifu', 'nsfwaifu', 'waifu_nsfw', 'waifunsfw'])
-    @commands.bot_has_permissions(send_messages=True, embed_links=True)
-    async def nsfw_waifu(self, ctx):
+    async def ass(self, ctx):
         async with aiohttp.ClientSession() as session:
-            request = await session.get('https://api.hori.ovh/nsfw/waifu/')
+            request = await session.get('https://api.waifu.im/nsfw/ass/')
             json = await request.json()
 
-        embed = discord.Embed(title="NSFW Waifu", timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed = discord.Embed(title="Ass")
+        embed.set_image(url=json['url'])
+
+        await ctx.send(embed=embed)
+        
+    @commands.command(aliases=['nsfw_ecchi', 'ecchi_nsfw'])
+    @commands.is_nsfw()
+    async def ecchi(self, ctx):
+        async with aiohttp.ClientSession() as session:
+            request = await session.get('https://api.waifu.im/nsfw/ecchi/')
+            json = await request.json()
+
+        embed = discord.Embed(title="Ecchi")
+        embed.set_image(url=json['url'])
+
+        await ctx.send(embed=embed)
+        
+    @commands.command(aliases=['nsfw_ero', 'ero_nsfw'])
+    @commands.is_nsfw()
+    async def ero(self, ctx):
+        async with aiohttp.ClientSession() as session:
+            request = await session.get('https://api.waifu.im/nsfw/ero/')
+            json = await request.json()
+
+        embed = discord.Embed(title="Ero")
+        embed.set_image(url=json['url'])
+
+        await ctx.send(embed=embed)
+        
+    @commands.command(aliases=['nsfw_hentai', 'hentai_nsfw'])
+    @commands.is_nsfw()
+    async def hentai(self, ctx):
+        async with aiohttp.ClientSession() as session:
+            request = await session.get('https://api.waifu.im/nsfw/hentai/')
+            json = await request.json()
+
+        embed = discord.Embed(title="Hentai")
+        embed.set_image(url=json['url'])
+
+        await ctx.send(embed=embed)
+        
+    @commands.command(aliases=['nsfw_maid', 'maid_nsfw'])
+    @commands.is_nsfw()
+    async def maid(self, ctx):
+        async with aiohttp.ClientSession() as session:
+            request = await session.get('https://api.waifu.im/nsfw/maid/')
+            json = await request.json()
+
+        embed = discord.Embed(title="Maid")
+        embed.set_image(url=json['url'])
+
+        await ctx.send(embed=embed)
+
+    @commands.command(aliases=['nsfw_milf', 'milf_nsfw'])
+    @commands.is_nsfw()
+    async def milf(self, ctx):
+        async with aiohttp.ClientSession() as session:
+            request = await session.get('https://api.waifu.im/nsfw/milf/')
+            json = await request.json()
+
+        embed = discord.Embed(title="Milf")
+        embed.set_image(url=json['url'])
+
+        await ctx.send(embed=embed)
+
+    @commands.command(aliases=['nsfw_oppai', 'oppai_nsfw'])
+    @commands.is_nsfw()
+    async def oppai(self, ctx):
+        async with aiohttp.ClientSession() as session:
+            request = await session.get('https://api.waifu.im/nsfw/oppai/')
+            json = await request.json()
+
+        embed = discord.Embed(title="Oppai")
+        embed.set_image(url=json['url'])
+
+        await ctx.send(embed=embed)
+
+    @commands.command(aliases=['nsfw_oral', 'oral_nsfw'])
+    @commands.is_nsfw()
+    async def oral(self, ctx):
+        async with aiohttp.ClientSession() as session:
+            request = await session.get('https://api.waifu.im/nsfw/oral/')
+            json = await request.json()
+
+        embed = discord.Embed(title="Oral")
+        embed.set_image(url=json['url'])
+
+        await ctx.send(embed=embed)
+
+    @commands.command(aliases=['nsfw_paizuri', 'paizuri_nsfw'])
+    @commands.is_nsfw()
+    async def paizuri(self, ctx):
+        async with aiohttp.ClientSession() as session:
+            request = await session.get('https://api.waifu.im/nsfw/paizuri/')
+            json = await request.json()
+
+        embed = discord.Embed(title="Paizuri")
+        embed.set_image(url=json['url'])
+
+        await ctx.send(embed=embed)
+        
+    @commands.command(aliases=['nsfw_selfies', 'selfies_nsfw', 'selfie', 'nsfw_selfie', 'selfie_nsfw'])
+    @commands.is_nsfw()
+    async def selfies(self, ctx):
+        async with aiohttp.ClientSession() as session:
+            request = await session.get('https://api.waifu.im/nsfw/selfie/')
+            json = await request.json()
+
+        embed = discord.Embed(title="Selfie")
+        embed.set_image(url=json['url'])
+
+        await ctx.send(embed=embed)
+        
+    @commands.command(aliases=['nsfw_uniform', 'uniform_nsfw'])
+    @commands.is_nsfw()
+    async def uniform(self, ctx):
+        async with aiohttp.ClientSession() as session:
+            request = await session.get('https://api.waifu.im/nsfw/uniform/')
+            json = await request.json()
+
+        embed = discord.Embed(title="Uniform")
         embed.set_image(url=json['url'])
 
         await ctx.send(embed=embed)

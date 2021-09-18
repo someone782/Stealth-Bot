@@ -13,18 +13,6 @@ class Animals(commands.Cog):
    def __init__(self, client):
       self.client = client
 
-   @commands.command(help="Shows a picture of a waifu")
-   @commands.bot_has_permissions(send_messages=True, embed_links=True)
-   async def waifu(self, ctx):
-      async with aiohttp.ClientSession() as session:
-         request = await session.get('https://api.hori.ovh/sfw/waifu/')
-         json = await request.json()
-
-      embed = discord.Embed(title="Waifu", timestamp=discord.utils.utcnow(), color=0x2F3136)
-      embed.set_image(url=json['url'])
-      
-      await ctx.send(embed=embed)
-
    @commands.command(help="🐱 Shows a picture of a cat and a random fact about cats")
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
    async def cat(self, ctx):
