@@ -19,7 +19,8 @@ class NSFW(commands.Cog):
             request = await session.get('https://api.waifu.im/nsfw/ass/')
             json = await request.json()
             
-        print(json['dominant_color'])
+        print(int(json['dominant_color']).replace('#', ''))
+        
 
         embed = discord.Embed(title="Ass")
         embed.set_image(url=json['url'])
