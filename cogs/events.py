@@ -127,8 +127,11 @@ You can do `sb!help` to view a list of commands.
         
         channel = self.client.get_channel(883658687867158529)
         embed = discord.Embed(title="I've been added to a guild", description=f"Name: {guild.name}\nID: {guild.id}\nOwner: {guild.owner.mention} **|** {guild.owner} **|** {guild.owner.id}", timestamp=discord.utils.utcnow(), color=0x2F3136)
-        print(guild.icon)
-        embed.set_footer(text=f"I'm now in {len(self.client.guilds)} guilds", icon_url=self.client.user.avatar.url)
+        if guild.icon:
+            embed.set_thumbnail(url=guild.icon)
+        else:
+            pass
+        embed.set_footer(text=f"I am now in {len(self.client.guilds)} guilds", icon_url=self.client.user.avatar.url)
 
         await channel.send(embed=embed)
 
@@ -136,7 +139,10 @@ You can do `sb!help` to view a list of commands.
     async def on_guild_remove(self, guild):
         channel = self.client.get_channel(883658687867158529)
         embed = discord.Embed(title="I've been removed from a guild", description=f"Name: {guild.name}\nID: {guild.id}\nOwner: {guild.owner.mention} **|** {guild.owner} **|** {guild.owner.id}", timestamp=discord.utils.utcnow(), color=0x2F3136)
-        print(guild.icon)
-        embed.set_footer(text=f"I'm now in {len(self.client.guilds)} guilds", icon_url=self.client.user.avatar.url)
+        if guild.icon:
+            embed.set_thumbnail(url=guild.icon)
+        else:
+            pass
+        embed.set_footer(text=f"I am now in {len(self.client.guilds)} guilds", icon_url=self.client.user.avatar.url)
 
         await channel.send(embed=embed)
