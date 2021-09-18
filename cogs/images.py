@@ -18,7 +18,7 @@ class Images(commands.Cog):
    async def waifu(self, ctx, type : str=None):
       url = "https://api.waifu.im/sfw/waifu/"
       
-      if type.lower() == "gif":
+      if str(type).lower() == "gif":
          url = "https://api.waifu.im/sfw/waifu/?gif=True"
          
       async with aiohttp.ClientSession() as session:
@@ -37,6 +37,11 @@ class Images(commands.Cog):
    @commands.command(aliases=['sfw_maid', 'maid_sfw'])
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
    async def maid(self, ctx, type : str=None):
+      url = "https://api.waifu.im/sfw/waifu/"
+      
+      if str(type).lower() == "gif":
+         url = "https://api.waifu.im/sfw/waifu/?gif=True"
+         
       async with aiohttp.ClientSession() as session:
          request = await session.get(url)
          json = await request.json()
