@@ -91,18 +91,19 @@ Written with `{count_python('.'):,}` lines.
                 val = "`, `".join(command_signatures)
                 num = f"{iter}\U0000fe0f\U000020e3" if iter < 10 else "\U0001f51f"
                 cogindex.append(cog.qualified_name)
-                allcogs.append(f"`{prefix}help {cog.qualified_name}`\n{cog.description}\n\n")
+                allcogs.append(f"`{prefix}help {cog.qualified_name}`\n{cog.description}\n")
                 iter+=1
         nl = '\n'
         embed.add_field(name=f"<:category:882685952999428107> __**Available categories**__ **[{len(allcogs)}]**", value=f"""
 {nl.join(allcogs)}
+\n
         """)
 
-#         embed.add_field(name="📰 __**Latest News**__ - **<t:1631558059:d> (<t:1631558059:R>)**", value = f"""
-# ```fix
-# {news}
-# ```
-#         """)
+        embed.add_field(name="📰 __**Latest News**__ - **<t:1631558059:d> (<t:1631558059:R>)**", value = f"""
+```fix
+{news}
+```
+        """)
 
         embed.set_footer(text=f"Suggested command: {prefix}{random.choice(list(self.context.bot.commands))} • Credits given in {prefix}credits")
 
