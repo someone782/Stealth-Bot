@@ -19,7 +19,7 @@ class Owner(commands.Cog):
         
     @commands.command(help="Restarts the bot")
     @commands.is_owner()
-    async def restart(self, ctx):
+    async def restart_bot(self, ctx):
         message = await ctx.send("Restarting...")
         
         os.system('sudo systemctl restart stealthbot')
