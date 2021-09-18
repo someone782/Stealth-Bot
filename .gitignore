@@ -139,6 +139,4 @@ cython_debug/
 
 config.yaml
 
-anti-swear-system.py
-errors.py
 requirements.txt

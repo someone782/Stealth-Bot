@@ -87,6 +87,12 @@ class Misc(commands.Cog):
                 ctx.guild.id, old)
 
             self.client.prefixes[ctx.guild.id] = old
+            
+            if prefix == "sb!":
+                # raise errors.UnremoveablePrefix
+                return
+            else:
+                pass
 
             return await ctx.send(f"Successfully removed `{prefix}`.\nMy prefixes are: `{'`, `'.join(old)}`")
         else:
