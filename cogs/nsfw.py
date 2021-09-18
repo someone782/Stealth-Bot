@@ -19,7 +19,7 @@ class NSFW(commands.Cog):
             request = await session.get('https://api.waifu.im/nsfw/ass/')
             json = await request.json()
 
-        embed = discord.Embed(title="Ass")
+        embed = discord.Embed(title="Ass", color=json['dominant_color'])
         embed.set_image(url=json['url'])
 
         await ctx.send(embed=embed)
@@ -31,7 +31,7 @@ class NSFW(commands.Cog):
             request = await session.get('https://api.waifu.im/nsfw/ecchi/')
             json = await request.json()
 
-        embed = discord.Embed(title="Ecchi")
+        embed = discord.Embed(title="Ecchi", color=json['dominant_color'])
         embed.set_image(url=json['url'])
 
         await ctx.send(embed=embed)
@@ -43,7 +43,7 @@ class NSFW(commands.Cog):
             request = await session.get('https://api.waifu.im/nsfw/ero/')
             json = await request.json()
 
-        embed = discord.Embed(title="Ero")
+        embed = discord.Embed(title="Ero", color=json['dominant_color'])
         embed.set_image(url=json['url'])
 
         await ctx.send(embed=embed)
@@ -55,7 +55,7 @@ class NSFW(commands.Cog):
             request = await session.get('https://api.waifu.im/nsfw/hentai/')
             json = await request.json()
 
-        embed = discord.Embed(title="Hentai")
+        embed = discord.Embed(title="Hentai", color=json['dominant_color'])
         embed.set_image(url=json['url'])
 
         await ctx.send(embed=embed)
@@ -67,7 +67,7 @@ class NSFW(commands.Cog):
             request = await session.get('https://api.waifu.im/nsfw/maid/')
             json = await request.json()
 
-        embed = discord.Embed(title="Maid")
+        embed = discord.Embed(title="Maid", color=json['dominant_color'])
         embed.set_image(url=json['url'])
 
         await ctx.send(embed=embed)
@@ -79,7 +79,7 @@ class NSFW(commands.Cog):
             request = await session.get('https://api.waifu.im/nsfw/milf/')
             json = await request.json()
 
-        embed = discord.Embed(title="Milf")
+        embed = discord.Embed(title="Milf", color=json['dominant_color'])
         embed.set_image(url=json['url'])
 
         await ctx.send(embed=embed)
@@ -91,7 +91,7 @@ class NSFW(commands.Cog):
             request = await session.get('https://api.waifu.im/nsfw/oppai/')
             json = await request.json()
 
-        embed = discord.Embed(title="Oppai")
+        embed = discord.Embed(title="Oppai", color=json['dominant_color'])
         embed.set_image(url=json['url'])
 
         await ctx.send(embed=embed)
@@ -103,7 +103,7 @@ class NSFW(commands.Cog):
             request = await session.get('https://api.waifu.im/nsfw/oral/')
             json = await request.json()
 
-        embed = discord.Embed(title="Oral")
+        embed = discord.Embed(title="Oral", color=json['dominant_color'])
         embed.set_image(url=json['url'])
 
         await ctx.send(embed=embed)
@@ -115,7 +115,7 @@ class NSFW(commands.Cog):
             request = await session.get('https://api.waifu.im/nsfw/paizuri/')
             json = await request.json()
 
-        embed = discord.Embed(title="Paizuri")
+        embed = discord.Embed(title="Paizuri", color=json['dominant_color'])
         embed.set_image(url=json['url'])
 
         await ctx.send(embed=embed)
@@ -127,7 +127,7 @@ class NSFW(commands.Cog):
             request = await session.get('https://api.waifu.im/nsfw/selfie/')
             json = await request.json()
 
-        embed = discord.Embed(title="Selfie")
+        embed = discord.Embed(title="Selfie", color=json['dominant_color'])
         embed.set_image(url=json['url'])
 
         await ctx.send(embed=embed)
@@ -139,7 +139,7 @@ class NSFW(commands.Cog):
             request = await session.get('https://api.waifu.im/nsfw/uniform/')
             json = await request.json()
 
-        embed = discord.Embed(title="Uniform")
+        embed = discord.Embed(title="Uniform", color=json['dominant_color'])
         embed.set_image(url=json['url'])
 
         await ctx.send(embed=embed)
