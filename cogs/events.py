@@ -122,6 +122,7 @@ class Events(commands.Cog):
 We really appreciate you adding `Stealth Bot` to your server.
 You can do `sb!help` to view a list of commands.
                                      """, timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed.set_thumbnail(url=self.client.user.avatar.url)
         
         await channel.send(embed=welcomeEmbed)
         
