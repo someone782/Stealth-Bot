@@ -226,10 +226,14 @@ class Info(commands.Cog):
             acknowledgments = "Helped with a lot of stuff"
         elif member.id == 636292554416979979:
             acknowledgments = "retard"
+            
+        nickname = member.nick
+        if member.nick == None:
+            nickname = member.name
 
 
         embed = discord.Embed(title=f"{member}", url=f"https://discord.com/users/{member.id}", description=f"""
-<:nickname:876507754917929020> Nickname: {member.nick}
+<:nickname:876507754917929020> Nickname: {nickname}
 :hash: Discriminator:  #{member.discriminator}
 Mention: {member.mention}
 <:greyTick:596576672900186113> ID: {member.id}
