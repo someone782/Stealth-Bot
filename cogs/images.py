@@ -37,7 +37,7 @@ class Images(commands.Cog):
 
       embed = discord.Embed(title="Waifu", url=json['url'], timestamp=discord.utils.utcnow(), color=dominant_color)
       embed.set_image(url=json['url'])
-      embed.set_footer(text=f"Requested by {ctx.author} • {round(ms)}ms{' ' * (9-len(str(round(ms, 3))))}ms", icon_url=ctx.author.avatar.url)
+      embed.set_footer(text=f"{round(ms)}ms{' ' * (9-len(str(round(ms, 3))))}", icon_url=ctx.author.avatar.url)
 
       await ctx.reply(embed=embed)
       
