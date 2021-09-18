@@ -93,9 +93,9 @@ Written with `{count_python('.'):,}` lines.
                 iter+=1
         nl = '\n'
         embed.add_field(name=f"<:category:882685952999428107> __**Available categories**__ **[{len(allcogs)}]**", value=f"""
-```fix
+
 {nl.join(allcogs)}
-```
+
         """)
 
         embed.add_field(name="📰 __**Latest News**__ - **<t:1631558059:d> (<t:1631558059:R>)**", value = f"""
