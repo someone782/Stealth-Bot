@@ -5,9 +5,9 @@ from discord.ext import commands, menus
 from discord.ext.commands.cooldowns import BucketType
 
 def setup(client):
-    client.add_cog(nsfw(client))
+    client.add_cog(NSFW(client))
 
-class nsfw(commands.Cog):
+class NSFW(commands.Cog):
     "🔞 NSFW commands"
     def __init__(self, client):
         self.client = client
