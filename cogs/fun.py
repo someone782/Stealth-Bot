@@ -53,13 +53,11 @@ ASCII Text:
                 if 300 > af.status >= 200:
                     fp = io.BytesIO(await af.read())
                     file = discord.File(fp, "triggered.gif")
-                    embed = discord.Embed(title=f"<a:loading:747680523459231834> Processing image...")
                     
-                    message = await ctx.send(embed=embed, file=file)
                     embed = discord.Embed(title=f"{member.name} is triggered")
                     embed.set_image(url="attachment://triggered.gif")
 
-                    await message.edit(content="Image processed!", embed=embed)
+                    await ctx.send(embed=embed, file=file)
 
     @commands.command(help="Gives the member you mentioned a license to be horny", aliases=['horny_license', 'license_horny'])
     @commands.cooldown(1, 5, BucketType.member)
@@ -72,13 +70,11 @@ ASCII Text:
                 if 300 > af.status >= 200:
                     fp = io.BytesIO(await af.read())
                     file = discord.File(fp, "horny.png")
-                    embed = discord.Embed(title=f"<a:loading:747680523459231834> Processing image...")
-                    
-                    message = await ctx.send(embed=embed, file=file)
+
                     embed = discord.Embed(title=f"{member.name} has the license to be horny")
                     embed.set_image(url="attachment://horny.png")
 
-                    await message.edit(content="Image processed!", embed=embed)
+                    await ctx.send(embed=embed, file=file)
 
     @commands.command(help="Gives the member you mentioned a license to be horny", aliases=['go_to_jail', 'in_jail'])
     @commands.cooldown(1, 5, BucketType.member)
@@ -91,13 +87,11 @@ ASCII Text:
                 if 300 > af.status >= 200:
                     fp = io.BytesIO(await af.read())
                     file = discord.File(fp, "jail.png")
-                    embed = discord.Embed(title=f"<a:loading:747680523459231834> Processing image...")
-                    
-                    message = await ctx.send(embed=embed, file=file)
+
                     embed = discord.Embed(title=f"{member.name} has been sent to jail for 69420 years")
                     embed.set_image(url="attachment://jail.png")
 
-                    await message.edit(content="Image processed!", embed=embed)
+                    await ctx.send(embed=embed, file=file)
 
     @commands.command(help="Gives the member you mentioned a license to be horny", aliases=['waste'])
     @commands.cooldown(1, 5, BucketType.member)
@@ -110,13 +104,11 @@ ASCII Text:
                 if 300 > af.status >= 200:
                     fp = io.BytesIO(await af.read())
                     file = discord.File(fp, "wasted.png")
-                    embed = discord.Embed(title=f"<a:loading:747680523459231834> Processing image...")
-                    
-                    message = await ctx.send(embed=embed, file=file)
+
                     embed = discord.Embed(title=f"WASTED.")
                     embed.set_image(url="attachment://wasted.png")
 
-                    await message.edit(content="Image processed!", embed=embed)
+                    await ctx.send(embed=embed, file=file)
 
     @commands.command(help="Gives the member you mentioned a license to be horny", aliases=['pride', 'gay'])
     @commands.cooldown(1, 5, BucketType.member)
@@ -129,14 +121,11 @@ ASCII Text:
                 if 300 > af.status >= 200:
                     fp = io.BytesIO(await af.read())
                     file = discord.File(fp, "gay.png")
-                    embed = discord.Embed(title=f"<a:loading:747680523459231834> Processing image...")
-                    
-                    message = await ctx.send(embed=embed, file=file)
+
                     embed = discord.Embed(title=f"{member.name} is now gay")
                     embed.set_image(url="attachment://gay.png")
 
-
-                    await message.edit(content="Image processed!", embed=embed)
+                    await ctx.send(embed=embed, file=file)
 
     @commands.command(help="Gives the member you mentioned a license to be horny")
     @commands.cooldown(1, 5, BucketType.member)
@@ -149,29 +138,21 @@ ASCII Text:
                 if 300 > af.status >= 200:
                     fp = io.BytesIO(await af.read())
                     file = discord.File(fp, "glass.png")
-                    embed = discord.Embed(title=f"<a:loading:747680523459231834> Processing image...")
-                    
-                    message = await ctx.send(embed=embed, file=file)
+
                     embed = discord.Embed(title=f"{member.name} is now **glass**")
                     embed.set_image(url="attachment://glass.png")
                     
-                    await message.edit(content="Image processed!", embed=embed)
+                    await ctx.send(embed=embed, file=file)
 
     @commands.command(help="Sends a random token of a discord bot", alises=['bottoken', 'random_token', 'random_bot_token'])
     @commands.cooldown(1, 5, BucketType.member)
     async def token(self, ctx):
-        embed = discord.Embed(title=f"<a:loading:747680523459231834> Getting token...")
-        
-        message = await ctx.send(embed=embed)
-
         async with aiohttp.ClientSession() as session:
             request1 = await session.get('https://some-random-api.ml/bottoken')
             tokenjson = await request1.json()
-        embed = discord.Embed(title="Random Bot Token", description=f"""
-Token: {tokenjson['token']}
-                              """)
+        embed = discord.Embed(title="Random Bot Token", description=f"{tokenjson['token']}")
         
-        await message.edit(content="Received token!", embed=embed)
+        await ctx.send(embed=embed)
 
     @commands.command(help="Shows the size of someones pp!", aliases=['banana', 'eggplant', 'egg_plant'])
     async def pp(self, ctx, member : discord.Member=None):
@@ -335,41 +316,71 @@ Answer: {random.choice(responses)}
             return await ctx.send("You can't hug yourself!")
             
         async with aiohttp.ClientSession() as session:
-            request = await session.get('https://some-random-api.ml/animu/hug')
-            hugjson = await request.json()
+            request = await session.get('https://api.waifu.pics/sfw/hug')
+            json = await request.json()
 
         embed = discord.Embed(title=f"{ctx.author} hugged {member}")
-        embed.set_image(url=hugjson['link'])
+        embed.set_image(url=json['url'])
         
         await ctx.send(embed=embed)
 
-    @commands.command(description="Let's you pat someone!")
+    @commands.command(help="Let's you pat someone!")
     @commands.cooldown(1, 5, BucketType.member)
-    async def pat(self, ctx, member : discord.Member=None):
+    async def pat(self, ctx, member : discord.Member):
         if member == None:
             return await ctx.send("You can't pat yourself!")
-        
-        async with aiohttp.ClientSession() as session:
-            request = await session.get('https://some-random-api.ml/animu/pat')
-            patjson = await request.json()
-
-        embed = discord.Embed(title=f"{ctx.author} patted {member}")
-        embed.set_image(url=patjson['link'])
-        
-        await ctx.send(embed=embed)
-
-    @commands.command(description="Let's you wink at someone!")
-    @commands.cooldown(1, 5, BucketType.member)
-    async def wink(self, ctx, member : discord.Member=None):
-        if member == None:
-            return await ctx.send("You can't wink at yourself!")
             
         async with aiohttp.ClientSession() as session:
-            request = await session.get('https://some-random-api.ml/animu/wink')
-            winkjson = await request.json()
+            request = await session.get('https://api.waifu.pics/sfw/pat')
+            json = await request.json()
 
-        embed = discord.Embed(title=f"{ctx.author} winked at {member}")
-        embed.set_image(url=winkjson['link'])
+        embed = discord.Embed(title=f"{ctx.author} patted {member}")
+        embed.set_image(url=json['url'])
+        
+        await ctx.send(embed=embed)
+        
+    @commands.command(help="Let's you kiss someone!")
+    @commands.cooldown(1, 5, BucketType.member)
+    async def kiss(self, ctx, member : discord.Member):
+        if member == None:
+            return await ctx.send("You can't kiss yourself!")
+            
+        async with aiohttp.ClientSession() as session:
+            request = await session.get('https://api.waifu.pics/sfw/kiss')
+            json = await request.json()
+
+        embed = discord.Embed(title=f"{ctx.author} kissed {member}")
+        embed.set_image(url=json['url'])
+        
+        await ctx.send(embed=embed)
+        
+    @commands.command(help="Let's you pat someone!")
+    @commands.cooldown(1, 5, BucketType.member)
+    async def pat(self, ctx, member : discord.Member):
+        if member == None:
+            return await ctx.send("You can't pat yourself!")
+            
+        async with aiohttp.ClientSession() as session:
+            request = await session.get('https://api.waifu.pics/sfw/pat')
+            json = await request.json()
+
+        embed = discord.Embed(title=f"{ctx.author} patted {member}")
+        embed.set_image(url=json['url'])
+        
+        await ctx.send(embed=embed)
+        
+    @commands.command(help="Let's you pat someone!")
+    @commands.cooldown(1, 5, BucketType.member)
+    async def pat(self, ctx, member : discord.Member):
+        if member == None:
+            return await ctx.send("You can't pat yourself!")
+            
+        async with aiohttp.ClientSession() as session:
+            request = await session.get('https://api.waifu.pics/sfw/pat')
+            json = await request.json()
+
+        embed = discord.Embed(title=f"{ctx.author} patted {member}")
+        embed.set_image(url=json['url'])
         
         await ctx.send(embed=embed)
 

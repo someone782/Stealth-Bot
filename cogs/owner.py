@@ -16,6 +16,14 @@ class Owner(commands.Cog):
     def __init__(self, client):
         self.hidden = True
         self.client = client
+        
+    @commands.command(help="Shuts down the bot", alises=['logoff', 'log_off'])
+    @commands.is_owner()
+    async def shutdown(self, ctx):
+        await ctx.send("Shutting down...")
+        await ctx.send("Goodbye!")
+        
+        await self.client.close()
 
     @commands.command(help="Updates the bot on github", aliases=['push'])
     @commands.is_owner()

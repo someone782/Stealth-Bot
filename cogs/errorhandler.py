@@ -185,3 +185,4 @@ Traceback:
         embed = discord.Embed(description=message)
 
         await ctx.send(embed=embed)
+        
