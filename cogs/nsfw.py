@@ -22,8 +22,9 @@ class NSFW(commands.Cog):
         dominant_color1 = str(json['dominant_color']).replace('#', '')
         dominant_color = int(dominant_color1, 16)
 
-        embed = discord.Embed(title="Ass", color=dominant_color)
+        embed = discord.Embed(title="Ass", timestamp=discord.utils.utcnow(), color=dominant_color)
         embed.set_image(url=json['url'])
+        embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
         await ctx.reply(embed=embed)
         
@@ -33,11 +34,15 @@ class NSFW(commands.Cog):
         async with aiohttp.ClientSession() as session:
             request = await session.get('https://api.waifu.im/nsfw/ecchi/')
             json = await request.json()
+            
+        dominant_color1 = str(json['dominant_color']).replace('#', '')
+        dominant_color = int(dominant_color1, 16)
 
-        embed = discord.Embed(title="Ecchi")
+        embed = discord.Embed(title="Ecchi", timestamp=discord.utils.utcnow(), color=dominant_color)
         embed.set_image(url=json['url'])
+        embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-        await ctx.send(embed=embed)
+        await ctx.reply(embed=embed)
         
     @commands.command(aliases=['nsfw_ero', 'ero_nsfw'])
     @commands.is_nsfw()
@@ -45,11 +50,15 @@ class NSFW(commands.Cog):
         async with aiohttp.ClientSession() as session:
             request = await session.get('https://api.waifu.im/nsfw/ero/')
             json = await request.json()
+            
+        dominant_color1 = str(json['dominant_color']).replace('#', '')
+        dominant_color = int(dominant_color1, 16)
 
-        embed = discord.Embed(title="Ero")
+        embed = discord.Embed(title="Ero", timestamp=discord.utils.utcnow(), color=dominant_color)
         embed.set_image(url=json['url'])
+        embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-        await ctx.send(embed=embed)
+        await ctx.reply(embed=embed)
         
     @commands.command(aliases=['nsfw_hentai', 'hentai_nsfw'])
     @commands.is_nsfw()
@@ -57,11 +66,15 @@ class NSFW(commands.Cog):
         async with aiohttp.ClientSession() as session:
             request = await session.get('https://api.waifu.im/nsfw/hentai/')
             json = await request.json()
+            
+        dominant_color1 = str(json['dominant_color']).replace('#', '')
+        dominant_color = int(dominant_color1, 16)
 
-        embed = discord.Embed(title="Hentai")
+        embed = discord.Embed(title="Hentai", timestamp=discord.utils.utcnow(), color=dominant_color)
         embed.set_image(url=json['url'])
+        embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-        await ctx.send(embed=embed)
+        await ctx.reply(embed=embed)
         
     @commands.command(aliases=['nsfw_maid', 'maid_nsfw'])
     @commands.is_nsfw()
@@ -69,11 +82,15 @@ class NSFW(commands.Cog):
         async with aiohttp.ClientSession() as session:
             request = await session.get('https://api.waifu.im/nsfw/maid/')
             json = await request.json()
+            
+        dominant_color1 = str(json['dominant_color']).replace('#', '')
+        dominant_color = int(dominant_color1, 16)
 
-        embed = discord.Embed(title="Maid")
+        embed = discord.Embed(title="Maid", timestamp=discord.utils.utcnow(), color=dominant_color)
         embed.set_image(url=json['url'])
+        embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-        await ctx.send(embed=embed)
+        await ctx.reply(embed=embed)
 
     @commands.command(aliases=['nsfw_milf', 'milf_nsfw'])
     @commands.is_nsfw()
@@ -81,11 +98,15 @@ class NSFW(commands.Cog):
         async with aiohttp.ClientSession() as session:
             request = await session.get('https://api.waifu.im/nsfw/milf/')
             json = await request.json()
+            
+        dominant_color1 = str(json['dominant_color']).replace('#', '')
+        dominant_color = int(dominant_color1, 16)
 
-        embed = discord.Embed(title="Milf")
+        embed = discord.Embed(title="Milf", timestamp=discord.utils.utcnow(), color=dominant_color)
         embed.set_image(url=json['url'])
+        embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-        await ctx.send(embed=embed)
+        await ctx.reply(embed=embed)
 
     @commands.command(aliases=['nsfw_oppai', 'oppai_nsfw'])
     @commands.is_nsfw()
@@ -93,11 +114,15 @@ class NSFW(commands.Cog):
         async with aiohttp.ClientSession() as session:
             request = await session.get('https://api.waifu.im/nsfw/oppai/')
             json = await request.json()
+            
+        dominant_color1 = str(json['dominant_color']).replace('#', '')
+        dominant_color = int(dominant_color1, 16)
 
-        embed = discord.Embed(title="Oppai")
+        embed = discord.Embed(title="Oppai", timestamp=discord.utils.utcnow(), color=dominant_color)
         embed.set_image(url=json['url'])
+        embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-        await ctx.send(embed=embed)
+        await ctx.reply(embed=embed)
 
     @commands.command(aliases=['nsfw_oral', 'oral_nsfw'])
     @commands.is_nsfw()
@@ -105,11 +130,15 @@ class NSFW(commands.Cog):
         async with aiohttp.ClientSession() as session:
             request = await session.get('https://api.waifu.im/nsfw/oral/')
             json = await request.json()
+            
+        dominant_color1 = str(json['dominant_color']).replace('#', '')
+        dominant_color = int(dominant_color1, 16)
 
-        embed = discord.Embed(title="Oral")
+        embed = discord.Embed(title="Oral", timestamp=discord.utils.utcnow(), color=dominant_color)
         embed.set_image(url=json['url'])
+        embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-        await ctx.send(embed=embed)
+        await ctx.reply(embed=embed)
 
     @commands.command(aliases=['nsfw_paizuri', 'paizuri_nsfw'])
     @commands.is_nsfw()
@@ -117,11 +146,15 @@ class NSFW(commands.Cog):
         async with aiohttp.ClientSession() as session:
             request = await session.get('https://api.waifu.im/nsfw/paizuri/')
             json = await request.json()
+            
+        dominant_color1 = str(json['dominant_color']).replace('#', '')
+        dominant_color = int(dominant_color1, 16)
 
-        embed = discord.Embed(title="Paizuri")
+        embed = discord.Embed(title="Paizuri", timestamp=discord.utils.utcnow(), color=dominant_color)
         embed.set_image(url=json['url'])
+        embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-        await ctx.send(embed=embed)
+        await ctx.reply(embed=embed)
         
     @commands.command(aliases=['nsfw_selfies', 'selfies_nsfw', 'selfie', 'nsfw_selfie', 'selfie_nsfw'])
     @commands.is_nsfw()
@@ -129,11 +162,15 @@ class NSFW(commands.Cog):
         async with aiohttp.ClientSession() as session:
             request = await session.get('https://api.waifu.im/nsfw/selfie/')
             json = await request.json()
+            
+        dominant_color1 = str(json['dominant_color']).replace('#', '')
+        dominant_color = int(dominant_color1, 16)
 
-        embed = discord.Embed(title="Selfie")
+        embed = discord.Embed(title="Selfie", timestamp=discord.utils.utcnow(), color=dominant_color)
         embed.set_image(url=json['url'])
+        embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-        await ctx.send(embed=embed)
+        await ctx.reply(embed=embed)
         
     @commands.command(aliases=['nsfw_uniform', 'uniform_nsfw'])
     @commands.is_nsfw()
@@ -141,8 +178,12 @@ class NSFW(commands.Cog):
         async with aiohttp.ClientSession() as session:
             request = await session.get('https://api.waifu.im/nsfw/uniform/')
             json = await request.json()
+            
+        dominant_color1 = str(json['dominant_color']).replace('#', '')
+        dominant_color = int(dominant_color1, 16)
 
-        embed = discord.Embed(title="Uniform")
+        embed = discord.Embed(title="Uniform", timestamp=discord.utils.utcnow(), color=dominant_color)
         embed.set_image(url=json['url'])
+        embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-        await ctx.send(embed=embed)
+        await ctx.reply(embed=embed)
