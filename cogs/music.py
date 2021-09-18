@@ -611,9 +611,7 @@ class CustomPlayer(lavalink.BasePlayer):
 
 
 class Music(commands.Cog):
-    """
-    🎵 Commands related to playing music through the bot in a voice channel (made by DaPandaOfficial🐼#5684).
-    """
+    "<a:music:888778105844563988> | Commands used to play music"
 
     def __init__(self, bot):
         self.bot = bot
@@ -1249,9 +1247,7 @@ class Music(commands.Cog):
 
 
 class SocketFix(commands.Cog):
-    """
-    🖥️ Socket Fix For The Music Player.
-    """
+    "<:fix_it:888777428053401640> | Socket Fix for the Music Player."
 
     def __init__(self, bot):
         self.bot = bot

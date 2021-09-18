@@ -14,7 +14,7 @@ def setup(client):
     client.add_cog(Fun(client))
 
 class Fun(commands.Cog):
-    "🤪 Fun commands like -meme, -hug and more"
+    ":soccer: | Fun commands like -meme, -hug and more"
     def __init__(self, client):
         self.client = client
         if not hasattr(self.client, 'counter'):

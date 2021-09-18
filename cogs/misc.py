@@ -13,7 +13,7 @@ def setup(client):
     client.add_cog(Misc(client))
 
 class Misc(commands.Cog):
-    "❓ Miscellaneous commands"
+    ":gear: | Miscellaneous commands"
     def __init__(self, client):
         self.client = client
 

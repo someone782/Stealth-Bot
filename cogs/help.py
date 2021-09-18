@@ -68,6 +68,7 @@ class MyHelp(commands.HelpCommand):
             new1 = f"{newsFileContext}"
             news = new1.replace("%%PREFIX%%", f"{prefix}")
         embed = discord.Embed(title="Help", description=f"""
+Prefix: `{prefix}`
 Total commands: `{len(list(self.context.bot.commands))}`
 Commands usable by you (in this server): `{len(await self.filter_commands(list(self.context.bot.commands), sort=True))}`
 Written with `{count_python('.'):,}` lines.
@@ -89,7 +90,7 @@ Written with `{count_python('.'):,}` lines.
             if command_signatures:
                 num = f"{iter}\U0000fe0f\U000020e3" if iter < 10 else "\U0001f51f"
                 cogindex.append(cog.qualified_name)
-                allcogs.append(f"{cog.description[0]} `{prefix}help {cog.qualified_name}`")
+                allcogs.append(f"{cog.description.split('|')[0]} `{prefix}help {cog.qualified_name}`")
                 iter+=1
         nl = '\n'
         embed.add_field(name=f"<:category:882685952999428107> __**Available categories**__ **[{len(allcogs)}]**", value=f"""
