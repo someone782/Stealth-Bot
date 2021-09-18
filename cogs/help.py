@@ -161,7 +161,18 @@ __**Available commands**__ **[{len(cog.get_commands())}]**
             await ctx.send(embed=embed)
         else:
             embed=discord.Embed(title=f"Help - {cog.qualified_name}", description=f"""
-This cog has no commands.
+Total commands: {len(cog.get_commands())}
+Commands usable by you (in this server): {len(await self.filter_commands(cog.get_commands(), sort=True))}
+```diff
+- <> = required argument
+- [] = optional argument
++ Type {prefix}help [command] for help on a command
++ Description: {cog.description}
+```
+__**Available commands**__ **[{len(cog.get_commands())}]**
+```fix
+This cog has no commands
+```
                                 """)
             await ctx.send(embed=embed)
 

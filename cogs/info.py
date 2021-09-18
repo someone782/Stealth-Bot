@@ -93,7 +93,7 @@ def setup(client):
     client.add_cog(Info(client))
 
 class Info(commands.Cog):
-    "ℹ️ All informative commands like `serverinfo`, `userinfo` and more!"
+    "<:info:888768239889424444> All informative commands like `serverinfo`, `userinfo` and more!"
     def __init__(self, client):
         self.client = client
         client.session = aiohttp.ClientSession()
