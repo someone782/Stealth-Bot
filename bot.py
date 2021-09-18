@@ -120,7 +120,7 @@ class CustomContext(commands.Context):
 
         if embed and footer is True:
             if not embed.footer:
-                embed.set_footer(text=f"Command requested by {self.author}",
+                embed.set_footer(text=f"Requested by {self.author}",
                                  icon_url=self.author.display_avatar.url)
                 embed.timestamp = discord.utils.utcnow()
 
