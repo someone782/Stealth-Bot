@@ -28,6 +28,22 @@ class Images(commands.Cog):
       embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
       await ctx.reply(embed=embed)
+      
+   @commands.command(aliases=['sfw_maid', 'maid_sfw'])
+   @commands.bot_has_permissions(send_messages=True, embed_links=True)
+   async def maid(self, ctx):
+      async with aiohttp.ClientSession() as session:
+         request = await session.get('https://api.waifu.im/sfw/maid/')
+         json = await request.json()
+         
+      dominant_color1 = str(json['dominant_color']).replace('#', '')
+      dominant_color = int(dominant_color1, 16)
+
+      embed = discord.Embed(title="Maid", timestamp=discord.utils.utcnow(), color=dominant_color)
+      embed.set_image(url=json['url'])
+      embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+
+      await ctx.reply(embed=embed)
 
    @commands.command(help="🐱 Shows a picture of a cat and a random fact about cats")
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
