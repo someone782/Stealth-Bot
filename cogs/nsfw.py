@@ -8,7 +8,7 @@ def setup(client):
     client.add_cog(NSFW(client))
 
 class NSFW(commands.Cog):
-    ":underage: | NSFW commands"
+    ':underage: | NSFW commands, type "gif" as the type and it\'ll be animated'
     def __init__(self, client):
         self.client = client
 
