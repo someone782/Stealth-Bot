@@ -26,7 +26,7 @@ class NSFW(commands.Cog):
         dominant_color1 = str(json['dominant_color']).replace('#', '')
         dominant_color = int(dominant_color1, 16)
 
-        embed = discord.Embed(title="Ass", timestamp=discord.utils.utcnow(), color=dominant_color)
+        embed = discord.Embed(title="Ass", url=json['url'], timestamp=discord.utils.utcnow(), color=dominant_color)
         embed.set_image(url=json['url'])
         embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
@@ -42,7 +42,7 @@ class NSFW(commands.Cog):
         dominant_color1 = str(json['dominant_color']).replace('#', '')
         dominant_color = int(dominant_color1, 16)
 
-        embed = discord.Embed(title="Ecchi", timestamp=discord.utils.utcnow(), color=dominant_color)
+        embed = discord.Embed(title="Ecchi", url=json['url'], timestamp=discord.utils.utcnow(), color=dominant_color)
         embed.set_image(url=json['url'])
         embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
@@ -58,7 +58,7 @@ class NSFW(commands.Cog):
         dominant_color1 = str(json['dominant_color']).replace('#', '')
         dominant_color = int(dominant_color1, 16)
 
-        embed = discord.Embed(title="Ero", timestamp=discord.utils.utcnow(), color=dominant_color)
+        embed = discord.Embed(title="Ero", url=json['url'], timestamp=discord.utils.utcnow(), color=dominant_color)
         embed.set_image(url=json['url'])
         embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
@@ -74,7 +74,7 @@ class NSFW(commands.Cog):
         dominant_color1 = str(json['dominant_color']).replace('#', '')
         dominant_color = int(dominant_color1, 16)
 
-        embed = discord.Embed(title="Hentai", timestamp=discord.utils.utcnow(), color=dominant_color)
+        embed = discord.Embed(title="Hentai", url=json['url'], timestamp=discord.utils.utcnow(), color=dominant_color)
         embed.set_image(url=json['url'])
         embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
@@ -90,7 +90,7 @@ class NSFW(commands.Cog):
         dominant_color1 = str(json['dominant_color']).replace('#', '')
         dominant_color = int(dominant_color1, 16)
 
-        embed = discord.Embed(title="Maid", timestamp=discord.utils.utcnow(), color=dominant_color)
+        embed = discord.Embed(title="Maid", url=json['url'], timestamp=discord.utils.utcnow(), color=dominant_color)
         embed.set_image(url=json['url'])
         embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
@@ -106,7 +106,7 @@ class NSFW(commands.Cog):
         dominant_color1 = str(json['dominant_color']).replace('#', '')
         dominant_color = int(dominant_color1, 16)
 
-        embed = discord.Embed(title="Milf", timestamp=discord.utils.utcnow(), color=dominant_color)
+        embed = discord.Embed(title="Milf", url=json['url'], timestamp=discord.utils.utcnow(), color=dominant_color)
         embed.set_image(url=json['url'])
         embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
@@ -122,7 +122,7 @@ class NSFW(commands.Cog):
         dominant_color1 = str(json['dominant_color']).replace('#', '')
         dominant_color = int(dominant_color1, 16)
 
-        embed = discord.Embed(title="Oppai", timestamp=discord.utils.utcnow(), color=dominant_color)
+        embed = discord.Embed(title="Oppai", url=json['url'], timestamp=discord.utils.utcnow(), color=dominant_color)
         embed.set_image(url=json['url'])
         embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
@@ -138,7 +138,7 @@ class NSFW(commands.Cog):
         dominant_color1 = str(json['dominant_color']).replace('#', '')
         dominant_color = int(dominant_color1, 16)
 
-        embed = discord.Embed(title="Oral", timestamp=discord.utils.utcnow(), color=dominant_color)
+        embed = discord.Embed(title="Oral", url=json['url'], timestamp=discord.utils.utcnow(), color=dominant_color)
         embed.set_image(url=json['url'])
         embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
@@ -154,7 +154,7 @@ class NSFW(commands.Cog):
         dominant_color1 = str(json['dominant_color']).replace('#', '')
         dominant_color = int(dominant_color1, 16)
 
-        embed = discord.Embed(title="Paizuri", timestamp=discord.utils.utcnow(), color=dominant_color)
+        embed = discord.Embed(title="Paizuri", url=json['url'], timestamp=discord.utils.utcnow(), color=dominant_color)
         embed.set_image(url=json['url'])
         embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
@@ -170,7 +170,7 @@ class NSFW(commands.Cog):
         dominant_color1 = str(json['dominant_color']).replace('#', '')
         dominant_color = int(dominant_color1, 16)
 
-        embed = discord.Embed(title="Selfie", timestamp=discord.utils.utcnow(), color=dominant_color)
+        embed = discord.Embed(title="Selfie", url=json['url'], timestamp=discord.utils.utcnow(), color=dominant_color)
         embed.set_image(url=json['url'])
         embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
@@ -186,7 +186,7 @@ class NSFW(commands.Cog):
         dominant_color1 = str(json['dominant_color']).replace('#', '')
         dominant_color = int(dominant_color1, 16)
 
-        embed = discord.Embed(title="Uniform", timestamp=discord.utils.utcnow(), color=dominant_color)
+        embed = discord.Embed(title="Uniform", url=json['url'], timestamp=discord.utils.utcnow(), color=dominant_color)
         embed.set_image(url=json['url'])
         embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 

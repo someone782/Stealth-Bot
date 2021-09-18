@@ -23,7 +23,7 @@ class Images(commands.Cog):
       dominant_color1 = str(json['dominant_color']).replace('#', '')
       dominant_color = int(dominant_color1, 16)
 
-      embed = discord.Embed(title="Waifu", timestamp=discord.utils.utcnow(), color=dominant_color)
+      embed = discord.Embed(title="Waifu", url=json['url'], timestamp=discord.utils.utcnow(), color=dominant_color)
       embed.set_image(url=json['url'])
       embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
@@ -39,7 +39,7 @@ class Images(commands.Cog):
       dominant_color1 = str(json['dominant_color']).replace('#', '')
       dominant_color = int(dominant_color1, 16)
 
-      embed = discord.Embed(title="Maid", timestamp=discord.utils.utcnow(), color=dominant_color)
+      embed = discord.Embed(title="Maid", url=json['url'], timestamp=discord.utils.utcnow(), color=dominant_color)
       embed.set_image(url=json['url'])
       embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
@@ -50,13 +50,13 @@ class Images(commands.Cog):
    async def cat(self, ctx):
       async with aiohttp.ClientSession() as session:
          request = await session.get('https://some-random-api.ml/img/cat')
-         dogjson = await request.json()
+         pictureJson = await request.json()
          request2 = await session.get('https://some-random-api.ml/facts/cat')
-         factjson = await request2.json()
+         factJson = await request2.json()
 
-      embed = discord.Embed(title="Meow", timestamp=discord.utils.utcnow(), color=0x2F3136)
-      embed.set_image(url=dogjson['link'])
-      embed.set_footer(text=factjson['fact'])
+      embed = discord.Embed(title="Meow", url=pictureJson['link'], timestamp=discord.utils.utcnow(), color=0x2F3136)
+      embed.set_image(url=pictureJson['link'])
+      embed.set_footer(text=factJson['fact'])
       
       await ctx.send(embed=embed)
 
@@ -65,13 +65,13 @@ class Images(commands.Cog):
    async def dog(self, ctx):
       async with aiohttp.ClientSession() as session:
          request = await session.get('https://some-random-api.ml/img/dog')
-         dogjson = await request.json()
+         pictureJson = await request.json()
          request2 = await session.get('https://some-random-api.ml/facts/dog')
-         factjson = await request2.json()
+         factJson = await request2.json()
 
-      embed = discord.Embed(title="Woof", timestamp=discord.utils.utcnow(), color=0x2F3136)
-      embed.set_image(url=dogjson['link'])
-      embed.set_footer(text=factjson['fact'])
+      embed = discord.Embed(title="Woof", url=pictureJson['link'], timestamp=discord.utils.utcnow(), color=0x2F3136)
+      embed.set_image(url=pictureJson['link'])
+      embed.set_footer(text=factJson['fact'])
       
       await ctx.send(embed=embed)
 
@@ -80,13 +80,13 @@ class Images(commands.Cog):
    async def panda(self, ctx):
       async with aiohttp.ClientSession() as session:
          request = await session.get('https://some-random-api.ml/img/panda')
-         dogjson = await request.json()
+         pictureJson = await request.json()
          request2 = await session.get('https://some-random-api.ml/facts/panda')
-         factjson = await request2.json()
+         factJson = await request2.json()
 
-      embed = discord.Embed(title="Panda!", timestamp=discord.utils.utcnow(), color=0x2F3136)
-      embed.set_image(url=dogjson['link'])
-      embed.set_footer(text=factjson['fact'])
+      embed = discord.Embed(title="Panda!", url=pictureJson['link'], timestamp=discord.utils.utcnow(), color=0x2F3136)
+      embed.set_image(url=pictureJson['link'])
+      embed.set_footer(text=factJson['fact'])
       
       await ctx.send(embed=embed)
 
@@ -95,13 +95,13 @@ class Images(commands.Cog):
    async def fox(self, ctx):
       async with aiohttp.ClientSession() as session:
          request = await session.get('https://some-random-api.ml/img/fox')
-         dogjson = await request.json()
+         pictureJson = await request.json()
          request2 = await session.get('https://some-random-api.ml/facts/fox')
-         factjson = await request2.json()
+         factJson = await request2.json()
 
-      embed = discord.Embed(title="Fox!", timestamp=discord.utils.utcnow(), color=0x2F3136)
-      embed.set_image(url=dogjson['link'])
-      embed.set_footer(text=factjson['fact'])
+      embed = discord.Embed(title="Fox!", url=pictureJson['link'], timestamp=discord.utils.utcnow(), color=0x2F3136)
+      embed.set_image(url=pictureJson['link'])
+      embed.set_footer(text=factJson['fact'])
       
       await ctx.send(embed=embed)
 
@@ -110,13 +110,13 @@ class Images(commands.Cog):
    async def bird(self, ctx):
       async with aiohttp.ClientSession() as session:
          request = await session.get('https://some-random-api.ml/img/bird')
-         dogjson = await request.json()
+         pictureJson = await request.json()
          request2 = await session.get('https://some-random-api.ml/facts/bird')
-         factjson = await request2.json()
+         factJson = await request2.json()
 
-      embed = discord.Embed(title="Bird!", timestamp=discord.utils.utcnow(), color=0x2F3136)
-      embed.set_image(url=dogjson['link'])
-      embed.set_footer(text=factjson['fact'])
+      embed = discord.Embed(title="Bird!", url=pictureJson['link'], timestamp=discord.utils.utcnow(), color=0x2F3136)
+      embed.set_image(url=pictureJson['link'])
+      embed.set_footer(text=factJson['fact'])
       
       await ctx.send(embed=embed)
 
@@ -125,13 +125,13 @@ class Images(commands.Cog):
    async def koala(self, ctx):
       async with aiohttp.ClientSession() as session:
          request = await session.get('https://some-random-api.ml/img/koala')
-         dogjson = await request.json()
+         pictureJson = await request.json()
          request2 = await session.get('https://some-random-api.ml/facts/koala')
-         factjson = await request2.json()
+         factJson = await request2.json()
 
-      embed = discord.Embed(title="Koala!", timestamp=discord.utils.utcnow(), color=0x2F3136)
-      embed.set_image(url=dogjson['link'])
-      embed.set_footer(text=factjson['fact'])
+      embed = discord.Embed(title="Koala!", url=pictureJson['link'], timestamp=discord.utils.utcnow(), color=0x2F3136)
+      embed.set_image(url=pictureJson['link'])
+      embed.set_footer(text=factJson['fact'])
       
       await ctx.send(embed=embed)
 
@@ -140,13 +140,13 @@ class Images(commands.Cog):
    async def kangaroo(self, ctx):
       async with aiohttp.ClientSession() as session:
          request = await session.get('https://some-random-api.ml/img/kangaroo')
-         dogjson = await request.json()
+         pictureJson = await request.json()
          request2 = await session.get('https://some-random-api.ml/facts/kangaroo')
-         factjson = await request2.json()
+         factJson = await request2.json()
 
-      embed = discord.Embed(title="Kangaroo!", timestamp=discord.utils.utcnow(), color=0x2F3136)
-      embed.set_image(url=dogjson['link'])
-      embed.set_footer(text=factjson['fact'])
+      embed = discord.Embed(title="Kangaroo!", url=pictureJson['link'], timestamp=discord.utils.utcnow(), color=0x2F3136)
+      embed.set_image(url=pictureJson['link'])
+      embed.set_footer(text=factJson['fact'])
       
       await ctx.send(embed=embed)
 
@@ -155,13 +155,13 @@ class Images(commands.Cog):
    async def raccoon(self, ctx):
       async with aiohttp.ClientSession() as session:
          request = await session.get('https://some-random-api.ml/img/racoon')
-         dogjson = await request.json()
+         pictureJson = await request.json()
          request2 = await session.get('https://some-random-api.ml/facts/racoon')
-         factjson = await request2.json()
+         factJson = await request2.json()
 
-      embed = discord.Embed(title="Racoon!", timestamp=discord.utils.utcnow(), color=0x2F3136)
-      embed.set_image(url=dogjson['link'])
-      embed.set_footer(text=factjson['fact'])
+      embed = discord.Embed(title="Racoon!", url=pictureJson['link'], timestamp=discord.utils.utcnow(), color=0x2F3136)
+      embed.set_image(url=pictureJson['link'])
+      embed.set_footer(text=factJson['fact'])
       
       await ctx.send(embed=embed)
 
@@ -170,13 +170,13 @@ class Images(commands.Cog):
    async def whale(self, ctx):
       async with aiohttp.ClientSession() as session:
          request = await session.get('https://some-random-api.ml/img/whale')
-         dogjson = await request.json()
+         pictureJson = await request.json()
          request2 = await session.get('https://some-random-api.ml/facts/whale')
-         factjson = await request2.json()
+         factJson = await request2.json()
 
-      embed = discord.Embed(title="Whale!", timestamp=discord.utils.utcnow(), color=0x2F3136)
-      embed.set_image(url=dogjson['link'])
-      embed.set_footer(text=factjson['fact'])
+      embed = discord.Embed(title="Whale!", url=pictureJson['link'], timestamp=discord.utils.utcnow(), color=0x2F3136)
+      embed.set_image(url=pictureJson['link'])
+      embed.set_footer(text=factJson['fact'])
       
       await ctx.send(embed=embed)
 
@@ -185,9 +185,9 @@ class Images(commands.Cog):
    async def pikachu(self, ctx):
       async with aiohttp.ClientSession() as session:
          request = await session.get('https://some-random-api.ml/img/pikachu')
-         dogjson = await request.json()
+         pictureJson = await request.json()
 
-      embed = discord.Embed(title="Pikachu!", timestamp=discord.utils.utcnow(), color=0x2F3136)
-      embed.set_image(url=dogjson['link'])
+      embed = discord.Embed(title="Pikachu!", url=pictureJson['link'], timestamp=discord.utils.utcnow(), color=0x2F3136)
+      embed.set_image(url=pictureJson['link'])
       
       await ctx.send(embed=embed)
