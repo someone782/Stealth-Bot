@@ -16,6 +16,10 @@ class NSFW(commands.Cog):
     #  CUSTOM CONTEXT IS NOT USED IN THIS COG CAUSE IT WOULD BREAK THE "COLOR=DOMINANT_COLOR".  #
     # ----------------------------------------------------------------------------------------- #
     
+    @commands.command()
+    async def testtest(self, ctx):
+        return
+    
     @commands.command(aliases=['nsfw_ass', 'ass_nsfw'])
     @commands.is_nsfw()
     async def ass(self, ctx):
