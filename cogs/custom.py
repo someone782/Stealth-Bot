@@ -16,7 +16,7 @@ class Custom(commands.Cog):
     # <@691733395109314661>
 
     @commands.command(help="Bonk.")
-    async def bonk(self, ctx, member : discord.Member=None):
+    async def cbonk(self, ctx, member : discord.Member=None):
         if(member == None):
             member = ctx.author
             message = "just bonked themselves"
