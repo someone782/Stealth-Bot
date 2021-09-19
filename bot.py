@@ -17,7 +17,6 @@ from discord.ext import commands, tasks
 import DiscordUtils
 import asyncpg
 import typing
-import asyncpraw
 from typing import (
     List,
     Optional
