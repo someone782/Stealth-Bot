@@ -39,6 +39,10 @@ class Images(commands.Cog):
       embed.set_image(url=json['url'])
       embed.set_footer(text=f"{round(ms)}ms{' ' * (9-len(str(round(ms, 3))))}", icon_url=ctx.author.avatar.url)
 
+      for command in self.client.commands:
+         if len(command.short_doc) > 100:
+            print(command.qualified_name)
+
       await ctx.reply(embed=embed)
       
    @commands.command(aliases=['sfw_maid', 'maid_sfw'], )
