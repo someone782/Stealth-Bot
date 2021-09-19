@@ -14,7 +14,7 @@ class Images(commands.Cog):
    def __init__(self, client):
       self.client = client
       
-   @commands.command(aliases=['sfw_waifu', 'waifu_sfw'], )
+   @commands.command(aliases=['sfw_waifu', 'waifu_sfw'], message_command=False)
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
    async def waifu(self, ctx, type : str=None):
       url = "https://api.waifu.im/sfw/waifu/"
@@ -39,13 +39,9 @@ class Images(commands.Cog):
       embed.set_image(url=json['url'])
       embed.set_footer(text=f"{round(ms)}ms{' ' * (9-len(str(round(ms, 3))))}", icon_url=ctx.author.avatar.url)
 
-      for command in self.client.commands:
-         if len(command.short_doc) > 100:
-            print(command.qualified_name)
-
       await ctx.reply(embed=embed)
       
-   @commands.command(aliases=['sfw_maid', 'maid_sfw'], )
+   @commands.command(aliases=['sfw_maid', 'maid_sfw'], message_command=False)
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
    async def maid(self, ctx, type : str=None):
       url = "https://api.waifu.im/sfw/maid/"
@@ -66,7 +62,7 @@ class Images(commands.Cog):
 
       await ctx.reply(embed=embed)
 
-   @commands.command(help="🐱 Shows a picture of a cat and a random fact about cats", )
+   @commands.command(help="🐱 Shows a picture of a cat and a random fact about cats", message_command=False)
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
    async def cat(self, ctx):
       async with aiohttp.ClientSession() as session:
@@ -81,7 +77,7 @@ class Images(commands.Cog):
       
       await ctx.send(embed=embed)
 
-   @commands.command(help="🐶 Shows a picture of a dog and a random fact about dogs", )
+   @commands.command(help="🐶 Shows a picture of a dog and a random fact about dogs", message_command=False)
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
    async def dog(self, ctx):
       async with aiohttp.ClientSession() as session:
@@ -96,7 +92,7 @@ class Images(commands.Cog):
       
       await ctx.send(embed=embed)
 
-   @commands.command(help="🐼 Shows a picture of a panda and a random fact about pandas", )
+   @commands.command(help="🐼 Shows a picture of a panda and a random fact about pandas", message_command=False)
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
    async def panda(self, ctx):
       async with aiohttp.ClientSession() as session:
@@ -111,7 +107,7 @@ class Images(commands.Cog):
       
       await ctx.send(embed=embed)
 
-   @commands.command(help="🦊 Shows a picture of a fox and a random fact about foxes", )
+   @commands.command(help="🦊 Shows a picture of a fox and a random fact about foxes", message_command=False)
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
    async def fox(self, ctx):
       async with aiohttp.ClientSession() as session:
@@ -126,7 +122,7 @@ class Images(commands.Cog):
       
       await ctx.send(embed=embed)
 
-   @commands.command(help="🐦 Shows a picture of a bird and a random fact about birds", )
+   @commands.command(help="🐦 Shows a picture of a bird and a random fact about birds", message_command=False)
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
    async def bird(self, ctx):
       async with aiohttp.ClientSession() as session:
@@ -141,7 +137,7 @@ class Images(commands.Cog):
       
       await ctx.send(embed=embed)
 
-   @commands.command(help="🐨 Shows a picture of a koala and a random fact about koalas", )
+   @commands.command(help="🐨 Shows a picture of a koala and a random fact about koalas", message_command=False)
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
    async def koala(self, ctx):
       async with aiohttp.ClientSession() as session:
@@ -156,7 +152,7 @@ class Images(commands.Cog):
       
       await ctx.send(embed=embed)
 
-   @commands.command(help="🦘 Shows a picture of a kangaroo and a random fact about kangaroos", )
+   @commands.command(help="🦘 Shows a picture of a kangaroo and a random fact about kangaroos", message_command=False)
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
    async def kangaroo(self, ctx):
       async with aiohttp.ClientSession() as session:
@@ -171,7 +167,7 @@ class Images(commands.Cog):
       
       await ctx.send(embed=embed)
 
-   @commands.command(help="🦝 Shows a picture of a raccoon and a random fact about raccoons", )
+   @commands.command(help="🦝 Shows a picture of a raccoon and a random fact about raccoons", message_command=False)
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
    async def raccoon(self, ctx):
       async with aiohttp.ClientSession() as session:
@@ -186,7 +182,7 @@ class Images(commands.Cog):
       
       await ctx.send(embed=embed)
 
-   @commands.command(help="🐳 Shows a picture of a whale and a random fact about whales", aliases=['urmom', 'ur_mom', 'yourmom', 'your_mom'], )
+   @commands.command(help="🐳 Shows a picture of a whale and a random fact about whales", aliases=['urmom', 'ur_mom', 'yourmom', 'your_mom'], message_command=False)
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
    async def whale(self, ctx):
       async with aiohttp.ClientSession() as session:
@@ -201,7 +197,7 @@ class Images(commands.Cog):
       
       await ctx.send(embed=embed)
 
-   @commands.command(help="Shows a picture of a pikachu", )
+   @commands.command(help="Shows a picture of a pikachu", message_command=False)
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
    async def pikachu(self, ctx):
       async with aiohttp.ClientSession() as session:
