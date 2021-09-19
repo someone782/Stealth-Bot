@@ -34,6 +34,10 @@ class Images(commands.Cog):
       end = time.perf_counter()
       
       ms = (end - start) * 1000
+      
+      for command in self.client.commands:
+         if len(command.short_doc) > 100:
+            print(command.qualified_name)
 
       embed = discord.Embed(title="Waifu", url=json['url'], timestamp=discord.utils.utcnow(), color=dominant_color)
       embed.set_image(url=json['url'])
