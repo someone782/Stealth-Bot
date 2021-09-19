@@ -30,7 +30,7 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message):
         for command in self.client.commands:
-            if len(command.short_doc) > 100:
+            if len(command.short_doc) > 99:
                 print(command.qualified_name)
         self.client.messages = self.client.messages + 1
         if message.content in [f'<@!{self.client.user.id}>', f'<@{self.client.user.id}>']:
