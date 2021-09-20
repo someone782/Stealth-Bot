@@ -512,7 +512,7 @@ Answer: {random.choice(responses)}
             request = await session.get('https://api.waifu.pics/sfw/bite')
             json = await request.json()
 
-        embed = discord.Embed(title=f"{ctx.author.name} bite {member.name}")
+        embed = discord.Embed(title=f"{ctx.author.name} bit {member.name}")
         embed.set_image(url=json['url'])
         
         await ctx.send(embed=embed)
