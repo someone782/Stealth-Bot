@@ -197,6 +197,7 @@ class Help(commands.Cog):
     ":question: | The help command, how did you find this though..."
     def __init__(self, client):
         self.client = client
+        self.hidden = True
         help_command = MyHelp()
         help_command.cog = self
         client.help_command = help_command
