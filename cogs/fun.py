@@ -247,9 +247,6 @@ Answer: {random.choice(responses)}
 
     @commands.command(help="Generates a random word", aliases=['rw'])
     async def randomword(self, ctx):
-        for command in self.client.commands:
-            if 1 <= len(command.short_doc) >= 100:
-                print(command.qualified_name)
         with open("./data/verifyWords.txt", "r") as file:
             allText = file.read()
             wordsList = list(map(str, allText.split()))
