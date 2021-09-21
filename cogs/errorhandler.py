@@ -44,6 +44,8 @@ class ErrorHandler(commands.Cog):
             music_cog.InvalidVolume,
             music_cog.OutOfTrack,
             music_cog.NegativeSeek
+            
+
         )
         
         if isinstance(error, ignored):
