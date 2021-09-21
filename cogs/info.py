@@ -435,6 +435,7 @@ Features:
     async def emojiinfo(self, ctx, emoji : discord.Emoji):
         server = ctx.guild
         url = f"{emoji.url}"
+        avaible = "No"
         managed = "No"
         animated = "No"
         fetchedEmoji = await server.fetch_emoji(emoji.id)
@@ -445,6 +446,9 @@ Features:
         if emoji.animated == True:
             animated = "Yes"
             
+        if emoji.avaible == True:
+            avaible = "Yes"
+            
 
         embed = discord.Embed(title=f"{emoji.name}", description=f"""
 Name: {emoji.name}
@@ -453,9 +457,10 @@ Name: {emoji.name}
 Created at: {discord.utils.format_dt(emoji.created_at)}
 :link: Link: [Click here]({emoji.url})
 
-Created by: {fetchedEmoji.user}
+Created by: {fetchedEmoji.user} ({fetchedEmoji.user.id})
 <:servers:870152102759006208> Guild: {emoji.guild} ({emoji.guild.id})
 
+Avaible? {avaible}
 <:twitch:889903398672035910> Managed?: {managed}
 <:emoji_ghost:658538492321595393> Animated?: {animated}
                               """)
