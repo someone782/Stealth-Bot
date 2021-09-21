@@ -437,7 +437,7 @@ Features:
         url = f"{emoji.url}"
         managed = "No"
         animated = "No"
-        fetchedEmoji = server.fetch_emoji(emoji)
+        fetchedEmoji = await server.fetch_emoji(emoji.id)
         
         if emoji.managed == True:
             managed = "Yes"
