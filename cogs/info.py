@@ -8,6 +8,7 @@ import unicodedata
 import sys
 import inspect
 import time
+import urllib
 import pathlib
 import pkg_resources
 import math
@@ -97,6 +98,35 @@ class Info(commands.Cog):
     def __init__(self, client):
         self.client = client
         client.session = aiohttp.ClientSession()
+
+
+    @commands.command(help="Search lyrics of any song", aliases = ['l', 'lyrc', 'lyric'])
+    async def lyrics(self, ctx, *, search):
+        if search == None:
+            search = "Rick Astley - Never Gonna Give You Up (Official Music Video)
+        
+        song = urllib.parse.quote(search)
+        
+        async with self.client.session.get(f'https://some-random-api.ml/lyrics?title={song}') as json:
+            if not 300 > json.status >= 200:
+                return await ctx.send(f'Recieved poor status code of {jsondata.status}')
+
+            jsonData = await json.json()
+
+        error = jsonData.get('error')
+        if error:
+            raise error
+
+        lyrics = jsonData['lyrics']
+        artist = jsonData['author']
+        title = jsonData['title']
+        thumbnail = jsonData['thumbnail']['genius']
+
+        for chunk in textwrap.wrap(lyrics, 4096, replace_whitespace=False):
+            embed = discord.Embed(title=title, description=chunk)
+            embed.set_image(url=thumbnail)
+            
+            await ctx.send(embed=embed)
 
     @commands.command(help="Shows you information about the member you mentioned", aliases=['ui', 'user', 'member', 'memberinfo'], brief="https://cdn.discordapp.com/attachments/876937268609290300/886407195279884318/userinfo.gif")
     @commands.cooldown(1, 5, BucketType.member)
