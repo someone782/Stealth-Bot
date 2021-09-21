@@ -435,14 +435,19 @@ Features:
 
         await ctx.send(embed=embed)
         
-    @commands.command(help="Shows information about a emoji", aliases=['ei'])
+    @commands.command(help="Shows information about a emoji", aliases=['ei', 'emoteinfo', 'emoinfo', 'eminfo', 'emojinfo'])
     async def emojiinfo(self, ctx, emoji : discord.Emoji):
+        text = "No"
+        if emoji.animated == True:
+            text = "Yes"
+            
         embed = discord.Embed(title=f"{emoji.name}", description=f"""
 Name: {emoji.name}
-ID: {emoji.id}
+<:greyTick:860644729933791283> ID: {emoji.id}
 Created at: {discord.utils.format_dt(emoji.created_at)}
-Animated? {emoji.animated}
+<:emoji_ghost:658538492321595393> Animated? {text}
                               """)
+        embed.set_thumbnail(url=emoji.url)
         
         await ctx.send(embed=embed)
         
