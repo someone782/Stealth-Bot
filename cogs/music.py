@@ -475,7 +475,7 @@ class CustomPlayer(lavalink.BasePlayer):
         await self.node._dispatch_event(NodeChangedEvent(self, old_node, node))
 
 class Music(commands.Cog):
-"<a:music:888778105844563988> | Commands used to play/control music."
+    "<a:music:888778105844563988> | Commands used to play/control music."
     def __init__(self, bot):
         self.bot = bot
         if not hasattr(bot, 'lavalink'):
