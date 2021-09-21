@@ -433,40 +433,19 @@ Features:
         
     @commands.command(help="Shows information about a emoji", aliases=['ei', 'emoteinfo', 'emoinfo', 'eminfo', 'emojinfo', 'einfo'])
     async def emojiinfo(self, ctx, emoji : discord.PartialEmoji):
-        server = ctx.guild
         url = f"{emoji.url}"
-        available = "No"
-        managed = "No"
         animated = "No"
-        try:
-            fetchedEmoji = await server.fetch_emoji(emoji.id)
-            user = f"{fetchedEmoji.user} ({fetchedEmoji.user.id})"
-        except:
-            user = f"Couldn't get user."
-            pass
-        
-        # if emoji.managed == True:
-        #     managed = "Yes"
         
         if emoji.animated == True:
             animated = "Yes"
-            
-        # if emoji.available == True:
-        #     available = "Yes"
-            
 
         embed = discord.Embed(title=f"{emoji.name}", description=f"""
 Name: {emoji.name}
 <:greyTick:860644729933791283> ID: {emoji.id}
 
-Created at: {discord.utils.format_dt(emoji.created_at)}
+Created at: {discord.utils.format_dt(emoji.created_at, style="f")} ({discord.utils.format_dt(emoji.created_at, style="R")})
 :link: Link: [Click here]({emoji.url})
 
-Created by: user
-<:servers:870152102759006208> Guild: emoji.guild (emoji.guild.id)
-
-:gear: Available? available
-<:twitch:889903398672035910> Managed?: managed
 <:emoji_ghost:658538492321595393> Animated?: {animated}
                               """)
         embed.set_thumbnail(url=emoji.url)
