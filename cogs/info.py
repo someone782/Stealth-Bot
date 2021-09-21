@@ -530,10 +530,10 @@ Coroutine: {cr}
         for emoji in guildEmotes:
 
           if emoji.animated:
-             emotes.append(f"<a:{emoji.name}:{emoji.id}> **|** {emoji.name} **|** [`<a:{emoji.name}:{emoji.id}>`](https://cdn.discordapp.com/emojis/{emoji.id}.gif)")
+             emotes.append(f"<a:{emoji.name}:{emoji.id}> **|** {emoji.name} **|** [`<a:{emoji.name}:{emoji.id}>`]({emoji.url})")
 
           if not emoji.animated:
-              emotes.append(f"<:{emoji.name}:{emoji.id}> **|** {emoji.name} **|** [`<:{emoji.name}:{emoji.id}>`](https://cdn.discordapp.com/emojis/{emoji.id}.png)")
+              emotes.append(f"<:{emoji.name}:{emoji.id}> **|** {emoji.name} **|** [`<:{emoji.name}:{emoji.id}>`]({emoji.url})")
 
         menu = menus.MenuPages(ServerEmotesEmbedPage(emotes, per_page=10))
         
