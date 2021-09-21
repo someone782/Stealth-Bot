@@ -4,6 +4,7 @@ import io
 import psutil
 import helpers
 import os
+import textwarp
 import unicodedata
 import sys
 import inspect
