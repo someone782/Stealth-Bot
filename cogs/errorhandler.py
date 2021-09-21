@@ -50,7 +50,7 @@ class ErrorHandler(commands.Cog):
             return
 
         elif isinstance(error, commands.CommandNotFound):
-            if ctx.author.id == 564890536947875868 and self.client.no_prefix is True:
+            if ctx.author.id in self.client.owners and self.client.no_prefix is True:
                 return
 
             message = f"I couldn't find that command."
