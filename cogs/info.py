@@ -103,8 +103,6 @@ class Info(commands.Cog):
 
     @commands.command(help="Search lyrics of any song", aliases = ['l', 'lyrc', 'lyric'])
     async def lyrics(self, ctx, *, search):
-        if search == None:
-            search = "Rick Astley - Never Gonna Give You Up (Official Music Video)"
         
         song = urllib.parse.quote(search)
         
@@ -124,8 +122,8 @@ class Info(commands.Cog):
         thumbnail = jsonData['thumbnail']['genius']
 
         for chunk in textwrap.wrap(lyrics, 4096, replace_whitespace=False):
-            embed = discord.Embed(title=title, description=chunk)
-            embed.set_image(url=thumbnail)
+            embed = discord.Embed(title=f"{title} - {artist}", description=chunk)
+            embed.set_thumbnail(url=thumbnail)
             
             await ctx.send(embed=embed)
 
