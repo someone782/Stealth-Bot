@@ -434,10 +434,14 @@ Features:
     @commands.command(help="Shows information about a emoji", aliases=['ei', 'emoteinfo', 'emoinfo', 'eminfo', 'emojinfo'])
     async def emojiinfo(self, ctx, emoji : discord.Emoji):
         url = f"{emoji.url}"
-        text = "No"
+        managed = "No"
+        animated = "No"
+        
+        if emoji.managed == True:
+            managed = "Yes"
         
         if emoji.animated == True:
-            text = "Yes"
+            animated = "Yes"
             
 
         embed = discord.Embed(title=f"{emoji.name}", description=f"""
@@ -447,9 +451,11 @@ Name: {emoji.name}
 Created at: {discord.utils.format_dt(emoji.created_at)}
 :link: Link: [Click here]({emoji.url})
 
+Created by: {emoji.user} ({emoji.user.id})
 Guild: {emoji.guild} ({emoji.guild.id})
 
-<:emoji_ghost:658538492321595393> Animated? {text}
+<:twitch:889903398672035910> Managed?: {managed}
+<:emoji_ghost:658538492321595393> Animated?: {animated}
                               """)
         embed.set_thumbnail(url=emoji.url)
         
