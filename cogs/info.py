@@ -445,11 +445,11 @@ Features:
             user = f"Couldn't get user."
             pass
         
-        if emoji.managed == True:
-            managed = "Yes"
+        # if emoji.managed == True:
+        #     managed = "Yes"
         
-        if emoji.animated == True:
-            animated = "Yes"
+        # if emoji.animated == True:
+        #     animated = "Yes"
             
         if emoji.available == True:
             available = "Yes"
