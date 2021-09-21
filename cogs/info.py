@@ -433,16 +433,17 @@ Features:
         
     @commands.command(help="Shows information about a emoji", aliases=['ei', 'emoteinfo', 'emoinfo', 'eminfo', 'emojinfo'])
     async def emojiinfo(self, ctx, emoji : discord.Emoji):
+        url = f"{emoji.url}"
         text = "No"
+        
         if emoji.animated == True:
             text = "Yes"
             
-        urls = f"[PNG]({emoji.url.replace(format='png', size=2048).url}) **|** [JPG]({emoji.url.replace(format='jpg', size=2048).url}) **|** [JPEG]({emoji.url.replace(format='jpeg', size=2048).url}) **|** [WEBP]({emoji.url.replace(format='webp', size=2048).url}) **|** [GIF]({emoji.url.replace(format='gif', size=2048).url})"
-            
+
         embed = discord.Embed(title=f"{emoji.name}", description=f"""
 Name: {emoji.name}
 <:greyTick:860644729933791283> ID: {emoji.id}
-URLs: PNG JPG JPEG GIF
+Link: [Click here]({emoji.url})
 Created at: {discord.utils.format_dt(emoji.created_at)}
 <:emoji_ghost:658538492321595393> Animated? {text}
                               """)
