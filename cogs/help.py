@@ -25,9 +25,14 @@ def count_python(root: str) -> int:
 class Dropdown(discord.ui.Select):
     def __init__(self):
         options = [
-            discord.SelectOption(label='Red', description='Your favourite colour is red', emoji='🟥'),
-            discord.SelectOption(label='Green', description='Your favourite colour is green', emoji='🟩'),
-            discord.SelectOption(label='Blue', description='Your favourite colour is blue', emoji='🟦')
+            
+            discord.SelectOption(label='Info', description='Your favourite colour is red', emoji='🟥'),
+            discord.SelectOption(label='Fun', description='Your favourite colour is green', emoji='🟩'),
+            discord.SelectOption(label='Misc', description='Your favourite colour is blue', emoji='🟦'),
+            discord.SelectOption(label='Mod', description='Your favourite colour is red', emoji='🟥'),
+            discord.SelectOption(label='Music', description='Your favourite colour is green', emoji='🟩'),
+            discord.SelectOption(label='Owner', description='Your favourite colour is blue', emoji='🟦'),
+            discord.SelectOption(label='Custom', description='Your favourite colour is red', emoji='🟥'),
         ]
 
         super().__init__(placeholder='Select a category...', min_values=1, max_values=1, options=options)
@@ -118,19 +123,17 @@ Written with `{count_python('.'):,}` lines.
         aliastext = "Aliases: ❌ This command has no aliases."
         descriptiontext = "Description: ❌ This command has no description."
         if alias:
-            aliastext = f"Aliases: {', '.join(alias)}"
+            aliastext = f"Aliases: `{', '.join(alias)}`"
         if description:
-            descriptiontext = f"Description: {command.help}"
+            descriptiontext = f"Description: `{command.help}`"
         embed = discord.Embed(title=f"Help - {command}", description=f"""
 ```diff
 - <> = required argument
 - [] = optional argument
 ```
-```yaml
-Usage: {self.get_minimal_command_signature(command)}
+`Usage: {self.get_minimal_command_signature(command)}`
 {aliastext}
 {descriptiontext}
-```
                                   """)
 
         if command.brief:
