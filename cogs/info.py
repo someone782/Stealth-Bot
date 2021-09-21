@@ -433,9 +433,11 @@ Features:
         
     @commands.command(help="Shows information about a emoji", aliases=['ei', 'emoteinfo', 'emoinfo', 'eminfo', 'emojinfo'])
     async def emojiinfo(self, ctx, emoji : discord.Emoji):
+        server = ctx.guild
         url = f"{emoji.url}"
         managed = "No"
         animated = "No"
+        fetchedEmoji = server.fetch_emoji(emoji)
         
         if emoji.managed == True:
             managed = "Yes"
@@ -451,8 +453,8 @@ Name: {emoji.name}
 Created at: {discord.utils.format_dt(emoji.created_at)}
 :link: Link: [Click here]({emoji.url})
 
-Created by: {emoji.user}
-Guild: {emoji.guild} ({emoji.guild.id})
+Created by: {fetchedEmoji.user}
+<:servers:870152102759006208> Guild: {emoji.guild} ({emoji.guild.id})
 
 <:twitch:889903398672035910> Managed?: {managed}
 <:emoji_ghost:658538492321595393> Animated?: {animated}
