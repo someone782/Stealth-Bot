@@ -451,7 +451,7 @@ Name: {emoji.name}
 Created at: {discord.utils.format_dt(emoji.created_at)}
 :link: Link: [Click here]({emoji.url})
 
-Created by: {emoji.user} ({emoji.user.id})
+Created by: {emoji.user}
 Guild: {emoji.guild} ({emoji.guild.id})
 
 <:twitch:889903398672035910> Managed?: {managed}
