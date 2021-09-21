@@ -9,6 +9,7 @@ import random
 import errors
 from datetime import datetime
 import yaml
+import random
 import pickle
 from pathlib import Path
 from better_profanity import profanity as prof
@@ -123,8 +124,11 @@ class CustomContext(commands.Context):
                                  icon_url=self.author.display_avatar.url)
                 embed.timestamp = discord.utils.utcnow()
 
-        if embed: 
-            embed.color = 0x2F3136
+        if embed:
+            colors = [0x910023, 0xA523FF]
+            color = random.choice(colors)
+            
+            embed.color = color
 
         try:
             return await super().send(content=content, embed=embed, reference=reference, **kwargs)
