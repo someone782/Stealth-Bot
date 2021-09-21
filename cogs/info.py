@@ -443,9 +443,12 @@ Features:
         embed = discord.Embed(title=f"{emoji.name}", description=f"""
 Name: {emoji.name}
 <:greyTick:860644729933791283> ID: {emoji.id}
-Guild: {emoji.guild} ({emoji.guild.id})
-:link: Link: [Click here]({emoji.url})
+
 Created at: {discord.utils.format_dt(emoji.created_at)}
+:link: Link: [Click here]({emoji.url})
+
+Guild: {emoji.guild} ({emoji.guild.id})
+
 <:emoji_ghost:658538492321595393> Animated? {text}
                               """)
         embed.set_thumbnail(url=emoji.url)
