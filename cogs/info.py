@@ -448,11 +448,11 @@ Features:
         # if emoji.managed == True:
         #     managed = "Yes"
         
-        # if emoji.animated == True:
-        #     animated = "Yes"
+        if emoji.animated == True:
+            animated = "Yes"
             
-        if emoji.available == True:
-            available = "Yes"
+        # if emoji.available == True:
+        #     available = "Yes"
             
 
         embed = discord.Embed(title=f"{emoji.name}", description=f"""
