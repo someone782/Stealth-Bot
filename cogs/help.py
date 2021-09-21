@@ -123,17 +123,19 @@ Written with `{count_python('.'):,}` lines.
         aliastext = "Aliases: ❌ This command has no aliases."
         descriptiontext = "Description: ❌ This command has no description."
         if alias:
-            aliastext = f"Aliases: `{', '.join(alias)}`"
+            aliastext = f"Aliases: {', '.join(alias)}"
         if description:
-            descriptiontext = f"Description: `{command.help}`"
+            descriptiontext = f"Description: {command.help}"
         embed = discord.Embed(title=f"Help - {command}", description=f"""
 ```diff
 - <> = required argument
 - [] = optional argument
 ```
-`Usage: {self.get_minimal_command_signature(command)}`
+```yaml
+Usage: {self.get_minimal_command_signature(command)}
 {aliastext}
 {descriptiontext}
+```
                                   """)
 
         if command.brief:
@@ -158,8 +160,9 @@ Commands usable by you (in this server): {len(await self.filter_commands(cog.get
 - <> = required argument
 - [] = optional argument
 + Type {prefix}help [command] for help on a command
-+ Description: {cog.description}
 ```
+`Description: {cog.description.split('|')[0]} `{cog.description.split('|'[1])}`
+
 __**Available commands**__ **[{len(cog.get_commands())}]**
 ```fix
 {val}
