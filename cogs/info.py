@@ -431,14 +431,19 @@ Features:
 
         await ctx.send(embed=embed)
         
-    @commands.command(help="Shows information about a emoji", aliases=['ei', 'emoteinfo', 'emoinfo', 'eminfo', 'emojinfo'])
+    @commands.command(help="Shows information about a emoji", aliases=['ei', 'emoteinfo', 'emoinfo', 'eminfo', 'emojinfo', 'einfo'])
     async def emojiinfo(self, ctx, emoji : discord.Emoji):
         server = ctx.guild
         url = f"{emoji.url}"
         available = "No"
         managed = "No"
         animated = "No"
-        fetchedEmoji = await server.fetch_emoji(emoji.id)
+        try:
+            fetchedEmoji = await server.fetch_emoji(emoji.id)
+            user = f"{fetchedEmoji.user} ({fetchedEmoji.user.id})"
+        except:
+            user = f"Couldn't get user."
+            pass
         
         if emoji.managed == True:
             managed = "Yes"
@@ -457,10 +462,10 @@ Name: {emoji.name}
 Created at: {discord.utils.format_dt(emoji.created_at)}
 :link: Link: [Click here]({emoji.url})
 
-Created by: {fetchedEmoji.user} ({fetchedEmoji.user.id})
+Created by: {user}
 <:servers:870152102759006208> Guild: {emoji.guild} ({emoji.guild.id})
 
-Available? {available}
+:gear: Available? {available}
 <:twitch:889903398672035910> Managed?: {managed}
 <:emoji_ghost:658538492321595393> Animated?: {animated}
                               """)
