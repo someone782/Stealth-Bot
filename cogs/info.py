@@ -462,11 +462,11 @@ Name: {emoji.name}
 Created at: {discord.utils.format_dt(emoji.created_at)}
 :link: Link: [Click here]({emoji.url})
 
-Created by: {user}
-<:servers:870152102759006208> Guild: {emoji.guild} ({emoji.guild.id})
+Created by: user
+<:servers:870152102759006208> Guild: emoji.guild (emoji.guild.id)
 
-:gear: Available? {available}
-<:twitch:889903398672035910> Managed?: {managed}
+:gear: Available? available
+<:twitch:889903398672035910> Managed?: managed
 <:emoji_ghost:658538492321595393> Animated?: {animated}
                               """)
         embed.set_thumbnail(url=emoji.url)
