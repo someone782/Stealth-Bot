@@ -186,21 +186,17 @@ class Info(commands.Cog):
             perms = ''
 
         if member.avatar.is_animated() == True:
-            text1 = f"[PNG]({member.avatar.replace(format='png', size=2048).url}) **|** [JPG]({member.avatar.replace(format='jpg', size=2048).url}) **|** [JPEG]({member.avatar.replace(format='jpeg', size=2048).url}) **|** [WEBP]({member.avatar.replace(format='webp', size=2048).url}) **|** [GIF]({member.avatar.replace(format='gif', size=2048).url})"
-            avatar = text1.replace("cdn.discordapp.com", "media.discordapp.net")
+            avatar = f"[PNG]({member.avatar.replace(format='png', size=2048).url}) **|** [JPG]({member.avatar.replace(format='jpg', size=2048).url}) **|** [JPEG]({member.avatar.replace(format='jpeg', size=2048).url}) **|** [WEBP]({member.avatar.replace(format='webp', size=2048).url}) **|** [GIF]({member.avatar.replace(format='gif', size=2048).url})"
         else:
-            text1 = f"[PNG]({member.avatar.replace(format='png', size=2048).url}) **|** [JPG]({member.avatar.replace(format='jpg', size=2048).url}) **|** [JPEG]({member.avatar.replace(format='jpeg', size=2048).url}) **|** [WEBP]({member.avatar.replace(format='webp', size=2048).url})"
-            avatar = text1.replace("cdn.discordapp.com", "media.discordapp.net")
+            avatar = f"[PNG]({member.avatar.replace(format='png', size=2048).url}) **|** [JPG]({member.avatar.replace(format='jpg', size=2048).url}) **|** [JPEG]({member.avatar.replace(format='jpeg', size=2048).url}) **|** [WEBP]({member.avatar.replace(format='webp', size=2048).url})"
 
         fetchedMember = await self.client.fetch_user(member.id)
 
         if fetchedMember.banner:
             if fetchedMember.banner.is_animated() == True:
-                text1 = f"[PNG]({fetchedMember.banner.replace(format='png', size=2048).url}) **|** [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) **|** [JPEG]({fetchedMember.banner.replace(format='jpeg', size=2048).url}) **|** [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url}) **|** [GIF]({fetchedMember.banner.replace(format='gif', size=2048).url})"
-                banner = text1.replace("cdn.discordapp.com", "media.discordapp.net")
+                avatar = f"[PNG]({fetchedMember.banner.replace(format='png', size=2048).url}) **|** [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) **|** [JPEG]({fetchedMember.banner.replace(format='jpeg', size=2048).url}) **|** [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url}) **|** [GIF]({fetchedMember.banner.replace(format='gif', size=2048).url})"
             else:
-                text1 = f"[PNG]({fetchedMember.avatar.replace(format='png', size=2048).url}) **|** [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) **|** [JPEG]({fetchedMember.banner.replace(format='jpeg', size=2048).url}) **|** [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url})"
-                banner = text1.replace("cdn.discordapp.com", "media.discordapp.net")
+                avatar = f"[PNG]({fetchedMember.avatar.replace(format='png', size=2048).url}) **|** [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) **|** [JPEG]({fetchedMember.banner.replace(format='jpeg', size=2048).url}) **|** [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url})"
         else:
             banner = "No banner found"
 
@@ -441,9 +437,12 @@ Features:
         if emoji.animated == True:
             text = "Yes"
             
+        urls = f"[PNG]({emoji.url.replace(format='png', size=2048).url}) **|** [JPG]({emoji.url.replace(format='jpg', size=2048).url}) **|** [JPEG]({emoji.url.replace(format='jpeg', size=2048).url}) **|** [WEBP]({emoji.url.replace(format='webp', size=2048).url}) **|** [GIF]({emoji.url.replace(format='gif', size=2048).url})"
+            
         embed = discord.Embed(title=f"{emoji.name}", description=f"""
 Name: {emoji.name}
 <:greyTick:860644729933791283> ID: {emoji.id}
+URLs: PNG JPG JPEG GIF
 Created at: {discord.utils.format_dt(emoji.created_at)}
 <:emoji_ghost:658538492321595393> Animated? {text}
                               """)
