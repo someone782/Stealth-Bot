@@ -103,7 +103,6 @@ class Info(commands.Cog):
 
     @commands.command(help="Search lyrics of any song", aliases = ['l', 'lyrc', 'lyric'])
     async def lyrics(self, ctx, *, search):
-        
         song = urllib.parse.quote(search)
         
         async with self.client.session.get(f'https://some-random-api.ml/lyrics?title={song}') as json:
@@ -435,6 +434,18 @@ Features:
             embed.set_thumbnail(url=server.icon)
 
         await ctx.send(embed=embed)
+        
+    @commands.command(help="Shows information about a emoji", aliases=['ei'])
+    async def emojiinfo(self, ctx, emoji : discord.Emoji):
+        embed = discord.Embed(title=f"{emoji.name}", description=f"""
+Name: {emoji.name}
+ID: {emoji.id}
+Created at: {discord.utils.format_dt(emoji.created_at)}
+Animated? {emoji.animated}
+                              """)
+        
+        await ctx.send(embed=embed)
+        
 
     @commands.command(help="Shows information about the bot", aliases=['bi'])
     async def botinfo(self, ctx):
