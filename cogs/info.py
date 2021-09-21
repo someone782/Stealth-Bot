@@ -103,7 +103,7 @@ class Info(commands.Cog):
     @commands.command(help="Search lyrics of any song", aliases = ['l', 'lyrc', 'lyric'])
     async def lyrics(self, ctx, *, search):
         if search == None:
-            search = "Rick Astley - Never Gonna Give You Up (Official Music Video)
+            search = "Rick Astley - Never Gonna Give You Up (Official Music Video)"
         
         song = urllib.parse.quote(search)
         
