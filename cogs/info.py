@@ -432,7 +432,7 @@ Features:
         await ctx.send(embed=embed)
         
     @commands.command(help="Shows information about a emoji", aliases=['ei', 'emoteinfo', 'emoinfo', 'eminfo', 'emojinfo', 'einfo'])
-    async def emojiinfo(self, ctx, emoji : discord.Emoji):
+    async def emojiinfo(self, ctx, emoji : discord.PartialEmoji):
         server = ctx.guild
         url = f"{emoji.url}"
         available = "No"

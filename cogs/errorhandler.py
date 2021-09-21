@@ -127,6 +127,9 @@ Note: I can't edit the owner of the server
 
         elif isinstance(error, commands.UserNotFound):
             message = "I couldn't find that user."
+            
+        elif isinstance(error, commands.EmojiNotFound):
+            message = "I couldn't find that emoij.\nThis might be cause I'm not in the server that emoji is from."
 
         elif isinstance(error, commands.ChannelNotReadable):
             message = "I cannot read that channel."
