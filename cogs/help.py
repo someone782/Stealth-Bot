@@ -2,6 +2,7 @@ from discord.ext import commands
 import discord
 import datetime
 import helpers
+import contextlib
 import random
 import asyncio
 import errors
@@ -122,10 +123,17 @@ Written with `{count_python('.'):,}` lines.
         description = command.help
         aliastext = "Aliases: ❌ This command has no aliases."
         descriptiontext = "Description: ❌ This command has no description."
+        
         if alias:
             aliastext = f"Aliases: {', '.join(alias)}"
+            
         if description:
             descriptiontext = f"Description: {command.help}"
+            
+        can_run = 'No'
+                with contextlib.suppress(commands.CommandError):
+                    if await command.can_run(self.context):
+                        can_run = 'Yes'
         embed = discord.Embed(title=f"Help - {command}", description=f"""
 ```diff
 - <> = required argument
@@ -136,6 +144,11 @@ Usage: {self.get_minimal_command_signature(command)}
 {aliastext}
 {descriptiontext}
 ```
+Checks:
+Usable by you?: {can_run}
+Slowmode: 
+Owner only?: 
+Permissions needed: 
                                   """)
 
         if command.brief:

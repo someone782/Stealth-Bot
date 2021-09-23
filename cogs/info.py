@@ -539,15 +539,9 @@ Python version:
         
         await menu.start(ctx)
 
-    @commands.command(help="Shows you a list of emotes from this server", aliases=['emojilist', 'emote_list', 'emoji_list', 'emote', 'emoji', 'emotes', 'emojis'])
-    async def emotelist(self, ctx, id : int=None):
-        if id:
-            server = self.client.get_guild(id)
-            if not server:
-                return await ctx.send("I couldn't find that server. Make sure the ID you entered was correct.")
-        else:
-            server = ctx.guild
-
+    @commands.command(help="Shows you a list of emotes from this server", aliases=['emojilist', 'emote_list', 'emoji_list', 'emotes', 'emojis'])
+    async def emotelist(self, ctx):
+        server = ctx.guild
         guildEmotes = server.emojis
         emotes = []
 
@@ -564,14 +558,8 @@ Python version:
         await menu.start(ctx)
 
     @commands.command(help="Shows you a list of members from this server", aliases=['member_list', 'memlist', 'mem_list'])
-    async def memberlist(self, ctx, id : int=None):
-        if id:
-            server = self.client.get_guild(id)
-            if not server:
-                return await ctx.send("I couldn't find that server. Make sure the ID you entered was correct.")
-        else:
-            server = ctx.guild
-
+    async def memberlist(self, ctx):
+        server = ctx.guild
         guildMembers = server.members
         members = []
 
@@ -582,15 +570,9 @@ Python version:
         
         await menu.start(ctx)
 
-    @commands.command(help="Shows you a list of bots from this server", aliases=['bot_list', 'bolist', 'bo_list'])
-    async def botlist(self, ctx, id : int=None):
-        if id:
-            server = self.client.get_guild(id)
-            if not server:
-                return await ctx.send("I couldn't find that server. Make sure the ID you entered was correct.")
-        else:
-            server = ctx.guild
-
+    @commands.command(help="Shows you a list of bots from this server", aliases=['bot_list', 'bolist', 'bo_list', 'bots', 'bot'])
+    async def botlist(self, ctx):
+        server = ctx.guild
         guildBots = list(filter(lambda m : m.bot, server.members))
         bots = []
 
@@ -601,15 +583,9 @@ Python version:
         
         await menu.start(ctx)
 
-    @commands.command(help="Shows you a list of roles from this server", aliases=['role_list', 'rolist', 'ro_list'])
-    async def rolelist(self, ctx, id : int=None):
-        if id:
-            server = self.client.get_guild(id)
-            if not server:
-                return await ctx.send("I couldn't find that server. Make sure the ID you entered was correct.")
-        else:
-            server = ctx.guild
-
+    @commands.command(help="Shows you a list of roles from this server", aliases=['role_list', 'rolist', 'ro_list', 'roles', 'role'])
+    async def rolelist(self, ctx):
+        server = ctx.guild
         guildRoles = server.roles
         roles = []
 
