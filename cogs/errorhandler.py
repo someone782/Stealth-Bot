@@ -38,10 +38,21 @@ class ErrorHandler(commands.Cog):
                 colors = [0x910023, 0xA523FF]
                 color = random.choice(colors)
                 
+                def check(reaction, user):
+                    return user == ctx.author and str(reaction.emoji) == '💥'
+                
                 embed = discord.Embed(description=message, timestamp=discord.utils.utcnow(), color=color)
-                embed.set_footer(text='If you did mean the first command, press the "yes" button.', icon_url=ctx.author.avatar.url)
+                embed.set_footer(text=f"React with 💥 if you want to run `{matches[0]}`", icon_url=ctx.author.avatar.url)
                 
                 return await ctx.reply(embed=embed)
+
+                try:
+                    reaction, user = await self.client.wait_for('reaction_add', timeout=60.0, check=check)
+                except asyncio.TimeoutError:
+                    return
+                else:
+                    cmd = self.client.get_command(f"{matches[0]}")
+                    await cmd(ctx)
 
         elif isinstance(error, errors.AuthorBlacklisted):
             message = f"It appears that you're blacklisted from this bot. Contact Ender2K89#9999 if you think this is a mistake."
