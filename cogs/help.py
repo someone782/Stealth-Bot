@@ -145,8 +145,8 @@ Usage: {self.get_minimal_command_signature(command)}
 {descriptiontext}
 ```
 ```yaml
-Usable by you?: {can_run}
-Owner only?: No
+Usable by you: {can_run}
+Owner only: No
 Slowmode: No
 Permissions needed: No
 ```
