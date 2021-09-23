@@ -131,9 +131,9 @@ Written with `{count_python('.'):,}` lines.
             descriptiontext = f"Description: {command.help}"
             
         can_run = 'No'
-                with contextlib.suppress(commands.CommandError):
-                    if await command.can_run(self.context):
-                        can_run = 'Yes'
+        with contextlib.suppress(commands.CommandError):
+            if await command.can_run(self.context):
+                can_run = 'Yes'
         embed = discord.Embed(title=f"Help - {command}", description=f"""
 ```diff
 - <> = required argument
