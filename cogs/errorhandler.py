@@ -55,6 +55,7 @@ class ErrorHandler(commands.Cog):
                 else:
                     cmd = self.client.get_command(f"{matches}")
                     await cmd(ctx)
+                    await message.delete()
 
         elif isinstance(error, errors.AuthorBlacklisted):
             message = f"It appears that you're blacklisted from this bot. Contact Ender2K89#9999 if you think this is a mistake."
