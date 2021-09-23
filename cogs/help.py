@@ -143,8 +143,9 @@ Written with `{count_python('.'):,}` lines.
 Usage: {self.get_minimal_command_signature(command)}
 {aliastext}
 {descriptiontext}
-
-Checks
+```
+```yaml
+Checks:
 Usable by you?: {can_run}
 Owner only?: No
 Slowmode: No
