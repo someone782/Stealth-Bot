@@ -81,7 +81,7 @@ class ServerBotsEmbedPage(menus.ListPageSource):
         
     async def format_page(self, menu, entries):
         offset = menu.current_page * self.per_page
-        embed = discord.Embed(title=f"{self.guild}'s bots ({len(list(filter(lambda m : m.bot, self.ctx.guild.members)))})", description="\n".join(f'{i+1}. {v}' for i, v in enumerate(entries, start=offset)))
+        embed = discord.Embed(title=f"{self.guild}'s bots ({len(list(filter(lambda m : m.bot, self.guild.members)))})", description="\n".join(f'{i+1}. {v}' for i, v in enumerate(entries, start=offset)))
         return embed
 
 class ServerRolesEmbedPage(menus.ListPageSource):
@@ -92,7 +92,7 @@ class ServerRolesEmbedPage(menus.ListPageSource):
         
     async def format_page(self, menu, entries):
         offset = menu.current_page * self.per_page
-        embed = discord.Embed(title=f"{self.guild}'s roles ({len(menu.ctx.guild.roles)})", description="\n".join(f'{i+1}. {v}' for i, v in enumerate(entries, start=offset)))
+        embed = discord.Embed(title=f"{self.guild}'s roles ({len(self.guild.roles)})", description="\n".join(f'{i+1}. {v}' for i, v in enumerate(entries, start=offset)))
         return embed
     
 class BotCommandsEmbedPage(menus.ListPageSource):
