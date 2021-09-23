@@ -17,7 +17,7 @@ class ErrorHandler(commands.Cog):
         self.client = client
 
     @commands.Cog.listener('on_command_error')
-    async def errorhandler(self, ctx :, error):
+    async def errorhandler(self, ctx, error):
         prefix = ctx.clean_prefix
 
         error = getattr(error, "original", error)
@@ -85,7 +85,16 @@ Note: I can't edit the owner of the server
             message = "An unexpected HTTP error occurred.\nPlease notify Ender2K89#9999 about this issue with a screenshot of what you're trying to do."
 
         elif isinstance(error, commands.MissingPermissions):
-            message = "You are missing the required permissions to run this command."
+            permissions1 = [(e.replace('_', ' ').replace('guild', 'server')).title() for e in error.missing_permissions]
+            permissions = ", ".join(permissions1[:-2] + [" and ".join(permissions1[-2:])])
+            
+            message = f"You are missing these permissions that are required to run this command: {perms_formatted}"
+            
+        elif isinstance(error, commands.BotMissingPermissions):
+            permissions1 = [(e.replace('_', ' ').replace('guild', 'server')).title() for e in error.missing_permissions]
+            permissions = ", ".join(permissions1[:-2] + [" and ".join(permissions1[-2:])])
+            
+            message = f"I'm missing these permissions that are required to run this command: {permissions}"
 
         elif isinstance(error, commands.NotOwner):
             message = "Only the owner of this bot can run this command."
