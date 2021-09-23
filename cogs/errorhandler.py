@@ -42,7 +42,7 @@ class ErrorHandler(commands.Cog):
                     return user == ctx.author and str(reaction.emoji) == '💥'
                 
                 embed = discord.Embed(description=message, timestamp=discord.utils.utcnow(), color=color)
-                embed.set_footer(text=f"React with 💥 if you want to run `{matches[0]}`", icon_url=ctx.author.avatar.url)
+                embed.set_footer(text=f"React with 💥 if you want to run `{matches}`", icon_url=ctx.author.avatar.url)
                 
                 message = await ctx.reply(embed=embed)
             
@@ -53,7 +53,7 @@ class ErrorHandler(commands.Cog):
                 except asyncio.TimeoutError:
                     return
                 else:
-                    cmd = self.client.get_command(f"{matches[0]}")
+                    cmd = self.client.get_command(f"{matches}")
                     await cmd(ctx)
 
         elif isinstance(error, errors.AuthorBlacklisted):
