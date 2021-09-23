@@ -576,6 +576,9 @@ Python version:
                 return await ctx.send("I couldn't find that server. Make sure the ID you entered was correct.")
         else:
             guild = ctx.guild
+			
+		server = guild
+	
 
         guildEmotes = guild.emojis
         emotes = []
@@ -605,6 +608,9 @@ Python version:
                 return await ctx.send("I couldn't find that server. Make sure the ID you entered was correct.")
         else:
             guild = ctx.guild
+			
+		server = guild
+	
 
         guildMembers = guild.members
         members = []
@@ -630,6 +636,9 @@ Python version:
                 return await ctx.send("I couldn't find that server. Make sure the ID you entered was correct.")
         else:
             guild = ctx.guild
+			
+		server = guild
+	
 
         guildBots = list(filter(lambda m : m.bot, server.members))
         bots = []
@@ -655,6 +664,9 @@ Python version:
                 return await ctx.send("I couldn't find that server. Make sure the ID you entered was correct.")
         else:
             guild = ctx.guild
+			
+		server = guild
+	
 
         guildRoles = server.roles
         roles = []
