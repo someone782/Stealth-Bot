@@ -552,10 +552,11 @@ Python version:
     async def _commands(self, ctx):
         botCommands = self.client.commands
         commands = []
+    
 
         for command in botCommands:
 
-            commands.append(f"{command.name} **|** {command.mention} **|** `{command.id}`")
+            commands.append(f"{command.name}")
             
         commands = [sub.replace('hentai', '||hentai||') for sub in commands]
 
