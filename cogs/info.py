@@ -115,7 +115,7 @@ class Info(commands.Cog):
         self.client = client
         client.session = aiohttp.ClientSession()
         
-    @command.command
+    @commands.command()
     async def bro(self, ctx):
         server = ctx.guild
         guildEmotes = server.emojis
