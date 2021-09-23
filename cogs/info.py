@@ -129,7 +129,7 @@ class Info(commands.Cog):
           if not emoji.animated:
               emotes.append(f"<:{emoji.name}:{emoji.id}> **|** {emoji.name} **|** [`<:{emoji.name}:{emoji.id}>`]({emoji.url})")
               
-        paginator = ViewMenuPages(source=ServerEmotesEmbedPage(self, emotes, ctx), clear_reactions_after=True)
+        paginator = ViewMenuPages(source=ServerEmotesEmbedPage(emotes, ctx), clear_reactions_after=True)
         page = await paginator._source.get_page(0)
         kwargs = await paginator._get_kwargs_from_page(page)
         if paginator.build_view():
