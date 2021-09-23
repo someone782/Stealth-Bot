@@ -55,10 +55,14 @@ def pretty_size(bytes, units=UNITS_MAPPING):
     return str(amount) + suffix
 
 class ServerEmotesEmbedPage(menus.ListPageSource):
-    async def format_page(self, menu, item):
-        embed = discord.Embed(title=f"{menu.ctx.guild}'s emotes [{len(menu.ctx.guild.emojis)}]", description="\n".join(item))
-        embed.set_footer(text=f"Command requested by {menu.ctx.author}", icon_url=menu.ctx.author.avatar.url)
-
+    def __init__(self, data, guild):
+        self.data = data
+        self.guild = guild
+        super().__init__(data, per_page=10)
+        
+    async def format_page(self, menu, entries):
+        offset = menu.current_page * self.per_page
+        embed = discord.Embed(color=color(self.guild),title=f"{self.guild}'s emotes ({len(self.guild.emojis)})", description="\n".join(f'{i+1}. {v}' for i, v in enumerate(entries, start=offset)))
         return embed
 
 class ServerMembersEmbedPage(menus.ListPageSource):
@@ -95,17 +99,6 @@ class EmbedPageSource(menus.ListPageSource):
         embed.set_footer(text=f"Command requested by {menu.ctx.author}", icon_url=menu.ctx.author.avatar.url)
 
         return embed
-    
-class ServerEmotesEmbedPage(menus.ListPageSource):
-    def __init__(self, data, ctx):
-        self.data = data
-        self.ctx = ctx
-        super().__init__(data, per_page=10)
-        
-    async def format_page(self, menu, entries):
-        offset = menu.current_page * self.per_page
-        embed = discord.Embed(title=f"{self.ctx.guild}'s emotes ({len(self.ctx.guild.emojis)})", description="\n".join(f'{i}. {v}' for i, v in enumerate(entries, start=offset)))
-        return embed
 
 def setup(client):
     client.add_cog(Info(client))
@@ -115,36 +108,6 @@ class Info(commands.Cog):
     def __init__(self, client):
         self.client = client
         client.session = aiohttp.ClientSession()
-        
-    @commands.command(help="Shows you a list of emotes from this server")
-    async def bro(self, ctx, id : int=None):
-        if id:
-            server = self.client.get_guild(id)
-            if not server:
-                return await ctx.send("I couldn't find that server. Make sure the ID you entered was correct.")
-        else:
-            server = ctx.guild
-
-        guildEmotes = server.emojis
-        emotes = []
-
-        for emoji in guildEmotes:
-
-          if emoji.animated:
-             emotes.append(f"<a:{emoji.name}:{emoji.id}> **|** {emoji.name} **|** [`<a:{emoji.name}:{emoji.id}>`]({emoji.url})")
-
-          if not emoji.animated:
-              emotes.append(f"<:{emoji.name}:{emoji.id}> **|** {emoji.name} **|** [`<:{emoji.name}:{emoji.id}>`]({emoji.url})")
-
-        paginator = ViewMenuPages(source=ServerEmotesEmbedPage(emotes,ctx), clear_reactions_after=True)
-        page = await paginator._source.get_page(0)
-        kwargs = await paginator._get_kwargs_from_page(page)
-        if paginator.build_view():
-            paginator.message = await ctx.send(embed=kwargs['embed'],view = paginator.build_view())
-        else:
-            paginator.message = await ctx.send(embed=kwargs['embed'])
-        await paginator.start(ctx)
-
 
     @commands.command(help="Search lyrics of any song", aliases = ['l', 'lyrc', 'lyric'])
     async def lyrics(self, ctx, *, search):
@@ -582,10 +545,16 @@ Python version:
         
         await menu.start(ctx)
 
-    @commands.command(help="Shows you a list of emotes from this server", aliases=['emojilist', 'emote_list', 'emoji_list', 'emotes', 'emojis'])
-    async def emotelist(self, ctx):
-        server = ctx.guild
-        guildEmotes = server.emojis
+    @commands.command(help="Shows you a list of emotes from this server", aliases=['emojilist', 'emote_list', 'emoji_list', 'emote', 'emoji', 'emotes', 'emojis'])
+    async def emotelist(self, ctx, id : int=None):
+        if id:
+            guild = self.client.get_guild(id)
+            if not guild:
+                return await ctx.send("I couldn't find that server. Make sure the ID you entered was correct.")
+        else:
+            guild = ctx.guild
+
+        guildEmotes = guild.emojis
         emotes = []
 
         for emoji in guildEmotes:
@@ -596,9 +565,14 @@ Python version:
           if not emoji.animated:
               emotes.append(f"<:{emoji.name}:{emoji.id}> **|** {emoji.name} **|** [`<:{emoji.name}:{emoji.id}>`]({emoji.url})")
 
-        menu = menus.MenuPages(ServerEmotesEmbedPage(emotes, per_page=10))
-        
-        await menu.start(ctx)
+        paginator = ViewMenuPages(source=ServerEmotesEmbedPage(emotes,guild), clear_reactions_after=True)
+        page = await paginator._source.get_page(0)
+        kwargs = await paginator._get_kwargs_from_page(page)
+        if paginator.build_view():
+            paginator.message = await ctx.send(embed=kwargs['embed'],view = paginator.build_view())
+        else:
+            paginator.message = await ctx.send(embed=kwargs['embed'])
+        await paginator.start(ctx)
 
     @commands.command(help="Shows you a list of members from this server", aliases=['member_list', 'memlist', 'mem_list'])
     async def memberlist(self, ctx):
