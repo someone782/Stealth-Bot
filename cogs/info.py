@@ -103,7 +103,7 @@ class BotCommandsEmbedPage(menus.ListPageSource):
         
     async def format_page(self, menu, entries):
         offset = menu.current_page * self.per_page
-        embed = discord.Embed(title=f"{self.ctx.bot.user.name}'s commands ({len(list(self.ctx.bot.commands))})", description="\n".join(f'{i+1}. {v}' for i, v in enumerate(entries, start=offset)))
+        embed = discord.Embed(title=f"{self.bot}'s commands ()", description="\n".join(f'{i+1}. {v}' for i, v in enumerate(entries, start=offset)))
         return embed
     
 class CharInfoEmbedPage(menus.ListPageSource):
@@ -550,6 +550,7 @@ Python version:
 
     @commands.command(help="Shows a list of commands this bot has", aliases=['commands', 'command', 'cmds', 'commandslist', 'cmdslist', 'commands_list', 'cmds_list', 'commandlist', 'cmdlist', 'command_list', 'cmd_list'])
     async def _commands(self, ctx):
+        bot = ctx.me.display_name
         botCommands = self.client.commands
         commands = []
     
@@ -560,7 +561,7 @@ Python version:
             
         commands = [sub.replace('hentai', '||hentai||') for sub in commands]
 
-        paginator = ViewMenuPages(source=ServerBotsEmbedPage(commands, guild), clear_reactions_after=True)
+        paginator = ViewMenuPages(source=ServerBotsEmbedPage(commands, bot), clear_reactions_after=True)
         page = await paginator._source.get_page(0)
         kwargs = await paginator._get_kwargs_from_page(page)
         if paginator.build_view():
