@@ -143,12 +143,13 @@ Written with `{count_python('.'):,}` lines.
 Usage: {self.get_minimal_command_signature(command)}
 {aliastext}
 {descriptiontext}
-```
+
 Checks:
 Usable by you?: {can_run}
-Slowmode: 
 Owner only?: 
+Slowmode: 
 Permissions needed: 
+```
                                   """)
 
         if command.brief:
