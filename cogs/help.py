@@ -136,8 +136,6 @@ Written with `{count_python('.'):,}` lines.
                 usable_by_you = 'Yes'
                 
         owner_only = 'No'
-        member = await self.bot.get_user(564890536947875868)
-        await member.send(command.checks)
         if 'is_owner' in command.checks:
             owner_only = 'Yes'
                 
