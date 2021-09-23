@@ -141,8 +141,6 @@ Usage: {self.get_minimal_command_signature(command)}
         if command.brief:
             embed.set_image(url=command.brief)
 
-        embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
-
         await ctx.send(embed=embed)
 
 
@@ -169,7 +167,6 @@ __**Available commands**__ **[{len(cog.get_commands())}]**
 {val}
 ```
                                 """)
-            embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
             await ctx.send(embed=embed)
         else:
