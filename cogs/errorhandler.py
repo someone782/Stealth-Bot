@@ -32,7 +32,7 @@ class ErrorHandler(commands.Cog):
             command_names = [str(x) for x in ctx.bot.commands]
             matches = get_close_matches(ctx.invoked_with, command_names)
             if matches:
-                matches = "\n".join(matches[0])
+                matches = matches[0] # matches = "\n".join(matches[0])
                 message = f"I couldn't find that command. Did you mean...\n{matches}"
                 
                 colors = [0x910023, 0xA523FF]
