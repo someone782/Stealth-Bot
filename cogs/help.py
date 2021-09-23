@@ -130,10 +130,15 @@ Written with `{count_python('.'):,}` lines.
         if description:
             descriptiontext = f"Description: {command.help}"
             
-        can_run = 'No'
+        usable_by_you = 'No'
         with contextlib.suppress(commands.CommandError):
             if await command.can_run(self.context):
-                can_run = 'Yes'
+                usable_by_you = 'Yes'
+                
+        owner_only = 'No'
+        if 'is_owner' in command.checks:
+            owner_only = 'Yes'
+                
         embed = discord.Embed(title=f"Help - {command}", description=f"""
 ```diff
 - <> = required argument
@@ -145,8 +150,8 @@ Usage: {self.get_minimal_command_signature(command)}
 {descriptiontext}
 ```
 ```yaml
-Usable by you: {can_run}
-Owner only: No
+Usable by you: {usable_by_you}
+Owner only: {owner_only}
 Slowmode: No
 Permissions needed: No
 ```
