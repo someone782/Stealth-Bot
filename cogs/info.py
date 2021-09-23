@@ -38,9 +38,6 @@ UNITS_MAPPING = [
 
 
 def pretty_size(bytes, units=UNITS_MAPPING):
-    """Get human-readable file sizes.
-    simplified version of https://pypi.python.org/pypi/hurry.filesize/
-    """
     for factor, suffix in units:
         if bytes >= factor:
             break
@@ -64,40 +61,60 @@ class ServerEmotesEmbedPage(menus.ListPageSource):
         offset = menu.current_page * self.per_page
         embed = discord.Embed(title=f"{self.guild}'s emotes ({len(self.guild.emojis)})", description="\n".join(f'{i+1}. {v}' for i, v in enumerate(entries, start=offset)))
         return embed
-
+    
 class ServerMembersEmbedPage(menus.ListPageSource):
-    async def format_page(self, menu, item):
-        embed = discord.Embed(title=f"{menu.ctx.guild}'s members [{len(menu.ctx.guild.members)}]", description="\n".join(item))
-        embed.set_footer(text=f"Command requested by {menu.ctx.author}", icon_url=menu.ctx.author.avatar.url)
-
+    def __init__(self, data, guild):
+        self.data = data
+        self.guild = guild
+        super().__init__(data, per_page=20)
+        
+    async def format_page(self, menu, entries):
+        offset = menu.current_page * self.per_page
+        embed = discord.Embed(title=f"{self.guild}'s members ({len(self.guild.members)})", description="\n".join(f'{i+1}. {v}' for i, v in enumerate(entries, start=offset)))
         return embed
-
+    
 class ServerBotsEmbedPage(menus.ListPageSource):
-    async def format_page(self, menu, item):
-        embed = discord.Embed(title=f"{menu.ctx.guild}'s bots [{len(list(filter(lambda m : m.bot, menu.ctx.guild.members)))}]", description="\n".join(item))
-        embed.set_footer(text=f"Command requested by {menu.ctx.author}", icon_url=menu.ctx.author.avatar.url)
-
+    def __init__(self, data, guild):
+        self.data = data
+        self.guild = guild
+        super().__init__(data, per_page=20)
+        
+    async def format_page(self, menu, entries):
+        offset = menu.current_page * self.per_page
+        embed = discord.Embed(title=f"{self.guild}'s bots ({len(list(filter(lambda m : m.bot, self.ctx.guild.members)))})", description="\n".join(f'{i+1}. {v}' for i, v in enumerate(entries, start=offset)))
         return embed
 
 class ServerRolesEmbedPage(menus.ListPageSource):
-    async def format_page(self, menu, item):
-        embed = discord.Embed(title=f"{menu.ctx.guild}'s roles [{len(menu.ctx.guild.roles)}]", description="\n".join(item))
-        embed.set_footer(text=f"Command requested by {menu.ctx.author}", icon_url=menu.ctx.author.avatar.url)
-
+    def __init__(self, data, guild):
+        self.data = data
+        self.guild = guild
+        super().__init__(data, per_page=20)
+        
+    async def format_page(self, menu, entries):
+        offset = menu.current_page * self.per_page
+        embed = discord.Embed(title=f"{self.guild}'s roles ({len(menu.ctx.guild.roles)})", description="\n".join(f'{i+1}. {v}' for i, v in enumerate(entries, start=offset)))
         return embed
-
+    
 class BotCommandsEmbedPage(menus.ListPageSource):
-    async def format_page(self, menu, item):
-        embed = discord.Embed(title=f"{menu.ctx.bot.user.name}'s commands [{len(list(menu.ctx.bot.commands))}]", description="\n".join(item))
-        embed.set_footer(text=f"Command requested by {menu.ctx.author}", icon_url=menu.ctx.author.avatar.url)
-
+    def __init__(self, data, guild):
+        self.data = data
+        self.guild = guild
+        super().__init__(data, per_page=20)
+        
+    async def format_page(self, menu, entries):
+        offset = menu.current_page * self.per_page
+        embed = discord.Embed(title=f"{self.ctx.bot.user.name}'s commands ({len(list(self.ctx.bot.commands))})", description="\n".join(f'{i+1}. {v}' for i, v in enumerate(entries, start=offset)))
         return embed
-
-class EmbedPageSource(menus.ListPageSource):
-    async def format_page(self, menu, item):
-        embed = discord.Embed(title="Character information", description="\n".join(item))
-        embed.set_footer(text=f"Command requested by {menu.ctx.author}", icon_url=menu.ctx.author.avatar.url)
-
+    
+class CharInfoEmbedPage(menus.ListPageSource):
+    def __init__(self, data, guild):
+        self.data = data
+        self.guild = guild
+        super().__init__(data, per_page=20)
+        
+    async def format_page(self, menu, entries):
+        offset = menu.current_page * self.per_page
+        embed = discord.Embed(title=f"Character information", description="\n".join(entries))
         return embed
 
 def setup(client):
@@ -537,15 +554,21 @@ Python version:
         commands = []
 
         for command in botCommands:
-            commands.append(f"{command.name} **|** {command.help}")
 
+            commands.append(f"{command.name} **|** {command.mention} **|** `{command.id}`")
+            
         commands = [sub.replace('hentai', '||hentai||') for sub in commands]
 
-        menu = menus.MenuPages(BotCommandsEmbedPage(commands, per_page=10))
-        
-        await menu.start(ctx)
+        paginator = ViewMenuPages(source=ServerBotsEmbedPage(commands, guild), clear_reactions_after=True)
+        page = await paginator._source.get_page(0)
+        kwargs = await paginator._get_kwargs_from_page(page)
+        if paginator.build_view():
+            paginator.message = await ctx.send(embed=kwargs['embed'],view = paginator.build_view())
+        else:
+            paginator.message = await ctx.send(embed=kwargs['embed'])
+        await paginator.start(ctx)
 
-    @commands.command(help="Shows you a list of emotes from this server", aliases=['emojilist', 'emote_list', 'emoji_list', 'emote', 'emoji', 'emotes', 'emojis'])
+    @commands.command(help="Shows you a list of emotes from this server", aliases=['emojilist', 'emote_list', 'emoji_list', 'emotes', 'emojis'])
     async def emotelist(self, ctx, id : int=None):
         if id:
             guild = self.client.get_guild(id)
@@ -573,45 +596,81 @@ Python version:
         else:
             paginator.message = await ctx.send(embed=kwargs['embed'])
         await paginator.start(ctx)
-
+        
     @commands.command(help="Shows you a list of members from this server", aliases=['member_list', 'memlist', 'mem_list'])
-    async def memberlist(self, ctx):
-        server = ctx.guild
-        guildMembers = server.members
+    async def memberlist(self, ctx, id : int=None):
+        if id:
+            guild = self.client.get_guild(id)
+            if not guild:
+                return await ctx.send("I couldn't find that server. Make sure the ID you entered was correct.")
+        else:
+            guild = ctx.guild
+
+        guildMembers = guild.members
         members = []
 
         for member in guildMembers:
+
             members.append(f"{member.name} **|** {member.mention} **|** `{member.id}`")
 
-        menu = menus.MenuPages(ServerMembersEmbedPage(members, per_page=20))
+        paginator = ViewMenuPages(source=ServerMembersEmbedPage(members, guild), clear_reactions_after=True)
+        page = await paginator._source.get_page(0)
+        kwargs = await paginator._get_kwargs_from_page(page)
+        if paginator.build_view():
+            paginator.message = await ctx.send(embed=kwargs['embed'],view = paginator.build_view())
+        else:
+            paginator.message = await ctx.send(embed=kwargs['embed'])
+        await paginator.start(ctx)
         
-        await menu.start(ctx)
-
     @commands.command(help="Shows you a list of bots from this server", aliases=['bot_list', 'bolist', 'bo_list', 'bots', 'bot'])
-    async def botlist(self, ctx):
-        server = ctx.guild
+    async def botlist(self, ctx, id : int=None):
+        if id:
+            guild = self.client.get_guild(id)
+            if not guild:
+                return await ctx.send("I couldn't find that server. Make sure the ID you entered was correct.")
+        else:
+            guild = ctx.guild
+
         guildBots = list(filter(lambda m : m.bot, server.members))
         bots = []
 
         for bot in guildBots:
+
             bots.append(f"{bot.name} **|** {bot.mention} **|** `{bot.id}`")
 
-        menu = menus.MenuPages(ServerBotsEmbedPage(bots, per_page=10))
+        paginator = ViewMenuPages(source=ServerBotsEmbedPage(bots, guild), clear_reactions_after=True)
+        page = await paginator._source.get_page(0)
+        kwargs = await paginator._get_kwargs_from_page(page)
+        if paginator.build_view():
+            paginator.message = await ctx.send(embed=kwargs['embed'],view = paginator.build_view())
+        else:
+            paginator.message = await ctx.send(embed=kwargs['embed'])
+        await paginator.start(ctx)
         
-        await menu.start(ctx)
-
     @commands.command(help="Shows you a list of roles from this server", aliases=['role_list', 'rolist', 'ro_list', 'roles', 'role'])
-    async def rolelist(self, ctx):
-        server = ctx.guild
+    async def rolelist(self, ctx, id : int=None):
+        if id:
+            guild = self.client.get_guild(id)
+            if not guild:
+                return await ctx.send("I couldn't find that server. Make sure the ID you entered was correct.")
+        else:
+            guild = ctx.guild
+
         guildRoles = server.roles
         roles = []
 
         for role in guildRoles:
+
             roles.append(f"{role.name} **|** {role.mention} **|** `{role.id}`")
 
-        menu = menus.MenuPages(ServerRolesEmbedPage(roles, per_page=10))
-        
-        await menu.start(ctx)
+        paginator = ViewMenuPages(source=ServerBotsEmbedPage(roles, guild), clear_reactions_after=True)
+        page = await paginator._source.get_page(0)
+        kwargs = await paginator._get_kwargs_from_page(page)
+        if paginator.build_view():
+            paginator.message = await ctx.send(embed=kwargs['embed'],view = paginator.build_view())
+        else:
+            paginator.message = await ctx.send(embed=kwargs['embed'])
+        await paginator.start(ctx)
 
     @commands.command(help="Shows information about the channel", aliases=['ci', 'channel'])
     async def channelinfo(self, ctx, channel : discord.TextChannel=None):
@@ -809,7 +868,7 @@ Suggestion: {suggestion}
             return f'`\\U{digit:>08}`: {name} - **{c}** \N{EM DASH} <http://www.fileformat.info/info/unicode/char/{digit}>'
         msg = '\n'.join(map(to_string, characters))
 
-        menu = menus.MenuPages(EmbedPageSource(msg.split("\n"), per_page=20), delete_message_after=True)
+        menu = menus.MenuPages(CharInfoEmbedPage(msg.split("\n"), per_page=20), delete_message_after=True)
         
         await menu.start(ctx)
 
