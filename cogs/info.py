@@ -60,17 +60,6 @@ class ServerEmotesEmbedPage(menus.ListPageSource):
 
         return embed
 
-class Embed(menus.ListPageSource):
-    def __init__(self, data, ctx):
-        self.data = data
-        self.ctx = ctx
-        super().__init__(data, per_page=10)
-        
-    async def format_page(self, menu, entries):
-        offset = menu.current_page * self.per_page
-        embed = discord.Embed(title=f"{self.ctx.guild}'s emotes ({len(self.ctx.guild.emojis)})", description="\n".join(f'{i}. {v}' for i, v in enumerate(entries, start=offset)))
-        return embed
-
 class ServerMembersEmbedPage(menus.ListPageSource):
     async def format_page(self, menu, item):
         embed = discord.Embed(title=f"{menu.ctx.guild}'s members [{len(menu.ctx.guild.members)}]", description="\n".join(item))
@@ -114,6 +103,17 @@ class Info(commands.Cog):
     def __init__(self, client):
         self.client = client
         client.session = aiohttp.ClientSession()
+        
+class Embed(menus.ListPageSource):
+    def __init__(self, data, ctx):
+        self.data = data
+        self.ctx = ctx
+        super().__init__(data, per_page=10)
+        
+    async def format_page(self, menu, entries):
+        offset = menu.current_page * self.per_page
+        embed = discord.Embed(title=f"{self.ctx.guild}'s emotes ({len(self.ctx.guild.emojis)})", description="\n".join(f'{i}. {v}' for i, v in enumerate(entries, start=offset)))
+        return embed
         
     @commands.command()
     async def bro(self, ctx):
