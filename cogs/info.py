@@ -63,7 +63,7 @@ class ServerEmotesEmbedPage(menus.ListPageSource):
         colors = [0x910023, 0xA523FF]
         color = random.choice(colors)
         colors = [0x910023, 0xA523FF]
-        embed = discord.Embed(title=f"{self.guild}'s emotes ({len(self.guild.emojis)})", description="\n".join(f'{i+1}. {v}' for i, v in enumerate(entries, start=offset)), timestamp=discord.utils.utcnow(), color=color, timestamp=discord.utils.utcnow(), color=color)
+        embed = discord.Embed(title=f"{self.guild}'s emotes ({len(self.guild.emojis)})", description="\n".join(f'{i+1}. {v}' for i, v in enumerate(entries, start=offset)), timestamp=discord.utils.utcnow(), color=color)
         return embed
     
 class ServerMembersEmbedPage(menus.ListPageSource):
@@ -128,7 +128,7 @@ class CharInfoEmbedPage(menus.ListPageSource):
         offset = menu.current_page * self.per_page
         colors = [0x910023, 0xA523FF]
         color = random.choice(colors)
-        embed = discord.Embed(title=f"Character information", description="\n".join(entries))
+        embed = discord.Embed(title=f"Character information", description="\n".join(entries), timestamp=discord.utils.utcnow(), color=color)
         return embed
 
 def setup(client):
