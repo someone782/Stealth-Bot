@@ -144,7 +144,7 @@ Usage: {self.get_minimal_command_signature(command)}
 {aliastext}
 {descriptiontext}
 
-Checks:
+Checks
 Usable by you?: {can_run}
 Owner only?: No
 Slowmode: No
