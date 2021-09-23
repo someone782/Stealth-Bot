@@ -12,6 +12,7 @@ import inspect
 import time
 import urllib
 import time
+import random
 import pathlib
 import pkg_resources
 import math
@@ -59,7 +60,10 @@ class ServerEmotesEmbedPage(menus.ListPageSource):
         
     async def format_page(self, menu, entries):
         offset = menu.current_page * self.per_page
-        embed = discord.Embed(title=f"{self.guild}'s emotes ({len(self.guild.emojis)})", description="\n".join(f'{i+1}. {v}' for i, v in enumerate(entries, start=offset)))
+        colors = [0x910023, 0xA523FF]
+        color = random.choice(colors)
+        colors = [0x910023, 0xA523FF]
+        embed = discord.Embed(title=f"{self.guild}'s emotes ({len(self.guild.emojis)})", description="\n".join(f'{i+1}. {v}' for i, v in enumerate(entries, start=offset)), timestamp=discord.utils.utcnow(), color=color, timestamp=discord.utils.utcnow(), color=color)
         return embed
     
 class ServerMembersEmbedPage(menus.ListPageSource):
@@ -70,7 +74,9 @@ class ServerMembersEmbedPage(menus.ListPageSource):
         
     async def format_page(self, menu, entries):
         offset = menu.current_page * self.per_page
-        embed = discord.Embed(title=f"{self.guild}'s members ({self.guild.member_count})", description="\n".join(f'{i+1}. {v}' for i, v in enumerate(entries, start=offset)))
+        colors = [0x910023, 0xA523FF]
+        color = random.choice(colors)
+        embed = discord.Embed(title=f"{self.guild}'s members ({self.guild.member_count})", description="\n".join(f'{i+1}. {v}' for i, v in enumerate(entries, start=offset)), timestamp=discord.utils.utcnow(), color=color)
         return embed
     
 class ServerBotsEmbedPage(menus.ListPageSource):
@@ -81,7 +87,9 @@ class ServerBotsEmbedPage(menus.ListPageSource):
         
     async def format_page(self, menu, entries):
         offset = menu.current_page * self.per_page
-        embed = discord.Embed(title=f"{self.guild}'s bots ()", description="\n".join(f'{i+1}. {v}' for i, v in enumerate(entries, start=offset)))
+        colors = [0x910023, 0xA523FF]
+        color = random.choice(colors)
+        embed = discord.Embed(title=f"{self.guild}'s bots ()", description="\n".join(f'{i+1}. {v}' for i, v in enumerate(entries, start=offset)), timestamp=discord.utils.utcnow(), color=color)
         return embed
 
 class ServerRolesEmbedPage(menus.ListPageSource):
@@ -92,7 +100,9 @@ class ServerRolesEmbedPage(menus.ListPageSource):
         
     async def format_page(self, menu, entries):
         offset = menu.current_page * self.per_page
-        embed = discord.Embed(title=f"{self.guild}'s roles ({len(self.guild.roles)})", description="\n".join(f'{i+1}. {v}' for i, v in enumerate(entries, start=offset)))
+        colors = [0x910023, 0xA523FF]
+        color = random.choice(colors)
+        embed = discord.Embed(title=f"{self.guild}'s roles ({len(self.guild.roles)})", description="\n".join(f'{i+1}. {v}' for i, v in enumerate(entries, start=offset)), timestamp=discord.utils.utcnow(), color=color)
         return embed
     
 class BotCommandsEmbedPage(menus.ListPageSource):
@@ -103,7 +113,9 @@ class BotCommandsEmbedPage(menus.ListPageSource):
         
     async def format_page(self, menu, entries):
         offset = menu.current_page * self.per_page
-        embed = discord.Embed(title=f"{self.bot}'s commands ()", description="\n".join(f'{i+1}. {v}' for i, v in enumerate(entries, start=offset)))
+        colors = [0x910023, 0xA523FF]
+        color = random.choice(colors)
+        embed = discord.Embed(title=f"{self.bot}'s commands ()", description="\n".join(f'{i+1}. {v}' for i, v in enumerate(entries, start=offset)), timestamp=discord.utils.utcnow(), color=color)
         return embed
     
 class CharInfoEmbedPage(menus.ListPageSource):
@@ -114,6 +126,8 @@ class CharInfoEmbedPage(menus.ListPageSource):
         
     async def format_page(self, menu, entries):
         offset = menu.current_page * self.per_page
+        colors = [0x910023, 0xA523FF]
+        color = random.choice(colors)
         embed = discord.Embed(title=f"Character information", description="\n".join(entries))
         return embed
 

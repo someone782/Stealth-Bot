@@ -4,6 +4,7 @@ from discord.ext import commands
 import helpers
 from difflib import get_close_matches
 import traceback
+import random
 from cogs import music as music_cog
 import errors
 
@@ -33,6 +34,14 @@ class ErrorHandler(commands.Cog):
             if matches:
                 matches = "\n".join(matches)
                 message = f"I couldn't find that command. Did you mean...\n{matches}"
+                
+                colors = [0x910023, 0xA523FF]
+                color = random.choice(colors)
+                
+                embed = discord.Embed(description=message, timestamp=discord.utils.utcnow(), color=color)
+                embed.set_footer(text='If you did mean the first command, press the "yes" button.', icon_url=ctx.author.avatar.url)
+                
+                return await ctx.reply(embed=embed)
 
         elif isinstance(error, errors.AuthorBlacklisted):
             message = f"It appears that you're blacklisted from this bot. Contact Ender2K89#9999 if you think this is a mistake."
