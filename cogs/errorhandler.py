@@ -44,7 +44,9 @@ class ErrorHandler(commands.Cog):
                 embed = discord.Embed(description=message, timestamp=discord.utils.utcnow(), color=color)
                 embed.set_footer(text=f"React with 💥 if you want to run `{matches[0]}`", icon_url=ctx.author.avatar.url)
                 
-                return await ctx.reply(embed=embed)
+                message = await ctx.reply(embed=embed)
+            
+                await message.add_reaction("💥")
 
                 try:
                     reaction, user = await self.client.wait_for('reaction_add', timeout=60.0, check=check)
