@@ -2,6 +2,7 @@ import discord
 from datetime import datetime
 import io
 import psutil
+import random
 import helpers
 import os
 import textwrap
@@ -140,7 +141,7 @@ class Info(commands.Cog):
             embed.set_thumbnail(url=thumbnail)
             embed.set_footer(text=f"{round(ms)}ms{' ' * (9-len(str(round(ms, 3))))}", icon_url=ctx.author.avatar.url)
             
-            await ctx.reply(embed=embed)
+            await message.edit(embed=embed)
 
     @commands.command(help="Shows you information about the member you mentioned", aliases=['ui', 'user', 'member', 'memberinfo'], brief="https://cdn.discordapp.com/attachments/876937268609290300/886407195279884318/userinfo.gif")
     @commands.cooldown(1, 5, BucketType.member)
