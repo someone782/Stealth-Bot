@@ -10,6 +10,7 @@ import sys
 import inspect
 import time
 import urllib
+import time
 import pathlib
 import pkg_resources
 import math
@@ -103,6 +104,13 @@ class Info(commands.Cog):
 
     @commands.command(help="Search lyrics of any song", aliases = ['l', 'lyrc', 'lyric'])
     async def lyrics(self, ctx, *, search):
+        
+        loadingEmbed = discord.Embed(title="Getting lyrics...")
+        
+        message = await ctx.send(embed=loadingEmbed)
+        
+        start = time.perf_counter()
+        
         song = urllib.parse.quote(search)
         
         async with self.client.session.get(f'https://some-random-api.ml/lyrics?title={song}') as json:
@@ -119,12 +127,20 @@ class Info(commands.Cog):
         artist = jsonData['author']
         title = jsonData['title']
         thumbnail = jsonData['thumbnail']['genius']
+        
+        end = time.perf_counter()
+        
+        ms = (end - start) * 1000
+        
+        colors = [0x910023, 0xA523FF]
+        color = random.choice(colors)
 
         for chunk in textwrap.wrap(lyrics, 4096, replace_whitespace=False):
-            embed = discord.Embed(title=f"{title} - {artist}", description=chunk)
+            embed = discord.Embed(title=f"{title} - {artist}", description=chunk, timestamp=discord.utils.utcnow(), color=color)
             embed.set_thumbnail(url=thumbnail)
+            embed.set_footer(text=f"{round(ms)}ms{' ' * (9-len(str(round(ms, 3))))}", icon_url=ctx.author.avatar.url)
             
-            await ctx.send(embed=embed)
+            await ctx.reply(embed=embed)
 
     @commands.command(help="Shows you information about the member you mentioned", aliases=['ui', 'user', 'member', 'memberinfo'], brief="https://cdn.discordapp.com/attachments/876937268609290300/886407195279884318/userinfo.gif")
     @commands.cooldown(1, 5, BucketType.member)

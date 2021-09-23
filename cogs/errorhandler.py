@@ -21,15 +21,8 @@ class ErrorHandler(commands.Cog):
         prefix = ctx.clean_prefix
 
         error = getattr(error, "original", error)
-
-        ignored = (
-            
-        )
         
-        if isinstance(error, ignored):
-            return
-
-        elif isinstance(error, commands.CommandNotFound):
+        if isinstance(error, commands.CommandNotFound):
             if ctx.author.id in self.client.owners and self.client.no_prefix is True:
                 return
 
