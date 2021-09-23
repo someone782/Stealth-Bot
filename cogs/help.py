@@ -146,9 +146,9 @@ Usage: {self.get_minimal_command_signature(command)}
 
 Checks:
 Usable by you?: {can_run}
-Owner only?: 
-Slowmode: 
-Permissions needed: 
+Owner only?: No
+Slowmode: No
+Permissions needed: No
 ```
                                   """)
 
