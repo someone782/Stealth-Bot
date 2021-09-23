@@ -19,11 +19,12 @@ class ErrorHandler(commands.Cog):
     @commands.Cog.listener('on_command_error')
     async def errorhandler(self, ctx, error):
         prefix = ctx.clean_prefix
+        owners = [564890536947875868, 555818548291829792]
 
         error = getattr(error, "original", error)
         
         if isinstance(error, commands.CommandNotFound):
-            if ctx.author.id in self.client.owners and self.client.no_prefix is True:
+            if ctx.author.id in owners and self.client.no_prefix is True:
                 return
 
             message = f"I couldn't find that command."
