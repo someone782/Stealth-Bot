@@ -94,16 +94,7 @@ class EmbedPageSource(menus.ListPageSource):
         embed.set_footer(text=f"Command requested by {menu.ctx.author}", icon_url=menu.ctx.author.avatar.url)
 
         return embed
-
-def setup(client):
-    client.add_cog(Info(client))
-
-class Info(commands.Cog):
-    "<:info:888768239889424444> | All informative commands like `serverinfo`, `userinfo` and more!"
-    def __init__(self, client):
-        self.client = client
-        client.session = aiohttp.ClientSession()
-        
+    
 class Embed(menus.ListPageSource):
     def __init__(self, data, ctx):
         self.data = data
@@ -114,6 +105,15 @@ class Embed(menus.ListPageSource):
         offset = menu.current_page * self.per_page
         embed = discord.Embed(title=f"{self.ctx.guild}'s emotes ({len(self.ctx.guild.emojis)})", description="\n".join(f'{i}. {v}' for i, v in enumerate(entries, start=offset)))
         return embed
+
+def setup(client):
+    client.add_cog(Info(client))
+
+class Info(commands.Cog):
+    "<:info:888768239889424444> | All informative commands like `serverinfo`, `userinfo` and more!"
+    def __init__(self, client):
+        self.client = client
+        client.session = aiohttp.ClientSession()
         
     @commands.command()
     async def bro(self, ctx):
@@ -129,7 +129,7 @@ class Embed(menus.ListPageSource):
           if not emoji.animated:
               emotes.append(f"<:{emoji.name}:{emoji.id}> **|** {emoji.name} **|** [`<:{emoji.name}:{emoji.id}>`]({emoji.url})")
               
-        paginator = ViewMenuPages(source=ServerEmotesEmbedPage(emotes,ctx), clear_reactions_after=True)
+        paginator = ViewMenuPages(source=ServerEmotesEmbedPage(self, emotes, ctx), clear_reactions_after=True)
         page = await paginator._source.get_page(0)
         kwargs = await paginator._get_kwargs_from_page(page)
         if paginator.build_view():
