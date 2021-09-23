@@ -138,7 +138,7 @@ class Info(commands.Cog):
         
         await message.delete()
 
-        for chunk in textwrap.wrap(lyrics, 250, replace_whitespace=False):
+        for chunk in textwrap.wrap(lyrics, 2048, replace_whitespace=False):
             embed = discord.Embed(title=f"{title} - {artist}", description=chunk, timestamp=discord.utils.utcnow(), color=color)
             embed.set_thumbnail(url=thumbnail)
             embed.set_footer(text=f"{round(ms)}ms{' ' * (9-len(str(round(ms, 3))))}", icon_url=ctx.author.avatar.url)
