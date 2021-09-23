@@ -599,7 +599,7 @@ Python version:
             paginator.message = await ctx.send(embed=kwargs['embed'])
         await paginator.start(ctx)
         
-    @commands.command(help="Shows you a list of members from this server", aliases=['member_list', 'memlist', 'mem_list'])
+    @commands.command(help="Shows you a list of members from this server", aliases=['member_list', 'memlist', 'mem_list', 'members'])
     async def memberlist(self, ctx, id : int=None):
         if id:
             guild = self.client.get_guild(id)
