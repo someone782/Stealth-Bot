@@ -96,15 +96,16 @@ class EmbedPageSource(menus.ListPageSource):
 
         return embed
     
-class MySource(menus.ListPageSource):
-    def __init__(self, data):
-        super().__init__(data, per_page=4)
-
+class ServerEmotesEmbedPage(menus.ListPageSource):
+    def __init__(self, data, ctx):
+        self.data = data
+        self.ctx = ctx
+        super().__init__(data, per_page=10)
+        
     async def format_page(self, menu, entries):
         offset = menu.current_page * self.per_page
-        embed = discord.Embed(title="blah", description='\n'.join(f'{i}. {v}' for i, v in enumerate(entries, start=offset)))
+        embed = discord.Embed(title=f"{self.ctx.guild}'s emotes ({len(self.ctx.guild.emojis)})", description="\n".join(f'{i}. {v}' for i, v in enumerate(entries, start=offset)))
         return embed
-
 
 def setup(client):
     client.add_cog(Info(client))
@@ -115,9 +116,15 @@ class Info(commands.Cog):
         self.client = client
         client.session = aiohttp.ClientSession()
         
-    @commands.command()
-    async def bro(self, ctx):
-        server = ctx.guild
+    @commands.command(help="Shows you a list of emotes from this server")
+    async def bro(self, ctx, id : int=None):
+        if id:
+            server = self.client.get_guild(id)
+            if not server:
+                return await ctx.send("I couldn't find that server. Make sure the ID you entered was correct.")
+        else:
+            server = ctx.guild
+
         guildEmotes = server.emojis
         emotes = []
 
@@ -128,11 +135,15 @@ class Info(commands.Cog):
 
           if not emoji.animated:
               emotes.append(f"<:{emoji.name}:{emoji.id}> **|** {emoji.name} **|** [`<:{emoji.name}:{emoji.id}>`]({emoji.url})")
-              
-        menu = menus.MenuPages(BotCommandsEmbedPage(commands, per_page=10))
-              
-        pages = ViewMenuPages(source=MySource(emotes), clear_reactions_after=True)
-        await pages.start(ctx)
+
+        paginator = ViewMenuPages(source=ServerEmotesEmbedPage(emotes,ctx), clear_reactions_after=True)
+        page = await paginator._source.get_page(0)
+        kwargs = await paginator._get_kwargs_from_page(page)
+        if paginator.build_view():
+            paginator.message = await ctx.send(embed=kwargs['embed'],view = paginator.build_view())
+        else:
+            paginator.message = await ctx.send(embed=kwargs['embed'])
+        await paginator.start(ctx)
 
 
     @commands.command(help="Search lyrics of any song", aliases = ['l', 'lyrc', 'lyric'])
