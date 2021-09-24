@@ -56,7 +56,8 @@ git push origin main
         
     @commands.command()
     @commands.is_owner()
-    async def enable(self, ctx, command : self.client.get_command):
+    async def enable(self, ctx, command : str):
+        command = self.client.get_command(command)
         if command.enabled:
             return await ctx.send("`{command}` is already enabled.")
         command.enabled = True
@@ -64,7 +65,8 @@ git push origin main
         
     @commands.command()
     @commands.is_owner()
-    async def disable(self, ctx, command : self.client.get_command):
+    async def disable(self, ctx, command : str):
+        command = self.client.get_command(command)
         if not command.enabled:
             return await ctx.send("`{command}` is already disabled.")
         command.enabled = False
