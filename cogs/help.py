@@ -58,44 +58,6 @@ __**Available commands**__ **[{len(cog.get_commands())}]**
 ```
                               """)
         await interaction.response.send_message(embed=embed, ephemeral=True)
-        
-class Dropdown2(discord.ui.Select):
-    def __init__(self, context, mapping, bot):
-        self.context = context
-        self.mapping = mapping
-        self.bot = bot
-        options = []
-        for key, value in mapping.items():
-            cog_name = getattr(key, "nameofcog", "")
-            cog_commands = ""
-            for commands in getattr(key, "commands", ""):
-                cog_commands += f"`{commands.name}`,"
-            cog_commands = cog_commands[:-1]
-            bot.helpdict[getattr(key, "qualified_name", "").lower()] = [getattr(key, "description", ""), cog_name, cog_commands]
-            if key is None:
-                continue
-            cog_name = getattr(key, "name", "")
-            cog_emoji = getattr(key, "emoji", "")
-            if cog_name != "":
-                options.append(discord.SelectOption(label=cog_name,description=key.description,emoji=cog_emoji))
-            
-        super().__init__(placeholder='Choose a module...', min_values=1, max_values=1, options=options)
-         
-    async def callback(self, interaction: discord.Interaction):
-        view = DropdownView(context=self.context, mapping=self.mapping, bot = self.context.bot)
-        e = discord.Embed(title="You're a cunt", description=self.bot.helpdict[self.values[0].lower()][0])
-        
-        e.add_field(name=self.bot.helpdict[self.values[0].lower()][1],value=self.bot.helpdict[self.values[0].lower()][2])
-        await interaction.response.edit_message(embed=e, view=view)
-
-class DropdownView(discord.ui.View):
-   def __init__(self, context, mapping, bot):
-      super().__init__()
-      self.context = context
-      self.mapping = mapping
-      self.bot = bot
-      self.add_item(Dropdown2(self.context, mapping, self.context.bot))
-
 
 class VoteButtons(discord.ui.View):
     def __init__(self):
@@ -170,7 +132,7 @@ Written with `{count_python('.'):,}` lines.
 
         embed.set_footer(text=f"Suggested command: {prefix}{random.choice(list(self.context.bot.commands))} • Credits given in {prefix}credits")
 
-        await ctx.send(embed=embed, view=DropdownView)
+        await ctx.send(embed=embed, view=Stuff())
 
 
     async def send_command_help(self, command):
@@ -222,7 +184,7 @@ Permissions needed: No
     async def send_cog_help(self, cog):
         ctx = self.context
         prefix = self.context.clean_prefix
-        if cog.qualified_name == 'NSFW':
+        if cog.qualified_name.lower() == 'nsfw':
             raise commands.NSFWChannelRequired(ctx.channel)
         entries = cog.get_commands()
         command_signatures = [self.get_minimal_command_signature(c) for c in entries]
