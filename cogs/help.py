@@ -68,9 +68,8 @@ class VoteButtons(discord.ui.View):
         self.add_item(discord.ui.Button(emoji="<:botsgg:870134146972938310>", label='bots.gg', url="https://discord.bots.gg/bots/760179628122964008"))
 
 class Stuff(discord.ui.View):
-    def __init__(self):
+    def __init__(self, ctx):
         super().__init__()
-        ctx = self.context
         self.add_item(Dropdown(ctx))
         url = "https://discord.com/api/oauth2/authorize?client_id=760179628122964008&permissions=8&scope=bot"
         self.add_item(discord.ui.Button(emoji="<:invite:860644752281436171>", label='Invite me', url=url))
@@ -135,7 +134,7 @@ Written with `{count_python('.'):,}` lines.
 
         embed.set_footer(text=f"Suggested command: {prefix}{random.choice(list(self.context.bot.commands))} • Credits given in {prefix}credits")
 
-        await ctx.send(embed=embed, view=Stuff())
+        await ctx.send(embed=embed, view=Stuff(ctx))
 
 
     async def send_command_help(self, command):
