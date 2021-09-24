@@ -45,7 +45,7 @@ class Dropdown(discord.ui.Select):
         cog = self.ctx.bot.get_cog(self.values[0])
         embed = discord.Embed(title=f"Help - {self.values[0]}", description=f"""
 Total commands: {len(cog.get_commands())}
-Commands usable by you (in this server): {len(await self.filter_commands(cog.get_commands(), sort=True))}
+Commands usable by you (in this server): 
 ```diff
 - <> = required argument
 - [] = optional argument
