@@ -5,6 +5,7 @@ import helpers
 import contextlib
 import random
 import asyncio
+import random
 import errors
 import os
 from typing import Any, Dict, List, Optional, Union
@@ -53,6 +54,10 @@ class Dropdown(discord.ui.Select):
         command_signatures = [self.get_minimal_command_signature(c) for c in entries]
         if command_signatures:
             val = "\n".join(command_signatures)
+            
+        colors = [0x910023, 0xA523FF]
+        color = random.choice(colors)
+            
         embed = discord.Embed(title=f"Help - {self.values[0]}", description=f"""
 Total commands: {len(cog.get_commands())}
 Commands usable by you (in this server): 
@@ -62,13 +67,15 @@ Commands usable by you (in this server):
 + Type help [command] for help on a command
 ```
 `Description:` {cog.description.split('|')[0]}
-`{cog.description.split('|')[1]}`
+`{cog.description.split('| ')[1]}`
 
 __**Available commands**__ **[{len(cog.get_commands())}]**
 ```fix
 {val}
 ```
-                              """)
+                              """, timestamp=discord.utils.utcnow(), color=color)
+        embed.set_footer(text=f"Requested by {self.ctx.author}", icon_url=self.ctx.author.avatar.url)
+        
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
 class VoteButtons(discord.ui.View):
