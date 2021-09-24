@@ -57,7 +57,45 @@ __**Available commands**__ **[{len(cog.get_commands())}]**
 {val}
 ```
                               """)
-        await interaction.response.send_message(f'Your favourite colour is {self.values[0]}', embed=embed, ephemeral=True)
+        await interaction.response.send_message(embed=embed, ephemeral=True)
+        
+class Dropdown2(discord.ui.Select):
+    def __init__(self, context, mapping, bot):
+        self.context = context
+        self.mapping = mapping
+        self.bot = bot
+        options = []
+        for key, value in mapping.items():
+            cog_name = getattr(key, "nameofcog", "")
+            cog_commands = ""
+            for commands in getattr(key, "commands", ""):
+                cog_commands += f"`{commands.name}`,"
+            cog_commands = cog_commands[:-1]
+            bot.helpdict[getattr(key, "qualified_name", "").lower()] = [getattr(key, "description", ""), cog_name, cog_commands]
+            if key is None:
+                continue
+            cog_name = getattr(key, "name", "")
+            cog_emoji = getattr(key, "emoji", "")
+            if cog_name != "":
+                options.append(discord.SelectOption(label=cog_name,description=key.description,emoji=cog_emoji))
+            
+        super().__init__(placeholder='Choose a module...', min_values=1, max_values=1, options=options)
+         
+    async def callback(self, interaction: discord.Interaction):
+        view = DropdownView(context=self.context, mapping=self.mapping, bot = self.context.bot)
+        e = discord.Embed(title="You're a cunt", description=self.bot.helpdict[self.values[0].lower()][0])
+        
+        e.add_field(name=self.bot.helpdict[self.values[0].lower()][1],value=self.bot.helpdict[self.values[0].lower()][2])
+        await interaction.response.edit_message(embed=e, view=view)
+
+class DropdownView(discord.ui.View):
+   def __init__(self, context, mapping, bot):
+      super().__init__()
+      self.context = context
+      self.mapping = mapping
+      self.bot = bot
+      self.add_item(Dropdown2(self.context, mapping, self.context.bot))
+
 
 class VoteButtons(discord.ui.View):
     def __init__(self):
