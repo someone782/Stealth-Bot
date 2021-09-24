@@ -44,7 +44,7 @@ class ErrorHandler(commands.Cog):
                 embed = discord.Embed(description=message, timestamp=discord.utils.utcnow(), color=color)
                 embed.set_footer(text=f"React with ✅ if you want to run `{matches}`", icon_url=ctx.author.avatar.url)
                 
-                message = await ctx.reply(embed=embed)
+                msg = await ctx.reply(embed=embed)
             
                 await message.add_reaction("✅")
 
@@ -55,11 +55,13 @@ class ErrorHandler(commands.Cog):
                 else:
                     cmd = self.client.get_command(f"{matches}")
                     if cmd.cog_name == 'NSFW':
-                        await message.delete()
+                        await msg.delete()
                         raise commands.NSFWChannelRequired
+                        return
                     else:
                         await cmd(ctx)
-                        await message.delete()
+                        await msg.delete()
+                        return
 
         elif isinstance(error, errors.AuthorBlacklisted):
             message = f"It appears that you're blacklisted from this bot. Contact Ender2K89#9999 if you think this is a mistake."
