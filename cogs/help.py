@@ -24,15 +24,16 @@ def count_python(root: str) -> int:
     return sum(reading_recursive(root))
 
 class Dropdown(discord.ui.Select):
-    def __init__(self):
+    def __init__(self,ctx):
+        self.ctx = ctx
         options = [
             
-            discord.SelectOption(label='Info', description='Info', emoji='<:info:888768239889424444>'),
+            discord.SelectOption(label='Info', description='Info', emoji=':info:'),
             discord.SelectOption(label='Fun', description='Fun', emoji='⚽'),
             discord.SelectOption(label='Misc', description='Misc', emoji='⚙️'),
-            discord.SelectOption(label='Mod', description='Mod', emoji='<:staff:858326975869485077>'),
-            discord.SelectOption(label='Music', description='Music', emoji='<a:music:888778105844563988>'),
-            discord.SelectOption(label='Owner', description='Owner', emoji='<:owner_crown:845946530452209734>'),
+            discord.SelectOption(label='Mod', description='Mod', emoji=':staff:'),
+            discord.SelectOption(label='Music', description='Music', emoji=':music:'),
+            discord.SelectOption(label='Owner', description='Owner', emoji=':owner_crown:'),
             discord.SelectOption(label='Custom', description='Custom', emoji='🎉'),
             discord.SelectOption(label='Images', description='Images', emoji='🖼️'),
             
