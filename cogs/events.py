@@ -30,7 +30,7 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_message(self, message):
         self.client.messages = self.client.messages + 1
-        if message.content in [f'<@!{self.client.user.id}>', f'<@{self.client.user.id}>']:
+        if [f'<@!{self.client.user.id}>', f'<@{self.client.user.id}>'] in message.content:
             await message.send("fuck off")
         if message.author.id in afks.keys():
             afks.pop(message.author.id)

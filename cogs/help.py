@@ -41,6 +41,22 @@ class Dropdown(discord.ui.Select):
         super().__init__(placeholder='Select a category...', min_values=1, max_values=1, options=options)
 
     async def callback(self, interaction: discord.Interaction):
+        embed = discord.Embed(title=f"Help - {self.values[0]}", description="""
+Total commands: {len(cog.get_commands())}
+Commands usable by you (in this server): {len(await self.filter_commands(cog.get_commands(), sort=True))}
+```diff
+- <> = required argument
+- [] = optional argument
++ Type {prefix}help [command] for help on a command
+```
+`Description:` {cog.description.split('|')[0]}
+`{cog.description.split('|')[1]}`
+
+__**Available commands**__ **[{len(cog.get_commands())}]**
+```fix
+{val}
+```
+                              """)
         await interaction.response.send_message(f'Your favourite colour is {self.values[0]}', ephemeral=True)
 
 class VoteButtons(discord.ui.View):
