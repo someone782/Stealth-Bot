@@ -223,7 +223,7 @@ Permissions needed: No
         ctx = self.context
         prefix = self.context.clean_prefix
         if cog.qualified_name == 'NSFW':
-            raise commands.NSFWChannelRequired
+            raise commands.NSFWChannelRequired(ctx.channel)
         entries = cog.get_commands()
         command_signatures = [self.get_minimal_command_signature(c) for c in entries]
         if command_signatures:
