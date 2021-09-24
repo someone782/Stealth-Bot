@@ -41,8 +41,7 @@ class Dropdown(discord.ui.Select):
         super().__init__(placeholder='Select a category...', min_values=1, max_values=1, options=options)
 
     async def callback(self, interaction: discord.Interaction):
-        cog = self.bot.get_cog(self.values[0])
-        embed = discord.Embed(title=f"Help - {self.values[0]}", description=f"""
+        embed = discord.Embed(title=f"Help - {self.values[0]}", description="""
 Total commands: {len(cog.get_commands())}
 Commands usable by you (in this server): {len(await self.filter_commands(cog.get_commands(), sort=True))}
 ```diff
