@@ -54,18 +54,18 @@ class ErrorHandler(commands.Cog):
                     return
                 else:
                     cmd = self.client.get_command(f"{matches}")
-                    # if cmd.cog_name == 'NSFW':
-                    #     await msg.delete()
-                    #     message = "This command can only be used in a NSFW channel."
+                    if cmd.cog_name == 'NSFW':
+                        await msg.delete()
+                        message = "This command can only be used in a NSFW channel."
 
-                    #     embed = discord.Embed(title=message, color=color)
-                    #     embed.set_image(url="https://i.imgur.com/oe4iK5i.gif")
+                        embed = discord.Embed(title=message, color=color)
+                        embed.set_image(url="https://i.imgur.com/oe4iK5i.gif")
 
-                    #     return await ctx.send(embed=embed)
-                    # else:
-                    await ctx.invoke(cmd)
-                    await msg.delete()
-                    # return
+                        return await ctx.send(embed=embed)
+                    else:
+                        await cmd(ctx)
+                        await msg.delete()
+                        return
 
         elif isinstance(error, errors.AuthorBlacklisted):
             message = f"It appears that you're blacklisted from this bot. Contact Ender2K89#9999 if you think this is a mistake."
