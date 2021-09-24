@@ -26,6 +26,11 @@ def count_python(root: str) -> int:
 class Dropdown(discord.ui.Select):
     def __init__(self, ctx):
         self.ctx = ctx
+    def get_minimal_command_signature(self, command):
+        return '%s%s %s' % (self.context.clean_prefix, command.qualified_name, command.signature)
+
+    def get_command_name(self, command):
+        return '%s' % (command.qualified_name)
         options = [
             
             discord.SelectOption(label='Info', description='Info', emoji='<:info:888768239889424444>'),
