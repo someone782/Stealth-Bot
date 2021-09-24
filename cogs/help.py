@@ -43,6 +43,10 @@ class Dropdown(discord.ui.Select):
 
     async def callback(self, interaction: discord.Interaction):
         cog = self.ctx.bot.get_cog(self.values[0])
+        entries = cog.get_commands()
+        command_signatures = [self.get_minimal_command_signature(c) for c in entries]
+        if command_signatures:
+            val = "\n".join(command_signatures)
         embed = discord.Embed(title=f"Help - {self.values[0]}", description=f"""
 Total commands: {len(cog.get_commands())}
 Commands usable by you (in this server): 
@@ -56,7 +60,7 @@ Commands usable by you (in this server):
 
 __**Available commands**__ **[{len(cog.get_commands())}]**
 ```fix
-
+{val}
 ```
                               """)
         await interaction.response.send_message(embed=embed, ephemeral=True)
