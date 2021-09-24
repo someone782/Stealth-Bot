@@ -70,7 +70,7 @@ class VoteButtons(discord.ui.View):
 class Stuff(discord.ui.View):
     def __init__(self, ctx):
         super().__init__()
-        self.add_item(Dropdown(ctx))
+        self.add_item(Dropdown(self.ctx))
         url = "https://discord.com/api/oauth2/authorize?client_id=760179628122964008&permissions=8&scope=bot"
         self.add_item(discord.ui.Button(emoji="<:invite:860644752281436171>", label='Invite me', url=url))
         self.add_item(discord.ui.Button(emoji="<:github:744345792172654643>", label='Source code', url="https://github.com/Ender2K89/Stealth-Bot"))
