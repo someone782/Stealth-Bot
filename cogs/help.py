@@ -170,7 +170,7 @@ Written with `{count_python('.'):,}` lines.
 
         embed.set_footer(text=f"Suggested command: {prefix}{random.choice(list(self.context.bot.commands))} • Credits given in {prefix}credits")
 
-        await ctx.send(embed=embed, view=Stuff())
+        await ctx.send(embed=embed, view=DropdownView())
 
 
     async def send_command_help(self, command):
