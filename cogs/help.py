@@ -27,13 +27,15 @@ class Dropdown(discord.ui.Select):
     def __init__(self):
         options = [
             
-            discord.SelectOption(label='Info', description='Your favourite colour is red', emoji='🟥'),
-            discord.SelectOption(label='Fun', description='Your favourite colour is green', emoji='🟩'),
-            discord.SelectOption(label='Misc', description='Your favourite colour is blue', emoji='🟦'),
-            discord.SelectOption(label='Mod', description='Your favourite colour is red', emoji='🟥'),
-            discord.SelectOption(label='Music', description='Your favourite colour is green', emoji='🟩'),
-            discord.SelectOption(label='Owner', description='Your favourite colour is blue', emoji='🟦'),
-            discord.SelectOption(label='Custom', description='Your favourite colour is red', emoji='🟥'),
+            discord.SelectOption(label='Info', description='Info', emoji='<:info:888768239889424444>'),
+            discord.SelectOption(label='Fun', description='Fun', emoji='⚽'),
+            discord.SelectOption(label='Misc', description='Misc', emoji='⚙️'),
+            discord.SelectOption(label='Mod', description='Mod', emoji='<:staff:858326975869485077>'),
+            discord.SelectOption(label='Music', description='Music', emoji='<a:music:888778105844563988>'),
+            discord.SelectOption(label='Owner', description='Owner', emoji='<:owner_crown:845946530452209734>'),
+            discord.SelectOption(label='Custom', description='Custom', emoji='🎉'),
+            discord.SelectOption(label='Images', description='Images', emoji='🖼️'),
+            
         ]
 
         super().__init__(placeholder='Select a category...', min_values=1, max_values=1, options=options)
