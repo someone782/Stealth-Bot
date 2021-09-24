@@ -39,14 +39,14 @@ class ErrorHandler(commands.Cog):
                 color = random.choice(colors)
                 
                 def check(reaction, user):
-                    return user == ctx.author and str(reaction.emoji) == '✅'
+                    return user == ctx.author and str(reaction.emoji) == '<:greenTick:596576670815879169>'
                 
                 embed = discord.Embed(description=message, timestamp=discord.utils.utcnow(), color=color)
-                embed.set_footer(text=f"React with ✅ if you want to run `{matches}`", icon_url=ctx.author.avatar.url)
+                embed.set_footer(text=f"React with the check mark if you want to run `{matches}`", icon_url=ctx.author.avatar.url)
                 
                 msg = await ctx.reply(embed=embed)
             
-                await msg.add_reaction("✅")
+                await msg.add_reaction("<:greenTick:596576670815879169>")
 
                 try:
                     reaction, user = await self.client.wait_for('reaction_add', timeout=60.0, check=check)
