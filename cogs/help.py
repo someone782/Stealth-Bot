@@ -50,6 +50,10 @@ class Dropdown(discord.ui.Select):
 
     async def callback(self, interaction: discord.Interaction):
         cog = self.ctx.bot.get_cog(self.values[0])
+        
+        if cog.qualified_name.lower() == 'nsfw' and ctx.channel.is_nsfw() == False:
+            raise commands.NSFWChannelRequired(ctx.channel)
+        
         entries = cog.get_commands()
         command_signatures = [self.get_minimal_command_signature(c) for c in entries]
         if command_signatures:
@@ -203,7 +207,7 @@ Permissions needed: No
     async def send_cog_help(self, cog):
         ctx = self.context
         prefix = self.context.clean_prefix
-        if cog.qualified_name.lower() == 'nsfw':
+        if cog.qualified_name.lower() == 'nsfw' and ctx.channel.is_nsfw() == False:
             raise commands.NSFWChannelRequired(ctx.channel)
         entries = cog.get_commands()
         command_signatures = [self.get_minimal_command_signature(c) for c in entries]
@@ -218,7 +222,7 @@ Commands usable by you (in this server): {len(await self.filter_commands(cog.get
 + Type {prefix}help [command] for help on a command
 ```
 `Description:` {cog.description.split('|')[0]}
-`{cog.description.split('|')[1]}`
+`{cog.description.split('| ')[1]}`
 
 __**Available commands**__ **[{len(cog.get_commands())}]**
 ```fix
