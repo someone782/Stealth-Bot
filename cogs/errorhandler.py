@@ -46,7 +46,7 @@ class ErrorHandler(commands.Cog):
                 
                 msg = await ctx.reply(embed=embed)
             
-                await message.add_reaction("✅")
+                await msg.add_reaction("✅")
 
                 try:
                     reaction, user = await self.client.wait_for('reaction_add', timeout=60.0, check=check)
