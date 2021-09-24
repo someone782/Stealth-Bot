@@ -54,13 +54,15 @@ class ErrorHandler(commands.Cog):
                     return
                 else:
                     cmd = self.client.get_command(f"{matches}")
-                    if cmd.cog_name == 'NSFW' or cmd.cog_name == 'Owner':
+                    if cmd.cog_name == 'NSFW' or cmd.cog_name == 'Owner' or cmd.cog_name == 'Mod':
                         await msg.delete()
-                        return await ctx.send("fuck off")
+                        message = "You can't do commands that are in these categories: `NSFW`, `Owner`, `Mod`"
+                        embed = discord.Embed(description=message)
+                        
+                        return await ctx.send(embed=embed)
                     else:
-                        await cmd(ctx)
                         await msg.delete()
-                        return
+                        return await cmd(ctx)
 
         elif isinstance(error, errors.AuthorBlacklisted):
             message = f"It appears that you're blacklisted from this bot. Contact Ender2K89#9999 if you think this is a mistake."
