@@ -53,6 +53,22 @@ git commit -m "{message}"
 git push origin main
 ```
         ''')
+        
+    @commands.command()
+    @commands.is_owner()
+    async def enable(self, ctx, command : self.client.get_command):
+        if command.enabled:
+            return await ctx.send("`{command}` is already enabled.")
+        command.enabled = True
+        await ctx.send(f"Successfully enabled the `{command.name}` command.")
+        
+    @commands.command()
+    @commands.is_owner()
+    async def disable(self, ctx, command : self.client.get_command):
+        if not command.enabled:
+            return await ctx.send("`{command}` is already disabled.")
+        command.enabled = False
+        await ctx.send(f"Successfully disabled the `{command.name}` command.")
 
     @commands.command()
     @commands.is_owner()
