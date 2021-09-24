@@ -56,8 +56,12 @@ class ErrorHandler(commands.Cog):
                     cmd = self.client.get_command(f"{matches}")
                     if cmd.cog_name == 'NSFW':
                         await msg.delete()
-                        raise commands.NSFWChannelRequired(ctx.channel)
-                        return
+                        message = "This command can only be used in a NSFW channel."
+
+                        embed = discord.Embed(title=message, color=color)
+                        embed.set_image(url="https://i.imgur.com/oe4iK5i.gif")
+
+                        return await ctx.send(embed=embed)
                     else:
                         await cmd(ctx)
                         await msg.delete()
