@@ -42,7 +42,7 @@ class ErrorHandler(commands.Cog):
                     return user == ctx.author and str(reaction.emoji) == '<:greenTick:596576670815879169>'
                 
                 embed = discord.Embed(description=message, timestamp=discord.utils.utcnow(), color=color)
-                embed.set_footer(text=f"React with the check mark if you want to run `{matches}`", icon_url=ctx.author.avatar.url)
+                embed.set_footer(text=f"React with the green tick if you want to run `{matches}`", icon_url=ctx.author.avatar.url)
                 
                 msg = await ctx.reply(embed=embed)
             
@@ -54,14 +54,9 @@ class ErrorHandler(commands.Cog):
                     return
                 else:
                     cmd = self.client.get_command(f"{matches}")
-                    if cmd.cog_name == 'NSFW':
+                    if cmd.cog_name == 'NSFW' or cmd.cog_name == 'Owner':
                         await msg.delete()
-                        message = "This command can only be used in a NSFW channel."
-
-                        embed = discord.Embed(title=message, color=color)
-                        embed.set_image(url="https://i.imgur.com/oe4iK5i.gif")
-
-                        return await ctx.send(embed=embed)
+                        return await ctx.send("fuck off")
                     else:
                         await cmd(ctx)
                         await msg.delete()
