@@ -57,7 +57,7 @@ __**Available commands**__ **[{len(cog.get_commands())}]**
 {val}
 ```
                               """)
-        await interaction.response.send_message(f'Your favourite colour is {self.values[0]}', ephemeral=True)
+        await interaction.response.send_message(f'Your favourite colour is {self.values[0]}', embed=embed, ephemeral=True)
 
 class VoteButtons(discord.ui.View):
     def __init__(self):
