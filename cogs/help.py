@@ -42,7 +42,7 @@ class Dropdown(discord.ui.Select):
         super().__init__(placeholder='Select a category...', min_values=1, max_values=1, options=options)
         
     def get_minimal_command_signature(self, command):
-        return '%s%s %s' % (self.context.clean_prefix, command.qualified_name, command.signature)
+        return '%s%s %s' % (self.ctx.clean_prefix, command.qualified_name, command.signature)
 
     def get_command_name(self, command):
         return '%s' % (command.qualified_name)
