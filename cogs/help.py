@@ -222,6 +222,8 @@ Permissions needed: No
     async def send_cog_help(self, cog):
         ctx = self.context
         prefix = self.context.clean_prefix
+        if cog.qualified_name == 'NSFW':
+            raise commands.NSFWChannelRequired
         entries = cog.get_commands()
         command_signatures = [self.get_minimal_command_signature(c) for c in entries]
         if command_signatures:
