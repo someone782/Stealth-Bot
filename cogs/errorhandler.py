@@ -56,7 +56,7 @@ class ErrorHandler(commands.Cog):
                     cmd = self.client.get_command(f"{matches}")
                     if cmd.cog_name == 'NSFW':
                         await msg.delete()
-                        raise commands.NSFWChannelRequired
+                        raise commands.NSFWChannelRequired(ctx.channel)
                         return
                     else:
                         await cmd(ctx)
