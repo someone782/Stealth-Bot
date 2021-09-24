@@ -250,9 +250,9 @@ class Info(commands.Cog):
 
         if fetchedMember.banner:
             if fetchedMember.banner.is_animated() == True:
-                avatar = f"[PNG]({fetchedMember.banner.replace(format='png', size=2048).url}) **|** [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) **|** [JPEG]({fetchedMember.banner.replace(format='jpeg', size=2048).url}) **|** [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url}) **|** [GIF]({fetchedMember.banner.replace(format='gif', size=2048).url})"
+                banner = f"[PNG]({fetchedMember.banner.replace(format='png', size=2048).url}) **|** [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) **|** [JPEG]({fetchedMember.banner.replace(format='jpeg', size=2048).url}) **|** [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url}) **|** [GIF]({fetchedMember.banner.replace(format='gif', size=2048).url})"
             else:
-                avatar = f"[PNG]({fetchedMember.avatar.replace(format='png', size=2048).url}) **|** [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) **|** [JPEG]({fetchedMember.banner.replace(format='jpeg', size=2048).url}) **|** [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url})"
+                banner = f"[PNG]({fetchedMember.avatar.replace(format='png', size=2048).url}) **|** [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) **|** [JPEG]({fetchedMember.banner.replace(format='jpeg', size=2048).url}) **|** [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url})"
         else:
             banner = "No banner found"
 
