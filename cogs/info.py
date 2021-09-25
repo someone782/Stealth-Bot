@@ -500,7 +500,7 @@ Created at: {discord.utils.format_dt(emoji.created_at, style="f")} ({discord.uti
 
 <:emoji_ghost:658538492321595393> Animated?: {animated}
                               """)
-        embed.set_thumbnail(url=emoji.url)
+        embed.set_image(url=emoji.url)
         
         await ctx.send(embed=embed)
         
@@ -770,8 +770,9 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
                 member = ctx.author
                 errorMessage = "You don't have a banner!"
                 
-        fetchedMember = self.client.fetch_user(member.id)
+        fetchedMember = await self.client.fetch_user(member.id)
         url = fetchedMember.banner
+        
         if url == None:
             return await ctx.send(errorMessage)
         
