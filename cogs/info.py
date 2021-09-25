@@ -765,9 +765,8 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
             except asyncio.TimeoutError:
                 await ctx.send("It's been over 15 seconds, please try again by doing `-bannert`", delete_after=5.0) # Replies to the author's message
             else:
-                answer = msg
                 
-                member = await commands.MemberConverter().convert(ctx, answer)
+                member = await commands.MemberConverter().convert(ctx, f"{msg}")
             
                 fetchedMember = await self.client.fetch_user(member.id)
                 url = fetchedMember.banner
