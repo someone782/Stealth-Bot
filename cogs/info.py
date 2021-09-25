@@ -486,10 +486,6 @@ Features:
     @commands.command(help="Shows information about a emoji", aliases=['ei', 'emoteinfo', 'emoinfo', 'eminfo', 'emojinfo', 'einfo'])
     async def emojiinfo(self, ctx, emoji : discord.Emoji):
         fetchedEmoji = await ctx.guild.fetch_emoji(emoji.id)
-        try:
-            user = fetchedEmoji.user
-        except:
-            user = "Couldn't get user"
         url = f"{emoji.url}"
         available = "No"
         managed = "No"
@@ -516,7 +512,7 @@ Name: {emoji.name}
 Created at: {discord.utils.format_dt(emoji.created_at, style="f")} ({discord.utils.format_dt(emoji.created_at, style="R")})
 :link: Link: [Click here]({url})
 
-<:servers:870152102759006208> Created by: {user}
+<:servers:870152102759006208> Created by: {fetchedEmoji.user} ({fetchedEmoji.user.id})
 Guild: {emoji.guild} ({emoji.id})
 
 Available?: {available}
