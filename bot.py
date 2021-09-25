@@ -197,7 +197,7 @@ class CustomContext(commands.Context):
                 content = "Hello there!"
             else:
                 content = content
-            return await super().send(content="Hello", embed=embed, reference=reference, **kwargs)
+            return await super().send(content=content, embed=embed, reference=reference, **kwargs)
         except discord.HTTPException:
             return await super().send(content=content, embed=embed, reference=None, **kwargs)
         
