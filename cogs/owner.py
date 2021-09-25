@@ -39,20 +39,38 @@ class Owner(commands.Cog):
         
         os.system('sudo systemctl restart stealthbot')
 
-    @commands.command(help="Updates the bot on github", aliases=['push'])
+    @commands.command(help="Pulls code from github and reloads all files", aliases=['pull', 'githubpull', 'github_pull'])
     @commands.is_owner()
-    async def update(self, ctx, *, message=None):
-        if message == None:
-            message = "No message provided"
-        prefix = ctx.clean_prefix
+    async def update(self, ctx):
+        start1 = time.perf_counter()
+        
+        command = self.client.get_command("jsk git")
+        await ctx.invoke(cmd, argument=jishaku!.codeblocks.codeblock_converter("pull")) 
+        
+        end1 = time.perf_counter()
+        
+        pullMs = (end1 - start1) * 1000
+        
+        start2 = time.perf_counter()
+        
+        command = self.client.get_command("rall")
+        await ctx.invoke(cmd, argument="channel")
+        
+        end2 = time.perf_counter()
+        
+        rallMs = (end2 - start2) * 1000
+    
+        colors = [0x910023, 0xA523FF]
+        color = random.choice(colors)
+                
+        embed = discord.Embed(title="Done updating bot!", description=f"""
+`jsk git pull` took {pullMs} ms
+`rall channel` took {rallMs}
+                              """, timestamp=discord.utils.utcnow(), color=color)
+        embed.set_footer(text=f"Requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
+        
+        await ctx.reply(embed=embed)
 
-        await ctx.send(f'''
-```yaml
-{prefix}jsk git add .
-git commit -m "{message}"
-git push origin main
-```
-        ''')
         
     @commands.command()
     @commands.is_owner()
