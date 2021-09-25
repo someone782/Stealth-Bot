@@ -147,7 +147,7 @@ Written with `{count_python('.'):,}` lines.
 {nl.join(allcogs)}
         """)
 
-        embed.add_field(name="📰 __**Latest News**__ - **<t:1631999898:d> (<t:1631999898:R>)**", value = f"""
+        embed.add_field(name=":loudspeaker: __**Latest News**__ - **<t:1631999898:d> (<t:1631999898:R>)**", value = f"""
 ```fix
 {news}
 ```
