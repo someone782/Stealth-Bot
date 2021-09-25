@@ -562,6 +562,10 @@ Python version:
         embed.set_thumbnail(url=self.client.user.avatar.url)
 
         await ctx.send(embed=embed)
+        
+    @commands.command(help="Sends you the link of a message", aliases=['linkmessage', 'linkmsg', 'link_message', 'link_msg'])
+    async def link(self ,ctx, message : discord.Message):
+        await ctx.send(f"URL: {message.jump_url}\nID: {message.id}")
 
     @commands.command(help="Shows a list of commands this bot has", aliases=['commands', 'command', 'cmds', 'commandslist', 'cmdslist', 'commands_list', 'cmds_list', 'commandlist', 'cmdlist', 'command_list', 'cmd_list'])
     async def _commands(self, ctx):
