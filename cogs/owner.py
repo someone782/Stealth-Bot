@@ -45,7 +45,7 @@ class Owner(commands.Cog):
     async def update(self, ctx):
         start1 = time.perf_counter()
         
-        command = self.client.get_command("jsk git")
+        cmd = self.client.get_command("jsk git")
         await ctx.invoke(cmd, argument=jishaku.codeblocks.codeblock_converter("pull")) 
         
         end1 = time.perf_counter()
@@ -54,7 +54,7 @@ class Owner(commands.Cog):
         
         start2 = time.perf_counter()
         
-        command = self.client.get_command("rall")
+        cmd = self.client.get_command("rall")
         await ctx.invoke(cmd, argument="channel")
         
         end2 = time.perf_counter()
