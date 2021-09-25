@@ -290,20 +290,13 @@ Answer: {random.choice(responses)}
 
         await ctx.send(f"{member} is {random.randint(0, 100)}% gay!")
 
-    @commands.command(help="Generates a random number", aliases=['rm'])
-    async def randomnumber(self, ctx, minimum : int=None, maximum : int=None):
-        if minimum == None:
-            minimum = 1
+    @commands.command(help="Tells you a random number with a optional range. Minimum has to be smaller than maximum")
+    async def number(self, ctx, minimum : int=0, maximum : int=100):
+        maximum = min(maximum, 1000)
+        if minimum >= maximum:
+            return await ctx.send("The maximum number has to be bigger than the minimum number")
 
-        if maximum == None:
-            maximum = 10
-
-        if maximum > 1000000:
-            return await ctx.send("Number cannot be more than `1000000`.")
-
-        number = random.randint(minimum, maximum)
-
-        await ctx.send(f"Randomly generated number between `{minimum}` and `{maximum}`: `{number}`")
+        await ctx.send(f"Randomly generated number between `{minimum}` and `{maximum}`: `{random.randint(minimum, maximum)}`")
 
     @commands.command(help="Generates a random word", aliases=['rw'])
     async def randomword(self, ctx):
