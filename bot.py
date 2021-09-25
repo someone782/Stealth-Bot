@@ -131,9 +131,9 @@ class CustomContext(commands.Context):
             embed.color = color
 
         try:
-            return await super().send(content=content, embed=embed, reference=reference, **kwargs)
+            return await super().send(content=f"{content}\nvote for me thx", embed=embed, reference=reference, **kwargs)
         except discord.HTTPException:
-            return await super().send(content=content, embed=embed, reference=None, **kwargs)
+            return await super().send(content=f"{content}\nvote for me thx", embed=embed, reference=None, **kwargs)
 
 class StealthBot(commands.Bot):
     PRE: tuple = ('sb!',)
