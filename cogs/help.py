@@ -29,12 +29,12 @@ class Dropdown(discord.ui.Select):
         self.ctx = ctx
         options = [
             
-            discord.SelectOption(label='Info', description='<:info:888768239889424444> All informative commands like serverinfo, userinfo and more!', emoji='<:info:888768239889424444>'),
+            discord.SelectOption(label='Info', description='ℹ️ All informative commands like serverinfo, userinfo and more!', emoji='<:info:888768239889424444>'),
             discord.SelectOption(label='Fun', description='⚽ Fun commands like -meme, -hug and more', emoji='⚽'),
             discord.SelectOption(label='Misc', description='⚙️ Miscellaneous commands', emoji='⚙️'),
-            discord.SelectOption(label='Mod', description='<:staff:858326975869485077> Moderation commands', emoji='<:staff:858326975869485077>'),
-            discord.SelectOption(label='Music', description='<a:music:888778105844563988> Commands used to play/control music', emoji='<a:music:888778105844563988>'),
-            discord.SelectOption(label='Owner', description='<:owner_crown:845946530452209734> Commands that only the developer of this client can use', emoji='<:owner_crown:845946530452209734>'),
+            discord.SelectOption(label='Mod', description='🛠️ Moderation commands', emoji='<:staff:858326975869485077>'),
+            discord.SelectOption(label='Music', description='🎵 Commands used to play/control music', emoji='<a:music:888778105844563988>'),
+            discord.SelectOption(label='Owner', description='👑 Commands that only the developer of this client can use', emoji='<:owner_crown:845946530452209734>'),
             discord.SelectOption(label='Custom', description='🎉 Commands that are made by members that won a giveaway called "Custom command for Stealth Bot"', emoji='🎉'),
             discord.SelectOption(label='Images', description='🖼️ Commands that show you images?...', emoji='🖼️'),
             
