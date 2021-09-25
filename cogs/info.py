@@ -490,11 +490,15 @@ Features:
         available = "No"
         managed = "No"
         animated = "No"
+        user = f"{fetchedEmoji.user} ({fetchedEmoji.user.id})"
         
         view = discord.ui.View()
         style = discord.ButtonStyle.gray
         item = discord.ui.Button(style=style, emoji="🔗", label="Emoji link", url=url)
         view.add_item(item=item)
+        
+        if fetchedEmoji.user == None:
+            user = "Couldn't get user"
         
         if emoji.available == True:
             available = "Yes"
@@ -512,7 +516,7 @@ Name: {emoji.name}
 Created at: {discord.utils.format_dt(emoji.created_at, style="f")} ({discord.utils.format_dt(emoji.created_at, style="R")})
 :link: Link: [Click here]({url})
 
-<:servers:870152102759006208> Created by: {fetchedEmoji.user} ({fetchedEmoji.user.id})
+<:servers:870152102759006208> Created by: {user}
 Guild: {emoji.guild} ({emoji.id})
 
 Available?: {available}
