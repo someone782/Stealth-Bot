@@ -99,7 +99,7 @@ class ErrorHandler(commands.Cog):
                     return
 
             else:
-                embed = discord.
+                
                 await ctx.send("Test 2")
                 return
 
