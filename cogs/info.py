@@ -485,13 +485,13 @@ Features:
         
     @commands.command(help="Shows information about a emoji", aliases=['ei', 'emoteinfo', 'emoinfo', 'eminfo', 'emojinfo', 'einfo'])
     async def emojiinfo(self, ctx, emoji : discord.PartialEmoji):
-        view = discord.ui.View()
-        style = discord.ButtonStyle.gray
-        item = discord.ui.Button(style=style, emoji=":link:", label="Emoji link", url=f"{emoji.url}")
-        view.add_item(item=item)
-
         url = f"{emoji.url}"
         animated = "No"
+        
+        view = discord.ui.View()
+        style = discord.ButtonStyle.gray
+        item = discord.ui.Button(style=style, emoji="🔗", label="Emoji link", url=url)
+        view.add_item(item=item)
         
         if emoji.animated == True:
             animated = "Yes"
@@ -501,7 +501,7 @@ Name: {emoji.name}
 <:greyTick:860644729933791283> ID: {emoji.id}
 
 Created at: {discord.utils.format_dt(emoji.created_at, style="f")} ({discord.utils.format_dt(emoji.created_at, style="R")})
-:link: Link: [Click here]({emoji.url})
+:link: Link: [Click here]({url})
 
 <:emoji_ghost:658538492321595393> Animated?: {animated}
                               """)
