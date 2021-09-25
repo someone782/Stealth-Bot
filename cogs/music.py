@@ -838,7 +838,7 @@ class Music(commands.Cog):
 
     @commands.command(name="remove")
     async def remove_range_command(self,ctx: commands.Context,start: int,*,end: int= None):
-        """Removes all the tracks from the specified start through the specified end (if the end is not specified it will remove only one track)"""
+        # """Removes all the tracks from the specified start through the specified end (if the end is not specified it will remove only one track)"""
         player = self.bot.lavalink.player_manager.get(ctx.guild.id)
         #CHECKING
         if not player.is_connected: raise NoVoiceChannel()
