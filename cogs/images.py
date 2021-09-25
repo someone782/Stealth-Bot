@@ -62,6 +62,17 @@ class Images(commands.Cog):
 
       await ctx.reply(embed=embed)
       
+   @commands.command(help="🐶 Shows a picture of a shiba")
+   @commands.bot_has_permissions(send_messages=True, embed_links=True)
+   async def shiba(self, ctx):
+      request = await self.client.session.get('https://shibe.online/api/shibes?count=1&urls=true&httpsUrls=true')
+      json = await request.json()
+
+      embed = discord.Embed(title="Woof!", url=json[0])
+      embed.set_image(url=json[0])
+      
+      await ctx.send(embed=embed)
+      
    @commands.command(help="Shows a picture of a axolotl and a random fact about axolotls")
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
    async def axolotl(self, ctx):
