@@ -242,6 +242,9 @@ Answer: {random.choice(responses)}
     async def insert(self, ctx, character : str, *, text : str):
         text = text.replace(" ", f" {character} ")
         
+        if len(text) > 1000:
+            return await ctx.send("That text is over the 1000-character limit.")
+        
         embed = discord.Embed(description=f"{text}")
         
         await ctx.send(embed=embed)
