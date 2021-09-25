@@ -7,6 +7,7 @@ import typing
 import time
 import traceback
 import errors
+import jishaku
 from discord.ext import commands
 
 def setup(client):
