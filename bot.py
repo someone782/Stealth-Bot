@@ -159,7 +159,7 @@ class StealthBot(commands.AutoShardedBot):
         return commands.when_mentioned_or(*prefix)(bot, message) if not raw_prefix else prefix
     
     async def get_context(self, message, *, cls=CustomContext):
-        return await super().get_context(message, cls=cls)
+        return await super().get_context(message, cls=cls) # slash commands please
 
 client = StealthBot(intents=discord.Intents.all(), activity=activity, status=status, case_insensitive=True, help_command=None, enable_debug_events = True, strip_after_prefix=True, slash_commands=True) # Initializes the client object
 
