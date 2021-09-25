@@ -483,8 +483,14 @@ Features:
 
         await ctx.send(embed=embed)
         
-    @commands.command(help="Shows information about a emoji", aliases=['ei', 'emoteinfo', 'emoinfo', 'eminfo', 'emojinfo', 'einfo'])
+    @commands.command(help="Shows information about a emoji", aliases=['ei', 'emoteinfo'
+     'emoinfo', 'eminfo', 'emojinfo', 'einfo'])
     async def emojiinfo(self, ctx, emoji : discord.PartialEmoji):
+        view = discord.ui.View()
+        style = discord.ButtonStyle.gray
+        item = discord.ui.Button(style=style, emoji=":link:", label="Emoji link", url=f"{emoji.url}")
+        view.add_item(item=item)
+
         url = f"{emoji.url}"
         animated = "No"
         
