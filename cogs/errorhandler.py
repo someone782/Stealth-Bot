@@ -5,6 +5,7 @@ import helpers
 from difflib import get_close_matches
 import traceback
 import itertools
+import copy
 import random
 import difflib
 from cogs import music as music_cog
