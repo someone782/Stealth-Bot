@@ -36,7 +36,7 @@ class Images(commands.Cog):
       
       ms = (end - start) * 1000
 
-      embed = discord.Embed(title="Waifu", url=json['url'], timestamp=discord.utils.utcnow(), color=dominant_color, timestamp=discord.utils.utcnow(), color=0x2F3136)
+      embed = discord.Embed(title="Waifu", url=json['url'], timestamp=discord.utils.utcnow(), color=dominant_color)
       embed.set_image(url=json['url'])
       embed.set_footer(text=f"{round(ms)}ms{' ' * (9-len(str(round(ms, 3))))}", icon_url=ctx.author.avatar.url)
 
@@ -56,7 +56,7 @@ class Images(commands.Cog):
       dominant_color1 = str(json['dominant_color']).replace('#', '')
       dominant_color = int(dominant_color1, 16)
 
-      embed = discord.Embed(title="Maid", url=json['url'], timestamp=discord.utils.utcnow(), color=dominant_color, timestamp=discord.utils.utcnow(), color=0x2F3136)
+      embed = discord.Embed(title="Maid", url=json['url'], timestamp=discord.utils.utcnow(), color=dominant_color)
       embed.set_image(url=json['url'])
       embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
