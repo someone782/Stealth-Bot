@@ -760,7 +760,7 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
             return await ctx.send(embed=embed)
         
         if type.lower() == 'member' or type.lower() == 'user':
-            fetchedMember = await self.client.get_user(member.id)
+            fetchedMember = await self.client.fetch_user(member.id)
             url = fetchedMember.banner
             if url == None:
                 return await ctx.send("That user doesn't have a banner.")
