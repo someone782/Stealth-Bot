@@ -24,7 +24,7 @@ class Misc(commands.Cog):
         item = discord.ui.Button(style=style, emoji="<:invite:860644752281436171>", label="Invite me", url="https://discord.com/api/oauth2/authorize?client_id=760179628122964008&permissions=8&scope=bot")
         view.add_item(item=item)
 
-        embed = discord.Embed(title="Click the button to vote for me")
+        embed = discord.Embed(title="Click the button to invite me")
         await ctx.send(embed=embed, view=view)
         
     @commands.command(help="Sends you a link where you can vote for the bot", aliases=['topgg', 'top-gg', 'top_gg'])
