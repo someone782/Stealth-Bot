@@ -70,11 +70,12 @@ class ErrorHandler(commands.Cog):
         if isinstance(error, commands.CommandNotFound):
             ignored_cogs = ('jishaku', 'events') if ctx.author.id != self.client.owner_id else ()
             command_names = []
+            
             for command in [c for c in self.client.commands if c.cog_name not in ignored_cogs]:
-                # noinspection PyBroadException
                 try:
                     if await command.can_run(ctx):
                         command_names.append([command.name] + command.aliases)
+                        
                 except:
                     continue
 
@@ -83,23 +84,22 @@ class ErrorHandler(commands.Cog):
             matches = difflib.get_close_matches(ctx.invoked_with, command_names)
 
             if matches:
-                confirm = await ctx.confirm(message=f"I couldn't find a command called `{ctx.invoked_with}`.\nDid you mean `{f'{matches[0]}`?**' if matches else ''}`?",
-                                            delete_after_confirm=True, delete_after_timeout=True,
-                                            delete_after_cancel=True, buttons=(
-                                                    ('<:greenTick:596576670815879169>', f'', discord.ButtonStyle.gray),
-                                                    ('🗑', None, discord.ButtonStyle.red)
-                                                ), timeout=15
-                                            )
+                confirm = await ctx.confirm(message=f"I couldn't find a command called `{ctx.invoked_with}`.\nDid you mean `{f'{matches[0]}`?' if matches else ''}`?",
+                                            delete_after_confirm=True, delete_after_timeout=True, delete_after_cancel=True,
+                                            buttons=(('<:greenTick:596576670815879169>', f'', discord.ButtonStyle.gray), ('🗑', None, discord.ButtonStyle.red)), timeout=15)
 
                 if confirm is True:
                     message = copy.copy(ctx.message)
                     message._edited_timestamp = discord.utils.utcnow()
                     message.content = message.content.replace(ctx.invoked_with, matches[0])
                     return await self.client.process_commands(message)
+                
                 else:
+                    await ctx.send("Test 1")
                     return
 
             else:
+                await ctx.send("Test 2")
                 return
 
         elif isinstance(error, errors.AuthorBlacklisted):
