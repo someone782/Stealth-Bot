@@ -4,6 +4,7 @@ from discord.ext import commands
 import helpers
 from difflib import get_close_matches
 import traceback
+import itertools
 import random
 from cogs import music as music_cog
 import errors
@@ -24,45 +25,81 @@ class ErrorHandler(commands.Cog):
 
         error = getattr(error, "original", error)
         
-        if isinstance(error, commands.CommandNotFound):
-            if ctx.author.id in owners and self.client.no_prefix is True:
-                return
+        # if isinstance(error, commands.CommandNotFound):
+        #     if ctx.author.id in owners and self.client.no_prefix is True:
+        #         return
 
-            message = f"I couldn't find that command."
-            command_names = [str(x) for x in ctx.bot.commands]
-            matches = get_close_matches(ctx.invoked_with, command_names)
-            if matches:
-                matches = matches[0] # matches = "\n".join(matches[0])
-                message = f"I couldn't find that command. Did you mean...\n{matches}"
+        #     message = f"I couldn't find that command."
+        #     command_names = [str(x) for x in ctx.bot.commands]
+        #     matches = get_close_matches(ctx.invoked_with, command_names)
+        #     if matches:
+        #         matches = matches[0] # matches = "\n".join(matches[0])
+        #         message = f"I couldn't find that command. Did you mean...\n{matches}"
                 
-                colors = [0x910023, 0xA523FF]
-                color = random.choice(colors)
+        #         colors = [0x910023, 0xA523FF]
+        #         color = random.choice(colors)
                 
-                def check(reaction, user):
-                    return user == ctx.author and str(reaction.emoji) == '<:greenTick:596576670815879169>'
+        #         def check(reaction, user):
+        #             return user == ctx.author and str(reaction.emoji) == '<:greenTick:596576670815879169>'
                 
-                embed = discord.Embed(description=message, timestamp=discord.utils.utcnow(), color=color)
-                embed.set_footer(text=f"React with the green tick if you want to run `{matches}`", icon_url=ctx.author.avatar.url)
+        #         embed = discord.Embed(description=message, timestamp=discord.utils.utcnow(), color=color)
+        #         embed.set_footer(text=f"React with the green tick if you want to run `{matches}`", icon_url=ctx.author.avatar.url)
                 
-                msg = await ctx.reply(embed=embed)
+        #         msg = await ctx.reply(embed=embed)
             
-                await msg.add_reaction("<:greenTick:596576670815879169>")
+        #         await msg.add_reaction("<:greenTick:596576670815879169>")
 
-                try:
-                    reaction, user = await self.client.wait_for('reaction_add', timeout=60.0, check=check)
-                except asyncio.TimeoutError:
-                    return
-                else:
-                    cmd = self.client.get_command(f"{matches}")
-                    if cmd.cog_name == 'NSFW' or cmd.cog_name == 'Owner' or cmd.cog_name == 'Mod':
-                        await msg.delete()
-                        message = "You can't do commands that are in these categories: `NSFW`, `Owner`, `Mod`"
-                        embed = discord.Embed(description=message)
+        #         try:
+        #             reaction, user = await self.client.wait_for('reaction_add', timeout=60.0, check=check)
+        #         except asyncio.TimeoutError:
+        #             return
+        #         else:
+        #             cmd = self.client.get_command(f"{matches}")
+        #             if cmd.cog_name == 'NSFW' or cmd.cog_name == 'Owner' or cmd.cog_name == 'Mod':
+        #                 await msg.delete()
+        #                 message = "You can't do commands that are in these categories: `NSFW`, `Owner`, `Mod`"
+        #                 embed = discord.Embed(description=message)
                         
-                        return await ctx.send(embed=embed)
-                    else:
-                        await msg.delete()
-                        return await cmd(ctx)
+        #                 return await ctx.send(embed=embed)
+        #             else:
+        #                 await msg.delete()
+        #                 return await cmd(ctx)
+
+        if isinstance(error, commands.CommandNotFound):
+            ignored_cogs = ('NSFW', 'jishaku', 'Owner') if ctx.author.id != self.client.owner_id else ()
+            command_names = []
+            for command in [c for c in self.client.commands if c.cog_name not in ignored_cogs]:
+                # noinspection PyBroadException
+                try:
+                    if await command.can_run(ctx):
+                        command_names.append([command.name] + command.aliases)
+                except:
+                    continue
+
+            command_names = list(itertools.chain.from_iterable(command_names))
+
+            matches = difflib.get_close_matches(ctx.invoked_with, command_names)
+
+            if matches:
+                confirm = await ctx.confirm(message=f"Sorry, but the command **{ctx.invoked_with}** was not found."
+                                                    f"\n{f'**did you mean... `{matches[0]}`?**' if matches else ''}",
+                                            delete_after_confirm=True, delete_after_timeout=True,
+                                            delete_after_cancel=True, buttons=(
+                                                    ('▶', f'execute {matches[0]}', discord.ButtonStyle.gray),
+                                                    ('🗑', None, discord.ButtonStyle.red)
+                                                ), timeout=15
+                                            )
+
+                if confirm is True:
+                    message = copy.copy(ctx.message)
+                    message._edited_timestamp = discord.utils.utcnow()
+                    message.content = message.content.replace(ctx.invoked_with, matches[0])
+                    return await self.client.process_commands(message)
+                else:
+                    return
+
+            else:
+                return
 
         elif isinstance(error, errors.AuthorBlacklisted):
             message = f"It appears that you're blacklisted from this bot. Contact Ender2K89#9999 if you think this is a mistake."
