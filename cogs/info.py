@@ -761,7 +761,7 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         
     @bannert.command(aliases=['user'])
     async def member(self, ctx, member : discord.Member=None):
-        errorMessage == f"{member} doesn't have a banner!"
+        errorMessage = f"{member} doesn't have a banner!"
         
         if member == None:
             if ctx.message.reference:
