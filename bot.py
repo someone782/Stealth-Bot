@@ -193,14 +193,8 @@ class CustomContext(commands.Context):
             embed.color = color
 
         try:
-            content = content + "Text"
-            if content == None:
-                content = "Text"
-            return await super().send(content=content, embed=embed, reference=reference, **kwargs)
+            return await super().send(content="Hello", embed=embed, reference=reference, **kwargs)
         except discord.HTTPException:
-            content = content + "Text"
-            if content == None:
-                content = "Text"
             return await super().send(content=content, embed=embed, reference=None, **kwargs)
         
     async def confirm(self, message: str = 'Do you want to confirm?',
