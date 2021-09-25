@@ -9,6 +9,21 @@ import errors
 import aiohttp
 from discord.ext import commands
 
+class VoteButtons(discord.ui.View):
+    def __init__(self):
+        super().__init__()
+        self.add_item(discord.ui.Button(emoji="<:topgg:870133913102721045>", label='top.gg', url="https://top.gg/bot/760179628122964008"))
+        self.add_item(discord.ui.Button(emoji="<:botsgg:870134146972938310>", label='bots.gg', url="https://discord.bots.gg/bots/760179628122964008"))
+
+class Stuff(discord.ui.View):
+    def __init__(self,ctx):
+        super().__init__()
+
+    @discord.ui.button(label='Vote', style=discord.ButtonStyle.gray, emoji="<:dbl:757235965629825084>")
+    async def receive(self, button: discord.ui.Button, interaction: discord.Interaction):
+        embed=discord.Embed(title="Vote for me")
+        await interaction.response.send_message(embed=embed, ephemeral=True, view=VoteButtons())
+
 def setup(client):
     client.add_cog(Misc(client))
 
@@ -24,9 +39,13 @@ class Misc(commands.Cog):
         item = discord.ui.Button(style=style, emoji="<:invite:860644752281436171>", label="Invite me", url="https://discord.com/api/oauth2/authorize?client_id=760179628122964008&permissions=8&scope=bot")
         view.add_item(item=item)
 
-        embed = discord.Embed(title="Click here for the invite to this bot", url="https://discord.com/api/oauth2/authorize?client_id=760179628122964008&permissions=8&scope=bot")
-        embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+        embed = discord.Embed(title="Click the button to vote for me")
         await ctx.send(embed=embed, view=view)
+        
+    @commands.command(help="Sends you a link where you can vote for the bot", aliases=['topgg', 'top-gg', 'top_gg', 'dbots', 'discordbots', 'discord_bots', 'discord-bots'])
+    async def vote(self, ctx):
+        embed = discord.Embed(title="Click the button to vote for me")
+        await ctx.send(embed=embed, view=Stuff())
 
     @commands.command(help="Sends the support server of the bot", aliases=['supportserver', 'support_server'])
     async def support(self, ctx):
@@ -35,8 +54,7 @@ class Misc(commands.Cog):
         item = discord.ui.Button(style=style, emoji="<:servers:870152102759006208>", label="Join support server", url="https://discord.gg/MrBcA6PZPw")
         view.add_item(item=item)
 
-        embed = discord.Embed(title="Click here for the invite to the support server", url="https://discord.gg/MrBcA6PZPw")
-        embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+        embed = discord.Embed(title="Click the button to join the support server")
         await ctx.send(embed=embed, view=view)
 
     @commands.group(invoke_without_command=True, help="Shows you a list of the bot's prefixes", aliases=['prefix'])
@@ -112,30 +130,26 @@ class Misc(commands.Cog):
 
     @commands.command()
     @commands.has_permissions(administrator=True)
-    @commands.cooldown(1, 120, commands.BucketType.user) # Sets the cooldown to 120 seconds for the user executing the command
+    @commands.cooldown(1, 120, commands.BucketType.user)
+    @helpers.is_sh_server()
     async def chat(self, ctx):
-        if ctx.guild.id == 799330949686231050:
-            await ctx.message.delete()
-            await ctx.send("▬▬▬.◙.▬▬▬\n" +
-                            "═▂▄▄▓▄▄▂\n" +
-                            "◢◤ █▀▀████▄▄▄▄◢◤\n" +
-                            "█▄ █ █▄ ███▀▀▀▀▀▀▀╬\n" +
-                            "◥█████◤\n" +
-                            "══╩══╩═\n" +
-                            "╬═╬\n" +
-                            "╬═╬\n" +
-                            "╬═╬\n" +
-                            "╬═╬\n" +
-                            "╬═╬    just dropped down to ask\n" +
-                            "╬═╬\n" +
-                            "╬═╬    why chat dead <@&819677363058901033>\n" +
-                            "╬═╬ ☻/\n" +
-                            "╬═╬/▌\n" +
-                            "╬═╬/ \ \n")
-        else:
-            embed = discord.Embed(title="You can only use this command in the `Stealth Hangout` server.")
-            embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
-            await ctx.send(embed=embed)
+        await ctx.message.delete()
+        await ctx.send("▬▬▬.◙.▬▬▬\n" +
+                        "═▂▄▄▓▄▄▂\n" +
+                        "◢◤ █▀▀████▄▄▄▄◢◤\n" +
+                        "█▄ █ █▄ ███▀▀▀▀▀▀▀╬\n" +
+                        "◥█████◤\n" +
+                        "══╩══╩═\n" +
+                        "╬═╬\n" +
+                        "╬═╬\n" +
+                        "╬═╬\n" +
+                        "╬═╬\n" +
+                        "╬═╬    just dropped down to ask\n" +
+                        "╬═╬\n" +
+                        "╬═╬    why chat dead <@&819677363058901033>\n" +
+                        "╬═╬ ☻/\n" +
+                        "╬═╬/▌\n" +
+                        "╬═╬/ \ \n")
 
     @commands.command(help="Verifies you", hidden=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
@@ -189,7 +203,6 @@ class Misc(commands.Cog):
 + Server port: 19132
 ```
         """)
-        embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
         await ctx.send(embed=embed)
 
@@ -207,7 +220,7 @@ class Misc(commands.Cog):
         await ctx.message.delete()
         await ctx.send(f"<@&836281279934496770>\n*ping from {ctx.author.mention}*")
 
-    @commands.command(help="Sends a screenshot of the site you specify.\nNOTE: It needs to be with http/s.", aliases=['ss', 'screenshot_website', 'ss_website'])
+    @commands.command(help="Sends a screenshot of the site you specify.\nNOTE: It needs to start with http/s.", aliases=['ss', 'screenshot_website', 'ss_website'])
     @commands.is_nsfw()
     async def screenshot(self, ctx, url):
         #async with self.client.session() as session:
@@ -215,27 +228,12 @@ class Misc(commands.Cog):
             res = await r.read()
 
         embed = discord.Embed(title=f"Screenshot of {url}")
-        embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
         embed.set_image(url="attachment://ss.png")
 
         if "ip" in url.lower() or "test" in url.lower() or "speed" in url.lower() or "address" in url.lower():
             await ctx.send("no.")
         else:
             await ctx.send(embed=embed, file=discord.File(io.BytesIO(res), filename="ss.png"))
-
-    @commands.command(help="secret command", hidden=True)
-    @commands.is_owner()
-    async def bypass_here(self, ctx):
-        channel = self.client.get_channel(837348307570393218)
-        embed = discord.Embed(title="Welcome to `#bypass_here`!", url="https://discord.gg/5UsKEFKHtH", description="In this channel you're supposed to try to bypass the anti-swear or the anti-invite system.\n\n```diff\n- Misusing this channel will result in a mute\n+ All messages are deleted after a bit\n+ Only ping the owner if you find over 10 bypasses\n```")
-        await ctx.message.delete()
-        message = await channel.send(embed=embed)
-        await message.pin()
-
-
-    @commands.command(help="Average embed fields enjoyer vs average embed description enjoyer", hidden=True)
-    async def embed(self, ctx):
-        await ctx.send("https://cdn.upload.systems/uploads/udt7Bv0U.gif")
 
     @commands.command(help="Shows you a list of flags", aliases=['flags'])
     async def flag(self, ctx):

@@ -502,7 +502,7 @@ Created at: {discord.utils.format_dt(emoji.created_at, style="f")} ({discord.uti
                               """)
         embed.set_image(url=emoji.url)
         
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, view=view)
         
 
     @commands.command(help="Shows information about the bot", aliases=['bi'])
