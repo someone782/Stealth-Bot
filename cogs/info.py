@@ -483,6 +483,9 @@ Features:
 
         await ctx.send(embed=embed)
         
+    @commands.command(help="Shows limited information about any emoji", aliases=['ei', 'emoteinfo', 'emoinfo', 'eminfo', 'emojinfo', 'einfo', 'emoji', 'emote'])
+    async def emojiinfo(self, ctx, emoji : discord.Emoji)
+        
     @commands.command(help="Shows information about a emoji", aliases=['ei', 'emoteinfo', 'emoinfo', 'eminfo', 'emojinfo', 'einfo'])
     async def emojiinfo(self, ctx, emoji : discord.Emoji):
         fetchedEmoji = await ctx.guild.fetch_emoji(emoji.id)
