@@ -1,3 +1,4 @@
+from typing import TYPE_CHECKING
 import discord
 import helpers
 import time
@@ -5,6 +6,7 @@ import aiohttp
 import datetime
 from discord.ext import commands
 import random
+
 
 def setup(client):
     client.add_cog(Images(client))
@@ -24,9 +26,8 @@ class Images(commands.Cog):
          
       start = time.perf_counter()
          
-      async with aiohttp.ClientSession() as session:
-         request = await session.get(url)
-         json = await request.json()
+      request = await self.client.session.get(url)
+      json = await request.json()
          
       dominant_color1 = str(json['dominant_color']).replace('#', '')
       dominant_color = int(dominant_color1, 16)
@@ -49,9 +50,8 @@ class Images(commands.Cog):
       if str(type).lower() == "gif":
          url = "https://api.waifu.im/sfw/maid/?gif=True"
          
-      async with aiohttp.ClientSession() as session:
-         request = await session.get(url)
-         json = await request.json()
+      request = await self.client.session.get(url)
+      json = await request.json()
          
       dominant_color1 = str(json['dominant_color']).replace('#', '')
       dominant_color = int(dominant_color1, 16)
@@ -65,11 +65,10 @@ class Images(commands.Cog):
    @commands.command(help="🐱 Shows a picture of a cat and a random fact about cats")
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
    async def cat(self, ctx):
-      async with aiohttp.ClientSession() as session:
-         request = await session.get('https://some-random-api.ml/img/cat')
-         pictureJson = await request.json()
-         request2 = await session.get('https://some-random-api.ml/facts/cat')
-         factJson = await request2.json()
+      request = await self.client.session.get('https://some-random-api.ml/img/cat')
+      pictureJson = await request.json()
+      request2 = await self.client.session.get('https://some-random-api.ml/facts/cat')
+      factJson = await request2.json()
 
       embed = discord.Embed(title="Meow", url=pictureJson['link'], timestamp=discord.utils.utcnow(), color=0x2F3136)
       embed.set_image(url=pictureJson['link'])
@@ -80,11 +79,10 @@ class Images(commands.Cog):
    @commands.command(help="🐶 Shows a picture of a dog and a random fact about dogs", message_command=False)
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
    async def dog(self, ctx):
-      async with aiohttp.ClientSession() as session:
-         request = await session.get('https://some-random-api.ml/img/dog')
-         pictureJson = await request.json()
-         request2 = await session.get('https://some-random-api.ml/facts/dog')
-         factJson = await request2.json()
+      request = await self.client.session.get('https://some-random-api.ml/img/dog')
+      pictureJson = await request.json()
+      request2 = await self.client.session.get('https://some-random-api.ml/facts/dog')
+      factJson = await request2.json()
 
       embed = discord.Embed(title="Woof", url=pictureJson['link'], timestamp=discord.utils.utcnow(), color=0x2F3136)
       embed.set_image(url=pictureJson['link'])
@@ -95,11 +93,10 @@ class Images(commands.Cog):
    @commands.command(help="🐼 Shows a picture of a panda and a random fact about pandas")
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
    async def panda(self, ctx):
-      async with aiohttp.ClientSession() as session:
-         request = await session.get('https://some-random-api.ml/img/panda')
-         pictureJson = await request.json()
-         request2 = await session.get('https://some-random-api.ml/facts/panda')
-         factJson = await request2.json()
+      request = await self.client.session.get('https://some-random-api.ml/img/panda')
+      pictureJson = await request.json()
+      request2 = await self.client.session.get('https://some-random-api.ml/facts/panda')
+      factJson = await request2.json()
 
       embed = discord.Embed(title="Panda!", url=pictureJson['link'], timestamp=discord.utils.utcnow(), color=0x2F3136)
       embed.set_image(url=pictureJson['link'])
@@ -110,11 +107,10 @@ class Images(commands.Cog):
    @commands.command(help="🦊 Shows a picture of a fox and a random fact about foxes")
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
    async def fox(self, ctx):
-      async with aiohttp.ClientSession() as session:
-         request = await session.get('https://some-random-api.ml/img/fox')
-         pictureJson = await request.json()
-         request2 = await session.get('https://some-random-api.ml/facts/fox')
-         factJson = await request2.json()
+      request = await self.client.session.get('https://some-random-api.ml/img/fox')
+      pictureJson = await request.json()
+      request2 = await self.client.session.get('https://some-random-api.ml/facts/fox')
+      factJson = await request2.json()
 
       embed = discord.Embed(title="Fox!", url=pictureJson['link'], timestamp=discord.utils.utcnow(), color=0x2F3136)
       embed.set_image(url=pictureJson['link'])
@@ -125,11 +121,10 @@ class Images(commands.Cog):
    @commands.command(help="🐦 Shows a picture of a bird and a random fact about birds")
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
    async def bird(self, ctx):
-      async with aiohttp.ClientSession() as session:
-         request = await session.get('https://some-random-api.ml/img/bird')
-         pictureJson = await request.json()
-         request2 = await session.get('https://some-random-api.ml/facts/bird')
-         factJson = await request2.json()
+      request = await self.cliesnt.session.get('https://some-random-api.ml/img/bird')
+      pictureJson = await request.json()
+      request2 = await self.client.session.get('https://some-random-api.ml/facts/bird')
+      factJson = await request2.json()
 
       embed = discord.Embed(title="Bird!", url=pictureJson['link'], timestamp=discord.utils.utcnow(), color=0x2F3136)
       embed.set_image(url=pictureJson['link'])
@@ -140,11 +135,10 @@ class Images(commands.Cog):
    @commands.command(help="🐨 Shows a picture of a koala and a random fact about koalas")
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
    async def koala(self, ctx):
-      async with aiohttp.ClientSession() as session:
-         request = await session.get('https://some-random-api.ml/img/koala')
-         pictureJson = await request.json()
-         request2 = await session.get('https://some-random-api.ml/facts/koala')
-         factJson = await request2.json()
+      request = await self.client.session.get('https://some-random-api.ml/img/koala')
+      pictureJson = await request.json()
+      request2 = await self.client.session.get('https://some-random-api.ml/facts/koala')
+      factJson = await request2.json()
 
       embed = discord.Embed(title="Koala!", url=pictureJson['link'], timestamp=discord.utils.utcnow(), color=0x2F3136)
       embed.set_image(url=pictureJson['link'])
@@ -155,11 +149,10 @@ class Images(commands.Cog):
    @commands.command(help="🦘 Shows a picture of a kangaroo and a random fact about kangaroos")
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
    async def kangaroo(self, ctx):
-      async with aiohttp.ClientSession() as session:
-         request = await session.get('https://some-random-api.ml/img/kangaroo')
-         pictureJson = await request.json()
-         request2 = await session.get('https://some-random-api.ml/facts/kangaroo')
-         factJson = await request2.json()
+      request = await self.client.session.get('https://some-random-api.ml/img/kangaroo')
+      pictureJson = await request.json()
+      request2 = await self.client.session.get('https://some-random-api.ml/facts/kangaroo')
+      factJson = await request2.json()
 
       embed = discord.Embed(title="Kangaroo!", url=pictureJson['link'], timestamp=discord.utils.utcnow(), color=0x2F3136)
       embed.set_image(url=pictureJson['link'])
@@ -170,11 +163,10 @@ class Images(commands.Cog):
    @commands.command(help="🦝 Shows a picture of a raccoon and a random fact about raccoons")
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
    async def raccoon(self, ctx):
-      async with aiohttp.ClientSession() as session:
-         request = await session.get('https://some-random-api.ml/img/racoon')
-         pictureJson = await request.json()
-         request2 = await session.get('https://some-random-api.ml/facts/racoon')
-         factJson = await request2.json()
+      request = await self.client.session.get('https://some-random-api.ml/img/racoon')
+      pictureJson = await request.json()
+      request2 = await self.client.session.get('https://some-random-api.ml/facts/racoon')
+      factJson = await request2.json()
 
       embed = discord.Embed(title="Racoon!", url=pictureJson['link'], timestamp=discord.utils.utcnow(), color=0x2F3136)
       embed.set_image(url=pictureJson['link'])
@@ -185,11 +177,10 @@ class Images(commands.Cog):
    @commands.command(help="🐳 Shows a picture of a whale and a random fact about whales", aliases=['urmom', 'ur_mom', 'yourmom', 'your_mom'])
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
    async def whale(self, ctx):
-      async with aiohttp.ClientSession() as session:
-         request = await session.get('https://some-random-api.ml/img/whale')
-         pictureJson = await request.json()
-         request2 = await session.get('https://some-random-api.ml/facts/whale')
-         factJson = await request2.json()
+      request = await self.client.session.get('https://some-random-api.ml/img/whale')
+      pictureJson = await request.json()
+      request2 = await self.client.session.get('https://some-random-api.ml/facts/whale')
+      factJson = await request2.json()
 
       embed = discord.Embed(title="Whale!", url=pictureJson['link'], timestamp=discord.utils.utcnow(), color=0x2F3136)
       embed.set_image(url=pictureJson['link'])
@@ -200,9 +191,8 @@ class Images(commands.Cog):
    @commands.command(help="Shows a picture of a pikachu")
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
    async def pikachu(self, ctx):
-      async with aiohttp.ClientSession() as session:
-         request = await session.get('https://some-random-api.ml/img/pikachu')
-         pictureJson = await request.json()
+      request = await self.client.session.get('https://some-random-api.ml/img/pikachu')
+      pictureJson = await request.json()
 
       embed = discord.Embed(title="Pikachu!", url=pictureJson['link'], timestamp=discord.utils.utcnow(), color=0x2F3136)
       embed.set_image(url=pictureJson['link'])

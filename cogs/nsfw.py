@@ -24,9 +24,8 @@ class NSFW(commands.Cog):
         if str(type).lower() == "gif":
             url = "https://api.waifu.im/nsfw/ass/?gif=True"
          
-        async with aiohttp.ClientSession() as session:
-            request = await session.get(url)
-            json = await request.json()
+        request = await self.client.session.get(url)
+        json = await request.json()
             
         dominant_color1 = str(json['dominant_color']).replace('#', '')
         dominant_color = int(dominant_color1, 16)
@@ -45,9 +44,8 @@ class NSFW(commands.Cog):
         if str(type).lower() == "gif":
             url = "https://api.waifu.im/nsfw/ecchi/?gif=True"
          
-        async with aiohttp.ClientSession() as session:
-            request = await session.get(url)
-            json = await request.json()
+        request = await self.client.session.get(url)
+        json = await request.json()
             
         dominant_color1 = str(json['dominant_color']).replace('#', '')
         dominant_color = int(dominant_color1, 16)
@@ -66,9 +64,8 @@ class NSFW(commands.Cog):
         if str(type).lower() == "gif":
             url = "https://api.waifu.im/nsfw/ero/?gif=True"
          
-        async with aiohttp.ClientSession() as session:
-            request = await session.get(url)
-            json = await request.json()
+        request = await self.client.session.get(url)
+        json = await request.json()
             
         dominant_color1 = str(json['dominant_color']).replace('#', '')
         dominant_color = int(dominant_color1, 16)
@@ -87,9 +84,8 @@ class NSFW(commands.Cog):
         if str(type).lower() == "gif":
             url = "https://api.waifu.im/nsfw/ero/?gif=True"
          
-        async with aiohttp.ClientSession() as session:
-            request = await session.get(url)
-            json = await request.json()
+        request = await self.client.session.get(url)
+        json = await request.json()
             
         dominant_color1 = str(json['dominant_color']).replace('#', '')
         dominant_color = int(dominant_color1, 16)
@@ -108,9 +104,8 @@ class NSFW(commands.Cog):
         if str(type).lower() == "gif":
             url = "https://api.waifu.im/nsfw/hmaid/?gif=True"
          
-        async with aiohttp.ClientSession() as session:
-            request = await session.get(url)
-            json = await request.json()
+        request = await self.client.session.get(url)
+        json = await request.json()
             
         dominant_color1 = str(json['dominant_color']).replace('#', '')
         dominant_color = int(dominant_color1, 16)
@@ -129,9 +124,8 @@ class NSFW(commands.Cog):
         if str(type).lower() == "gif":
             url = "https://api.waifu.im/nsfw/milf/?gif=True"
             
-        async with aiohttp.ClientSession() as session:
-            request = await session.get(url)
-            json = await request.json()
+        request = await self.client.session.get.get(url)
+        json = await request.json()
             
         dominant_color1 = str(json['dominant_color']).replace('#', '')
         dominant_color = int(dominant_color1, 16)
@@ -150,9 +144,8 @@ class NSFW(commands.Cog):
         if str(type).lower() == "gif":
             url = "https://api.waifu.im/nsfw/oppai/?gif=True"
          
-        async with aiohttp.ClientSession() as session:
-            request = await session.get(url)
-            json = await request.json()
+        request = await self.client.session.get(url)
+        json = await request.json()
             
         dominant_color1 = str(json['dominant_color']).replace('#', '')
         dominant_color = int(dominant_color1, 16)
@@ -171,9 +164,8 @@ class NSFW(commands.Cog):
         if str(type).lower() == "gif":
             url = "https://api.waifu.im/nsfw/oral/?gif=True"
          
-        async with aiohttp.ClientSession() as session:
-            request = await session.get(url)
-            json = await request.json()
+        request = await self.client.session.get(url)
+        json = await request.json()
             
         dominant_color1 = str(json['dominant_color']).replace('#', '')
         dominant_color = int(dominant_color1, 16)
@@ -192,9 +184,8 @@ class NSFW(commands.Cog):
         if str(type).lower() == "gif":
             url = "https://api.waifu.im/nsfw/paizuri/?gif=True"
          
-        async with aiohttp.ClientSession() as session:
-            request = await session.get(url)
-            json = await request.json()
+        request = await self.client.session.get(url)
+        json = await request.json()
             
         dominant_color1 = str(json['dominant_color']).replace('#', '')
         dominant_color = int(dominant_color1, 16)
@@ -213,9 +204,8 @@ class NSFW(commands.Cog):
         if str(type).lower() == "gif":
             url = "https://api.waifu.im/nsfw/selfie/?gif=True"
          
-        async with aiohttp.ClientSession() as session:
-            request = await session.get(url)
-            json = await request.json()
+        request = await self.client.session.get(url)
+        json = await request.json()
             
         dominant_color1 = str(json['dominant_color']).replace('#', '')
         dominant_color = int(dominant_color1, 16)
@@ -234,9 +224,8 @@ class NSFW(commands.Cog):
         if str(type).lower() == "gif":
             url = "https://api.waifu.im/nsfw/uniform/?gif=True"
          
-        async with aiohttp.ClientSession() as session:
-            request = await session.get(url)
-            json = await request.json()
+        request = await self.client.session.get(url)
+        json = await request.json()
             
         dominant_color1 = str(json['dominant_color']).replace('#', '')
         dominant_color = int(dominant_color1, 16)

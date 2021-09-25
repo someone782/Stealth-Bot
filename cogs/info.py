@@ -137,7 +137,6 @@ class Info(commands.Cog):
     "<:info:888768239889424444> | All informative commands like serverinfo, userinfo and more!"
     def __init__(self, client):
         self.client = client
-        client.session = aiohttp.ClientSession()
 
     @commands.command(help="Search lyrics of any song", aliases = ['l', 'lyrc', 'lyric'])
     async def lyrics(self, ctx, *, search):
@@ -149,12 +148,11 @@ class Info(commands.Cog):
         start = time.perf_counter()
         
         song = urllib.parse.quote(search)
-        
-        async with self.client.session.get(f'https://some-random-api.ml/lyrics?title={song}') as json:
-            if not 300 > json.status >= 200:
-                return await ctx.send(f'Recieved poor status code of {jsondata.status}')
+        res = await self.client.session.get(f'https://some-random-api.ml/lyrics?title={song}')
+        if not 300 > res.status >= 200:
+                return await ctx.send(f'Recieved poor status code of {res.status}')
 
-            jsonData = await json.json()
+        jsonData = await res.json()
 
         error = jsonData.get('error')
         if error:
@@ -862,12 +860,12 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
 
         discords = time.monotonic()
         url = "https://discordapp.com/"
-        async with self.client.session.get(url) as resp:
-            if resp.status == 200:
+        resp = await self.client.session.get(url)
+        if resp.status == 200:
                 discorde = time.monotonic()
                 discordms = (discorde - discords) * 1000
                 pings.append(discordms)
-            else:
+        else:
                 discordms = 0
 
         latencyms = self.client.latency * 1000
