@@ -159,7 +159,10 @@ Note: I can't edit the owner of the server
 
         elif isinstance(error, commands.NotOwner):
             message = "Only the owner of this bot can run this command."
-
+            
+        elif isinstance(error, commands.DisabledCommand):
+            message = "That command has been temporarily disabled by the owner."
+            
         elif isinstance(error, commands.TooManyArguments):
             message = "It appears that you've provided too many arguments, please try again with fewer arguments."
 
