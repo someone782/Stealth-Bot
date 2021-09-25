@@ -94,7 +94,7 @@ class ErrorHandler(commands.Cog):
                     message = copy.copy(ctx.message)
                     message._edited_timestamp = discord.utils.utcnow()
                     message.content = message.content.replace(ctx.invoked_with, matches[0])
-                    return await self.client.process_commands(message)
+                    return await self.bot.process_commands(message)
                 else:
                     return
 
