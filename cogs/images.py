@@ -36,7 +36,7 @@ class Images(commands.Cog):
       
       ms = (end - start) * 1000
 
-      embed = discord.Embed(title="Waifu", url=json['url'], timestamp=discord.utils.utcnow(), color=dominant_color)
+      embed = discord.Embed(title="Waifu", url=json['url'], timestamp=discord.utils.utcnow(), color=dominant_color, timestamp=discord.utils.utcnow(), color=0x2F3136)
       embed.set_image(url=json['url'])
       embed.set_footer(text=f"{round(ms)}ms{' ' * (9-len(str(round(ms, 3))))}", icon_url=ctx.author.avatar.url)
 
@@ -56,7 +56,7 @@ class Images(commands.Cog):
       dominant_color1 = str(json['dominant_color']).replace('#', '')
       dominant_color = int(dominant_color1, 16)
 
-      embed = discord.Embed(title="Maid", url=json['url'], timestamp=discord.utils.utcnow(), color=dominant_color)
+      embed = discord.Embed(title="Maid", url=json['url'], timestamp=discord.utils.utcnow(), color=dominant_color, timestamp=discord.utils.utcnow(), color=0x2F3136)
       embed.set_image(url=json['url'])
       embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
@@ -79,7 +79,7 @@ class Images(commands.Cog):
       request = await self.client.session.get('https://axoltlapi.herokuapp.com/')
       json = await request.json()
 
-      embed = discord.Embed(title="Axolotl", url=json['url'], timestamp=discord.utils.utcnow(), color=0x2F3136)
+      embed = discord.Embed(title="Axolotl", url=json['url'])
       embed.set_image(url=json['url'])
       embed.set_footer(text=json['facts'])
       
@@ -93,7 +93,7 @@ class Images(commands.Cog):
       request2 = await self.client.session.get('https://some-random-api.ml/facts/cat')
       factJson = await request2.json()
 
-      embed = discord.Embed(title="Meow", url=pictureJson['link'], timestamp=discord.utils.utcnow(), color=0x2F3136)
+      embed = discord.Embed(title="Meow", url=pictureJson['link'])
       embed.set_image(url=pictureJson['link'])
       embed.set_footer(text=factJson['fact'])
       
@@ -107,7 +107,7 @@ class Images(commands.Cog):
       request2 = await self.client.session.get('https://some-random-api.ml/facts/dog')
       factJson = await request2.json()
 
-      embed = discord.Embed(title="Woof", url=pictureJson['link'], timestamp=discord.utils.utcnow(), color=0x2F3136)
+      embed = discord.Embed(title="Woof", url=pictureJson['link'])
       embed.set_image(url=pictureJson['link'])
       embed.set_footer(text=factJson['fact'])
       
@@ -121,7 +121,7 @@ class Images(commands.Cog):
       request2 = await self.client.session.get('https://some-random-api.ml/facts/panda')
       factJson = await request2.json()
 
-      embed = discord.Embed(title="Panda!", url=pictureJson['link'], timestamp=discord.utils.utcnow(), color=0x2F3136)
+      embed = discord.Embed(title="Panda!", url=pictureJson['link'])
       embed.set_image(url=pictureJson['link'])
       embed.set_footer(text=factJson['fact'])
       
@@ -135,7 +135,7 @@ class Images(commands.Cog):
       request2 = await self.client.session.get('https://some-random-api.ml/facts/fox')
       factJson = await request2.json()
 
-      embed = discord.Embed(title="Fox!", url=pictureJson['link'], timestamp=discord.utils.utcnow(), color=0x2F3136)
+      embed = discord.Embed(title="Fox!", url=pictureJson['link'])
       embed.set_image(url=pictureJson['link'])
       embed.set_footer(text=factJson['fact'])
       
@@ -149,7 +149,7 @@ class Images(commands.Cog):
       request2 = await self.client.session.get('https://some-random-api.ml/facts/bird')
       factJson = await request2.json()
 
-      embed = discord.Embed(title="Bird!", url=pictureJson['link'], timestamp=discord.utils.utcnow(), color=0x2F3136)
+      embed = discord.Embed(title="Bird!", url=pictureJson['link'])
       embed.set_image(url=pictureJson['link'])
       embed.set_footer(text=factJson['fact'])
       
@@ -163,7 +163,7 @@ class Images(commands.Cog):
       request2 = await self.client.session.get('https://some-random-api.ml/facts/koala')
       factJson = await request2.json()
 
-      embed = discord.Embed(title="Koala!", url=pictureJson['link'], timestamp=discord.utils.utcnow(), color=0x2F3136)
+      embed = discord.Embed(title="Koala!", url=pictureJson['link'])
       embed.set_image(url=pictureJson['link'])
       embed.set_footer(text=factJson['fact'])
       
@@ -177,7 +177,7 @@ class Images(commands.Cog):
       request2 = await self.client.session.get('https://some-random-api.ml/facts/kangaroo')
       factJson = await request2.json()
 
-      embed = discord.Embed(title="Kangaroo!", url=pictureJson['link'], timestamp=discord.utils.utcnow(), color=0x2F3136)
+      embed = discord.Embed(title="Kangaroo!", url=pictureJson['link'])
       embed.set_image(url=pictureJson['link'])
       embed.set_footer(text=factJson['fact'])
       
@@ -191,7 +191,7 @@ class Images(commands.Cog):
       request2 = await self.client.session.get('https://some-random-api.ml/facts/racoon')
       factJson = await request2.json()
 
-      embed = discord.Embed(title="Racoon!", url=pictureJson['link'], timestamp=discord.utils.utcnow(), color=0x2F3136)
+      embed = discord.Embed(title="Racoon!", url=pictureJson['link'])
       embed.set_image(url=pictureJson['link'])
       embed.set_footer(text=factJson['fact'])
       
@@ -205,7 +205,7 @@ class Images(commands.Cog):
       request2 = await self.client.session.get('https://some-random-api.ml/facts/whale')
       factJson = await request2.json()
 
-      embed = discord.Embed(title="Whale!", url=pictureJson['link'], timestamp=discord.utils.utcnow(), color=0x2F3136)
+      embed = discord.Embed(title="Whale!", url=pictureJson['link'])
       embed.set_image(url=pictureJson['link'])
       embed.set_footer(text=factJson['fact'])
       
@@ -217,7 +217,7 @@ class Images(commands.Cog):
       request = await self.client.session.get('https://some-random-api.ml/img/pikachu')
       pictureJson = await request.json()
 
-      embed = discord.Embed(title="Pikachu!", url=pictureJson['link'], timestamp=discord.utils.utcnow(), color=0x2F3136)
+      embed = discord.Embed(title="Pikachu!", url=pictureJson['link'])
       embed.set_image(url=pictureJson['link'])
       
       await ctx.send(embed=embed)
