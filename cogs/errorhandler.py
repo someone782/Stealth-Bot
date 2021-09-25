@@ -68,7 +68,7 @@ class ErrorHandler(commands.Cog):
         #                 return await cmd(ctx)
 
         if isinstance(error, commands.CommandNotFound):
-            ignored_cogs = ('jishaku') if ctx.author.id != self.client.owner_id else ()
+            ignored_cogs = ('jishaku', 'events') if ctx.author.id != self.client.owner_id else ()
             command_names = []
             for command in [c for c in self.client.commands if c.cog_name not in ignored_cogs]:
                 # noinspection PyBroadException
