@@ -45,7 +45,7 @@ class Owner(commands.Cog):
         start1 = time.perf_counter()
         
         command = self.client.get_command("jsk git")
-        await ctx.invoke(cmd, argument=jishaku!.codeblocks.codeblock_converter("pull")) 
+        await ctx.invoke(cmd, argument=jishaku.codeblocks.codeblock_converter("pull")) 
         
         end1 = time.perf_counter()
         
