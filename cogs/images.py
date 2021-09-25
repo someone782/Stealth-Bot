@@ -70,7 +70,7 @@ class Images(commands.Cog):
 
       embed = discord.Embed(title="Axolotl", url=json['url'], timestamp=discord.utils.utcnow(), color=0x2F3136)
       embed.set_image(url=json['url'])
-      embed.set_footer(text=json['fact'])
+      embed.set_footer(text=json['facts'])
       
       await ctx.send(embed=embed)
 
