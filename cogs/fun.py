@@ -238,6 +238,17 @@ Answer: {random.choice(responses)}
         
         await ctx.send(embed=embed)
         
+    @commands.command(help="Replaces all spaces in given text with a clapping emoji", aliases=['applause'])
+    async def clap(self, ctx, character : str, *, text : str):
+        text = text.replace(" ", " 👏 ")
+        
+        if len(text) > 1000:
+            return await ctx.send("That text is over the 1000-character limit.")
+        
+        embed = discord.Embed(description=f"{text}")
+        
+        await ctx.send(embed=embed)
+        
     @commands.command(help="Replaces all spaces in given text with a emoji/character", aliases=['ins'])
     async def insert(self, ctx, character : str, *, text : str):
         text = text.replace(" ", f" {character} ")
@@ -248,7 +259,6 @@ Answer: {random.choice(responses)}
         embed = discord.Embed(description=f"{text}")
         
         await ctx.send(embed=embed)
-
 
     @commands.command(help="Tells you if someone is a furry or not")
     async def furrydetector(self, ctx, member : discord.Member=None):
