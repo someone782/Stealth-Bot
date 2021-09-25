@@ -2,7 +2,6 @@ import discord
 from datetime import datetime
 import io
 import psutil
-import random
 import helpers
 import os
 import textwrap
@@ -734,48 +733,40 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         else:
             await ctx.send(f"{errorMessage}")
             
-    @commands.command(help="banner test")
-    async def bannert(self, ctx, type : str):
-                
-        avaible_types = ['server',
-                         'guild',
-                         'member',
-                         'user']
-                
-        if type == None or type.lower() not in avaible_types:
-            return await ctx.send("You need to specify a type at the end!\nAvaible types: server, member")
+    @commands.group(invoke_without_command=True)
+    async def bannert(self, ctx):
+        colors = [0x910023, 0xA523FF]
+        color = random.choice(colors)
         
-        if type.lower() == 'server' or type.lower() == 'guild':
-            url = ctx.guild.banner
-            if url == None:
-                return await ctx.send("This server doesn't have a banner.")
-            embed = discord.Embed(title=f"{ctx.guild.name}'s banner")
-            embed.set_image(url=url)
-            
-            return await ctx.send(embed=embed)
+        fetchedMember = await self.client.fetch_user(ctx.author.id)
+        url = fetchedMember.banner
+        if url == None:
+            return await ctx.send("You don't have a banner!")
         
-        if type.lower() == 'member' or type.lower() == 'user':
-            message = await ctx.send("Please mention the user you'd like to see the banner of")
-            
-            def check(m):
-                return m.channel.id == ctx.channel.id and m.author.id == ctx.message.author.id
+        embed = discord.Embed(title=f"{ctx.author.name}'s banner", timestamp=discord.utils.utcnow(), color=color)
+        embed.set_image(url=url)
+        embed.set_footer(text="bruh", icon_url=ctx.author.avatar.url)
+        
+        await ctx.reply(embed=embed)
 
-            try:
-                msg = await self.client.wait_for(event='message', check=check, timeout=15)
-            except asyncio.TimeoutError:
-                await ctx.send("It's been over 15 seconds, please try again by doing `-bannert`", delete_after=5.0) # Replies to the author's message
-            else:
-                
-                member = await commands.MemberConverter().convert(ctx, f"{msg}")
-            
-                fetchedMember = await self.client.fetch_user(member.id)
-                url = fetchedMember.banner
-                if url == None:
-                    return await ctx.send("That user doesn't have a banner.")
-                embed = discord.Embed(title=f"{member.name}'s banner")
-                embed.set_image(url=url)
-                
-                return await ctx.send(embed=embed)
+    @bannert.command(aliases=['guild'])
+    async def server(self, ctx):
+        server = ctx.guild
+        colors = [0x910023, 0xA523FF]
+        color = random.choice(colors)
+        
+        url = server.banner
+        if url == None:
+            return await ctx.send("This server doesn't have a banner!")
+        
+        embed = discord.Embed(title=f"{server.name}'s banner")
+        embed.set_image(url=url)
+        
+        await ctx.send(embed=embed)
+        
+    @bannert.command(aliases=['user'])
+    async def member(self, ctx, member : discord.Member):
+        return
             
 
     @commands.command(help="Shows the banner of the member you mentioned", aliases=['bn'])
