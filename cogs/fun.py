@@ -240,7 +240,7 @@ Answer: {random.choice(responses)}
         
     @commands.command(help="Replaces all spaces in given text with a emoji/character", aliases=['ins'])
     async def insert(self, ctx, character : str, *, text : str):
-        text = text.replace(" ", f" {emoji} ")
+        text = text.replace(" ", f" {character} ")
         
         embed = discord.Embed(description=f"{text}")
         
