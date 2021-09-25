@@ -197,7 +197,7 @@ class CustomContext(commands.Context):
         except discord.HTTPException:
             return await super().send(content=content, embed=embed, reference=None, **kwargs)
         
-    async def confirm(self, message: str = 'Do you want to confirm?', embed: discord.Embed = None,
+    async def confirm(self, message: str = 'Do you want to confirm?',
                       buttons: typing.Tuple[typing.Union[discord.PartialEmoji, str],
                                             str, discord.ButtonStyle] = None, timeout: int = 30,
                       delete_after_confirm: bool = False, delete_after_timeout: bool = False,

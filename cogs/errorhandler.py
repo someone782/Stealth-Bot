@@ -85,7 +85,7 @@ class ErrorHandler(commands.Cog):
 
             if matches:
                 embed = discord.Embed(title="Yes")
-                confirm = await ctx.confirm(message=f"I couldn't find a command called `{ctx.invoked_with}`.\nDid you mean `{f'{matches[0]}' if matches else ''}`?", embed=embed,
+                confirm = await ctx.confirm(message=f"I couldn't find a command called `{ctx.invoked_with}`.\nDid you mean `{f'{matches[0]}' if matches else ''}`?",
                                             delete_after_confirm=True, delete_after_timeout=True, delete_after_cancel=True,
                                             buttons=(('<:greenTick:596576670815879169>', f'', discord.ButtonStyle.gray), ('🗑', None, discord.ButtonStyle.red)), timeout=15)
 
@@ -99,9 +99,7 @@ class ErrorHandler(commands.Cog):
                     return
 
             else:
-                
-                await ctx.send("Test 2")
-                return
+                return await ctx.send(f"I couldn't find a command called `{ctx.invoked_with}`.\nDo `help` to view a list of avaible commands.")
 
         elif isinstance(error, errors.AuthorBlacklisted):
             message = f"It appears that you're blacklisted from this bot. Contact Ender2K89#9999 if you think this is a mistake."
