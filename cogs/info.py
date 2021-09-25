@@ -574,7 +574,7 @@ Functions: {fn}
 Coroutine: {cr}
 :hash: Comments: {cm:,}
 
-Enhanced-dpy version: 
+Enhanced-dpy version: {discord.__version__}
 Python version: 
 
         """)
