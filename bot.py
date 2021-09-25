@@ -193,10 +193,6 @@ class CustomContext(commands.Context):
             embed.color = color
 
         try:
-            if content == None:
-                content = "Hello there!"
-            else:
-                content = content
             return await super().send(content=content, embed=embed, reference=reference, **kwargs)
         except discord.HTTPException:
             return await super().send(content=content, embed=embed, reference=None, **kwargs)
