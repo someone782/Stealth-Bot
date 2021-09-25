@@ -8,6 +8,7 @@ import time
 import traceback
 import errors
 import jishaku
+import random
 from discord.ext import commands
 
 def setup(client):
