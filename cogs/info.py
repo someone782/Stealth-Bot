@@ -490,7 +490,7 @@ Features:
         available = "No"
         managed = "No"
         animated = "No"
-        user = f"{fetchedEmoji.user}
+        user = f"{fetchedEmoji.user}"
         
         view = discord.ui.View()
         style = discord.ButtonStyle.gray
