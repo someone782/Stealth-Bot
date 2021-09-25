@@ -185,9 +185,6 @@ class Info(commands.Cog):
     @commands.command(help="Shows you information about the member you mentioned", aliases=['ui', 'user', 'member', 'memberinfo'], brief="https://cdn.discordapp.com/attachments/876937268609290300/886407195279884318/userinfo.gif")
     @commands.cooldown(1, 5, BucketType.member)
     async def userinfo(self, ctx, member : discord.Member=None):
-        # if member == None:
-        #     member = ctx.author
-            
         if member == None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
@@ -736,14 +733,53 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
             await ctx.send(embed=embed)
         else:
             await ctx.send(f"{errorMessage}")
+            
+    @commands.command(help="banner test")
+    async def bannert(self, ctx, member : discord.Member=None, type : str=None):
+        if member == None:
+            if ctx.message.reference:
+                member = ctx.message.reference.resolved.author
+            else:
+                member = ctx.author
+                
+        avaible_types = ['server',
+                         'guild',
+                         'member',
+                         'user']
+                
+        if type == None or type.lower() not in avaible_types:
+            return await ctx.send("You need to specify a type at the end!\nAvaible types: server, member")
+        
+        if type.lower() == 'server' or type.lower() == 'guild':
+            url = ctx.guild.banner
+            if url == None:
+                return await ctx.send("This server doesn't have a banner.")
+            embed = discord.Embed(title=f"{ctx.guild.name}'s banner")
+            embed.set_image(url=url)
+            
+            return await ctx.send(embed=embed)
+        
+        if type.lower() == 'member' or type.lower() == 'user':
+            fetchedMember = await self.client.get_user(member.id)
+            url = fetchedMember.banner
+            if url == None:
+                return await ctx.send("That user doesn't have a banner.")
+            embed = discord.Embed(title=f"{member.name}'s banner")
+            embed.set_image(url=url)
+            
+            return await ctx.send(embed=embed)
+            
 
     @commands.command(help="Shows the banner of the member you mentioned", aliases=['bn'])
     @commands.cooldown(1, 5, BucketType.member)
     async def banner(self, ctx, member : discord.Member=None):
-        errorMessage = f"{member} doesn't have a banner."
-        if member == None or member == ctx.author:
-            member = ctx.author
-            errorMessage = "You don't have a banner"
+        if member == None:
+            if ctx.message.reference:
+                member = ctx.message.reference.resolved.author
+                errorMessage = f"{member} doesn't have a banner"
+            else:
+                member = ctx.author
+                errorMessage = "You don't have a banner"
 
         fetchedMember = await self.client.fetch_user(member.id)
 
@@ -758,9 +794,7 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
                 text = text1.replace("cdn.discordapp.com", "media.discordapp.net")
                 
             embed=discord.Embed(title=f"{member}'s avatar", description=f"{text}")
-            url1 = fetchedMember.banner.url
-            url = url1.replace("cdn.discordapp.com", "media.discordapp.net")
-            embed.set_image(url=url)
+            embed.set_image(url=fetchedMember.banner.url)
 
             await ctx.send(embed=embed)
         else:
