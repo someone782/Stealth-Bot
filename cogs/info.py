@@ -550,6 +550,9 @@ Available?: {available}
                     if '#' in l:
                         cm += 1
                     ls += 1
+                    
+        ver = sys.version_info
+        full_version = {ver.major}.{ver.minor}.{ver.micro}
 
         text_channels = len([channel for channel in self.client.get_all_channels() if isinstance(channel, discord.TextChannel)])
         voice_channels = len([channel for channel in self.client.get_all_channels() if isinstance(channel, discord.VoiceChannel)])
@@ -575,7 +578,7 @@ Coroutine: {cr}
 :hash: Comments: {cm:,}
 
 Enhanced-dpy version: {discord.__version__}
-Python version: 
+Python version: {full_version}
 
         """)
         embed.set_thumbnail(url=self.client.user.avatar.url)
