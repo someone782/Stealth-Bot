@@ -9,21 +9,6 @@ import errors
 import aiohttp
 from discord.ext import commands
 
-class VoteButtons(discord.ui.View):
-    def __init__(self):
-        super().__init__()
-        self.add_item(discord.ui.Button(emoji="<:topgg:870133913102721045>", label='top.gg', url="https://top.gg/bot/760179628122964008"))
-        self.add_item(discord.ui.Button(emoji="<:botsgg:870134146972938310>", label='bots.gg', url="https://discord.bots.gg/bots/760179628122964008"))
-
-class Stuff(discord.ui.View):
-    def __init__(self,ctx):
-        super().__init__()
-
-    @discord.ui.button(label='Vote', style=discord.ButtonStyle.gray, emoji="<:dbl:757235965629825084>")
-    async def receive(self, button: discord.ui.Button, interaction: discord.Interaction):
-        embed=discord.Embed(title="Vote for me")
-        await interaction.response.send_message(embed=embed, ephemeral=True, view=VoteButtons())
-
 def setup(client):
     client.add_cog(Misc(client))
 
@@ -42,10 +27,15 @@ class Misc(commands.Cog):
         embed = discord.Embed(title="Click the button to vote for me")
         await ctx.send(embed=embed, view=view)
         
-    @commands.command(help="Sends you a link where you can vote for the bot", aliases=['topgg', 'top-gg', 'top_gg', 'dbots', 'discordbots', 'discord_bots', 'discord-bots'])
+    @commands.command(help="Sends you a link where you can vote for the bot", aliases=['topgg', 'top-gg', 'top_gg'])
     async def vote(self, ctx):
+        view = discord.ui.View()
+        style = discord.ButtonStyle.gray
+        item = discord.ui.Button(style=style, emoji="<:topgg:870133913102721045>", label="Vote for me", url="https://top.gg/bot/760179628122964008")
+        view.add_item(item=item)
+        
         embed = discord.Embed(title="Click the button to vote for me")
-        await ctx.send(embed=embed, view=Stuff())
+        await ctx.send(embed=embed, view=view)
 
     @commands.command(help="Sends the support server of the bot", aliases=['supportserver', 'support_server'])
     async def support(self, ctx):
