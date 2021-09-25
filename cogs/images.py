@@ -77,7 +77,7 @@ class Images(commands.Cog):
       
       await ctx.send(embed=embed)
 
-   @commands.command(help="🐶 Shows a picture of a dog and a random fact about dogs")
+   @commands.command(help="🐶 Shows a picture of a dog and a random fact about dogs", message_command=False)
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
    async def dog(self, ctx):
       async with aiohttp.ClientSession() as session:
