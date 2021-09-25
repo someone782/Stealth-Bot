@@ -552,7 +552,7 @@ Available?: {available}
                     ls += 1
                     
         ver = sys.version_info
-        full_version = {ver.major}.{ver.minor}.{ver.micro}
+        full_version = f"{ver.major}.{ver.minor}.{ver.micro}"
 
         text_channels = len([channel for channel in self.client.get_all_channels() if isinstance(channel, discord.TextChannel)])
         voice_channels = len([channel for channel in self.client.get_all_channels() if isinstance(channel, discord.VoiceChannel)])
