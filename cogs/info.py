@@ -758,17 +758,13 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
             message = await ctx.send("Please mention the user you'd like to see the banner of")
             
             def check(m):
-                return m.channel.id == ctx.channel.id
+                return m.channel.id == ctx.channel.id and m.author.id == ctx.message.author.id
 
             try:
                 msg = await self.client.wait_for(event='message', check=check, timeout=15)
             except asyncio.TimeoutError:
-                await message.delete() # Deletes the bot's message
                 await ctx.send("It's been over 15 seconds, please try again by doing `-bannert`", delete_after=5.0) # Replies to the author's message
             else:
-                await message.delete() # Deletes the bot's message
-                await ctx.message.delete() # Deletes the author's message
-                
                 answer = msg
                 
                 member = await commands.MemberConverter().convert(ctx, answer)
