@@ -736,11 +736,6 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
             
     @commands.command(help="banner test")
     async def bannert(self, ctx, type : str):
-        if member == None:
-            if ctx.message.reference:
-                member = ctx.message.reference.resolved.author
-            else:
-                member = ctx.author
                 
         avaible_types = ['server',
                          'guild',
