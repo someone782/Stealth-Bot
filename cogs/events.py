@@ -18,6 +18,8 @@ class Events(commands.Cog):
     def __init__(self, client):
         self.hidden = True
         self.client = client
+        if not hasattr(self.client, 'commands'):
+            self.client.commands = 0
         if not hasattr(self.client, 'messages'):
             self.client.messages = 0
         if not hasattr(self.client, 'edited_messages'):
@@ -26,6 +28,10 @@ class Events(commands.Cog):
             self.client.last_message = None
         if not hasattr(self.client, 'last_message_author'):
             self.client.last_message_author = None
+            
+    @commands.Cog.listener()
+    async def on_command(self, ctx):
+        self.client.commands = self.client.commands +1
 
     @commands.Cog.listener()
     async def on_message(self, message):

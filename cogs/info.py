@@ -568,6 +568,7 @@ Available?: {available}
 Prefixes:
 {text}
 Messages seen: {self.client.messages} ({self.client.edited_messages} edited)
+Commands used: {self.client.commands}
 
 :file_folder: Files: {fc}
 Lines: {ls:,}
