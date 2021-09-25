@@ -67,8 +67,8 @@ class Owner(commands.Cog):
         color = random.choice(colors)
                 
         embed = discord.Embed(title="Done updating bot!", description=f"""
-`jsk git pull` took {pullMs} ms
-`rall channel` took {rallMs}
+`jsk git pull` took {round(pullMs)}ms{' ' * (9-len(str(round(pullMs, 3))))}
+`rall channel` took {round(rallMs)}ms{' ' * (9-len(str(round(rallMs, 3))))}
                               """, timestamp=discord.utils.utcnow(), color=color)
         embed.set_footer(text=f"Requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
         
