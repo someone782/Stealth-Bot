@@ -239,7 +239,7 @@ Answer: {random.choice(responses)}
         await ctx.send(embed=embed)
         
     @commands.command(help="Replaces all spaces in given text with a clapping emoji", aliases=['applause'])
-    async def clap(self, ctx, character : str, *, text : str):
+    async def clap(self, ctx, *, text : str):
         text = text.replace(" ", " 👏 ")
         
         if len(text) > 1000:
