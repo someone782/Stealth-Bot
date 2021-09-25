@@ -238,12 +238,12 @@ Answer: {random.choice(responses)}
         
         await ctx.send(embed=embed)
         
-    @commands.command(help="Chooses between multiple choices.\nTo denote multiple choices, you should use double quotes.")
+    @commands.command(help="Chooses between multiple choices.\nTo denote multiple choices, you should use double quotes.", aliases=['choice', 'decide'])
     async def choose(self, ctx, *choices : commands.clean_content):
         if len(choices) < 2:
-            return await ctx.send('Not enough choices to pick from.')
+            return await ctx.send("Not enough choices.")
 
-        await ctx.send(random.choice(choices))
+        await ctx.send(f"I choose `{random.choice(choices)}`.")
         
     @commands.command(help="Replaces all spaces in given text with a clapping emoji", aliases=['applause'])
     async def clap(self, ctx, *, text : str):
