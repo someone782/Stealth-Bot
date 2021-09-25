@@ -73,16 +73,16 @@ Never gonna tell a lie and hurt {member.mention}
             else:
                 member = ctx.author
 
-        async with aiohttp.ClientSession() as session:
-            async with session.get(f'https://some-random-api.ml/canvas/triggered?avatar={member.avatar.with_format("png")}') as af:
-                if 300 > af.status >= 200:
-                    fp = io.BytesIO(await af.read())
-                    file = discord.File(fp, "triggered.gif")
-                    
-                    embed = discord.Embed(title=f"{member.name} is triggered")
-                    embed.set_image(url="attachment://triggered.gif")
 
-                    await ctx.send(embed=embed, file=file)
+        af = await self.client.session.get(f'https://some-random-api.ml/canvas/triggered?avatar={member.avatar.with_format("png")}')
+        if 300 > af.status >= 200:
+                fp = io.BytesIO(await af.read())
+                file = discord.File(fp, "triggered.gif")
+                    
+                embed = discord.Embed(title=f"{member.name} is triggered")
+                embed.set_image(url="attachment://triggered.gif")
+
+                await ctx.send(embed=embed, file=file)
 
     @commands.command(help="Gives the member you mentioned a license to be horny", aliases=['horny_license', 'license_horny'])
     @commands.cooldown(1, 5, BucketType.member)
@@ -93,9 +93,8 @@ Never gonna tell a lie and hurt {member.mention}
             else:
                 member = ctx.author
 
-        async with aiohttp.ClientSession() as session:
-            async with session.get(f'https://some-random-api.ml/canvas/horny?avatar={member.avatar.with_format("png")}') as af:
-                if 300 > af.status >= 200:
+        af = await self.client.session.get(f'https://some-random-api.ml/canvas/horny?avatar={member.avatar.with_format("png")}')
+        if 300 > af.status >= 200:
                     fp = io.BytesIO(await af.read())
                     file = discord.File(fp, "horny.png")
 
@@ -113,9 +112,8 @@ Never gonna tell a lie and hurt {member.mention}
             else:
                 member = ctx.author
 
-        async with aiohttp.ClientSession() as session:
-            async with session.get(f'https://some-random-api.ml/canvas/jail?avatar={member.avatar.with_format("png")}') as af:
-                if 300 > af.status >= 200:
+            af = await self.client.session.get(f'https://some-random-api.ml/canvas/jail?avatar={member.avatar.with_format("png")}')
+            if 300 > af.status >= 200:
                     fp = io.BytesIO(await af.read())
                     file = discord.File(fp, "jail.png")
 
@@ -133,9 +131,8 @@ Never gonna tell a lie and hurt {member.mention}
             else:
                 member = ctx.author
 
-        async with aiohttp.ClientSession() as session:
-            async with session.get(f'https://some-random-api.ml/canvas/wasted?avatar={member.avatar.with_format("png")}') as af:
-                if 300 > af.status >= 200:
+        af = await self.client.session.get(f'https://some-random-api.ml/canvas/wasted?avatar={member.avatar.with_format("png")}')
+        if 300 > af.status >= 200:
                     fp = io.BytesIO(await af.read())
                     file = discord.File(fp, "wasted.png")
 
@@ -153,9 +150,8 @@ Never gonna tell a lie and hurt {member.mention}
             else:
                 member = ctx.author
 
-        async with aiohttp.ClientSession() as session:
-            async with session.get(f'https://some-random-api.ml/canvas/gay?avatar={member.avatar.with_format("png")}') as af:
-                if 300 > af.status >= 200:
+        af = await self.client.session.get(f'https://some-random-api.ml/canvas/gay?avatar={member.avatar.with_format("png")}')
+        if 300 > af.status >= 200:
                     fp = io.BytesIO(await af.read())
                     file = discord.File(fp, "gay.png")
 
@@ -173,9 +169,8 @@ Never gonna tell a lie and hurt {member.mention}
             else:
                 member = ctx.author
 
-        async with aiohttp.ClientSession() as session:
-            async with session.get(f'https://some-random-api.ml/canvas/glass?avatar={member.avatar.with_format("png")}') as af:
-                if 300 > af.status >= 200:
+        af = await self.client.session.get(f'https://some-random-api.ml/canvas/glass?avatar={member.avatar.with_format("png")}')
+        if 300 > af.status >= 200:
                     fp = io.BytesIO(await af.read())
                     file = discord.File(fp, "glass.png")
 
@@ -187,9 +182,8 @@ Never gonna tell a lie and hurt {member.mention}
     @commands.command(help="Sends a random token of a discord bot", alises=['bottoken', 'random_token', 'random_bot_token'])
     @commands.cooldown(1, 5, BucketType.member)
     async def token(self, ctx):
-        async with aiohttp.ClientSession() as session:
-            request1 = await session.get('https://some-random-api.ml/bottoken')
-            tokenjson = await request1.json()
+        request1 = await self.client.session.get('https://some-random-api.ml/bottoken')
+        tokenjson = await request1.json()
         embed = discord.Embed(title="Random Bot Token", description=f"{tokenjson['token']}")
         
         await ctx.send(embed=embed)
@@ -319,15 +313,15 @@ Answer: {random.choice(responses)}
         sebreddit_list = ["dankmemes", "memes"]
         subreddit = random.choice(sebreddit_list)
 
-        async with self.client.session.get(f"https://www.reddit.com/r/{subreddit}/hot.json") as r:
-            response = await r.json()
-            redditDict = dict(random.choice(response['data']['children']))
-            redditDict = redditDict['data']
+        r = await self.client.session.get(f"https://www.reddit.com/r/{subreddit}/hot.json")
+        response = await r.json()
+        redditDict = dict(random.choice(response['data']['children']))
+        redditDict = redditDict['data']
 
-            embed = discord.Embed(title=f"{redditDict['title'].upper()}", url=f"https://reddit.com{redditDict['permalink']}", description=f"<:upvote:274492025678856192> Upvotes: {redditDict['ups']}\nComments: {redditDict['num_comments']}")
-            embed.set_image(url=redditDict['url'])
+        embed = discord.Embed(title=f"{redditDict['title'].upper()}", url=f"https://reddit.com{redditDict['permalink']}", description=f"<:upvote:274492025678856192> Upvotes: {redditDict['ups']}\nComments: {redditDict['num_comments']}")
+        embed.set_image(url=redditDict['url'])
 
-            await message.edit(embed=embed)
+        await message.edit(embed=embed)
 
     @commands.command(help="Shows you a random meme from the subreddit r/ProgrammerHumor", aliases=['programmer_meme', 'programmeme', 'program_meme', 'pm'])
     @commands.cooldown(1, 5, commands.BucketType.member)
@@ -340,15 +334,15 @@ Answer: {random.choice(responses)}
         sebreddit_list = ["ProgrammerHumor", "ProgrammerHumor"]
         subreddit = random.choice(sebreddit_list)
 
-        async with self.client.session.get(f"https://www.reddit.com/r/{subreddit}/hot.json") as r:
-            response = await r.json()
-            redditDict = dict(random.choice(response['data']['children']))
-            redditDict = redditDict['data']
+        r = await self.client.session.get(f"https://www.reddit.com/r/{subreddit}/hot.json")
+        response = await r.json()
+        redditDict = dict(random.choice(response['data']['children']))
+        redditDict = redditDict['data']
 
-            embed = discord.Embed(title=f"{redditDict['title'].upper()}", url=f"https://reddit.com{redditDict['permalink']}", description=f"<:upvote:274492025678856192> Upvotes: {redditDict['ups']}\nComments: {redditDict['num_comments']}")
-            embed.set_image(url=redditDict['url'])
+        embed = discord.Embed(title=f"{redditDict['title'].upper()}", url=f"https://reddit.com{redditDict['permalink']}", description=f"<:upvote:274492025678856192> Upvotes: {redditDict['ups']}\nComments: {redditDict['num_comments']}")
+        embed.set_image(url=redditDict['url'])
 
-            await message.edit(embed=embed)
+        await message.edit(embed=embed)
 
     @commands.command(help="Shows you a random piece of art from the subreddit r/Art", aliases=['drawing', 'arts', 'artist'])
     @commands.cooldown(1, 5, commands.BucketType.member)
@@ -361,15 +355,15 @@ Answer: {random.choice(responses)}
         sebreddit_list = ["Art", "ArtBattle"]
         subreddit = random.choice(sebreddit_list)
 
-        async with self.client.session.get(f"https://www.reddit.com/r/{subreddit}/hot.json") as r:
-            response = await r.json()
-            redditDict = dict(random.choice(response['data']['children']))
-            redditDict = redditDict['data']
+        r = await self.client.session.get("https://www.reddit.com/r/{subreddit}/hot.json")
+        response = await r.json()
+        redditDict = dict(random.choice(response['data']['children']))
+        redditDict = redditDict['data']
 
-            embed = discord.Embed(title=f"{redditDict['title'].upper()}", url=f"https://reddit.com{redditDict['permalink']}", description=f"<:upvote:274492025678856192> Upvotes: {redditDict['ups']}\nComments: {redditDict['num_comments']}")
-            embed.set_image(url=redditDict['url'])
+        embed = discord.Embed(title=f"{redditDict['title'].upper()}", url=f"https://reddit.com{redditDict['permalink']}", description=f"<:upvote:274492025678856192> Upvotes: {redditDict['ups']}\nComments: {redditDict['num_comments']}")
+        embed.set_image(url=redditDict['url'])
 
-            await message.edit(embed=embed)
+        await message.edit(embed=embed)
 
     @commands.command(help="Messages you.", aliases=['msg_me'])
     async def msgme(self, ctx, *, content):
@@ -390,9 +384,8 @@ Answer: {random.choice(responses)}
                 member = ctx.author
                 return await ctx.send("You can't hug yourself!")
             
-        async with aiohttp.ClientSession() as session:
-            request = await session.get('https://api.waifu.pics/sfw/hug')
-            json = await request.json()
+        request = await self.client.session.get('https://api.waifu.pics/sfw/hug')
+        json = await request.json()
 
         embed = discord.Embed(title=f"{ctx.author.name} hugged {member.name}")
         embed.set_image(url=json['url'])
@@ -409,9 +402,8 @@ Answer: {random.choice(responses)}
                 member = ctx.author
                 return await ctx.send("You can't pat yourself!")
             
-        async with aiohttp.ClientSession() as session:
-            request = await session.get('https://api.waifu.pics/sfw/pat')
-            json = await request.json()
+        request = await self.client.session.get('https://api.waifu.pics/sfw/pat')
+        json = await request.json()
 
         embed = discord.Embed(title=f"{ctx.author.name} patted {member.name}")
         embed.set_image(url=json['url'])
@@ -428,9 +420,8 @@ Answer: {random.choice(responses)}
                 member = ctx.author
                 return await ctx.send("You can't kiss yourself!")
             
-        async with aiohttp.ClientSession() as session:
-            request = await session.get('https://api.waifu.pics/sfw/kiss')
-            json = await request.json()
+        request = await self.client.session.get('https://api.waifu.pics/sfw/kiss')
+        json = await request.json()
 
         embed = discord.Embed(title=f"{ctx.author.name} kissed {member.name}")
         embed.set_image(url=json['url'])
@@ -447,9 +438,8 @@ Answer: {random.choice(responses)}
                 member = ctx.author
                 return await ctx.send("You can't pat yourself!")
             
-        async with aiohttp.ClientSession() as session:
-            request = await session.get('https://api.waifu.pics/sfw/pat')
-            json = await request.json()
+        request = await self.client.session.get('https://api.waifu.pics/sfw/pat')
+        json = await request.json()
 
         embed = discord.Embed(title=f"{ctx.author.name} patted {member.name}")
         embed.set_image(url=json['url'])
@@ -466,9 +456,9 @@ Answer: {random.choice(responses)}
                 member = ctx.author
                 return await ctx.send("You can't lick yourself!")
             
-        async with aiohttp.ClientSession() as session:
-            request = await session.get('https://api.waifu.pics/sfw/lick')
-            json = await request.json()
+        
+        request = await self.client.session.get('https://api.waifu.pics/sfw/lick')
+        json = await request.json()
 
         embed = discord.Embed(title=f"{ctx.author.name} licked {member.name}")
         embed.set_image(url=json['url'])
@@ -485,9 +475,8 @@ Answer: {random.choice(responses)}
                 member = ctx.author
                 return await ctx.send("You can't bonk yourself!")
             
-        async with aiohttp.ClientSession() as session:
-            request = await session.get('https://api.waifu.pics/sfw/bonk')
-            json = await request.json()
+        request = await self.client.session.get('https://api.waifu.pics/sfw/bonk')
+        json = await request.json()
 
         embed = discord.Embed(title=f"{ctx.author.name} bonked {member.name}")
         embed.set_image(url=json['url'])
@@ -504,9 +493,8 @@ Answer: {random.choice(responses)}
                 member = ctx.author
                 return await ctx.send("You can't yeet yourself!")
 
-        async with aiohttp.ClientSession() as session:
-            request = await session.get('https://api.waifu.pics/sfw/yeet')
-            json = await request.json()
+        request = await self.client.session.get('https://api.waifu.pics/sfw/yeet')
+        json = await request.json()
 
         embed = discord.Embed(title=f"{ctx.author.name} yeeted {member.name}")
         embed.set_image(url=json['url'])
@@ -523,9 +511,8 @@ Answer: {random.choice(responses)}
                 member = ctx.author
                 return await ctx.send("You can't hug yourself!")
 
-        async with aiohttp.ClientSession() as session:
-            request = await session.get('https://api.waifu.pics/sfw/wave')
-            json = await request.json()
+        request = await self.client.session.get('https://api.waifu.pics/sfw/wave')
+        json = await request.json()
 
         embed = discord.Embed(title=f"{ctx.author.name} waved at {member.name}")
         embed.set_image(url=json['url'])
@@ -542,9 +529,8 @@ Answer: {random.choice(responses)}
                 member = ctx.author
                 return await ctx.send("You can't high five yourself!")
 
-        async with aiohttp.ClientSession() as session:
-            request = await session.get('https://api.waifu.pics/sfw/highfive')
-            json = await request.json()
+        request = await self.client.session.get('https://api.waifu.pics/sfw/highfive')
+        json = await request.json()
 
         embed = discord.Embed(title=f"{ctx.author.name} high fived {member.name}")
         embed.set_image(url=json['url'])
@@ -561,9 +547,8 @@ Answer: {random.choice(responses)}
                 member = ctx.author
                 return await ctx.send("You can't bite yourself!")
 
-        async with aiohttp.ClientSession() as session:
-            request = await session.get('https://api.waifu.pics/sfw/bite')
-            json = await request.json()
+        request = await self.client.session.get('https://api.waifu.pics/sfw/bite')
+        json = await request.json()
 
         embed = discord.Embed(title=f"{ctx.author.name} bit {member.name}")
         embed.set_image(url=json['url'])
