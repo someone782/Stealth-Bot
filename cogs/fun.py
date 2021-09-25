@@ -17,6 +17,37 @@ class Fun(commands.Cog):
     ":soccer: | Fun commands like -meme, -hug and more"
     def __init__(self, client):
         self.client = client
+        
+    @commands.command(help="Rick rolls someone")
+    async def rickroll(self, ctx, member : discord.Member=None):
+        if member == None:
+            if ctx.message.reference:
+                member = ctx.message.reference.resolved.author
+            else:
+                member = ctx.author
+                
+        text = f"""
+Never gonna give {member.mention} up
+Never gonna let {member.mention} down
+Never gonna run around and desert {member.mention}
+Never gonna make {member.mention} cry
+Never gonna say goodbye
+Never gonna tell a lie and hurt {member.mention}
+Never gonna give {member.mention} up
+Never gonna let {member.mention} down
+Never gonna run around and desert {member.mention}
+Never gonna make {member.mention} cry
+Never gonna say goodbye
+Never gonna tell a lie and hurt {member.mention}
+Never gonna give {member.mention} up
+Never gonna let {member.mention} down
+Never gonna run around and desert {member.mention}
+Never gonna make {member.mention} cry
+Never gonna say goodbye
+Never gonna tell a lie and hurt {member.mention}
+        """
+        
+        await ctx.send(text, reply=False)
 
     @commands.command(help="Turns any text into ASCII", aliases=['asciitext', 'ascii_text', 'gen_ascii', 'generator_ascii'])
     async def ascii(self, ctx, *, text):
