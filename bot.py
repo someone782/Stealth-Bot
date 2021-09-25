@@ -161,7 +161,7 @@ class StealthBot(commands.AutoShardedBot):
     async def get_context(self, message, *, cls=CustomContext):
         return await super().get_context(message, cls=cls)
 
-client = StealthBot(intents=discord.Intents.all(), activity=activity, status=status, case_insensitive=True, help_command=None, enable_debug_events = True, strip_after_prefix=True, slash_commands=True) # Initializes the client object
+client = StealthBot(intents=discord.Intents.all(), activity=activity, status=status, case_insensitive=True, help_command=None, enable_debug_events = True, strip_after_prefix=True) # Initializes the client object
 
 client.tracker = DiscordUtils.InviteTracker(client) # Initializes the tracker object
 client.owner_ids = [564890536947875868, 555818548291829792] # 349373972103561218 (LeoCx1000) # 555818548291829792 (Vicente0670)
