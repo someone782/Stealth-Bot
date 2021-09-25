@@ -484,14 +484,27 @@ Features:
         await ctx.send(embed=embed)
         
     @commands.command(help="Shows information about a emoji", aliases=['ei', 'emoteinfo', 'emoinfo', 'eminfo', 'emojinfo', 'einfo'])
-    async def emojiinfo(self, ctx, emoji : discord.PartialEmoji):
+    async def emojiinfo(self, ctx, emoji : discord.Emoji):
+        fetchedEmoji = await ctx.guild.fetch_emoji(emoji.id)
+        try:
+            user = fetchedEmoji.user
+        except:
+            user = "Couldn't get user"
         url = f"{emoji.url}"
+        available = "No"
+        managed = "No"
         animated = "No"
         
         view = discord.ui.View()
         style = discord.ButtonStyle.gray
         item = discord.ui.Button(style=style, emoji="🔗", label="Emoji link", url=url)
         view.add_item(item=item)
+        
+        if emoji.available == True:
+            available = "Yes"
+            
+        if emoji.managed == True:
+            managed = "Yes"
         
         if emoji.animated == True:
             animated = "Yes"
@@ -503,8 +516,13 @@ Name: {emoji.name}
 Created at: {discord.utils.format_dt(emoji.created_at, style="f")} ({discord.utils.format_dt(emoji.created_at, style="R")})
 :link: Link: [Click here]({url})
 
+<:servers:870152102759006208> Created by: {user}
+Guild: {emoji.guild} ({emoji.id})
+
+Available?: {available}
+<:twitch:889903398672035910> Managed?: {managed}
 <:emoji_ghost:658538492321595393> Animated?: {animated}
-                              """)
+                            """)
         embed.set_image(url=emoji.url)
         
         await ctx.send(embed=embed, view=view)
