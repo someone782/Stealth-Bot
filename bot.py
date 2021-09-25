@@ -18,6 +18,7 @@ from discord.ext import commands, tasks
 import DiscordUtils
 import asyncpg
 import typing
+from discord import Interaction
 from typing import (
     List,
     Optional
