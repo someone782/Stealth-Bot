@@ -735,27 +735,22 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
             
     @commands.group(invoke_without_command=True)
     async def bannert(self, ctx):
-        colors = [0x910023, 0xA523FF]
-        color = random.choice(colors)
-        
         fetchedMember = await self.client.fetch_user(ctx.author.id)
         url = fetchedMember.banner
+        
         if url == None:
             return await ctx.send("You don't have a banner!")
         
-        embed = discord.Embed(title=f"{ctx.author.name}'s banner", timestamp=discord.utils.utcnow(), color=color)
+        embed = discord.Embed(title=f"{ctx.author.name}'s banner")
         embed.set_image(url=url)
-        embed.set_footer(text="bruh", icon_url=ctx.author.avatar.url)
         
-        await ctx.reply(embed=embed)
+        await ctx.send(embed=embed)
 
     @bannert.command(aliases=['guild'])
     async def server(self, ctx):
         server = ctx.guild
-        colors = [0x910023, 0xA523FF]
-        color = random.choice(colors)
-        
         url = server.banner
+        
         if url == None:
             return await ctx.send("This server doesn't have a banner!")
         
@@ -765,10 +760,26 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         await ctx.send(embed=embed)
         
     @bannert.command(aliases=['user'])
-    async def member(self, ctx, member : discord.Member):
-        return
-            
-
+    async def member(self, ctx, member : discord.Member=None):
+        errorMessage == f"{member} doesn't have a banner!"
+        
+        if member == None:
+            if ctx.message.reference:
+                member = ctx.message.reference.resolved.author
+            else:
+                member = ctx.author
+                errorMessage = "You don't have a banner!"
+                
+        fetchedMember = self.client.fetch_user(member.id)
+        url = fetchedMember.banner
+        if url == None:
+            return await ctx.send(errorMessage)
+        
+        embed = discord.Embed(title=f"{member}'s banner")
+        embed.set_image(url=url)
+        
+        await ctx.send(embed=embed)
+        
     @commands.command(help="Shows the banner of the member you mentioned", aliases=['bn'])
     @commands.cooldown(1, 5, BucketType.member)
     async def banner(self, ctx, member : discord.Member=None):
