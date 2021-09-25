@@ -61,6 +61,18 @@ class Images(commands.Cog):
       embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
       await ctx.reply(embed=embed)
+      
+   @commands.command(help="Shows a picture of a axolotl and a random fact about axolotls")
+   @commands.bot_has_permissions(send_messages=True, embed_links=True)
+   async def axolotl(self, ctx):
+      request = await self.client.session.get('https://axoltlapi.herokuapp.com/')
+      json = await request.json()
+
+      embed = discord.Embed(title="Axolotl", url=json['url'], timestamp=discord.utils.utcnow(), color=0x2F3136)
+      embed.set_image(url=json['url'])
+      embed.set_footer(text=json['fact'])
+      
+      await ctx.send(embed=embed)
 
    @commands.command(help="🐱 Shows a picture of a cat and a random fact about cats")
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
