@@ -51,12 +51,11 @@ class Misc(commands.Cog):
     async def prefixes(self, ctx):
         prefixes = await self.client.get_pre(self.client, ctx.message, raw_prefix=True)
         embed = discord.Embed(title="Here's a list of my prefixes for this server:", description=ctx.me.mention + '\n' + '\n'.join(prefixes))
-        embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
 
         return await ctx.send(embed=embed)
 
     @commands.check_any(commands.has_permissions(manage_guild=True), commands.is_owner())
-    @prefixes.command(name="add", help="Adds a prefix to the bot's prefixes (To add a prefix with a space put quotation marks around it)", aliases=['a', 'create'])
+    @prefixes.command(name="add", help="Adds a prefix to the bot's prefixes", aliases=['a', 'create'])
     async def prefixes_add(self, ctx, new : str):
         old = list(await self.client.get_pre(self.client, ctx.message, raw_prefix=True))
 
@@ -83,7 +82,7 @@ class Misc(commands.Cog):
             # return await ctx.send("That's already one of my prefixes!")
 
     @commands.check_any(commands.has_permissions(manage_guild=True), commands.is_owner())
-    @prefixes.command(name="remove", help="Removes a prefix from the bot's prefixes (To remove a prefix with a space put quotation marks around it)", aliases=['r', 'delete'])
+    @prefixes.command(name="remove", help="Removes a prefix from the bot's prefixes", aliases=['r', 'delete'])
     async def prefixes_remove(self, ctx, prefix : str):
         old = list(await self.client.get_pre(self.client, ctx.message, raw_prefix=True))
 
