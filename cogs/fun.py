@@ -290,7 +290,7 @@ Answer: {random.choice(responses)}
 
         await ctx.send(f"{member} is {random.randint(0, 100)}% gay!")
 
-    @commands.command(help="Tells you a random number with a optional range. Minimum has to be smaller than maximum")
+    @commands.command(help="Tells you a random number with a optional range. Minimum has to be smaller than maximum", aliases=['random_number', 'randomnumber', 'number_random', 'numberrandom'])
     async def number(self, ctx, minimum : int=0, maximum : int=100):
         maximum = min(maximum, 1000)
         if minimum >= maximum:
