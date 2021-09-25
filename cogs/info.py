@@ -735,7 +735,7 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
             await ctx.send(f"{errorMessage}")
             
     @commands.command(help="banner test")
-    async def bannert(self, ctx, member : discord.Member=None, type : str=None):
+    async def bannert(self, ctx, type : str):
         if member == None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
@@ -760,14 +760,32 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
             return await ctx.send(embed=embed)
         
         if type.lower() == 'member' or type.lower() == 'user':
-            fetchedMember = await self.client.fetch_user(member.id)
-            url = fetchedMember.banner
-            if url == None:
-                return await ctx.send("That user doesn't have a banner.")
-            embed = discord.Embed(title=f"{member.name}'s banner")
-            embed.set_image(url=url)
+            message = await ctx.send("Please mention the user you'd like to see the banner of")
             
-            return await ctx.send(embed=embed)
+            def check(m):
+                return m.channel.id == ctx.channel.id
+
+            try:
+                msg = await self.client.wait_for(event='message', check=check, timeout=15)
+            except asyncio.TimeoutError:
+                await message.delete() # Deletes the bot's message
+                await ctx.send("It's been over 15 seconds, please try again by doing `-bannert`", delete_after=5.0) # Replies to the author's message
+            else:
+                await message.delete() # Deletes the bot's message
+                await ctx.message.delete() # Deletes the author's message
+                
+                answer = msg
+                
+                member = await commands.MemberConverter().convert(ctx, answer)
+            
+                fetchedMember = await self.client.fetch_user(member.id)
+                url = fetchedMember.banner
+                if url == None:
+                    return await ctx.send("That user doesn't have a banner.")
+                embed = discord.Embed(title=f"{member.name}'s banner")
+                embed.set_image(url=url)
+                
+                return await ctx.send(embed=embed)
             
 
     @commands.command(help="Shows the banner of the member you mentioned", aliases=['bn'])
