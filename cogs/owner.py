@@ -80,7 +80,7 @@ class Owner(commands.Cog):
         allowed = "\n".join(perm.replace("_", " ").title() for perm, val in ctx.guild.me.guild_permissions if val)
         
         embed = discord.Embed(title="Bot permissions", description=f"""
-Allowed permissions:
+__**Allowed permission**__
 {allowed}
                               """)
         # embed.add_field(name="Allowed", value="\n".join(perm.replace("_", " ").title() for perm, val in ctx.guild.me.guild_permissions if val), inline=True)
