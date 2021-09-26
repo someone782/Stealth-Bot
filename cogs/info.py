@@ -484,31 +484,32 @@ Features:
         
     @commands.command(help="Shows information about a emoji", aliases=['ei', 'emoteinfo', 'emoinfo', 'eminfo', 'emojinfo', 'einfo'])
     async def emojiinfo(self, ctx, emoji : discord.Emoji):
-        fetchedEmoji = await ctx.guild.fetch_emoji(emoji.id)
-        url = f"{emoji.url}"
-        available = "No"
-        managed = "No"
-        animated = "No"
-        user = f"{fetchedEmoji.user}"
-        
-        view = discord.ui.View()
-        style = discord.ButtonStyle.gray
-        item = discord.ui.Button(style=style, emoji="🔗", label="Emoji link", url=url)
-        view.add_item(item=item)
-        
-        if fetchedEmoji.user is None:
-            user = "Couldn't get user"
-        
-        if emoji.available:
-            available = "Yes"
+        try:
+            fetchedEmoji = await ctx.guild.fetch_emoji(emoji.id)
+            url = f"{emoji.url}"
+            available = "No"
+            managed = "No"
+            animated = "No"
+            user = f"{fetchedEmoji.user}"
             
-        if emoji.managed:
-            managed = "Yes"
-        
-        if emoji.animated:
-            animated = "Yes"
+            view = discord.ui.View()
+            style = discord.ButtonStyle.gray
+            item = discord.ui.Button(style=style, emoji="🔗", label="Emoji link", url=url)
+            view.add_item(item=item)
+            
+            if fetchedEmoji.user is None:
+                user = "Couldn't get user"
+            
+            if emoji.available:
+                available = "Yes"
+                
+            if emoji.managed:
+                managed = "Yes"
+            
+            if emoji.animated:
+                animated = "Yes"
 
-        embed = discord.Embed(title=f"{emoji.name}", description=f"""
+            embed = discord.Embed(title=f"{emoji.name}", description=f"""
 Name: {emoji.name}
 <:greyTick:860644729933791283> ID: {emoji.id}
 
@@ -521,10 +522,35 @@ Guild: {emoji.guild} ({emoji.id})
 Available?: {available}
 <:twitch:889903398672035910> Managed?: {managed}
 <:emoji_ghost:658538492321595393> Animated?: {animated}
-                            """)
-        embed.set_image(url=emoji.url)
-        
-        await ctx.send(embed=embed, view=view)
+                                """)
+            embed.set_image(url=emoji.url)
+            
+            await ctx.send(embed=embed, view=view)
+            
+        except:
+            url = f"{emoji.url}"
+            animated = "No"
+            
+            view = discord.ui.View()
+            style = discord.ButtonStyle.gray
+            item = discord.ui.Button(style=style, emoji="🔗", label="Emoji link", url=url)
+            view.add_item(item=item)
+            
+            if emoji.animated:
+                animated = "Yes"
+
+            embed = discord.Embed(title=f"{emoji.name}", description=f"""
+Name: {emoji.name}
+<:greyTick:860644729933791283> ID: {emoji.id}
+
+Created at: {discord.utils.format_dt(emoji.created_at, style="f")} ({discord.utils.format_dt(emoji.created_at, style="R")})
+:link: Link: [Click here]({url})
+
+<:emoji_ghost:658538492321595393> Animated?: {animated}
+                                """)
+            embed.set_image(url=emoji.url)
+            
+            await ctx.send(embed=embed, view=view)
         
     @commands.command(help="Shows information about the bot", aliases=['bi'])
     async def botinfo(self, ctx):
