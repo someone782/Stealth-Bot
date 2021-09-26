@@ -187,7 +187,7 @@ class Images(commands.Cog):
    @commands.command(help="🐦 Shows a picture of a bird and a random fact about birds")
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
    async def bird(self, ctx):
-      request = await self.cliesnt.session.get('https://some-random-api.ml/img/bird')
+      request = await self.client.session.get('https://some-random-api.ml/img/bird')
       pictureJson = await request.json()
       request2 = await self.client.session.get('https://some-random-api.ml/facts/bird')
       factJson = await request2.json()
@@ -242,9 +242,9 @@ class Images(commands.Cog):
       
       await ctx.send(embed=embed)
 
-   @commands.command(help="🦝 Shows a picture of a raccoon and a random fact about raccoons")
+   @commands.command(help="🦝 Shows a picture of a raccoon and a random fact about racoons", aliases=['raccoon'])
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
-   async def raccoon(self, ctx):
+   async def racoon(self, ctx):
       start = time.perf_counter()
          
       request = await self.client.session.get('https://some-random-api.ml/img/racoon')
