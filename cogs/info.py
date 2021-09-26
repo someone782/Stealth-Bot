@@ -340,9 +340,11 @@ Acknowledgments: {acknowledgments}
         """)
         embed.set_thumbnail(url=member.avatar.url)
         
+        banner = fetchedMember.banner.url.replace("?size=512", "?size=1024")
+        
         print(fetchedMember.banner.url)
         
-        embed.set_image(url=fetchedMember.banner.url)
+        embed.set_image(url=banner)
 
         await ctx.send(embed=embed)
 
