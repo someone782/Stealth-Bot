@@ -527,7 +527,7 @@ Available?: {available}
             
             await ctx.send(embed=embed, view=view)
             
-        except:
+        except commands.EmojiNotFound:
             url = f"{emoji.url}"
             animated = "No"
             
