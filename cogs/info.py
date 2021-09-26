@@ -624,7 +624,7 @@ Python version: {full_version}
             else:
                 member = ctx.author
             
-        await self.say_permissions(ctx, member)
+        await self.send_permissions(ctx, member)
 
     @commands.command(help="Shows a list of commands this bot has", aliases=['commands', 'command', 'cmds', 'commandslist', 'cmdslist', 'commands_list', 'cmds_list', 'commandlist', 'cmdlist', 'command_list', 'cmd_list'])
     async def _commands(self, ctx):
