@@ -653,11 +653,8 @@ Answer: {random.choice(responses)}
         if member is None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
-            elif member == ctx.author:
-                return await ctx.send("You can't kill yourself!")
-            else:
-                member = ctx.author
-                return await ctx.send("You can't kill yourself!")
+            elif member.id == ctx.author.id:
+                return await ctx.send("what u trying do mate")
 
         request = await self.client.session.get('https://api.waifu.pics/sfw/kill')
         json = await request.json()
