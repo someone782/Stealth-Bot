@@ -50,25 +50,25 @@ class Events(commands.Cog):
         
         embed = discord.Embed(title=f"{ctx.command} has been used", description=f"""
 Guild info
-```
-Name: {server}
-ID: {server.id}
 
-Channel Name: {channel}
-Channel ID: {channel.id}
+Name: `{server}`
+ID: `{server.id}`
+
+Channel Name: `{channel}`
+Channel ID: `{channel.id}`
 Channel Mention: {channel.mention}
 
-Owner Name: {owner}
-Owner ID: {owner.id}
+Owner Name: `{owner}`
+Owner ID: `{owner.id}`
 Owner Mention: {owner.mention}
-```
+
 Author info
-```
-Name: {author}
-ID: {author.id}
+
+Name: `{author}`
+ID: `{author.id}`
 Mention: {author.mention}
-Tag: {author.discriminator}
-```
+Tag: `#{author.discriminator}`
+
 Message info
 URL: [Click here]({message.jump_url}/ 'Jump URL')
 Content:
