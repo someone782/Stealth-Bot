@@ -225,7 +225,7 @@ Commands usable by you (in this server): {len(await self.filter_commands(cog.get
 `{cog.description.split('| ')[1]}`
 
 __**Available commands**__ **[{len(cog.get_commands())}]**
-```fix
+```yaml
 {val}
 ```
                                 """)
