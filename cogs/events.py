@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from discord.ext.commands.core import command
 from discord.utils import get
+import random
 from afks import afks
 
 def remove(afk):
@@ -47,6 +48,9 @@ class Events(commands.Cog):
         
         if message.pinned == True:
             pinned = "Yes"
+            
+        colors = [0x910023, 0xA523FF]
+        color = random.choice(colors)
         
         embed = discord.Embed(title=f"{ctx.command} has been used", description=f"""
 Guild info
@@ -73,7 +77,7 @@ Message info
 URL: [Click here]({message.jump_url}/ 'Jump URL')
 Content:
 `{message.content}`
-                              """)
+                              """, timestamp=discord.utils.utcnow(), color=color)
         
         await commandChannel.send(embed=embed)
         
