@@ -544,7 +544,7 @@ test
                                 """)
             embed.set_image(url=emoji.url)
             
-            await ctx.send(embed=embed, view=view)
+             return await ctx.send(embed=embed, view=view)
         
     @commands.command(help="Shows information about the bot", aliases=['bi'])
     async def botinfo(self, ctx):
