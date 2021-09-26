@@ -61,7 +61,7 @@ class ServerEmotesEmbedPage(menus.ListPageSource):
         offset = menu.current_page * self.per_page
         colors = [0x910023, 0xA523FF]
         color = random.choice(colors)
-        colors = [0x910023, 0xA523FF]
+
         embed = discord.Embed(title=f"{self.guild}'s emotes ({len(self.guild.emojis)})", description="\n".join(f'{i+1}. {v}' for i, v in enumerate(entries, start=offset)), timestamp=discord.utils.utcnow(), color=color)
         return embed
     
@@ -968,6 +968,7 @@ Suggestion: {suggestion}
 ```yaml
 Owner: Ender2K89#9999
 Helped with a lot: LeoCx1000#9999
+Did some PR's on my github: Someone#5555
 Main help command page inspired by: Charles#5244
 Made music cog: DaPandaOfficial🐼#5684
 A lot of command ideas: Vicente0670 YT#0670

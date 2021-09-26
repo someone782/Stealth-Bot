@@ -17,7 +17,7 @@ def setup(client):
     client.add_cog(Fun(client))
 
 class Fun(commands.Cog):
-    ":soccer: | Fun commands like -meme, -hug and more" #whats the - there for?
+    ":soccer: | Fun commands like meme, hug and more" 
     def __init__(self, client):
         self.client = client
         
