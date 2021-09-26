@@ -110,7 +110,7 @@ class Mod(commands.Cog):
         def check(m: discord.Message):  # m = discord.Message.
             return m.author.id == ctx.author.id and m.channel.id == ctx.channel.id
 
-        await ctx.send("What do you want the punishment to be? (kick/ban)")
+        message = await ctx.send("What do you want the punishment to be? (kick/ban)")
 
         try:
             punishment = await self.client.wait_for(event='message', timeout=15, check=check)

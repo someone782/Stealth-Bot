@@ -182,7 +182,7 @@ class Info(commands.Cog):
     @commands.command(help="Shows you information about the member you mentioned", aliases=['ui', 'user', 'member', 'memberinfo'], brief="https://cdn.discordapp.com/attachments/876937268609290300/886407195279884318/userinfo.gif")
     @commands.cooldown(1, 5, BucketType.member)
     async def userinfo(self, ctx, member : discord.Member=None):
-        if member == None:
+        if member is None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
             else:
@@ -190,12 +190,12 @@ class Info(commands.Cog):
                 
         fetchedMember = await self.client.fetch_user(member.id)
 
-        if member.bot == True:
+        if member.bot:
             botText = "Yes"
         else:
             botText = "No"
 
-        if member.pending == True:
+        if member.pending:
             pendingText = "Yes"
         else:
             pendingText = "No"
@@ -302,7 +302,7 @@ class Info(commands.Cog):
             acknowledgments = "retard"
             
         nickname = member.nick
-        if member.nick == None:
+        if member.nick is None:
             nickname = f"{member.name} (No nickname)"
 
 
@@ -496,16 +496,16 @@ Features:
         item = discord.ui.Button(style=style, emoji="🔗", label="Emoji link", url=url)
         view.add_item(item=item)
         
-        if fetchedEmoji.user == None:
+        if fetchedEmoji.user is None:
             user = "Couldn't get user"
         
-        if emoji.available == True:
+        if emoji.available:
             available = "Yes"
             
-        if emoji.managed == True:
+        if emoji.managed:
             managed = "Yes"
         
-        if emoji.animated == True:
+        if emoji.animated:
             animated = "Yes"
 
         embed = discord.Embed(title=f"{emoji.name}", description=f"""
@@ -739,9 +739,7 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
     @commands.cooldown(1, 5, BucketType.member)
     async def avatar(self, ctx, member : discord.Member=None):
         errorMessage = f"{member} doesnt have a avatar."
-        if member == None:
-            member = ctx.author
-            errorMessage = "You don't have a avatar."
+        member = member or ctx.author
             
             
         if member.avatar:
@@ -790,10 +788,11 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         await ctx.send(embed=embed)
         
     @bannert.command(aliases=['user'])
+    @commands.cooldown(1,10,commands.BucketType.user)
     async def member(self, ctx, member : discord.Member=None):
         errorMessage = f"{member} doesn't have a banner!"
         
-        if member == None:
+        if member is None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
             else:
@@ -803,7 +802,7 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         fetchedMember = await self.client.fetch_user(member.id)
         url = fetchedMember.banner
         
-        if url == None:
+        if url is None:
             return await ctx.send(errorMessage)
         
         embed = discord.Embed(title=f"{member}'s banner")
@@ -814,7 +813,7 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
     @commands.command(help="Shows the banner of the member you mentioned", aliases=['bn'])
     @commands.cooldown(1, 5, BucketType.member)
     async def banner(self, ctx, member : discord.Member=None):
-        if member == None:
+        if member is None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
                 errorMessage = f"{member} doesn't have a banner"

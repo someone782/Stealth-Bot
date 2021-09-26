@@ -17,13 +17,13 @@ def setup(client):
     client.add_cog(Fun(client))
 
 class Fun(commands.Cog):
-    ":soccer: | Fun commands like -meme, -hug and more"
+    ":soccer: | Fun commands like -meme, -hug and more" #whats the - there for?
     def __init__(self, client):
         self.client = client
         
     @commands.command(help="Rick rolls someone")
     async def rickroll(self, ctx, member : discord.Member=None):
-        if member == None:
+        if member is None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
             else:
@@ -70,7 +70,7 @@ Never gonna tell a lie and hurt {member.mention}
     @commands.command(help="Sends a image of the member you mention but triggered")
     @commands.cooldown(1, 5, BucketType.member)
     async def triggered(self, ctx, member : discord.Member=None):
-        if member == None:
+        if member is None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
             else:
@@ -90,7 +90,7 @@ Never gonna tell a lie and hurt {member.mention}
     @commands.command(help="Gives the member you mentioned a license to be horny", aliases=['horny_license', 'license_horny'])
     @commands.cooldown(1, 5, BucketType.member)
     async def horny(self, ctx, member : discord.Member=None):
-        if member == None:
+        if member is None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
             else:
@@ -109,7 +109,7 @@ Never gonna tell a lie and hurt {member.mention}
     @commands.command(help="Gives the member you mentioned a license to be horny", aliases=['go_to_jail', 'in_jail'])
     @commands.cooldown(1, 5, BucketType.member)
     async def jail(self, ctx, member : discord.Member=None):
-        if member == None:
+        if member is None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
             else:
@@ -128,7 +128,7 @@ Never gonna tell a lie and hurt {member.mention}
     @commands.command(help="Gives the member you mentioned a license to be horny", aliases=['waste'])
     @commands.cooldown(1, 5, BucketType.member)
     async def wasted(self, ctx, member : discord.Member=None):
-        if member == None:
+        if member is None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
             else:
@@ -147,7 +147,7 @@ Never gonna tell a lie and hurt {member.mention}
     @commands.command(help="Gives the member you mentioned a license to be horny", aliases=['pride', 'gay'])
     @commands.cooldown(1, 5, BucketType.member)
     async def rainbow(self, ctx, member : discord.Member=None):
-        if member == None:
+        if member is None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
             else:
@@ -166,7 +166,7 @@ Never gonna tell a lie and hurt {member.mention}
     @commands.command(help="Gives the member you mentioned a license to be horny")
     @commands.cooldown(1, 5, BucketType.member)
     async def glass(self, ctx, member : discord.Member=None):
-        if member == None:
+        if member is None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
             else:
@@ -193,7 +193,7 @@ Never gonna tell a lie and hurt {member.mention}
 
     @commands.command(help="Shows the size of someones pp!", aliases=['banana', 'eggplant', 'egg_plant'])
     async def pp(self, ctx, member : discord.Member=None):
-        if member == None:
+        if member is None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
             else:
@@ -283,7 +283,7 @@ Answer: {random.choice(responses)}
 
     @commands.command(help="Tells you if someone is a furry or not")
     async def furrydetector(self, ctx, member : discord.Member=None):
-        if member == None:
+        if member is None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
             else:
@@ -296,7 +296,7 @@ Answer: {random.choice(responses)}
 
     @commands.command(help="Tells you how gay someone is")
     async def gayrate(self, ctx, member : discord.Member=None):
-        if member == None:
+        if member is None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
             else:
@@ -397,7 +397,7 @@ Answer: {random.choice(responses)}
     @commands.command(help="Let's you hug someone!")
     @commands.cooldown(1, 5, BucketType.member)
     async def hug(self, ctx, member : discord.Member=None):
-        if member == None:
+        if member is None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
             else:
@@ -415,7 +415,7 @@ Answer: {random.choice(responses)}
     @commands.command(help="Let's you pat someone!")
     @commands.cooldown(1, 5, BucketType.member)
     async def pat(self, ctx, member : discord.Member=None):
-        if member == None:
+        if member is None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
             else:
@@ -433,7 +433,7 @@ Answer: {random.choice(responses)}
     @commands.command(help="Let's you kiss someone!")
     @commands.cooldown(1, 5, BucketType.member)
     async def kiss(self, ctx, member : discord.Member=None):
-        if member == None:
+        if member is None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
             else:
@@ -451,7 +451,7 @@ Answer: {random.choice(responses)}
     @commands.command(help="Let's you pat someone!")
     @commands.cooldown(1, 5, BucketType.member)
     async def pat(self, ctx, member : discord.Member=None):
-        if member == None:
+        if member is None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
             else:
@@ -469,7 +469,7 @@ Answer: {random.choice(responses)}
     @commands.command(help="Let's you lick someone!")
     @commands.cooldown(1, 5, BucketType.member)
     async def lick(self, ctx, member : discord.Member=None):
-        if member == None:
+        if member is None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
             else:
@@ -488,7 +488,7 @@ Answer: {random.choice(responses)}
     @commands.command(help="Let's you bonk someone!")
     @commands.cooldown(1, 5, BucketType.member)
     async def bonk(self, ctx, member : discord.Member=None):
-        if member == None:
+        if member is None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
             else:
@@ -506,7 +506,7 @@ Answer: {random.choice(responses)}
     @commands.command(help="Let's you yeet someone!")
     @commands.cooldown(1, 5, BucketType.member)
     async def yeet(self, ctx, member : discord.Member=None):
-        if member == None:
+        if member is None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
             else:
@@ -524,7 +524,7 @@ Answer: {random.choice(responses)}
     @commands.command(help="Let's you wave at someone!")
     @commands.cooldown(1, 5, BucketType.member)
     async def wave(self, ctx, member : discord.Member=None):
-        if member == None:
+        if member is None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
             else:
@@ -542,7 +542,7 @@ Answer: {random.choice(responses)}
     @commands.command(help="Let's you high five someone!", aliases=['high_five'])
     @commands.cooldown(1, 5, BucketType.member)
     async def highfive(self, ctx, member : discord.Member=None):
-        if member == None:
+        if member is None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
             else:
@@ -560,7 +560,7 @@ Answer: {random.choice(responses)}
     @commands.command(help="Let's you bite someone!")
     @commands.cooldown(1, 5, BucketType.member)
     async def bite(self, ctx, member : discord.Member=None):
-        if member == None:
+        if member is None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
             else:
@@ -586,7 +586,7 @@ Original text: {text}
 
     @commands.command(help="OOF's the person you mentioned", aliases=['commitoof', 'commit_oof'])
     async def oof(self, ctx, member : discord.Member=None):
-        if member == None or member == ctx.author:
+        if member is None or member == ctx.author:
             responses = [f"{ctx.author.name} was killed in Electrical.",
             f"{ctx.author.name} failed math.",
             f"{ctx.author.name} rolled down a large hill.",
