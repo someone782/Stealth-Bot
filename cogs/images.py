@@ -79,8 +79,10 @@ class Images(commands.Cog):
       end = time.perf_counter()
       
       ms = (end - start) * 1000
+      
+      titles = ["Bark!", "Arf!", "Woof!", "Bork!"]
 
-      embed = discord.Embed(title="Woof!", url=json[0])
+      embed = discord.Embed(title=f"{random.choice(titles)}", url=json[0])
       embed.set_image(url=json[0])
       embed.set_footer(text=f"{round(ms)}ms{'' * (9-len(str(round(ms, 3))))}", icon_url=ctx.author.avatar.url)
       
@@ -128,7 +130,7 @@ class Images(commands.Cog):
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
    async def dog(self, ctx):
       start = time.perf_counter()
-         
+      
       request = await self.client.session.get('https://some-random-api.ml/img/dog')
       pictureJson = await request.json()
       request2 = await self.client.session.get('https://some-random-api.ml/facts/dog')
@@ -138,9 +140,9 @@ class Images(commands.Cog):
       
       ms = (end - start) * 1000
       
-      titles = ['']
+      titles = ["Bark!", "Arf!", "Woof!", "Bork!"]
 
-      embed = discord.Embed(title="Woof", url=pictureJson['link'])
+      embed = discord.Embed(title=f"{random.choice(titles)}", url=pictureJson['link'])
       embed.set_image(url=pictureJson['link'])
       embed.set_footer(text=f"{round(ms)}ms{'' * (9-len(str(round(ms, 3))))} • {factJson['fact']}", icon_url=ctx.author.avatar.url)
       
