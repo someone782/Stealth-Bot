@@ -74,7 +74,7 @@ Commands usable by you (in this server):
 `{cog.description.split('| ')[1]}`
 
 __**Available commands**__ **[{len(cog.get_commands())}]**
-```fix
+```yaml
 {val}
 ```
                               """, timestamp=discord.utils.utcnow(), color=color)
@@ -242,7 +242,7 @@ Commands usable by you (in this server): {len(await self.filter_commands(cog.get
 + Description: {cog.description}
 ```
 __**Available commands**__ **[{len(cog.get_commands())}]**
-```fix
+```yaml
 This cog has no commands
 ```
                                 """)
