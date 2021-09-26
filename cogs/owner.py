@@ -78,9 +78,10 @@ class Owner(commands.Cog):
         allowed = "\n".join(permission.replace("_", " ").title() for permission, value in member.guild_permissions if value)
         notAllowed = "\n".join(permission.replace("_", " ").title() for permission, value in member.guild_permissions if not value)
         
-        embed = discord.Embed(title="Bot permissions", description=f"{allowed}")
+        embed = discord.Embed(title="Bot permissions")
         #embed.add_field(name="Allowed", value=f"{allowed}", inline=True)
         embed.add_field(name="Denied", value=f"{notAllowed}", inline=True)
+        print(allowed)
                         
         await ctx.send(embed=embed)
         
