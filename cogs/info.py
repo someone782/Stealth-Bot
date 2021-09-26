@@ -960,6 +960,7 @@ Mention: `{author.mention}`
 Tag: `#{author.discriminator}`
 
 __**Suggestion info**__
+
 Suggestion: `{suggestion}`
 Length: `{len(suggestion)}`
 URL: [Click here]({message.jump_url}/ 'Jump URL')
