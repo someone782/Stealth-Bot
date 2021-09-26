@@ -934,20 +934,7 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         if len(suggestion) > 750:
             return await ctx.send("Your suggestion exceeded the 750-character limit.")
         
-        else:
-            embed = discord.Embed(title="Bot suggestion", description=f"""
-Suggestion by: {ctx.author} | {ctx.author.name} | {ctx.author.id}
-
-Suggestion from server: {ctx.guild} | {ctx.guild.id}
-
-Suggestion from channel: {ctx.channel} | {ctx.channel.name} | {ctx.channel.id}
-
-Suggestion: {suggestion}
-            """)
-            channel = self.client.get_channel(879786064473129033)
-            await channel.send(embed=embed)
-            
-            await ctx.send("Your suggestion has been sent! It will be reviewed by Ender2K89 soon.")
+        await ctx.confirm()
 
     @commands.command(help="Shows you information about a character", aliases=['characterinfo', 'character_info', 'char_info'])
     @commands.cooldown(1, 5, BucketType.member)
