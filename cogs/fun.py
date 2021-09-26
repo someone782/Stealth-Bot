@@ -653,6 +653,8 @@ Answer: {random.choice(responses)}
         if member is None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
+            elif member == ctx.author:
+                return await ctx.send("You can't kill yourself!")
             else:
                 member = ctx.author
                 return await ctx.send("You can't kill yourself!")
