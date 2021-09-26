@@ -10,6 +10,16 @@
             "resume_timeout": 120,
             "name": "Node 1",
             "reconnect_attempts": -1
+        },
+        {
+            "host": "84.58.246.207",
+            "port": 2333,
+            "password": "pogPassword",
+            "region": "Germany",
+            "resume_key": "Node 2 KEY",
+            "resume_timeout": 120,
+            "name": "Node 2",
+            "reconnect_attempts": -1
         }],
     "ignored_commands": [
         "queue",
