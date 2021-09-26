@@ -341,6 +341,8 @@ Acknowledgments: {acknowledgments}
 :rainbow: Accent color: {fetchedMember.accent_color}
         """)
         embed.set_thumbnail(url=member.avatar.url)
+        
+        embed.set_image(url=fetchedMember.banner.url)
 
         await ctx.send(embed=embed)
 
