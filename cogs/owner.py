@@ -74,10 +74,10 @@ class Owner(commands.Cog):
         
         await ctx.reply(embed=embed)
         
-    @commands.command(name="perms", aliases=["pm"], help="Will show the perms that the bot has in this guild")
+    @commands.command(help="Shows you what permissions the bot has in the current server", aliases=['permissions'])
     @commands.is_owner()
-    async def perms(self, ctx:commands.Context):
-        embed = discord.Embed(colour=self.bot.colour, title="Bot Permissions")
+    async def perms(self, ctx):
+        embed = discord.Embed(title="Bot Permissions")
         embed.add_field(name="Allowed", value="\n".join(perm.replace("_", " ").title() for perm, val in ctx.guild.me.guild_permissions if val), inline=False)
         embed.add_field(name="Not Allowed", value="\n".join(perm.replace("_", " ").title() for perm, val in ctx.guild.me.guild_permissions if not val), inline=False)
         await ctx.send(embed=pmbed)
