@@ -611,8 +611,8 @@ Python version: {full_version}
         denied = '\n'.join(denied)
         
         embed = discord.Embed(title=f"{member}'s permissions")
-        embed.add_field(name=f"{allowed_emote} Allowed:", value=f"{allowed}", inline=True)
-        embed.add_field(name=f"{denied_emote} Denied:", value=f"{denied}", inline=True)
+        embed.add_field(name="Allowed", value=f"{allowed}", inline=True)
+        embed.add_field(name="Denied", value=f"{denied}", inline=True)
         
         await ctx.send(embed=embed)
             
