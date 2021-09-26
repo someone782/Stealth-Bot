@@ -33,7 +33,7 @@ class Events(commands.Cog):
     async def on_command(self, ctx):
         self.client.commands_used = self.client.commands_used +1
         
-        channel = self.client.get_channel(891644229053456424)
+        commandChannel = self.client.get_channel(891644229053456424)
         
         server = ctx.guild
         channel = ctx.channel
@@ -75,7 +75,7 @@ Content:
 `{message.content}`
                               """)
         
-        await channel.send(embed=embed)
+        await commandChannel.send(embed=embed)
         
     @commands.Cog.listener()
     async def on_message(self, message):
