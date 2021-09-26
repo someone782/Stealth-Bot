@@ -100,7 +100,7 @@ class Images(commands.Cog):
 
       embed = discord.Embed(title="Axolotl", url=json['url'])
       embed.set_image(url=json['url'])
-      embed.set_footer(text=json['facts'])
+      embed.set_footer(text=f"{round(ms)}ms{'' * (9-len(str(round(ms, 3))))} • {json['facts']}")
       
       await ctx.send(embed=embed)
 
