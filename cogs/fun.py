@@ -13,18 +13,6 @@ from discord.ext import commands, menus
 from discord.ext.menus.views import ViewMenuPages
 from discord.ext.commands.cooldowns import BucketType
 
-class ServerEmotesEmbedPage(menus.ListPageSource):
-    def __init__(self, data):
-        self.data = data
-        super().__init__(data, per_page=10)
-        
-    async def format_page(self, menu, entries):
-        offset = menu.current_page * self.per_page
-        colors = [0x910023, 0xA523FF]
-        color = random.choice(colors)
-        embed = discord.Embed(title=f"testing", description="\n".join(f'{i+1}. {v}' for i, v in enumerate(entries, start=offset)), timestamp=discord.utils.utcnow(), color=color)
-        return embed
-
 def setup(client):
     client.add_cog(Fun(client))
 
@@ -32,29 +20,6 @@ class Fun(commands.Cog):
     ":soccer: | Fun commands like -meme, -hug and more"
     def __init__(self, client):
         self.client = client
-        
-    @commands.command(name='urban')
-    async def _urban(self, ctx, *, word):
-        """Searches urban dictionary."""
-
-        url = 'http://api.urbandictionary.com/v0/define'
-        async with self.client.session.get(url, params={'term': word}) as resp:
-            if resp.status != 200:
-                return await ctx.send(f'An error occurred: {resp.status} {resp.reason}')
-
-            js = await resp.json()
-            data = js.get('list', [])
-            if not data:
-                return await ctx.send('No results found, sorry.')
-
-        paginator = ViewMenuPages(source=ServerEmotesEmbedPage(data), clear_reactions_after=True)
-        page = await paginator._source.get_page(0)
-        kwargs = await paginator._get_kwargs_from_page(page)
-        if paginator.build_view():
-            paginator.message = await ctx.send(embed=kwargs['embed'],view = paginator.build_view())
-        else:
-            paginator.message = await ctx.send(embed=kwargs['embed'])
-        await paginator.start(ctx)
         
     @commands.command(help="Rick rolls someone")
     async def rickroll(self, ctx, member : discord.Member=None):
