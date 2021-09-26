@@ -658,32 +658,6 @@ Original text: {text}
 
     @commands.command(help="OOF's the person you mentioned", aliases=['commitoof', 'commit_oof'])
     async def oof(self, ctx, member : discord.Member=None):
-        responses = [f"{ctx.author.name} exploded {member.name}",
-                    f"{ctx.author.name} shot {member.name}",
-                    f"{ctx.author.name} went ham on {member.name}",
-                    f"{ctx.author.name} betrayed and killed {member.name}",
-                    f"{ctx.author.name} sent {member.name} to Davy Jones' locker",
-                    f"{ctx.author.name} no scoped {member.name}",
-                    f"{ctx.author.name} said no u and killed {member.name}",
-                    f"{ctx.author.name} blew up {member.name} with a rocket",
-                    f"{ctx.author.name} pushed {member.name} off a cliff",
-                    f"{ctx.author.name} stabbed {member.name} to death",
-                    f"{ctx.author.name} slammed {member.name} with a chair",
-                    f"{ctx.author.name} recited a magic spell and killed {member.name}",
-                    f"{ctx.author.name} electrified {member.name}",
-                    f"{member.name} was slain by {ctx.author.name}",
-                    f"{ctx.author.name} burnt {member.name} alive",
-                    f"{ctx.author.name} buried {member.name}",
-                    f"{ctx.author.name} shoved {member.name}'s head underwater for too long",
-                    f"{ctx.author.name} slid a banana peel under {member.name}'s feet. They tripped and died",
-                    f"{ctx.author.name} got a headshot on {member.name}",
-                    f"{ctx.author.name} said a hilarious joke to {member.name} and died",
-                    f"{ctx.author.name} showed old Vicente0670 videos to {member.name} and died of cringe",
-                    f"{ctx.author.name} didn't buy Panda Express for {member.name} and exploded",
-                    f"{ctx.author.name} sent {member.name} to the Nether",
-                    f"{ctx.author.name} tossed {member.name} off an airplane",
-                    f"{ctx.author.name} broke {member.name}'s neck"]
-        
         if member is None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
