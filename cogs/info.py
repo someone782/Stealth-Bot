@@ -934,7 +934,41 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         if len(suggestion) > 750:
             return await ctx.send("Your suggestion exceeded the 750-character limit.")
         
-        await ctx.confirm()
+        confirmation = await ctx.confirm(message="Are you sure you want to send this suggestion?",
+                                        delete_after_confirm=True,
+                                        delete_after_cancel=True,
+                                        delete_after_timeout=True,
+                                        buttons=(('✔️', f'Yes', discord.ButtonStyle.green), ('✖️', f'No', discord.ButtonStyle.red)), timeout=15)
+
+        if confirmation == True:
+            await ctx.send("Okay, I've sent your suggestion to the owner.")
+            
+            channel = self.client.get_channel(879786064473129033)
+            
+            author = ctx.author
+            message = ctx.message
+            
+            colors = [0x910023, 0xA523FF]
+            color = random.choice(colors)
+            
+            embed = discord.Embed(title="New suggestion!", description=f"""
+__**Author info**__
+
+Name: `{author}`
+ID: `{author.id}`
+Mention: `{author.mention}`
+Tag: `#{author.discriminator}`
+
+__**Suggestion info**__
+Suggestion: `{suggestion}`
+Length: `{len(suggestion)}`
+URL: [Click here]({message.jump_url}/ 'Jump URL')
+                                """, timestamp=discord.utils.utcnow(), color=color)
+            
+            return await channel.send(embed=embed)
+
+        else:
+            return await ctx.send("Okay, I've cancelled your suggestion.")
 
     @commands.command(help="Shows you information about a character", aliases=['characterinfo', 'character_info', 'char_info'])
     @commands.cooldown(1, 5, BucketType.member)
