@@ -53,7 +53,7 @@ class Events(commands.Cog):
         color = random.choice(colors)
         
         embed = discord.Embed(title=f"{ctx.command} has been used", description=f"""
-Guild info
+__**Guild info**__
 
 Name: `{server}`
 ID: `{server.id}`
@@ -66,14 +66,14 @@ Owner Name: `{owner}`
 Owner ID: `{owner.id}`
 Owner Mention: {owner.mention}
 
-Author info
+__**Author info**__
 
 Name: `{author}`
 ID: `{author.id}`
 Mention: {author.mention}
 Tag: `#{author.discriminator}`
 
-Message info
+__**Message info**__
 URL: [Click here]({message.jump_url}/ 'Jump URL')
 Content:
 `{message.content}`
