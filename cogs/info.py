@@ -589,8 +589,8 @@ Python version: {full_version}
         allowed = []
         denied = []
         
-        allowed_emote = "<a:Yes:889079191566422027>"
-        denied_emote = "<a:No:889079913498415134>"
+        allowed_emote = "<:greenTick:596576670815879169>"
+        denied_emote = "<:redTick:596576672149667840>"
         
         for name, value in permissions:
             name = name.replace("_", " ").replace("guild", "server").title()
