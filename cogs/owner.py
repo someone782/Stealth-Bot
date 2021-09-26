@@ -77,7 +77,7 @@ class Owner(commands.Cog):
     @commands.command(help="Shows you what permissions the bot has in the current server", aliases=['permissions'])
     @commands.is_owner()
     async def perms(self, ctx):
-        allowed = "\n ✅ ".join(perm.replace("_", " ").title() for perm, val in ctx.guild.me.guild_permissions if val)
+        allowed = "\n <:greenTick:596576670815879169> ".join(perm.replace("_", " ").title() for perm, val in ctx.guild.me.guild_permissions if val)
         notAllowed = "\n ❌ ".join(perm.replace("_", " ").title() for perm, val in ctx.guild.me.guild_permissions if not val)
         
         embed = discord.Embed(title="Bot permissions")
