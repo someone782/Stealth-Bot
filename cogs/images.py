@@ -137,6 +137,8 @@ class Images(commands.Cog):
       end = time.perf_counter()
       
       ms = (end - start) * 1000
+      
+      titles = ['']
 
       embed = discord.Embed(title="Woof", url=pictureJson['link'])
       embed.set_image(url=pictureJson['link'])
