@@ -11,6 +11,7 @@ import time
 import pyfiglet
 from discord.ext import commands, menus
 from discord.ext.commands.cooldowns import BucketType
+from .utils.paginator import RoboPages
 
 class UrbanDictionaryPageSource(menus.ListPageSource):
     BRACKETED = re.compile(r'(\[(.+?)\])')
