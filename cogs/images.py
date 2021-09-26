@@ -38,7 +38,7 @@ class Images(commands.Cog):
 
       embed = discord.Embed(title="Waifu", url=json['url'], timestamp=discord.utils.utcnow(), color=dominant_color)
       embed.set_image(url=json['url'])
-      embed.set_footer(text=f"{round(ms)}ms{' ' * (9-len(str(round(ms, 3))))}", icon_url=ctx.author.avatar.url)
+      embed.set_footer(text=f"{round(ms)}ms{'' * (9-len(str(round(ms, 3))))}", icon_url=ctx.author.avatar.url)
 
       await ctx.reply(embed=embed)
       
@@ -64,7 +64,7 @@ class Images(commands.Cog):
 
       embed = discord.Embed(title="Maid", url=json['url'], timestamp=discord.utils.utcnow(), color=dominant_color)
       embed.set_image(url=json['url'])
-      embed.set_footer(text=f"{round(ms)}ms{' ' * (9-len(str(round(ms, 3))))}", icon_url=ctx.author.avatar.url)
+      embed.set_footer(text=f"{round(ms)}ms{'' * (9-len(str(round(ms, 3))))}", icon_url=ctx.author.avatar.url)
 
       await ctx.reply(embed=embed)
       
@@ -82,7 +82,7 @@ class Images(commands.Cog):
 
       embed = discord.Embed(title="Woof!", url=json[0])
       embed.set_image(url=json[0])
-      embed.set_footer(text=f"{round(ms)}ms{' ' * (9-len(str(round(ms, 3))))}", icon_url=ctx.author.avatar.url)
+      embed.set_footer(text=f"{round(ms)}ms{'' * (9-len(str(round(ms, 3))))}", icon_url=ctx.author.avatar.url)
       
       await ctx.send(embed=embed)
       
@@ -140,7 +140,7 @@ class Images(commands.Cog):
 
       embed = discord.Embed(title="Woof", url=pictureJson['link'])
       embed.set_image(url=pictureJson['link'])
-      embed.set_footer(text=f"{round(ms)}ms{' ' * (9-len(str(round(ms, 3))))} • {factJson['fact']}", icon_url=ctx.author.avatar.url)
+      embed.set_footer(text=f"{round(ms)}ms{'' * (9-len(str(round(ms, 3))))} • {factJson['fact']}", icon_url=ctx.author.avatar.url)
       
       await ctx.send(embed=embed)
 
@@ -160,7 +160,7 @@ class Images(commands.Cog):
 
       embed = discord.Embed(title="Panda!", url=pictureJson['link'])
       embed.set_image(url=pictureJson['link'])
-      embed.set_footer(text=f"{round(ms)}ms{' ' * (9-len(str(round(ms, 3))))} • {factJson['fact']}", icon_url=ctx.author.avatar.url)
+      embed.set_footer(text=f"{round(ms)}ms{'' * (9-len(str(round(ms, 3))))} • {factJson['fact']}", icon_url=ctx.author.avatar.url)
       
       await ctx.send(embed=embed)
 
@@ -180,7 +180,7 @@ class Images(commands.Cog):
 
       embed = discord.Embed(title="Fox!", url=pictureJson['link'])
       embed.set_image(url=pictureJson['link'])
-      embed.set_footer(text=f"{round(ms)}ms{' ' * (9-len(str(round(ms, 3))))} • {factJson['fact']}", icon_url=ctx.author.avatar.url)
+      embed.set_footer(text=f"{round(ms)}ms{'' * (9-len(str(round(ms, 3))))} • {factJson['fact']}", icon_url=ctx.author.avatar.url)
       
       await ctx.send(embed=embed)
 
@@ -198,7 +198,7 @@ class Images(commands.Cog):
 
       embed = discord.Embed(title="Bird!", url=pictureJson['link'])
       embed.set_image(url=pictureJson['link'])
-      embed.set_footer(text=f"{round(ms)}ms{' ' * (9-len(str(round(ms, 3))))} • {factJson['fact']}", icon_url=ctx.author.avatar.url)
+      embed.set_footer(text=f"{round(ms)}ms{'' * (9-len(str(round(ms, 3))))} • {factJson['fact']}", icon_url=ctx.author.avatar.url)
       
       await ctx.send(embed=embed)
 
@@ -218,7 +218,7 @@ class Images(commands.Cog):
 
       embed = discord.Embed(title="Koala!", url=pictureJson['link'])
       embed.set_image(url=pictureJson['link'])
-      embed.set_footer(text=f"{round(ms)}ms{' ' * (9-len(str(round(ms, 3))))} • {factJson['fact']}", icon_url=ctx.author.avatar.url)
+      embed.set_footer(text=f"{round(ms)}ms{'' * (9-len(str(round(ms, 3))))} • {factJson['fact']}", icon_url=ctx.author.avatar.url)
       
       await ctx.send(embed=embed)
 
@@ -238,7 +238,7 @@ class Images(commands.Cog):
 
       embed = discord.Embed(title="Kangaroo!", url=pictureJson['link'])
       embed.set_image(url=pictureJson['link'])
-      embed.set_footer(text=f"{round(ms)}ms{' ' * (9-len(str(round(ms, 3))))} • {factJson['fact']}", icon_url=ctx.author.avatar.url)
+      embed.set_footer(text=f"{round(ms)}ms{'' * (9-len(str(round(ms, 3))))} • {factJson['fact']}", icon_url=ctx.author.avatar.url)
       
       await ctx.send(embed=embed)
 
@@ -258,7 +258,7 @@ class Images(commands.Cog):
 
       embed = discord.Embed(title="Racoon!", url=pictureJson['link'])
       embed.set_image(url=pictureJson['link'])
-      embed.set_footer(text=f"{round(ms)}ms{' ' * (9-len(str(round(ms, 3))))} • {factJson['fact']}", icon_url=ctx.author.avatar.url)
+      embed.set_footer(text=f"{round(ms)}ms{'' * (9-len(str(round(ms, 3))))} • {factJson['fact']}", icon_url=ctx.author.avatar.url)
       
       await ctx.send(embed=embed)
 
@@ -278,7 +278,7 @@ class Images(commands.Cog):
 
       embed = discord.Embed(title="Whale!", url=pictureJson['link'])
       embed.set_image(url=pictureJson['link'])
-      embed.set_footer(text=f"{round(ms)}ms{' ' * (9-len(str(round(ms, 3))))} • {factJson['fact']}", icon_url=ctx.author.avatar.url)
+      embed.set_footer(text=f"{round(ms)}ms{'' * (9-len(str(round(ms, 3))))} • {factJson['fact']}", icon_url=ctx.author.avatar.url)
       
       await ctx.send(embed=embed)
 
@@ -296,6 +296,6 @@ class Images(commands.Cog):
 
       embed = discord.Embed(title="Pikachu!", url=pictureJson['link'])
       embed.set_image(url=pictureJson['link'])
-      embed.set_footer(text=f"{round(ms)}ms{' ' * (9-len(str(round(ms, 3))))}", icon_url=ctx.author.avatar.url)
+      embed.set_footer(text=f"{round(ms)}ms{'' * (9-len(str(round(ms, 3))))}", icon_url=ctx.author.avatar.url)
       
       await ctx.send(embed=embed)
