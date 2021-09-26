@@ -184,12 +184,12 @@ class CustomContext(commands.Context):
             if not embed.footer:
                 embed.set_footer(text=f"Requested by {self.author}",
                                  icon_url=self.author.display_avatar.url)
-                embed.timestamp = discord.utils.utcnow()
 
         if embed:
             colors = [0x910023, 0xA523FF]
             color = random.choice(colors)
             
+            embed.timestamp = discord.utils.utcnow()
             embed.color = color
 
         try:

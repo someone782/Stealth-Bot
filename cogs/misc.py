@@ -16,7 +16,11 @@ class Misc(commands.Cog):
     ":gear: | Miscellaneous commands"
     def __init__(self, client):
         self.client = client
-
+        
+    @commands.command()
+    async def solve_this(self, ctx):
+        await ctx.send("guys solve this: :ice_cube:     :watermelon::apple::nose::tooth:     :tooth::octopus:     :dog::ice_cube::elephant:", reply=False)
+        
     @commands.command(help="Sends a invite of the bot", alises=['inv', 'invite_me', 'inviteme'])
     async def invite(self, ctx):
         view = discord.ui.View()

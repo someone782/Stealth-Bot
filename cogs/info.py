@@ -325,6 +325,7 @@ Banner url: {banner}
 ```yaml
 {join_seq}
 ```
+
 Mutual guilds: {len(member.mutual_guilds)}
 
 {statusEmote} Current status: {str(member.status).title()}
