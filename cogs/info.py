@@ -321,7 +321,10 @@ Banner url: {banner}
 <a:nitro_wumpus:857636144875175936> Boosting: {premiumText}
 <:invite:860644752281436171> Created: {discord.utils.format_dt(member.created_at, style="f")} ({discord.utils.format_dt(member.created_at, style="R")})
 <:member_join:596576726163914752> Joined: {discord.utils.format_dt(member.joined_at, style="f")} ({discord.utils.format_dt(member.joined_at, style="R")})
-<:moved:848312880666640394> Join position: 420
+<:moved:848312880666640394> Join position:
+```yaml
+{join_seq}
+```
 
 Mutual guilds: {len(member.mutual_guilds)}
 
@@ -339,12 +342,6 @@ Acknowledgments: {acknowledgments}
 :rainbow: Accent color: {fetchedMember.accent_color}
         """)
         embed.set_thumbnail(url=member.avatar.url)
-        
-        banner = fetchedMember.banner.url.replace("?size=512", "?size=1024")
-        
-        print(fetchedMember.banner.url)
-        
-        embed.set_image(url=banner)
 
         await ctx.send(embed=embed)
 
