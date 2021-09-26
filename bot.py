@@ -24,34 +24,6 @@ from typing import (
     Optional
 )
 
-confirmation = await _ctx.confirm(message="Are you sure you want to send this suggestion?",
-                                delete_after_confirm=True,
-                                delete_after_cancel=True,
-                                delete_after_timeout=True,
-                                buttons=((':heavy_check_mark:', f'Yes', discord.ButtonStyle.green), (':heavy_multiplication_x:', f'No', discord.ButtonStyle.red)), timeout=15)
-if confirmation == True:
-    await _ctx.send("Okay, I've sent your suggestion to the owner.")
-    
-    author = _ctx.author
-    message = _ctx.message
-    
-    embed = discord.Embed(title="New suggestion!", description=f"""
-__**Author info**__
-
-Name: `{author}`
-ID: `{author.id}`
-Mention: `{author.mention}`
-Tag: `#{author.discriminator}`
-
-__**Suggestion info*__
-Suggestion: ``
-Length: ``
-URL: `[Click here]({message.jump_url}/ 'Jump URL')`
-                        """)
-
-else:
-    await _ctx.send("Okay, I've cancelled your suggestion.")
-
 
 with open(r'/root/stealthbot/config.yaml') as file:
     full_yaml = yaml.load(file)
