@@ -80,7 +80,7 @@ class Owner(commands.Cog):
         embed = discord.Embed(title="Bot Permissions")
         embed.add_field(name="Allowed", value="\n".join(perm.replace("_", " ").title() for perm, val in ctx.guild.me.guild_permissions if val), inline=False)
         embed.add_field(name="Not Allowed", value="\n".join(perm.replace("_", " ").title() for perm, val in ctx.guild.me.guild_permissions if not val), inline=False)
-        await ctx.send(embed=pmbed)
+        await ctx.send(embed=embed)
         
     @commands.command()
     @commands.is_owner()
