@@ -340,6 +340,8 @@ Acknowledgments: {acknowledgments}
         """)
         embed.set_thumbnail(url=member.avatar.url)
         
+        print(fetchedMember.banner.url)
+        
         embed.set_image(url=fetchedMember.banner.url)
 
         await ctx.send(embed=embed)
