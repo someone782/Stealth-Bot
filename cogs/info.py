@@ -528,25 +528,19 @@ Available?: {available}
             await ctx.send(embed=embed, view=view)
             
         except commands.EmojiNotFound:
-            url = f"{emoji.url}"
-            animated = "No"
+            # url = f"{emoji.url}"
+            # animated = "No"
             
-            view = discord.ui.View()
-            style = discord.ButtonStyle.gray
-            item = discord.ui.Button(style=style, emoji="🔗", label="Emoji link", url=url)
-            view.add_item(item=item)
+            # view = discord.ui.View()
+            # style = discord.ButtonStyle.gray
+            # item = discord.ui.Button(style=style, emoji="🔗", label="Emoji link", url=url)
+            # view.add_item(item=item)
             
-            if emoji.animated:
-                animated = "Yes"
+            # if emoji.animated:
+            #     animated = "Yes"
 
             embed = discord.Embed(title=f"{emoji.name}", description=f"""
-Name: {emoji.name}
-<:greyTick:860644729933791283> ID: {emoji.id}
-
-Created at: {discord.utils.format_dt(emoji.created_at, style="f")} ({discord.utils.format_dt(emoji.created_at, style="R")})
-:link: Link: [Click here]({url})
-
-<:emoji_ghost:658538492321595393> Animated?: {animated}
+test
                                 """)
             embed.set_image(url=emoji.url)
             
