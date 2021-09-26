@@ -11,44 +11,17 @@ import time
 import pyfiglet
 from discord.ext import commands, menus
 from discord.ext.commands.cooldowns import BucketType
-from .utils.paginator import RoboPages
 
-class UrbanDictionaryPageSource(menus.ListPageSource):
-    BRACKETED = re.compile(r'(\[(.+?)\])')
+class ServerEmotesEmbedPage(menus.ListPageSource):
     def __init__(self, data):
-        super().__init__(entries=data, per_page=1)
-
-    def cleanup_definition(self, definition, *, regex=BRACKETED):
-        def repl(m):
-            word = m.group(2)
-            return f'[{word}](http://{word.replace(" ", "-")}.urbanup.com)'
-
-        ret = regex.sub(repl, definition)
-        if len(ret) >= 2048:
-            return ret[0:2000] + ' [...]'
-        return ret
-
-    async def format_page(self, menu, entry):
-        maximum = self.get_max_pages()
-        title = f'{entry["word"]}: {menu.current_page + 1} out of {maximum}' if maximum else entry['word']
-        embed = discord.Embed(title=title, colour=0xE86222, url=entry['permalink'])
-        embed.set_footer(text=f'by {entry["author"]}')
-        embed.description = self.cleanup_definition(entry['definition'])
-
-        try:
-            up, down = entry['thumbs_up'], entry['thumbs_down']
-        except KeyError:
-            pass
-        else:
-            embed.add_field(name='Votes', value=f'\N{THUMBS UP SIGN} {up} \N{THUMBS DOWN SIGN} {down}', inline=False)
-
-        try:
-            date = discord.utils.parse_time(entry['written_on'][0:-1])
-        except (ValueError, KeyError):
-            pass
-        else:
-            embed.timestamp = date
-
+        self.data = data
+        super().__init__(data, per_page=10)
+        
+    async def format_page(self, menu, entries):
+        offset = menu.current_page * self.per_page
+        colors = [0x910023, 0xA523FF]
+        color = random.choice(colors)
+        embed = discord.Embed(title=f"testing", description="\n".join(f'{i+1}. {v}' for i, v in enumerate(entries, start=offset)), timestamp=discord.utils.utcnow(), color=color)
         return embed
 
 def setup(client):
@@ -73,8 +46,14 @@ class Fun(commands.Cog):
             if not data:
                 return await ctx.send('No results found, sorry.')
 
-        pages = RoboPages(UrbanDictionaryPageSource(data), ctx=ctx)
-        await pages.start()
+        paginator = ViewMenuPages(source=ServerEmotesEmbedPage(data, guild), clear_reactions_after=True)
+        page = await paginator._source.get_page(0)
+        kwargs = await paginator._get_kwargs_from_page(page)
+        if paginator.build_view():
+            paginator.message = await ctx.send(embed=kwargs['embed'],view = paginator.build_view())
+        else:
+            paginator.message = await ctx.send(embed=kwargs['embed'])
+        await paginator.start(ctx)
         
     @commands.command(help="Rick rolls someone")
     async def rickroll(self, ctx, member : discord.Member=None):
