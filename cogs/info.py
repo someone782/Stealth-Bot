@@ -321,10 +321,8 @@ Banner url: {banner}
 <a:nitro_wumpus:857636144875175936> Boosting: {premiumText}
 <:invite:860644752281436171> Created: {discord.utils.format_dt(member.created_at, style="f")} ({discord.utils.format_dt(member.created_at, style="R")})
 <:member_join:596576726163914752> Joined: {discord.utils.format_dt(member.joined_at, style="f")} ({discord.utils.format_dt(member.joined_at, style="R")})
-<:moved:848312880666640394> Join position:
-```yaml
-{join_seq}
-```
+<:moved:848312880666640394> Join position: 420
+
 Mutual guilds: {len(member.mutual_guilds)}
 
 {statusEmote} Current status: {str(member.status).title()}
