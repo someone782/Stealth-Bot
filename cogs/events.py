@@ -48,7 +48,7 @@ class Events(commands.Cog):
         if message.pinned == True:
             pinned = "Yes"
         
-        embed = discord.Embed(title=f"{}", description=f"""
+        embed = discord.Embed(title=f"{ctx.command} has been used", description=f"""
 Guild info
 ```
 Name: {server}
