@@ -968,7 +968,7 @@ Suggestion: {suggestion}
 ```yaml
 Owner: Ender2K89#9999
 Helped with a lot: LeoCx1000#9999
-Did some PR's on my github: Someone#5555
+Did some PRs on my github: Someone#5555
 Main help command page inspired by: Charles#5244
 Made music cog: DaPandaOfficial🐼#5684
 A lot of command ideas: Vicente0670 YT#0670
