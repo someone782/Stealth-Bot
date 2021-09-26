@@ -232,6 +232,23 @@ Answer: {random.choice(responses)}
         
         await ctx.send(embed=embed)
         
+    @commands.command(help="Answers with yes or no", aliases=['yes', 'no', 'yes_no', 'yesorno', 'yes_or_no'])
+    async def yesno(self, ctx):
+        start = time.perf_counter()
+        
+        request1 = await self.client.session.get('https://yesno.wtf/api')
+        json = await request1.json()
+        
+        end = time.perf_counter()
+        
+        ms = (end - start) * 1000
+        
+        embed = discord.Embed(title=f"{json['answer']}")
+        embed.set_image(url=json['image'])
+        embed.set_footer(text=f"{round(ms)}ms{' ' * (9-len(str(round(ms, 3))))}", icon_url=ctx.author.avatar.url)
+        
+        await ctx.send(embed=embed)
+
     @commands.command(help="Chooses between multiple choices.\nTo denote multiple choices, you should use double quotes.", aliases=['choice', 'decide'])
     async def choose(self, ctx, *choices : commands.clean_content):
         if len(choices) < 2:
