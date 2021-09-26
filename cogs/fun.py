@@ -503,6 +503,24 @@ Answer: {random.choice(responses)}
         
         await ctx.send(embed=embed)
         
+    @commands.command(help="Let's you slap someone!")
+    @commands.cooldown(1, 5, BucketType.member)
+    async def slap(self, ctx, member : discord.Member=None):
+        if member is None:
+            if ctx.message.reference:
+                member = ctx.message.reference.resolved.author
+            else:
+                member = ctx.author
+                return await ctx.send("You can't slap yourself!")
+            
+        request = await self.client.session.get('https://api.waifu.pics/sfw/slap')
+        json = await request.json()
+
+        embed = discord.Embed(title=f"{ctx.author.name} slapped {member.name}")
+        embed.set_image(url=json['url'])
+        
+        await ctx.send(embed=embed)
+        
     @commands.command(help="Let's you yeet someone!")
     @commands.cooldown(1, 5, BucketType.member)
     async def yeet(self, ctx, member : discord.Member=None):
