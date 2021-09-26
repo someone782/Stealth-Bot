@@ -47,7 +47,7 @@ class Fun(commands.Cog):
             if not data:
                 return await ctx.send('No results found, sorry.')
 
-        paginator = ViewMenuPages(source=ServerEmotesEmbedPage(data, guild), clear_reactions_after=True)
+        paginator = ViewMenuPages(source=ServerEmotesEmbedPage(data), clear_reactions_after=True)
         page = await paginator._source.get_page(0)
         kwargs = await paginator._get_kwargs_from_page(page)
         if paginator.build_view():
