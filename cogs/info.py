@@ -589,8 +589,8 @@ Python version: {full_version}
         allowed = []
         denied = []
         
-        allowed_emote = "<:y_:891716489407770624>"
-        denied_emote = "<:n_:891716495900573756>"
+        allowed_emote = "<a:y_:891733484459163729>"
+        denied_emote = "<a:n_:891733484933120021>"
         
         for name, value in permissions:
             name = name.replace("_", " ").replace("guild", "server").title()
@@ -1050,6 +1050,9 @@ Tested verify command: Eiiknostv#2016
         member = ctx.author
         if reason == None:
             reason = "No reason provided."
+            
+        if len(reason) > 100:
+            return await ctx.send("Reason cannot be over 100 characters.")
 
         if member.id in afks.keys():
             afks.pop(member.id)
@@ -1060,6 +1063,8 @@ Tested verify command: Eiiknostv#2016
                 pass
 
         afks[member.id] = reason
+        
+        embed = discord.Embed(title=f"<:status_idle:596576773488115722> {ctx.author.name} is now afk cause: {reason}")
 
         await ctx.send(f"{member} went afk cause `{reason}`")
 

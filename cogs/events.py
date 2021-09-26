@@ -93,7 +93,10 @@ Content:
                 await message.author.edit(nick=remove(message.author.display_name))
             except:
                 pass
-            await message.channel.send(f":wave: Welcome back {message.author.mention}, I've removed your AFK status.")
+            embed = discord.Embed(title=f"Welcome back {message.author.name}! I've removed your AFK status.", description="""
+You were AFK for 0 days, 0 hours, 0 minutes and 0 seconds.
+                                  """)
+            await message.channel.send(embed=embed)
 
         for id, reason in afks.items():
             member = get(message.guild.members, id = id)
