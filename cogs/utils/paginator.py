@@ -136,61 +136,28 @@ class RoboPages(discord.ui.View):
         self._update_labels(0)
         self.message = await self.ctx.send(**kwargs, view=self)
 
-    @discord.ui.button(label='≪', style=discord.ButtonStyle.grey)
+    @discord.ui.button(label='⏮️', style=discord.ButtonStyle.grey)
     async def go_to_first_page(self, button: discord.ui.Button, interaction: discord.Interaction):
         """go to the first page"""
         await self.show_page(interaction, 0)
 
-    @discord.ui.button(label='Back', style=discord.ButtonStyle.blurple)
+    @discord.ui.button(label='◀️', style=discord.ButtonStyle.grey)
     async def go_to_previous_page(self, button: discord.ui.Button, interaction: discord.Interaction):
         """go to the previous page"""
         await self.show_checked_page(interaction, self.current_page - 1)
 
-    @discord.ui.button(label='Current', style=discord.ButtonStyle.grey, disabled=True)
-    async def go_to_current_page(self, button: discord.ui.Button, interaction: discord.Interaction):
-        pass
-
-    @discord.ui.button(label='Next', style=discord.ButtonStyle.blurple)
+    @discord.ui.button(label='▶️', style=discord.ButtonStyle.grey)
     async def go_to_next_page(self, button: discord.ui.Button, interaction: discord.Interaction):
         """go to the next page"""
         await self.show_checked_page(interaction, self.current_page + 1)
 
-    @discord.ui.button(label='≫', style=discord.ButtonStyle.grey)
+    @discord.ui.button(label='⏭️', style=discord.ButtonStyle.grey)
     async def go_to_last_page(self, button: discord.ui.Button, interaction: discord.Interaction):
         """go to the last page"""
         # The call here is safe because it's guarded by skip_if
         await self.show_page(interaction, self.source.get_max_pages() - 1)
 
-
-    @discord.ui.button(label='Skip to page...', style=discord.ButtonStyle.grey)
-    async def numbered_page(self, button: discord.ui.Button, interaction: discord.Interaction):
-        """lets you type a page number to go to"""
-        if self.input_lock.locked():
-            await interaction.response.send_message('Already waiting for your response...', ephemeral=True)
-            return
-
-        if self.message is None:
-            return
-
-        async with self.input_lock:
-            channel = self.message.channel
-            author_id = interaction.user and interaction.user.id
-            await interaction.response.send_message('What page do you want to go to?', ephemeral=True)
-
-            def message_check(m):
-                return m.author.id == author_id and channel == m.channel and m.content.isdigit()
-
-            try:
-                msg = await self.ctx.bot.wait_for('message', check=message_check, timeout=30.0)
-            except asyncio.TimeoutError:
-                await interaction.followup.send('Took too long.', ephemeral=True)
-                await asyncio.sleep(5)
-            else:
-                page = int(msg.content)
-                await msg.delete()
-                await self.show_checked_page(interaction, page - 1)
-
-    @discord.ui.button(label='Quit', style=discord.ButtonStyle.red)
+    @discord.ui.button(label='⏹️', style=discord.ButtonStyle.red)
     async def stop_pages(self, button: discord.ui.Button, interaction: discord.Interaction):
         """stops the pagination session."""
         await interaction.response.defer()
