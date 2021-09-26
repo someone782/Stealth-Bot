@@ -10,6 +10,7 @@ import aiohttp
 import time
 import pyfiglet
 from discord.ext import commands, menus
+from discord.ext.menus.views import ViewMenuPages
 from discord.ext.commands.cooldowns import BucketType
 
 class ServerEmotesEmbedPage(menus.ListPageSource):
