@@ -68,7 +68,7 @@ class Images(commands.Cog):
 
       await ctx.reply(embed=embed)
       
-   @commands.command(help="🐶 Shows a picture of a shiba")
+   @commands.command(help="🐶 Shows a picture of a shiba", aliases=['shibe'])
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
    async def shiba(self, ctx):
       start = time.perf_counter()
