@@ -32,7 +32,51 @@ class Events(commands.Cog):
     @commands.Cog.listener()
     async def on_command(self, ctx):
         self.client.commands_used = self.client.commands_used +1
+        
+        channel = self.client.get_channel(891644229053456424)
+        
+        server = ctx.guild
+        channel = ctx.channel
+        owner = ctx.guild.owner
+        
+        author = ctx.author
+        
+        message = ctx.message
+        
+        pinned = "No"
+        
+        if message.pinned == True:
+            pinned = "Yes"
+        
+        embed = discord.Embed(title=f"{}", description=f"""
+Guild info
+```
+Name: {server}
+ID: {server.id}
 
+Channel Name: {channel}
+Channel ID: {channel.id}
+Channel Mention: {channel.mention}
+
+Owner Name: {owner}
+Owner ID: {owner.id}
+Owner Mention: {owner.mention}
+```
+Author info
+```
+Name: {author}
+ID: {author.id}
+Mention: {author.mention}
+Tag: {author.discriminator}
+```
+Message info
+URL: [Click here]({message.jump_url}/ 'Jump URL')
+Content:
+`{message.content}`
+                              """)
+        
+        await channel.send(embed=embed)
+        
     @commands.Cog.listener()
     async def on_message(self, message):
         self.client.messages = self.client.messages + 1
