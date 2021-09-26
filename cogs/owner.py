@@ -20,26 +20,26 @@ class Owner(commands.Cog):
         self.hidden = True
         self.client = client
         
-        async def say_permissions(self, ctx, member):
-            permissions = [perm for perm in member.guild_permissions]
-            e = discord.Embed(colour=member.colour)
-            e.set_author(name=f'Showing Permissions For {member}')
-            allowed, denied = [], []
-            for name, value in permissions:
-                name = name.replace('_', ' ').replace('guild', 'server').title()
-                if value:
-                    allowed.append(f'**+** {name}')
-                else:
-                    denied.append(f'**-** {name}')
+    async def say_permissions(self, ctx, member):
+        permissions = [perm for perm in member.guild_permissions]
+        e = discord.Embed(colour=member.colour)
+        e.set_author(name=f'Showing Permissions For {member}')
+        allowed, denied = [], []
+        for name, value in permissions:
+            name = name.replace('_', ' ').replace('guild', 'server').title()
+            if value:
+                allowed.append(f'**+** {name}')
+            else:
+                denied.append(f'**-** {name}')
 
-            if '**+** Administrator' in allowed:
-                allowed = ['**+** Administrator']
-            if len(denied) == 0:
-                denied = ['**-** None']
-            
-            e.add_field(name='<a:Yes:889079191566422027> Allowed:',value='\n'.join(allowed))
-            e.add_field(name='<a:No:889079913498415134> Denied:',value='\n'.join(denied))
-            await ctx.send(embed=e)
+        if '**+** Administrator' in allowed:
+            allowed = ['**+** Administrator']
+        if len(denied) == 0:
+            denied = ['**-** None']
+        
+        e.add_field(name='<a:Yes:889079191566422027> Allowed:',value='\n'.join(allowed))
+        e.add_field(name='<a:No:889079913498415134> Denied:',value='\n'.join(denied))
+        await ctx.send(embed=e)
         
     @commands.command(help="Shutdowns the bot", aliases=['shutdown_bot'])
     @commands.is_owner()
