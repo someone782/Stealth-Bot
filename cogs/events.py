@@ -65,6 +65,7 @@ Channel Mention: {channel.mention}
 Owner Name: `{owner}`
 Owner ID: `{owner.id}`
 Owner Mention: {owner.mention}
+Owner Tag: `#{owner.discriminator}`
 
 __**Author info**__
 
