@@ -616,7 +616,7 @@ Python version: {full_version}
         
         await ctx.send(embed=embed)
             
-    @commands.command(help="Shows you what permissions the bot has in the current server", aliases=['perms', 'permissions'])
+    @commands.command(help="Shows you what permissions the bot has in the current server", aliases=['perms', 'permission'])
     async def permissions(self, ctx, member : discord.Member=None):
         if member is None:
             if ctx.message.reference:
