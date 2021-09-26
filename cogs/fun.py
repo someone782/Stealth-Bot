@@ -23,7 +23,7 @@ class Fun(commands.Cog):
         
     @commands.command(help="Rick rolls someone")
     async def rickroll(self, ctx, member : discord.Member=None):
-        if member == None:
+        if member is None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
             else:
@@ -283,7 +283,7 @@ Answer: {random.choice(responses)}
 
     @commands.command(help="Tells you if someone is a furry or not")
     async def furrydetector(self, ctx, member : discord.Member=None):
-        if member == None:
+        if member is None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
             else:
@@ -296,7 +296,7 @@ Answer: {random.choice(responses)}
 
     @commands.command(help="Tells you how gay someone is")
     async def gayrate(self, ctx, member : discord.Member=None):
-        if member == None:
+        if member is None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
             else:

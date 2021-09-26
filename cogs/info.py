@@ -739,9 +739,7 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
     @commands.cooldown(1, 5, BucketType.member)
     async def avatar(self, ctx, member : discord.Member=None):
         errorMessage = f"{member} doesnt have a avatar."
-        if member == None:
-            member = ctx.author
-            errorMessage = "You don't have a avatar."
+        member = member or ctx.author
             
             
         if member.avatar:
@@ -815,7 +813,7 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
     @commands.command(help="Shows the banner of the member you mentioned", aliases=['bn'])
     @commands.cooldown(1, 5, BucketType.member)
     async def banner(self, ctx, member : discord.Member=None):
-        if member == None:
+        if member is None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
                 errorMessage = f"{member} doesn't have a banner"
