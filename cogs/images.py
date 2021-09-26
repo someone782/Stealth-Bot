@@ -120,7 +120,7 @@ class Images(commands.Cog):
 
       embed = discord.Embed(title="Meow", url=pictureJson['link'])
       embed.set_image(url=pictureJson['link'])
-      embed.set_footer(text=f"{round(ms)}ms{' ' * (9-len(str(round(ms, 3))))} • {factJson['fact']}", icon_url=ctx.author.avatar.url)
+      embed.set_footer(text=f"{round(ms)}ms{'' * (9-len(str(round(ms, 3))))} • {factJson['fact']}", icon_url=ctx.author.avatar.url)
       
       await ctx.send(embed=embed)
 
