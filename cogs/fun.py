@@ -6,6 +6,7 @@ import asyncio
 import io
 import datetime
 import aiohttp
+import time
 import pyfiglet
 from discord.ext import commands
 from discord.ext.commands.cooldowns import BucketType
