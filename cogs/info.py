@@ -526,7 +526,6 @@ Available?: {available}
         
         await ctx.send(embed=embed, view=view)
         
-
     @commands.command(help="Shows information about the bot", aliases=['bi'])
     async def botinfo(self, ctx):
         prefixes = await self.client.get_pre(self.client, ctx.message, raw_prefix=True)
@@ -584,9 +583,48 @@ Python version: {full_version}
 
         await ctx.send(embed=embed)
         
-    @commands.command(help="Sends you the link of a message", aliases=['linkmessage', 'linkmsg', 'link_message', 'link_msg'])
-    async def link(self ,ctx, message : discord.Message):
-        await ctx.send(f"URL: {message.jump_url}\nID: {message.id}")
+    async def send_permissions(self, ctx, member):
+        permissions = [permission for permission in member.guild_permissions]
+        
+        allowed = []
+        denied = []
+        
+        allowed_emote = "<a:Yes:889079191566422027>"
+        denied_emote = "<a:No:889079913498415134>"
+        
+        for name, value in permissions:
+            name = name.replace("_", " ").replace("guild", "server").title()
+            
+            if value:
+                allowed.append(f"{allowed_emote} {name}")
+                               
+            else:
+                denied.append(f"{denied_emote} {name}")
+
+        if f"{allowed_emote} Administrator" in allowed:
+            allowed = [f"{allowed_emote} Administrator"]
+            
+        if len(denied) == 0:
+            denied = [f"{denied_emote} None"]
+        
+        allowed = '\n'.join(allowed)
+        denied = '\n'.join(denied)
+        
+        embed = discord.Embed(title=f"{member}'s permissions")
+        embed.add_field(name=f"{allowed_emote} Allowed:", value=f"{allowed}", inline=True)
+        embed.add_field(name=f"{denied_emote} Denied:", value=f"{denied}", inline=True)
+        
+        await ctx.send(embed=embed)
+            
+    @commands.command(help="Shows you what permissions the bot has in the current server", aliases=['permission', 'perms', 'permissions'])
+    async def permissions(self, ctx, member : discord.Member=None):
+        if member is None:
+            if ctx.message.reference:
+                member = ctx.message.reference.resolved.author
+            else:
+                member = ctx.author
+            
+        await self.say_permissions(ctx, member)
 
     @commands.command(help="Shows a list of commands this bot has", aliases=['commands', 'command', 'cmds', 'commandslist', 'cmdslist', 'commands_list', 'cmds_list', 'commandlist', 'cmdlist', 'command_list', 'cmd_list'])
     async def _commands(self, ctx):

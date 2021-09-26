@@ -20,27 +20,6 @@ class Owner(commands.Cog):
         self.hidden = True
         self.client = client
         
-    async def say_permissions(self, ctx, member):
-        permissions = [perm for perm in member.guild_permissions]
-        e = discord.Embed(colour=member.colour)
-        e.set_author(name=f'Showing Permissions For {member}')
-        allowed, denied = [], []
-        for name, value in permissions:
-            name = name.replace('_', ' ').replace('guild', 'server').title()
-            if value:
-                allowed.append(f'**+** {name}')
-            else:
-                denied.append(f'**-** {name}')
-
-        if '**+** Administrator' in allowed:
-            allowed = ['**+** Administrator']
-        if len(denied) == 0:
-            denied = ['**-** None']
-        
-        e.add_field(name='<a:Yes:889079191566422027> Allowed:',value='\n'.join(allowed))
-        e.add_field(name='<a:No:889079913498415134> Denied:',value='\n'.join(denied))
-        await ctx.send(embed=e)
-        
     @commands.command(help="Shutdowns the bot", aliases=['shutdown_bot'])
     @commands.is_owner()
     async def shutdown(self, ctx):
@@ -92,24 +71,6 @@ class Owner(commands.Cog):
 `rall channel` took {round(rallMs)}ms{' ' * (9-len(str(round(rallMs, 3))))}
                               """)
         
-        await ctx.send(embed=embed)
-            
-    @commands.command()
-    @commands.guild_only()
-    async def wtf(self, ctx, member: discord.Member = None):
-        if member is None:
-            member = ctx.author
-        await self.say_permissions(ctx, member)
-            
-    @commands.command(help="Shows you what permissions the bot has in the current server", aliases=['permissions', 'botperms', 'bot_perms', 'botpermissions', 'bot_permissions'])
-    async def perms(self, ctx):
-        allowed = "\n <a:Yes:889079191566422027> ".join(permission.replace("_", " ").title() for permission, value in ctx.guild.me.guild_permissions if value)
-        notAllowed = "\n <a:No:889079913498415134> ".join(permission.replace("_", " ").title() for permission, value in ctx.guild.me.guild_permissions if not value)
-        
-        embed = discord.Embed(title="Bot permissions")
-        embed.add_field(name="Allowed", value=f"<a:Yes:889079191566422027> {allowed}", inline=True)
-        embed.add_field(name="Denied", value=f"<a:No:889079913498415134> {notAllowed}", inline=True)
-                        
         await ctx.send(embed=embed)
         
     @commands.command()
