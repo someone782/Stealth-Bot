@@ -73,7 +73,14 @@ class Owner(commands.Cog):
         embed.set_footer(text=f"Requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
         
         await ctx.reply(embed=embed)
-
+        
+    @commands.command(name="perms", aliases=["pm"], help="Will show the perms that the bot has in this guild")
+    @commands.is_owner()
+    async def perms(self, ctx:commands.Context):
+        embed = discord.Embed(colour=self.bot.colour, title="Bot Permissions")
+        embed.add_field(name="Allowed", value="\n".join(perm.replace("_", " ").title() for perm, val in ctx.guild.me.guild_permissions if val), inline=False)
+        embed.add_field(name="Not Allowed", value="\n".join(perm.replace("_", " ").title() for perm, val in ctx.guild.me.guild_permissions if not val), inline=False)
+        await ctx.send(embed=pmbed)
         
     @commands.command()
     @commands.is_owner()
