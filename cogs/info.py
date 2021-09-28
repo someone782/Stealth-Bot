@@ -22,7 +22,6 @@ from discord.ext.commands.cooldowns import BucketType
 import threading
 from platform import python_version
 import asyncio
-from afks import afks
 
 from discord.ext import menus
 from discord.ext.menus.views import ViewMenuPages
@@ -266,10 +265,10 @@ class Info(commands.Cog):
         if str(member.mobile_status) == "online" or str(member.mobile_status) == "idle" or str(member.mobile_status) == "dnd" or str(member.mobile_status) == "streaming":
             mobileStatus = ":mobile_phone: <:greenTick:596576670815879169>"
 
-        if member.id in afks.keys():
-            afkStatus = "Yes"
-        else:
-            afkStatus = "No"
+        # if member.id in afks.keys():
+        #     afkStatus = "Yes"
+        # else:
+        #     afkStatus = "No"
 
         # copied code :troll: \/ \/ \/
 
@@ -315,7 +314,7 @@ Mention: {member.mention}
 
 :robot: Bot?: {botText}
 Pending verification?: {pendingText}
-AFK?: {afkStatus}
+AFK?: No idea
 Avatar url: {avatar}
 Banner url: {banner}
 
@@ -1084,27 +1083,22 @@ Tested verify command: Eiiknostv#2016
         await ctx.send(embed=embed)
 
     @commands.command()
-    async def afk(self, ctx, *, reason=None):
-        member = ctx.author
-        if reason == None:
-            reason = "No reason provided."
-            
+    async def afk(self, ctx, *, reason="No reason provided"):
         if len(reason) > 100:
             return await ctx.send("Reason cannot be over 100 characters.")
+        
+        try:
+            await member.edit(nick=f"[AFK] {ctx.author.display_name}")
+        except:
+            pass
 
-        if member.id in afks.keys():
-            afks.pop(member.id)
-        else:
-            try:
-                await member.edit(nick=f"[AFK] {member.display_name}")
-            except:
-                pass
-
-        afks[member.id] = reason
+        await self.client.db.execute('INSERT INTO afk (user_id, end_time, reason) VALUES ($1, $2, $3) '
+                                'ON CONFLICT (user_id) DO UPDATE end_time = $2, reason = $3', 
+                                ctx.author.id, ctx.message.created_at, reason)
         
         embed = discord.Embed(title=f"<:status_idle:596576773488115722> {ctx.author.name} is now afk cause: {reason}")
 
-        await ctx.send(f"{member} went afk cause `{reason}`")
+        await ctx.send(embed=embed)
 
     @commands.command(help="Sends the source code of the bot/a command")
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
