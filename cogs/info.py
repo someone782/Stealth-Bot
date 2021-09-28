@@ -486,7 +486,7 @@ Features:
     @commands.command(help="Shows information about a emoji", aliases=['ei', 'emoteinfo', 'emoinfo', 'eminfo', 'emojinfo', 'einfo'])
     async def emojiinfo(self, ctx, emoji : typing.Union[discord.Emoji, discord.PartialEmoji]):
         if isinstance(emoji, discord.Emoji):
-           fetchedEmoji = await ctx.guild.fetch_emoji(emoji.id)
+            fetchedEmoji = await ctx.guild.fetch_emoji(emoji.id)
             url = f"{emoji.url}"
             available = "No"
             managed = "No"
