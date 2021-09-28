@@ -3,7 +3,6 @@ from discord.ext import commands
 from discord.ext.commands.core import command
 from discord.utils import get
 import random
-from afks import afks
 
 def remove(afk):
     if "[AFK]" in afk.split():
@@ -85,24 +84,27 @@ Content:
     @commands.Cog.listener()
     async def on_message(self, message):
         self.client.messages = self.client.messages + 1
-        if message.author.id in afks.keys():
-            afks.pop(message.author.id)
-            try:
-                await message.author.edit(nick=remove(message.author.display_name))
-            except:
-                pass
-            embed = discord.Embed(title=f"Welcome back {message.author.name}! I've removed your AFK status.", description="""
-You were AFK for 0 days, 0 hours, 0 minutes and 0 seconds.
-                                  """)
-            await message.channel.send(embed=embed)
+        
+        if message.author.id not in self.client.afk_users:
+            return
+        
+        self.client.afk_users.pop(message.author.id)
+        info = await self.client.db.fetchrow('SELECT * FROM afk WHERE user_id = $1', message.author.id)
+        await self.client.db.execute('DELETE FROM afk WHERE user_id = $1', message.author.id)
+        
+        delta_uptime = discord.utils.utcnow() - info["start_time"]
+        hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
+        minutes, seconds = divmod(remainder, 60)
+        days, hours = divmod(hours, 24)
 
-        for id, reason in afks.items():
-            member = get(message.guild.members, id = id)
-            if (message.reference and member == (await message.channel.fetch_message(message.reference.message_id)).author) or member.id in message.raw_mentions:
-                if message.author.id == 760179628122964008:
-                    return
-                else:
-                    await message.send(f"{member.name} is AFK for {reason}.")
+        text = f"{days} days, {hours} hours, {minutes} minutes and {seconds} seconds"
+        
+        embed = discord.Embed(title=f"Welcome back {message.author.name}! I've removed your AFK status.", description=f"You've been AFK for {text} with the reason being {info["reason"]}")
+        
+        await message.channel.send(embed=embed)
+        
+        # await message.channel.send(f'**Welcome back, {message.author.mention}, afk since: {discord.utils.format_dt(info["start_time"], "R")}**'
+        #                            f'\n**With reason:** {info["reason"]}')
 
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
