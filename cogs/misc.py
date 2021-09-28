@@ -185,7 +185,7 @@ class Misc(commands.Cog):
                 # await member.add_roles(discord.utils.get(member.guild.roles, name=role))
 
     @commands.command(help="Shows the server address and port of ClassicSMP", aliases=['address', 'classicsmp'])
-    @helpers.is_csmp_server()N
+    @helpers.is_csmp_server()
     async def ip(self, ctx):
         embed = discord.Embed(title="ClassicSMP IP", description="""
 ```diff
