@@ -99,7 +99,9 @@ Content:
 
         text = f"{days} days, {hours} hours, {minutes} minutes and {seconds} seconds"
         
-        embed = discord.Embed(title=f"Welcome back {message.author.name}! I've removed your AFK status.", description=f"You've been AFK for {text} with the reason being {info["reason"]}")
+        yeet = info["reason"]
+        
+        embed = discord.Embed(title=f"Welcome back {message.author.name}! I've removed your AFK status.", description=f"You've been AFK for {text} with the reason being {yeet}")
         
         await message.channel.send(embed=embed)
         
