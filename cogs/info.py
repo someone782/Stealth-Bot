@@ -976,7 +976,17 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         embed = discord.Embed(title=f"I've been online for {text}\n{discord.utils.format_dt(self.client.launch_time, style='f')} ({discord.utils.format_dt(self.client.launch_time, style='R')})")
 
         await ctx.send(embed=embed)
-
+        
+    @commands.command(help="Shows you how the bot is feeling", aliases=['feeling', 'howthebotdoin', 'how_the_bot_doin', 'is_it_okay', 'is_the_bot_ok'])
+    async def isitok(self, ctx):
+        with open('./data/botStatus.txt') as f:
+            botStatusFileContent = f.read()
+            status = botStatusFileContent
+            
+        embed = discord.Embed(description=status)
+        
+        await ctx.send(embed=embed)
+            
     @commands.command(help="Shows how many servers the bot is in", aliases=['server'])
     async def servers(self, ctx):
         embed = discord.Embed(title=f"I' in `{self.client.guilds}` servers.")
