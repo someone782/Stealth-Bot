@@ -8,6 +8,7 @@ import textwrap
 import unicodedata
 import sys
 import inspect
+import typing
 import time
 import urllib
 import time
@@ -483,9 +484,9 @@ Features:
         await ctx.send(embed=embed)
         
     @commands.command(help="Shows information about a emoji", aliases=['ei', 'emoteinfo', 'emoinfo', 'eminfo', 'emojinfo', 'einfo'])
-    async def emojiinfo(self, ctx, emoji : discord.Emoji):
-        try:
-            fetchedEmoji = await ctx.guild.fetch_emoji(emoji.id)
+    async def emojiinfo(self, ctx, emoji : typing.Union[discord.Emoji, discord.PartialEmoji]):
+        if isinstance(emoji, discord.Emoji):
+           fetchedEmoji = await ctx.guild.fetch_emoji(emoji.id)
             url = f"{emoji.url}"
             available = "No"
             managed = "No"
@@ -526,25 +527,32 @@ Available?: {available}
             embed.set_image(url=emoji.url)
             
             await ctx.send(embed=embed, view=view)
+        elif isinstance(emoji, discord.PartialEmoji):
+            url = f"{emoji.url}"
+            animated = "No"
             
-        except commands.EmojiNotFound:
-            # url = f"{emoji.url}"
-            # animated = "No"
+            view = discord.ui.View()
+            style = discord.ButtonStyle.gray
+            item = discord.ui.Button(style=style, emoji="🔗", label="Emoji link", url=url)
+            view.add_item(item=item)
             
-            # view = discord.ui.View()
-            # style = discord.ButtonStyle.gray
-            # item = discord.ui.Button(style=style, emoji="🔗", label="Emoji link", url=url)
-            # view.add_item(item=item)
-            
-            # if emoji.animated:
-            #     animated = "Yes"
+            if emoji.animated:
+                animated = "Yes"
 
             embed = discord.Embed(title=f"{emoji.name}", description=f"""
-test
+Name: {emoji.name}
+<:greyTick:860644729933791283> ID: {emoji.id}
+
+Created at: {discord.utils.format_dt(emoji.created_at, style="f")} ({discord.utils.format_dt(emoji.created_at, style="R")})
+:link: Link: [Click here]({url})
+
+<:emoji_ghost:658538492321595393> Animated?: {animated}
                                 """)
             embed.set_image(url=emoji.url)
             
-            return await ctx.send(embed=embed, view=view)
+            await ctx.send(embed=embed, view=view)
+        else:
+            await ctx.send("wait what")
         
     @commands.command(help="Shows information about the bot", aliases=['bi'])
     async def botinfo(self, ctx):
