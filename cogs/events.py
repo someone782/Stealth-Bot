@@ -93,6 +93,7 @@ Content:
         await self.client.db.execute('DELETE FROM afk WHERE user_id = $1', message.author.id)
         
         start_time = info["start_time"]
+        reason = info["reason"]
         
         delta_uptime = discord.utils.utcnow() - info["start_time"]
         hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
@@ -104,7 +105,7 @@ Content:
         colors = [0x910023, 0xA523FF]
         color = random.choice(colors)
         
-        embed = discord.Embed(title=f"👋 Welcome back {message.author.name}! I've removed your AFK status.", description=f"You've been AFK for {info["reason"]}.", timestamp=discord.utils.utcnow(), color=color)
+        embed = discord.Embed(title=f"👋 Welcome back {message.author.name}! I've removed your AFK status.", description=f"You've been AFK for {text}.", timestamp=discord.utils.utcnow(), color=color)
         
         await message.channel.send(embed=embed)
 
