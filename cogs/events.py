@@ -100,7 +100,7 @@ Content:
         minutes, seconds = divmod(remainder, 60)
         days, hours = divmod(hours, 24)
 
-        text = f"{days} days, {hours} hours, {minutes} minutes and {seconds} seconds ({discord.utils.format_dt(start_time, "R")})"
+        text = f"{days} days, {hours} hours, {minutes} minutes and {seconds} seconds {discord.utils.format_dt(start_time, "R")}"
         
         colors = [0x910023, 0xA523FF]
         color = random.choice(colors)
