@@ -228,6 +228,20 @@ class Misc(commands.Cog):
         else:
             await ctx.send(embed=embed, file=discord.File(io.BytesIO(res), filename="ss.png"))
 
+    @commands.command(help="Takes a screenshot of a website", aliases=["ss"])
+    @commands.is_nsfw()
+    @commands.cooldown(1, 5, commands.BucketType.user)
+    async def screenshot(self, ctx, link):
+    URL_REGEX = re.compile(r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+")
+    
+    if not re.fullmatch(URL_REGEX, link):
+        return await ctx.send("Invalid URL! Make sure you put `https://` infront of it.")
+    
+    else:
+        embed=discord.Embed(title=f"{link}")
+        embed.set_image(url=f"https://image.thum.io/get/width/1920/crop/675/maxAge/1/noanimate/{site}")
+        await ctx.send(embed=embed)
+
     @commands.command(help="Shows you a list of flags", aliases=['flags'])
     async def flag(self, ctx):
         foo = """🇦🇫
