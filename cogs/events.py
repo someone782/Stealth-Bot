@@ -92,7 +92,6 @@ Content:
         info = await self.client.db.fetchrow('SELECT * FROM afk WHERE user_id = $1', message.author.id)
         await self.client.db.execute('DELETE FROM afk WHERE user_id = $1', message.author.id)
         
-        start_time = info["start_time"]
         reason = info["reason"]
         
         delta_uptime = discord.utils.utcnow() - info["start_time"]
@@ -100,7 +99,7 @@ Content:
         minutes, seconds = divmod(remainder, 60)
         days, hours = divmod(hours, 24)
 
-        text = f"{days} days, {hours} hours, {minutes} minutes and {seconds} seconds {discord.utils.format_dt(start_time, "R")}"
+        text = f"{days} days, {hours} hours, {minutes} minutes and {seconds} seconds"
         
         colors = [0x910023, 0xA523FF]
         color = random.choice(colors)
