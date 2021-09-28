@@ -97,16 +97,14 @@ Content:
         minutes, seconds = divmod(remainder, 60)
         days, hours = divmod(hours, 24)
 
-        text = f"{days} days, {hours} hours, {minutes} minutes and {seconds} seconds"
+        text = f"{days} days, {hours} hours, {minutes} minutes and {seconds} seconds ({discord.utils.format_dt(info["start_time"], "R")})"
         
-        yeet = info["reason"]
+        colors = [0x910023, 0xA523FF]
+        color = random.choice(colors)
         
-        embed = discord.Embed(title=f"Welcome back {message.author.name}! I've removed your AFK status.", description=f"You've been AFK for {text} with the reason being {yeet}")
+        embed = discord.Embed(title=f"👋 Welcome back {message.author.name}! I've removed your AFK status.", description=f"You've been AFK for {info["reason"]}.", timestamp=discord.utils.utcnow(), color=color)
         
         await message.channel.send(embed=embed)
-        
-        # await message.channel.send(f'**Welcome back, {message.author.mention}, afk since: {discord.utils.format_dt(info["start_time"], "R")}**'
-        #                            f'\n**With reason:** {info["reason"]}')
 
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
