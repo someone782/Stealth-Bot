@@ -213,21 +213,6 @@ class Misc(commands.Cog):
         await ctx.message.delete()
         await ctx.send(f"<@&836281279934496770>\n*ping from {ctx.author.mention}*")
 
-    @commands.command(help="Sends a screenshot of the site you specify.\nNOTE: It needs to start with http/s.", aliases=['ss', 'screenshot_website', 'ss_website'])
-    @commands.is_nsfw()
-    async def screenshot(self, ctx, url):
-        #async with self.client.session() as session:
-        async with self.client.session.get(f'https://image.thum.io/get/width/1920/crop/675/maxAge/1/noanimate/{url}') as r:
-            res = await r.read()
-
-        embed = discord.Embed(title=f"Screenshot of {url}")
-        embed.set_image(url="attachment://ss.png")
-
-        if "ip" in url.lower() or "test" in url.lower() or "speed" in url.lower() or "address" in url.lower():
-            await ctx.send("no.")
-        else:
-            await ctx.send(embed=embed, file=discord.File(io.BytesIO(res), filename="ss.png"))
-
     @commands.command(help="Takes a screenshot of a website", aliases=["ss"])
     @commands.is_nsfw()
     @commands.cooldown(1, 5, commands.BucketType.user)
