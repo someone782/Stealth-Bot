@@ -1095,7 +1095,8 @@ Tested verify command: Eiiknostv#2016
         await self.client.db.execute('INSERT INTO afk (user_id, start_time, reason) VALUES ($1, $2, $3) '
                                   'ON CONFLICT (user_id) DO UPDATE SET start_time = $2, reason = $3',
                                   ctx.author.id, ctx.message.created_at, reason[0:1800])
-        self.bot.afk_users[ctx.author.id] = True
+        
+        self.client.afk_users[ctx.author.id] = True
         
         embed = discord.Embed(title=f"<:status_idle:596576773488115722> {ctx.author.name} is now afk cause: {reason}")
 
