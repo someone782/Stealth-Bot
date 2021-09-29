@@ -87,7 +87,6 @@ Content:
         self.client.messages = self.client.messages + 1
         
         if message.author.id in self.client.afk_users:
-
         
             self.client.afk_users.pop(message.author.id)
             info = await self.client.db.fetchrow('SELECT * FROM afk WHERE user_id = $1', message.author.id)
@@ -122,7 +121,7 @@ Content:
 
             ctx: commands.Context = await self.client.get_context(message)
             for page in paginator.pages:
-                await ctx.send(page, allowed_mentions=discord.AllowedMentions(replied_user=True,
+                return await ctx.send(page, allowed_mentions=discord.AllowedMentions(replied_user=True,
                                                                               users=False,
                                                                               roles=False,
                                                                               everyone=False))
