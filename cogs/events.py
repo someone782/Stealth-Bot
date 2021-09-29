@@ -122,7 +122,7 @@ Content:
 
             ctx: commands.Context = await self.client.get_context(message)
             for page in paginator.pages:
-                await ctx.send(f"\n{page}", allowed_mentions=discord.AllowedMentions(replied_user=True,
+                await ctx.send(f"{page}\n", allowed_mentions=discord.AllowedMentions(replied_user=True,
                                                                               users=False,
                                                                               roles=False,
                                                                               everyone=False))
