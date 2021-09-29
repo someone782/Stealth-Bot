@@ -3,6 +3,7 @@ from discord.ext import commands
 from discord.ext.commands.core import command
 from discord.utils import get
 import random
+from jishaku.paginators import WrappedPaginator
 
 def remove(afk):
     if "[AFK]" in afk.split():
@@ -85,28 +86,48 @@ Content:
     async def on_message(self, message):
         self.client.messages = self.client.messages + 1
         
-        if message.author.id not in self.client.afk_users:
-            return
+        prefix = await self.get_pre(self, message, raw_prefix=True)
+        if isinstance(prefix, str):
         
-        self.client.afk_users.pop(message.author.id)
-        info = await self.client.db.fetchrow('SELECT * FROM afk WHERE user_id = $1', message.author.id)
-        await self.client.db.execute('DELETE FROM afk WHERE user_id = $1', message.author.id)
+        if message.author.id in self.client.afk_users:
         
-        reason = info["reason"]
-        
-        delta_uptime = discord.utils.utcnow() - info["start_time"]
-        hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
-        minutes, seconds = divmod(remainder, 60)
-        days, hours = divmod(hours, 24)
+            self.client.afk_users.pop(message.author.id)
+            info = await self.client.db.fetchrow('SELECT * FROM afk WHERE user_id = $1', message.author.id)
+            await self.client.db.execute('DELETE FROM afk WHERE user_id = $1', message.author.id)
+            
+            reason = info["reason"]
+            
+            delta_uptime = discord.utils.utcnow() - info["start_time"]
+            hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
+            minutes, seconds = divmod(remainder, 60)
+            days, hours = divmod(hours, 24)
 
-        text = f"{days} days, {hours} hours, {minutes} minutes and {seconds} seconds"
-        
-        colors = [0x910023, 0xA523FF]
-        color = random.choice(colors)
-        
-        embed = discord.Embed(title=f"👋 Welcome back {message.author.name}! I've removed your AFK status.", description=f"You've been AFK for {text}.", timestamp=discord.utils.utcnow(), color=color)
-        
-        await message.channel.send(embed=embed)
+            text = f"{days} days, {hours} hours, {minutes} minutes and {seconds} seconds"
+            
+            colors = [0x910023, 0xA523FF]
+            color = random.choice(colors)
+            
+            embed = discord.Embed(title=f"👋 Welcome back {message.author.name}! I've removed your AFK status.", description=f"You've been AFK for {text}.", timestamp=discord.utils.utcnow(), color=color)
+            
+            await message.channel.send(embed=embed)
+            
+        elif message.raw_mentions:
+            pinged_afk_user_ids = list(set(message.raw_mentions).intersection(self.client.afk_users))
+            paginator = WrappedPaginator(prefix='', suffix='')
+            for user_id in pinged_afk_user_ids:
+                member = message.guild.get_member(user_id)
+                if member and member.id != message.author.id:
+                    info = await self.client.db.fetchrow('SELECT * FROM afk WHERE user_id = $1', user_id)
+                    paginator.add_line(f'**woah there, {message.author.mention}, it seems like {member.mention} has been afk '
+                                       f'since {discord.utils.format_dt(info["start_time"], style="R")}!**'
+                                       f'\n**With reason:** {info["reason"]}\n')
+
+            ctx: commands.Context = await self.client.get_context(message)
+            for page in paginator.pages:
+                await ctx.send(page, allowed_mentions=discord.AllowedMentions(replied_user=True,
+                                                                              users=False,
+                                                                              roles=False,
+                                                                              everyone=False))
 
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
