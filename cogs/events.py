@@ -86,10 +86,8 @@ Content:
     async def on_message(self, message):
         self.client.messages = self.client.messages + 1
         
-        prefix = await self.get_pre(self, message, raw_prefix=True)
-        if isinstance(prefix, str):
-        
         if message.author.id in self.client.afk_users:
+
         
             self.client.afk_users.pop(message.author.id)
             info = await self.client.db.fetchrow('SELECT * FROM afk WHERE user_id = $1', message.author.id)
