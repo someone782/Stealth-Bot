@@ -285,6 +285,7 @@ client.brain_cells = 0
 client._BotBase__cogs = commands.core._CaseInsensitiveDict()
 client.user_id = int('760179628122964008')
 client.afk_users = {}
+os.environ['JISHAKU_UNDERSCORE'] = 'True'
 
 	# Functions and stuff
 
