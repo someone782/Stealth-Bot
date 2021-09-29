@@ -86,6 +86,9 @@ Content:
     async def on_message(self, message):
         self.client.messages = self.client.messages + 1
         
+        if message.author.bot:
+            return
+        
         if message.author.id in self.client.afk_users:
         
             self.client.afk_users.pop(message.author.id)
@@ -121,7 +124,7 @@ Content:
 
             ctx: commands.Context = await self.client.get_context(message)
             for page in paginator.pages:
-                return await ctx.send(page, allowed_mentions=discord.AllowedMentions(replied_user=True,
+                await ctx.send(page, allowed_mentions=discord.AllowedMentions(replied_user=True,
                                                                               users=False,
                                                                               roles=False,
                                                                               everyone=False))
