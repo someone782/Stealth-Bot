@@ -225,7 +225,7 @@ class Misc(commands.Cog):
         
         else:
             embed=discord.Embed(title=f"{link}")
-            embed.set_image(url=f"https://image.thum.io/get/width/1920/crop/675/maxAge/1/noanimate/{link}")
+            embed.set_image(url=f"https://api.popcat.xyz/screenshot?url={link}")
             await ctx.send(embed=embed)
 
     @commands.command(help="Shows you a list of flags", aliases=['flags'])
