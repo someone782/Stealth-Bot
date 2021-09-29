@@ -118,7 +118,7 @@ Content:
                 member = message.guild.get_member(user_id)
                 if member and member.id != message.author.id:
                     info = await self.client.db.fetchrow('SELECT * FROM afk WHERE user_id = $1', user_id)
-                    paginator.add_line(f'It seems {member.mention} is AFK since {discord.utils.format_dt(info["start_time"], style="R")}\nReason: {info['reason']}')
+                    paginator.add_line(f'It seems {member.mention} is AFK since {discord.utils.format_dt(info["start_time"], style="R")}\nReason: {info["reason"]}')
 
             ctx: commands.Context = await self.client.get_context(message)
             for page in paginator.pages:
