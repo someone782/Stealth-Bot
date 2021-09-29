@@ -322,6 +322,17 @@ Answer: {random.choice(responses)}
 
         await ctx.send(f"Here's a randomly generated word: `{randomWord}`")
 
+    @commands.command(help="Rolls a random dice", aliases=['randomdice', 'random_dice'])
+    async def dice(self, ctx):
+        responses = ['<:dice_1:883581027744907304>',
+                    '<:dice_2:883581054626177105> ',
+                    '<:dice_3:883581082803511336>',
+                    '<:dice_4:883581104026681365>',
+                    '<:dice_5:883581129360285726>',
+                    '<:dice_6:883581159412490250>']
+        
+        await ctx.send(f"{random.choice(responses)}")
+
     @commands.command(help="Sends a random meme from the r/meme subreddit", aliases=['m'])
     @commands.cooldown(1, 5, commands.BucketType.member)
     async def meme(self, ctx):
