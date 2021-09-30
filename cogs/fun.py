@@ -827,6 +827,8 @@ Original text: {text}
     async def rpg(self, ctx):
         validAnswers1 = ['yes', 'no']
         validAnswers2 = ['fight', 'stop']
+        authorHP = 100
+        pensiveHP = 100
         message = await ctx.send(f"Start RPG? `yes/no`")
 
         def check(m):
@@ -859,4 +861,8 @@ Original text: {text}
                 if msg.content.lower() == "stop":
                     return await ctx.send("Okay, stopped RPG.")
                 
-                message = await ctx.send("Your HP: 100 ❤️\nTheir HP: 100 ❤️")
+                number1 = random.randint(0, 10)
+                number = number1 * 10
+                pensiveHP = pensiveHP - number
+                
+                message = await ctx.send(f"You did `{number}` damage to them!\nYour HP: {authorHP} ❤️\nTheir HP: {pensiveHP} ❤️")
