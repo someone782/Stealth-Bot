@@ -840,7 +840,7 @@ Original text: {text}
         
         else:
             if msg.content.lower() == "no":
-                return await ctx.send("fuck you")
+                return await ctx.send("Okay, stopped RPG.")
             
             def check(m):
                 return m.content.lower() in validAnswers2 and m.channel.id == ctx.channel.id
@@ -857,6 +857,6 @@ Original text: {text}
             
             else:
                 if msg.content.lower() == "stop":
-                    return await ctx.send("fuck you")
+                    return await ctx.send("Okay, stopped RPG.")
                 
                 message = await ctx.send("Your HP: 100 ❤️\nTheir HP: 100 ❤️")
