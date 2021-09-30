@@ -1,7 +1,7 @@
 from discord.ext import commands
 import discord
 import datetime
-import helpers.helpers
+import helpers.helpers as helpers
 import contextlib
 import random
 import asyncio

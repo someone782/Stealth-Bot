@@ -1,7 +1,7 @@
 from aiohttp import helpers
 import discord
 import random
-import helpers.helpers
+import helpers.helpers as helpers
 import asyncio
 import re
 import io

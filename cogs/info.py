@@ -2,7 +2,7 @@ import discord
 from datetime import datetime
 import io
 import psutil
-import helpers.helpers
+import helpers.helpers as helpers
 import os
 import textwrap
 import unicodedata

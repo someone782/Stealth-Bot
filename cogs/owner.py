@@ -1,5 +1,5 @@
 import discord
-import helpers.helpers
+import helpers.helpers as helpers
 import datetime
 import asyncio
 import os
