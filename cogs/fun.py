@@ -881,27 +881,33 @@ Original text: {text}
 
             message = await ctx.send("Starting RPG...")
             
-            confirm = await ctx.confirm(message=f"Do you want to turn hard-code mode on?",
+            # await message.edit("Do you want to turn hard-code more on? `yes/no`")
+            confirm = await ctx.confirm(message=f"Do you want to turn hard-core mode on??",
                                         delete_after_confirm=True, delete_after_timeout=True, delete_after_cancel=True,
-                                        buttons=((None, 'Yes', discord.ButtonStyle.gray), (None, 'No', discord.ButtonStyle.red)), timeout=15)
-            
-            # await message.edit("Do you want to turn hard-code mode on? `yes/no`")
-            
-            # if confirm is False:
-            #     return
-            
-            # try:
-            #     msg = await self.client.wait_for(event='message', check=check1, timeout=15)
-                
-            # except asyncio.TimeoutError:
-            #     return await ctx.send("It's been over 15 seconds, please try again by doing `-rpg`.")
+                                        buttons=((None, f'Yes', discord.ButtonStyle.gray), (None, 'No', discord.ButtonStyle.red)), timeout=15)
             
             if confirm is True:
                 pensiveMinimumDamage = 4
                 pensiveMaximumDamage = 20
                 authorMinimumDamage = 2
                 authorMaximumDamage = 6
+            else:
+                pensiveMinimumDamage = 0
+                pensiveMaximumDamage = 10
+                authorMinimumDamage = 0
+                authorMaximumDamage = 10
+                    
+            try:
+                msg = await self.client.wait_for(event='message', check=check1, timeout=15)
+                
+            except asyncio.TimeoutError:
+                return await ctx.send("It's been over 15 seconds, please try again by doing `-rpg`.")
             
+            else:
+                # pensiveMinimumDamage = 4
+                # pensiveMaximumDamage = 20
+                # authorMinimumDamage = 2
+                # authorMaximumDamage = 6
             
                 await ctx.send("What do you want to do? `fight/stop`")
                 
