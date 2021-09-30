@@ -840,5 +840,5 @@ Original text: {text}
         else:
             await message.delete() # Deletes the bot's message | Please say ... to verify
             await msg.delete() # Delete the member's answer
-            await ctx.reply(f"Woo you said {message}", delete_after=5.0)
+            await ctx.reply(f"Woo you said {msg}", delete_after=5.0)
             await ctx.message.delete() # Deletes the author's message | -verify
