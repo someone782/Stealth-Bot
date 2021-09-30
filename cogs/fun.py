@@ -875,6 +875,8 @@ Original text: {text}
                 number1 = random.randint(0, 10)
                 number = number1 * 10
                 authorHP = authorHP - number
+                
+                asyncio.sleep(4)
 
                 await ctx.send(f"{pensiveName} did `{number}` damage to {authorName}!\n{authorName}'s HP: {authorHP} ❤️\n{pensiveName}'s HP: {pensiveHP} ❤️")
                 
