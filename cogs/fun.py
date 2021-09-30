@@ -894,9 +894,9 @@ Original text: {text}
                 pensiveHP = pensiveHP - number
                 
                 if pensiveHP < 10:
-                    return await ctx.send(f"__**🎉 {authorName} WON!!! 🎉**__\nYou did `{number}` damage to {pensiveName}!\n{authorName}'s HP: {hp(authorHP)}\n{pensiveName}'s HP: {hp(pensiveHP)} ❤️")
+                    return await ctx.send(f"__**🎉 {authorName} WON!!! 🎉**__\nYou did `{number}` damage to {pensiveName}!\n{authorName}'s HP: {hp(authorHP)} ❤️\n{pensiveName}'s HP: {hp(pensiveHP)} ❤️")
                 
-                await ctx.send(f"You did `{number}` damage to {pensiveName}!\n{authorName}'s HP: {hp(authorHP)}\n{pensiveName}'s HP: {hp(pensiveHP)} ❤️")
+                await ctx.send(f"You did `{number}` damage to {pensiveName}!\n{authorName}'s HP: {hp(authorHP)} ❤️\n{pensiveName}'s HP: {hp(pensiveHP)} ❤️")
                 
                 def check(m):
                     return m.content.lower() in validAnswers2 and m.channel.id == ctx.channel.id
@@ -906,7 +906,7 @@ Original text: {text}
                 authorHP = authorHP - number
 
                 if authorHP < 10:
-                    return await ctx.send(f"__**🎉 {pensiveName} WON!!! 🎉**__\n{pensiveName} did `{number}` damage to {pensiveName}!\n{authorName}'s HP: {hp(authorHP)}\n{pensiveName}'s HP: {hp(pensiveHP)} ❤️")
+                    return await ctx.send(f"__**🎉 {pensiveName} WON!!! 🎉**__\n{pensiveName} did `{number}` damage to {pensiveName}!\n{authorName}'s HP: {hp(authorHP)} ❤️\n{pensiveName}'s HP: {hp(pensiveHP)} ❤️")
 
                 await ctx.send(f"{pensiveName} did `{number}` damage to {authorName}!\n{authorName}'s HP: {hp(authorHP)} ❤️\n{pensiveName}'s HP: {hp(pensiveHP)} ❤️")
                 
@@ -927,6 +927,6 @@ Original text: {text}
                     pensiveHP = pensiveHP - number
                     
                     if pensiveHP < 10:
-                        return await ctx.send(f"__**🎉 {authorName} WON!!! 🎉**__\nYou did `{number}` damage to {pensiveName}!\n{authorName}'s HP: {hp(authorHP)}\n{pensiveName}'s HP: {hp(pensiveHP)} ❤️")
+                        return await ctx.send(f"__**🎉 {authorName} WON!!! 🎉**__\nYou did `{number}` damage to {pensiveName}!\n{authorName}'s HP: {hp(authorHP)} ❤️\n{pensiveName}'s HP: {hp(pensiveHP)} ❤️")
                     
                     await ctx.send(f"You did `{number}` damage to {pensiveName}!\n{authorName}'s HP: {hp(authorHP)} ❤️\n{pensiveName}'s HP: {hp(pensiveHP)} ❤️")
