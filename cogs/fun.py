@@ -826,6 +826,7 @@ Original text: {text}
     @commands.command(help="RPG.")
     async def rpg(self, ctx):
         validAnswers1 = ['yes', 'no']
+        validAnswers2 = ['fight', 'stop']
         message = await ctx.send(f"Start RPG? `yes/no`")
 
         def check(m):
@@ -842,7 +843,7 @@ Original text: {text}
                 return await ctx.send("fuck you")
             
             def check(m):
-                return m.content.lower() in validAnswers1 and m.channel.id == ctx.channel.id
+                return m.content.lower() in validAnswers2 and m.channel.id == ctx.channel.id
 
             message = await ctx.send("Starting RPG...")
             
