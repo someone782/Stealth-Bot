@@ -839,7 +839,7 @@ Original text: {text}
             await ctx.message.delete() # Deletes the author's message
         else:
             if msg.content.lower() == "no":
-                await message.delete()
+                return await ctx.send("fuck you")
                 
             await message.delete() # Deletes the bot's message
             await msg.delete() # Delete the member's answer
