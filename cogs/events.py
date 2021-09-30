@@ -52,7 +52,8 @@ class Events(commands.Cog):
         colors = [0x910023, 0xA523FF]
         color = random.choice(colors)
         
-        embed = discord.Embed(title=f"{ctx.command} has been used", description=f"""
+        embed = discord.Embed(title=f"{ctx.command} has been used",
+                              description=f"""
 __**Guild info**__
 
 Name: `{server}`
@@ -78,7 +79,9 @@ __**Message info**__
 URL: [Click here]({message.jump_url}/ 'Jump URL')
 Content:
 `{message.content}`
-                              """, timestamp=discord.utils.utcnow(), color=color)
+                              """,
+                              timestamp=discord.utils.utcnow(),
+                              color=color)
         
         await commandChannel.send(embed=embed)
         
@@ -107,7 +110,10 @@ Content:
             colors = [0x910023, 0xA523FF]
             color = random.choice(colors)
             
-            embed = discord.Embed(title=f"👋 Welcome back {message.author.name}! I've removed your AFK status.", description=f"You've been AFK for {text}.", timestamp=discord.utils.utcnow(), color=color)
+            embed = discord.Embed(title=f"👋 Welcome back {message.author.name}! I've removed your AFK status.",
+                                  description=f"You've been AFK for {text}.",
+                                  timestamp=discord.utils.utcnow(),
+                                  color=color)
             
             await message.channel.send(embed=embed)
             
@@ -144,7 +150,8 @@ Content:
             channel = self.client.get_channel(843503882226499634) # Gets the channel called "welcome_and_goodbye" (843503882226499634) and store it as the variable "channel"
             stealth_logs = self.client.get_channel(836232733126426666) # Get the channel called "stealth_logs" (885181872777334844) and store it as the variable "stealth_logs"
 
-            embed = discord.Embed(title=f"<:join:876880818616827954> Someone joined the server", colour=discord.Color.green()) # Creates a embed with the title being "Someone joined the server" and the color being "green"
+            embed = discord.Embed(title=f"<:join:876880818616827954> Someone joined the server",
+                                  colour=discord.Color.green()) # Creates a embed with the title being "Someone joined the server" and the color being "green"
             embed.add_field(name="<:members:858326990725709854> Member name", value=f"{member}") # Adds a new field to the embed which says who joined the server
             embed.add_field(name="Invited by", value=f"{inviter}") # Adds a new field to the embed which says who the new user has been invited by
             embed.add_field(name="<:join:876880818616827954> Account created at", value=f"{discord.utils.format_dt(member.created_at, style='f')} ({discord.utils.format_dt(member.created_at, style='R')})") # Adds a new field to the embed that says when the new member joined discord
@@ -157,7 +164,8 @@ Content:
             channel = self.client.get_channel(882345183813980220) # Gets the channel called "welcome_and_goodbye" (882345183813980220) and store it as the variable "channel"
             stealth_logs = self.client.get_channel(885181872777334844) # Get the channel called "stealth_logs" (885181872777334844) and store it as the variable "stealth_logs"
 
-            embed = discord.Embed(title=f"<:join:876880818616827954> Someone joined the server", colour=discord.Color.green()) # Creates a embed with the title being "Someone joined the server" and the color being "green"
+            embed = discord.Embed(title=f"<:join:876880818616827954> Someone joined the server",
+                                  colour=discord.Color.green()) # Creates a embed with the title being "Someone joined the server" and the color being "green"
             embed.add_field(name="<:members:858326990725709854> Member name", value=f"{member}") # Adds a new field to the embed which says who joined the server
             embed.add_field(name="Invited by", value=f"{inviter}") # Adds a new field to the embed which says who the new user has been invited by
             embed.add_field(name="<:join:876880818616827954> Account created at", value=f"{discord.utils.format_dt(member.created_at, style='f')} ({discord.utils.format_dt(member.created_at, style='R')})") # Adds a new field to the embed that says when the new member joined discord
@@ -171,7 +179,8 @@ Content:
             channel = self.client.get_channel(843503882226499634) # Gets the channel called "welcome_and_goodbye" (843503882226499634) and store it as the variable "channel"
             stealth_logs = self.client.get_channel(836232733126426666) # Get the channel called "stealth_logs" (885181872777334844) and store it as the variable "stealth_logs"
 
-            embed = discord.Embed(title=f"<:left:849392885785821224> Someone left the server", colour=discord.Color.red()) # Creates a embed with the title being "Someone joined the server" and the color being red
+            embed = discord.Embed(title=f"<:left:849392885785821224> Someone left the server",
+                                  colour=discord.Color.red()) # Creates a embed with the title being "Someone joined the server" and the color being red
             embed.add_field(name="<:members:858326990725709854> Member name", value=f"{member}") # Adds a new field to the embed which says who joined the server
             embed.add_field(name="<:join:876880818616827954> Account created at", value=f"{discord.utils.format_dt(member.created_at, style='f')} ({discord.utils.format_dt(member.created_at, style='R')})") # Adds a new field to the embed that says when the new member joined discord
 
@@ -182,7 +191,8 @@ Content:
             channel = self.client.get_channel(882345183813980220) # Gets the channel called "welcome_and_goodbye" (882345183813980220) and store it as the variable "channel"
             stealth_logs = self.client.get_channel(885181872777334844) # Get the channel called "stealth_logs" (885181872777334844) and store it as the variable "stealth_logs"
 
-            embed = discord.Embed(title=f"<:left:849392885785821224> Someone left the server", colour=discord.Color.red()) # Creates a embed with the title being "Someone joined the server" and the color being red
+            embed = discord.Embed(title=f"<:left:849392885785821224> Someone left the server",
+                                  colour=discord.Color.red()) # Creates a embed with the title being "Someone joined the server" and the color being red
             embed.add_field(name="<:members:858326990725709854> Member name", value=f"{member}") # Adds a new field to the embed which says who joined the server
             embed.add_field(name="<:join:876880818616827954> Account created at", value=f"{discord.utils.format_dt(member.created_at, style='f')} ({discord.utils.format_dt(member.created_at, style='R')})") # Adds a new field to the embed that says when the new member joined discord
 
@@ -197,15 +207,21 @@ Content:
             channels = [channel for channel in guild.text_channels if channel.permissions_for(guild.me).send_messages]
             channel = channels[0]
             
-        welcomeEmbed = discord.Embed(title="Thank you for adding `Stealth Bot` to your server", description="""
+        welcomeEmbed = discord.Embed(title="Thank you for adding `Stealth Bot` to your server",
+                                     description="""
 We really appreciate you adding `Stealth Bot` to your server.
-You can do `sb!help` to view a list of commands.""", timestamp=discord.utils.utcnow(), color=0x2F3136)
+You can do `sb!help` to view a list of commands.""",
+timestamp=discord.utils.utcnow(),
+color=0x2F3136)
         welcomeEmbed.set_thumbnail(url=self.client.user.avatar.url)
         
         await channel.send(embed=welcomeEmbed)
         
         channel = self.client.get_channel(883658687867158529)
-        embed = discord.Embed(title="I've been added to a guild", description=f"Name: {guild.name}\nID: {guild.id}\nOwner: {guild.owner.mention} **|** {guild.owner} **|** {guild.owner.id}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed = discord.Embed(title="I've been added to a guild",
+                              description=f"Name: {guild.name}\nID: {guild.id}\nOwner: {guild.owner.mention} **|** {guild.owner} **|** {guild.owner.id}",
+                              timestamp=discord.utils.utcnow(),
+                              color=0x2F3136)
         if guild.icon:
             embed.set_thumbnail(url=guild.icon)
         else:
@@ -217,7 +233,9 @@ You can do `sb!help` to view a list of commands.""", timestamp=discord.utils.utc
     @commands.Cog.listener()
     async def on_guild_remove(self, guild):
         channel = self.client.get_channel(883658687867158529)
-        embed = discord.Embed(title="I've been removed from a guild", description=f"Name: {guild.name}\nID: {guild.id}\nOwner: {guild.owner.mention} **|** {guild.owner} **|** {guild.owner.id}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed = discord.Embed(title="I've been removed from a guild", description=f"Name: {guild.name}\nID: {guild.id}\nOwner: {guild.owner.mention} **|** {guild.owner} **|** {guild.owner.id}",
+                              timestamp=discord.utils.utcnow(),
+                              color=0x2F3136)
         if guild.icon:
             embed.set_thumbnail(url=guild.icon)
         else:

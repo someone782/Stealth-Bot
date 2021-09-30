@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 import discord
-import helpers
+import helpers.helpers
 import time
 import aiohttp
 import datetime

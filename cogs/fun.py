@@ -1,7 +1,7 @@
-from aiohttp import helpers
+from aiohttp import helpers.helpers
 import discord
 import random
-import helpers
+import helpers.helpers
 import asyncio
 import re
 import io
@@ -59,7 +59,8 @@ Never gonna tell a lie and hurt {member.mention}
         
         ascii = pyfiglet.figlet_format(text)
 
-        embed = discord.Embed(title="ASCII", description=f"""
+        embed = discord.Embed(title="ASCII",
+                              description=f"""
 ```
 {ascii}
 ```
@@ -201,7 +202,8 @@ Never gonna tell a lie and hurt {member.mention}
 
         length = random.randint(10, 25)
 
-        embed = discord.Embed(title=f"PP Size - {member}", description=f"8{'=' * length}D\n{member.name}'s :eggplant: is {length} cm")
+        embed = discord.Embed(title=f"PP Size - {member}",
+                              description=f"8{'=' * length}D\n{member.name}'s :eggplant: is {length} cm")
 
         await ctx.send(embed=embed)
 
@@ -235,7 +237,8 @@ Answer: {random.choice(responses)}
         
         await ctx.send(embed=embed)
         
-    @commands.command(help="Answers with yes or no", aliases=['yes', 'no', 'yes_no', 'yesorno', 'yes_or_no'])
+    @commands.command(help="Answers with yes or no",
+                      aliases=['yes', 'no', 'yes_no', 'yesorno', 'yes_or_no'])
     async def yesno(self, ctx):
         start = time.perf_counter()
         
@@ -252,14 +255,16 @@ Answer: {random.choice(responses)}
         
         await ctx.send(embed=embed)
 
-    @commands.command(help="Chooses between multiple choices.\nTo denote multiple choices, you should use double quotes.", aliases=['choice', 'decide'])
+    @commands.command(help="Chooses between multiple choices.\nTo denote multiple choices, you should use double quotes.",
+                      aliases=['choice', 'decide'])
     async def choose(self, ctx, *choices : commands.clean_content):
         if len(choices) < 2:
             return await ctx.send("Not enough choices.")
 
         await ctx.send(f"I choose `{random.choice(choices)}`.")
         
-    @commands.command(help="Replaces all spaces in given text with a clapping emoji", aliases=['applause'])
+    @commands.command(help="Replaces all spaces in given text with a clapping emoji",
+                      aliases=['applause'])
     async def clap(self, ctx, *, text : str):
         text = text.replace(" ", " 👏 ")
         
@@ -270,7 +275,8 @@ Answer: {random.choice(responses)}
         
         await ctx.send(embed=embed)
         
-    @commands.command(help="Replaces all spaces in given text with a emoji/character", aliases=['ins'])
+    @commands.command(help="Replaces all spaces in given text with a emoji/character",
+                      aliases=['ins'])
     async def insert(self, ctx, character : str, *, text : str):
         text = text.replace(" ", f" {character} ")
         
@@ -304,7 +310,8 @@ Answer: {random.choice(responses)}
 
         await ctx.send(f"{member} is {random.randint(0, 100)}% gay!")
 
-    @commands.command(help="Tells you a random number with a optional range. Minimum has to be smaller than maximum", aliases=['random_number', 'randomnumber', 'number_random', 'numberrandom'])
+    @commands.command(help="Tells you a random number with a optional range. Minimum has to be smaller than maximum",
+                      aliases=['random_number', 'randomnumber', 'number_random', 'numberrandom'])
     async def number(self, ctx, minimum : int=0, maximum : int=100):
         maximum = min(maximum, 1000)
         if minimum >= maximum:

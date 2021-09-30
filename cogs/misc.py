@@ -3,7 +3,7 @@ import datetime
 import io
 import asyncio
 import random
-import helpers
+import helpers.helpers
 from PIL import Image, ImageSequence
 import re
 import errors

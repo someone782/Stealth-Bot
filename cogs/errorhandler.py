@@ -1,7 +1,7 @@
 import discord
 import datetime
 from discord.ext import commands
-import helpers
+import helpers.helpers
 from difflib import get_close_matches
 import traceback
 import itertools
