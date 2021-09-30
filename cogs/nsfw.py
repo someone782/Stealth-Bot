@@ -36,6 +36,20 @@ class NSFW(commands.Cog):
 
         await ctx.reply(embed=embed)
         
+    @commands.command()
+    @commands.is_nsfw()
+    @commands.cooldown(1, 3, commands.BucketType.user)
+    async def asse(self, ctx, type: str = None):
+        url = "https://api.waifu.im/nsfw/ass/"
+        if str(type).lower() == "gif":
+            url = "https://api.waifu.im/nsfw/ass/?gif=True"
+        request = await self.client.session.get(url)
+        json = await request.json()
+        embed = discord.Embed(timestamp=discord.utils.utcnow(), colour=discord.Colour.random())
+        embed.set_image(url=json['url'])
+        embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+        await ctx.send(embed=embed)
+        
     @commands.command(aliases=['nsfw_ecchi', 'ecchi_nsfw'])
     @commands.is_nsfw()
     async def ecchi(self, ctx, type : str=None):
