@@ -825,23 +825,37 @@ Original text: {text}
     
     @commands.command(help="RPG.")
     async def rpg(self, ctx):
-        answer1 = ['yes', 'no']
+        validAnswers1 = ['yes', 'no']
         message = await ctx.send(f"Start RPG? `yes/no`")
 
         def check(m):
-            return m.content.lower() in answer1 and m.channel.id == ctx.channel.id
+            return m.content.lower() in validAnswers1 and m.channel.id == ctx.channel.id
 
         try:
             msg = await self.client.wait_for(event='message', check=check, timeout=15)
+            
         except asyncio.TimeoutError:
-            await message.delete() # Deletes the bot's message
-            await ctx.reply("It's been over 15 seconds, please try again by doing `-rpg`", delete_after=5.0) # Replies to the author's message
-            await ctx.message.delete() # Deletes the author's message
+            return await ctx.send("It's been over 15 seconds, please try again by doing `-rpg`")
+        
         else:
             if msg.content.lower() == "no":
                 return await ctx.send("fuck you")
+            
+            def check(m):
+                return m.content.lower() in validAnswers1 and m.channel.id == ctx.channel.id
+
+            message = await ctx.send("Starting RPG...")
+            
+            await message.edit("What do you want to do? `fight/stop`")
+            
+            try:
+                msg = await self.client.wait_for(event='message', check=check, timeout=15)
                 
-            await message.delete() # Deletes the bot's message
-            await msg.delete() # Delete the member's answer
-            await ctx.reply(f"Starting RPG...")
-            await ctx.message.delete() # Deletes the author's message
+            except asyncio.TimeoutError:
+                return await ctx.send("It's been over 15 seconds, please try again by doing `-rpg`")
+            
+            else:
+                if msg.content.lower() == "stop":
+                    return await ctx.send("fuck you")
+                
+                message = await ctx.send("Your HP: 100 ❤️\nTheir HP: 100 ❤️")
