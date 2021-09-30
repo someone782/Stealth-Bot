@@ -881,7 +881,7 @@ Original text: {text}
 
             message = await ctx.send("Starting RPG...")
             
-            await message.edit("Do you want to turn hard-code more on? `yes/no`")
+            await message.edit("Do you want to turn hard-code mode on? `yes/no`")
             
             try:
                 msg = await self.client.wait_for(event='message', check=check1, timeout=15)
@@ -890,15 +890,14 @@ Original text: {text}
                 return await ctx.send("It's been over 15 seconds, please try again by doing `-rpg`.")
             
             else:
-                if msg == "yes":
-                    pensiveMinimumDamage = 8
+                
+                if msg.content == "yes":
+                    pensiveMinimumDamage = 4
                     pensiveMaximumDamage = 20
                     authorMinimumDamage = 2
                     authorMaximumDamage = 6
-                    pass
             
-            
-                await ctx.send("What do you want to do? `fight/stop`")
+                await ctx.send("What do you want to do? `fight/stop`") # <------ this wont work cause its not inside the if statement
                 
                 try:
                     msg = await self.client.wait_for(event='message', check=check2, timeout=15)
