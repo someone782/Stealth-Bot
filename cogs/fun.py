@@ -831,10 +831,10 @@ Original text: {text}
         pensiveName = "pensive"
         authorHP = 100
         pensiveHP = 100
-        pensiveMinimumDamage = 40
-        pensiveMaximumDamage = 200
-        authorMinimumDamage = 10
-        authorMaximumDamage = 60
+        pensiveMinimumDamage = 0
+        pensiveMaximumDamage = 10
+        authorMinimumDamage = 0
+        authorMaximumDamage = 10
         message = await ctx.send(f"Start RPG? `yes/no`")
         
         def hp(argument):
@@ -890,13 +890,13 @@ Original text: {text}
                 return await ctx.send("It's been over 15 seconds, please try again by doing `-rpg`.")
             
             else:
-                pensiveMinimumDamage = 40
-                pensiveMaximumDamage = 200
-                authorMinimumDamage = 10
-                authorMaximumDamage = 60
+                pensiveMinimumDamage = 4
+                pensiveMaximumDamage = 20
+                authorMinimumDamage = 2
+                authorMaximumDamage = 6
             
             
-                await message.edit("What do you want to do? `fight/stop`")
+                await ctx.send("What do you want to do? `fight/stop`")
                 
                 try:
                     msg = await self.client.wait_for(event='message', check=check2, timeout=15)
