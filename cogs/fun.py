@@ -887,8 +887,8 @@ Original text: {text}
             
             # await message.edit("Do you want to turn hard-code mode on? `yes/no`")
             
-            if confirm is False:
-                return
+            # if confirm is False:
+            #     return
             
             # try:
             #     msg = await self.client.wait_for(event='message', check=check1, timeout=15)
@@ -896,7 +896,7 @@ Original text: {text}
             # except asyncio.TimeoutError:
             #     return await ctx.send("It's been over 15 seconds, please try again by doing `-rpg`.")
             
-            else:
+            if confirm is True:
                 pensiveMinimumDamage = 4
                 pensiveMaximumDamage = 20
                 authorMinimumDamage = 2
