@@ -860,7 +860,7 @@ Original text: {text}
                 return "▒▒▒▒▒▒▒▒▒▒ 💔"
 
         def check(m):
-            return m.content.lower() in validAnswers1 and m.channel.id == ctx.channel.id
+            return m.content.lower() in validAnswers1 and m.channel.id == ctx.channel.id and m.author.id == ctx.author.id
 
         try:
             msg = await self.client.wait_for(event='message', check=check, timeout=15)
@@ -873,7 +873,7 @@ Original text: {text}
                 return await ctx.send("Okay, stopped RPG.")
             
             def check(m):
-                return m.content.lower() in validAnswers2 and m.channel.id == ctx.channel.id
+                return m.content.lower() in validAnswers2 and m.channel.id == ctx.channel.id and m.author.id == ctx.author.id
 
             message = await ctx.send("Starting RPG...")
             
@@ -899,7 +899,7 @@ Original text: {text}
                 await ctx.send(f"You did `{number}` damage to {pensiveName}!\n{authorName}'s HP: {hp(authorHP)}\n{pensiveName}'s HP: {hp(pensiveHP)}")
                 
                 def check(m):
-                    return m.content.lower() in validAnswers2 and m.channel.id == ctx.channel.id
+                    return m.content.lower() in validAnswers2 and m.channel.id == ctx.channel.id and m.author.id == ctx.author.id
                 
                 number1 = random.randint(0, 10)
                 number = number1 * 10
