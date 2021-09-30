@@ -838,7 +838,7 @@ Original text: {text}
             await ctx.reply("It's been over 15 seconds, please try again by doing `-rpg`", delete_after=5.0) # Replies to the author's message
             await ctx.message.delete() # Deletes the author's message
         else:
-            if msg.lower() == "no":
+            if str(msg).lower() == "no":
                 await message.delete()
                 
             await message.delete() # Deletes the bot's message
