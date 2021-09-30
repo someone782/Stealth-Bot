@@ -854,8 +854,10 @@ Original text: {text}
                 return "████████▒▒"
             elif argument == 90:
                 return "█████████▒"
-            else:
+            elif argument == 100:
                 return "██████████"
+            else:
+                return "▒▒▒▒▒▒▒▒▒▒"
 
         def check(m):
             return m.content.lower() in validAnswers1 and m.channel.id == ctx.channel.id
