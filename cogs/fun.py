@@ -832,6 +832,30 @@ Original text: {text}
         authorHP = 100
         pensiveHP = 100
         message = await ctx.send(f"Start RPG? `yes/no`")
+        
+        def hp(argument):
+            if argument == 0:
+                return "▒▒▒▒▒▒▒▒▒▒"
+            if argument == 10:
+                return "█▒▒▒▒▒▒▒▒▒"
+            elif argument == 20:
+                return "██▒▒▒▒▒▒▒▒"
+            elif argument == 30:
+                return "███▒▒▒▒▒▒▒"
+            elif argument == 40:
+                return "████▒▒▒▒▒▒"
+            elif argument == 50:
+                return "█████▒▒▒▒▒"
+            elif argument == 60:
+                return "██████▒▒▒▒"
+            elif argument == 70:
+                return "███████▒▒▒"
+            elif argument == 80:
+                return "████████▒▒"
+            elif argument == 90:
+                return "█████████▒"
+            else:
+                return "██████████"
 
         def check(m):
             return m.content.lower() in validAnswers1 and m.channel.id == ctx.channel.id
@@ -867,7 +891,7 @@ Original text: {text}
                 number = number1 * 10
                 pensiveHP = pensiveHP - number
                 
-                await ctx.send(f"You did `{number}` damage to {pensiveName}!\n{authorName}'s HP: {authorHP} ❤️\n{pensiveName}'s HP: {pensiveHP} ❤️")
+                await ctx.send(f"You did `{number}` damage to {pensiveName}!\n{authorName}'s HP: {hp(authorHP)}\n{pensiveName}'s HP: {hp(pensiveHP)} ❤️")
                 
                 def check(m):
                     return m.content.lower() in validAnswers2 and m.channel.id == ctx.channel.id
@@ -878,7 +902,7 @@ Original text: {text}
                 
                 asyncio.sleep(4)
 
-                await ctx.send(f"{pensiveName} did `{number}` damage to {authorName}!\n{authorName}'s HP: {authorHP} ❤️\n{pensiveName}'s HP: {pensiveHP} ❤️")
+                await ctx.send(f"{pensiveName} did `{number}` damage to {authorName}!\n{authorName}'s HP: {hp(authorHP)} ❤️\n{pensiveName}'s HP: {hp(pensiveHP)} ❤️")
                 
                 message = await ctx.send("What do you want to do? `fight/stop`")
 
@@ -896,4 +920,4 @@ Original text: {text}
                     number = number1 * 10
                     pensiveHP = pensiveHP - number
                     
-                    await ctx.send(f"You did `{number}` damage to {pensiveName}!\n{authorName}'s HP: {authorHP} ❤️\n{pensiveName}'s HP: {pensiveHP} ❤️")
+                    await ctx.send(f"You did `{number}` damage to {pensiveName}!\n{authorName}'s HP: {hp(authorHP)} ❤️\n{pensiveName}'s HP: {hp(pensiveHP)} ❤️")
