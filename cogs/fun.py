@@ -885,7 +885,7 @@ Original text: {text}
                                         delete_after_confirm=True, delete_after_timeout=True, delete_after_cancel=True,
                                         buttons=((None, 'Yes', discord.ButtonStyle.gray), (None, 'No', discord.ButtonStyle.red)), timeout=15)
             
-            await message.edit("Do you want to turn hard-code mode on? `yes/no`")
+            # await message.edit("Do you want to turn hard-code mode on? `yes/no`")
             
             try:
                 msg = await self.client.wait_for(event='message', check=check1, timeout=15)
