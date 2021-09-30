@@ -827,6 +827,8 @@ Original text: {text}
     async def rpg(self, ctx):
         validAnswers1 = ['yes', 'no']
         validAnswers2 = ['fight', 'stop']
+        authorName = ctx.author.name
+        pensiveName = "pensive"
         authorHP = 100
         pensiveHP = 100
         message = await ctx.send(f"Start RPG? `yes/no`")
@@ -855,7 +857,7 @@ Original text: {text}
                 msg = await self.client.wait_for(event='message', check=check, timeout=15)
                 
             except asyncio.TimeoutError:
-                return await ctx.send("It's been over 15 seconds, please try again by doing `-rpg`")
+                return await ctx.send("It's been over 15 seconds, please try again by doing `-rpg`.")
             
             else:
                 if msg.content.lower() == "stop":
@@ -865,4 +867,31 @@ Original text: {text}
                 number = number1 * 10
                 pensiveHP = pensiveHP - number
                 
-                message = await ctx.send(f"You did `{number}` damage to them!\nYour HP: {authorHP} ❤️\nTheir HP: {pensiveHP} ❤️")
+                await ctx.send(f"You did `{number}` damage to {pensiveName}!\n{authorName}'s HP: {authorHP} ❤️\n{pensiveName}'s HP: {pensiveHP} ❤️")
+                
+                def check(m):
+                    return m.content.lower() in validAnswers2 and m.channel.id == ctx.channel.id
+                
+                number1 = random.randint(0, 10)
+                number = number1 * 10
+                authorHP = authorHP - number
+
+                await ctx.send(f"{pensiveName} did `{number}` damage to {authorName}!\n{authorName}'s HP: {authorHP} ❤️\n{pensiveName}'s HP: {pensiveHP} ❤️")
+                
+                message = await ctx.send("What do you want to do? `fight/stop`")
+
+                try:
+                    msg = await self.client.wait_for(event='message', check=check, timeout=15)
+                    
+                except asyncio.TimeoutError:
+                    return await ctx.send("It's been over 15 seconds, please try again by doing `-rpg`")
+                
+                else:
+                    if msg.content.lower() == "stop":
+                        return await ctx.send("Okay, stopped RPG.")
+                    
+                    number1 = random.randint(0, 10)
+                    number = number1 * 10
+                    pensiveHP = pensiveHP - number
+                    
+                    await ctx.send(f"You did `{number}` damage to {pensiveName}!\n{authorName}'s HP: {authorHP} ❤️\n{pensiveName}'s HP: {pensiveHP} ❤️")
