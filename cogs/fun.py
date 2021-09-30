@@ -834,11 +834,14 @@ Original text: {text}
         try:
             msg = await self.client.wait_for(event='message', check=check, timeout=15)
         except asyncio.TimeoutError:
-            await message.delete() # Deletes the bot's message | Please say ... to verify
+            await message.delete() # Deletes the bot's message
             await ctx.reply("It's been over 15 seconds, please try again by doing `-rpg`", delete_after=5.0) # Replies to the author's message
-            await ctx.message.delete() # Deletes the author's message | -verify
+            await ctx.message.delete() # Deletes the author's message
         else:
-            await message.delete() # Deletes the bot's message | Please say ... to verify
+            if msg.lower() == "no":
+                await message.delete()
+                
+            await message.delete() # Deletes the bot's message
             await msg.delete() # Delete the member's answer
-            await ctx.reply(f"Woo you said {msg}", delete_after=5.0)
-            await ctx.message.delete() # Deletes the author's message | -verify
+            await ctx.reply(f"Starting RPG...")
+            await ctx.message.delete() # Deletes the author's message
