@@ -895,7 +895,7 @@ Original text: {text}
                     pensiveMaximumDamage = 20
                     authorMinimumDamage = 2
                     authorMaximumDamage = 6
-                    continue
+                    pass
             
             
                 await ctx.send("What do you want to do? `fight/stop`")
