@@ -881,11 +881,11 @@ Original text: {text}
 
             message = await ctx.send("Starting RPG...")
             
-            confirm = await ctx.confirm(message=f"I couldn't find a command called `{ctx.invoked_with}`.\nDid you mean `{f'{matches[0]}' if matches else ''}`?",
+            confirm = await ctx.confirm(message=f"Do you want to turn hard-code mode on?",
                                         delete_after_confirm=True, delete_after_timeout=True, delete_after_cancel=True,
-                                        buttons=(('<:greenTick:596576670815879169>', f'', discord.ButtonStyle.gray), ('🗑', None, discord.ButtonStyle.red)), timeout=15)
+                                        buttons=((None, 'Yes', discord.ButtonStyle.gray), (None, 'No', discord.ButtonStyle.red)), timeout=15)
             
-            await message.edit("Do you want to turn hard-code more on? `yes/no`")
+            await message.edit("Do you want to turn hard-code mode on? `yes/no`")
             
             try:
                 msg = await self.client.wait_for(event='message', check=check1, timeout=15)
