@@ -893,6 +893,9 @@ Original text: {text}
                 number = number1 * 10
                 pensiveHP = pensiveHP - number
                 
+                if pensiveHP < 10:
+                    return await ctx.send(f"__**🎉 {authorName} WON!!! 🎉**__\nYou did `{number}` damage to {pensiveName}!\n{authorName}'s HP: {hp(authorHP)}\n{pensiveName}'s HP: {hp(pensiveHP)} ❤️")
+                
                 await ctx.send(f"You did `{number}` damage to {pensiveName}!\n{authorName}'s HP: {hp(authorHP)}\n{pensiveName}'s HP: {hp(pensiveHP)} ❤️")
                 
                 def check(m):
@@ -901,8 +904,9 @@ Original text: {text}
                 number1 = random.randint(0, 10)
                 number = number1 * 10
                 authorHP = authorHP - number
-                
-                asyncio.sleep(4)
+
+                if authorHP < 10:
+                    return await ctx.send(f"__**🎉 {pensiveName} WON!!! 🎉**__\n{pensiveName} did `{number}` damage to {pensiveName}!\n{authorName}'s HP: {hp(authorHP)}\n{pensiveName}'s HP: {hp(pensiveHP)} ❤️")
 
                 await ctx.send(f"{pensiveName} did `{number}` damage to {authorName}!\n{authorName}'s HP: {hp(authorHP)} ❤️\n{pensiveName}'s HP: {hp(pensiveHP)} ❤️")
                 
@@ -921,5 +925,8 @@ Original text: {text}
                     number1 = random.randint(0, 10)
                     number = number1 * 10
                     pensiveHP = pensiveHP - number
+                    
+                    if pensiveHP < 10:
+                        return await ctx.send(f"__**🎉 {authorName} WON!!! 🎉**__\nYou did `{number}` damage to {pensiveName}!\n{authorName}'s HP: {hp(authorHP)}\n{pensiveName}'s HP: {hp(pensiveHP)} ❤️")
                     
                     await ctx.send(f"You did `{number}` damage to {pensiveName}!\n{authorName}'s HP: {hp(authorHP)} ❤️\n{pensiveName}'s HP: {hp(pensiveHP)} ❤️")
