@@ -892,7 +892,7 @@ Original text: {text}
             else:
                 
                 if msg.content == "yes":
-                    pensiveMinimumDamage = 8
+                    pensiveMinimumDamage = 4
                     pensiveMaximumDamage = 20
                     authorMinimumDamage = 2
                     authorMaximumDamage = 6

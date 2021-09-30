@@ -9,7 +9,15 @@ import traceback
 import errors
 import jishaku
 import random
+import itertools
 from discord.ext import commands
+import importlib
+import jishaku.modules
+from jishaku.codeblocks import Codeblock, codeblock_converter
+from jishaku.features.baseclass import Feature
+from jishaku.models import copy_context_with
+from jishaku.paginators import WrappedPaginator
+
 
 def setup(client):
     client.add_cog(Owner(client))
@@ -19,6 +27,122 @@ class Owner(commands.Cog):
     def __init__(self, client):
         self.hidden = True
         self.client = client
+        
+    @commands.command(help="Unloads an extension", aliases=['unl', 'ue', 'uc'])
+    @commands.is_owner()
+    @commands.bot_has_permissions(send_messages=True, embed_links=True)
+    async def unload(self, ctx, extension):
+        embed = discord.Embed(color=ctx.me.color, description=f"⬇ {extension}")
+        message = await ctx.send(embed=embed, footer=False)
+        try:
+            self.client.unload_extension("cogs.{}".format(extension))
+            await asyncio.sleep(0.5)
+            embed = discord.Embed(color=ctx.me.color, description=f"✅ {extension}")
+            await message.edit(embed=embed)
+
+        except discord.ext.commands.ExtensionNotFound:
+            await asyncio.sleep(0.5)
+            embed = discord.Embed(color=ctx.me.color, description=f"❌ Extension not found")
+            await message.edit(embed=embed)
+
+        except discord.ext.commands.ExtensionNotLoaded:
+            await asyncio.sleep(0.5)
+            embed = discord.Embed(color=ctx.me.color, description=f"❌ Extension not loaded")
+            await message.edit(embed=embed)
+
+    @commands.command(help="Reloads all extensions", aliases=['relall', 'rall', 'reloadall'])
+    @commands.is_owner()
+    @commands.bot_has_permissions(send_messages=True, embed_links=True)
+    async def reload(self, ctx, *extensions: jishaku.modules.ExtensionConverter):
+        pages = WrappedPaginator(prefix='', suffix='')
+        to_send = []
+        err = False
+        first_reload_failed_extensions = []
+
+        extensions = extensions or [await jishaku.modules.ExtensionConverter.convert(self, ctx, '~')]
+
+        for extension in itertools.chain(*extensions):
+            method, icon = (
+                (self.client.reload_extension, "\N{CLOCKWISE RIGHTWARDS AND LEFTWARDS OPEN CIRCLE ARROWS}")
+                if extension in self.client.extensions else
+                (self.client.load_extension, "\N{INBOX TRAY}")
+            )
+            # noinspection PyBroadException
+            try:
+                method(extension)
+                pages.add_line(f"{icon} `{extension}`")
+            except Exception:
+                first_reload_failed_extensions.append(extension)
+
+        error_keys = {
+            discord.ext.commands.ExtensionNotFound: 'Not found',
+            discord.ext.commands.NoEntryPointError: 'No setup function',
+            discord.ext.commands.ExtensionNotLoaded: 'Not loaded',
+            discord.ext.commands.ExtensionAlreadyLoaded: 'Already loaded'
+        }
+
+        for extension in first_reload_failed_extensions:
+            method, icon = (
+                (self.client.reload_extension, "\N{CLOCKWISE RIGHTWARDS AND LEFTWARDS OPEN CIRCLE ARROWS}")
+                if extension in self.client.extensions else
+                (self.client.load_extension, "\N{INBOX TRAY}")
+            )
+            try:
+                method(extension)
+                pages.add_line(f"{icon} `{extension}`")
+
+            except tuple(error_keys.keys()) as exc:
+                pages.add_line(f"{icon}❌ `{extension}` - {error_keys[type(exc)]}")
+
+            except discord.ext.commands.ExtensionFailed as e:
+                traceback_string = f"```py" \
+                                   f"\n{''.join(traceback.format_exception(etype=None, value=e, tb=e.__traceback__))}" \
+                                   f"\n```"
+                pages.add_line(f"{icon}❌ `{extension}` - Execution error")
+                to_dm = f"❌ {extension} - Execution error - Traceback:"
+
+                if (len(to_dm) + len(traceback_string) + 5) > 2000:
+                    await ctx.author.send(file=io.StringIO(traceback_string))
+                else:
+                    await ctx.author.send(f"{to_dm}\n{traceback_string}")
+
+        for page in pages.pages:
+            await ctx.send(page)
+
+    @commands.command(name="mreload", aliases=['mload', 'mrl'])
+    @commands.is_owner()
+    @commands.bot_has_permissions(send_messages=True, embed_links=True)
+    async def reload_module(self, ctx, *extensions: jishaku.modules.ExtensionConverter):
+        """
+        Reloads one or multiple extensions
+        """
+        pages = WrappedPaginator(prefix='', suffix='')
+
+        if not extensions:
+            extensions = [await jishaku.modules.ExtensionConverter.convert(self, ctx, 'helper')]
+
+        for extension in itertools.chain(*extensions):
+            method, icon = (
+                (None, "\N{CLOCKWISE RIGHTWARDS AND LEFTWARDS OPEN CIRCLE ARROWS}")
+            )
+
+            try:
+                module = importlib.import_module(extension)
+                importlib.reload(module)
+
+            except Exception as exc:  # pylint: disable=broad-except
+                traceback_data = ''.join(traceback.format_exception(type(exc), exc, exc.__traceback__, 1))
+
+                pages.add_line(
+                    f"{icon}\N{WARNING SIGN} `{extension}`\n```py\n{traceback_data}\n```",
+                    empty=True
+                )
+            else:
+                pages.add_line(f"{icon} `{extension}`")
+
+        for page in pages.pages:
+            await ctx.send(page)
+ 
         
     @commands.command(help="Shutdowns the bot", aliases=['shutdown_bot'])
     @commands.is_owner()
@@ -140,186 +264,186 @@ class Owner(commands.Cog):
                 self.client.no_prefix = False
 
 
-    @commands.command(help="Loads a cog", aliases=['le', 'lc', 'loadcog'])
-    @commands.is_owner()
-    async def load(self, ctx, extension):
-        embed = discord.Embed(description=f"<a:loading:747680523459231834> Loading {extension}...")
-        embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+    # @commands.command(help="Loads a cog", aliases=['le', 'lc', 'loadcog'])
+    # @commands.is_owner()
+    # async def load(self, ctx, extension):
+    #     embed = discord.Embed(description=f"<a:loading:747680523459231834> Loading {extension}...")
+    #     embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-        message = await ctx.send(embed=embed)
+    #     message = await ctx.send(embed=embed)
 
-        try:
-            self.client.load_extension(f"cogs.{extension}")
-            embed = discord.Embed(description=f":white_check_mark: {extension}", timestamp=discord.utils.utcnow(), color=0x2F3136)
-            embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+    #     try:
+    #         self.client.load_extension(f"cogs.{extension}")
+    #         embed = discord.Embed(description=f":white_check_mark: {extension}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+    #         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-            await message.edit(embed=embed)
+    #         await message.edit(embed=embed)
 
-        except discord.ext.commands.ExtensionNotFound:
-            embed = discord.Embed(description=":x: That cog doesn't exist.", timestamp=discord.utils.utcnow(), color=0x2F3136)
-            embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+    #     except discord.ext.commands.ExtensionNotFound:
+    #         embed = discord.Embed(description=":x: That cog doesn't exist.", timestamp=discord.utils.utcnow(), color=0x2F3136)
+    #         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-            await message.edit(embed=embed)
+    #         await message.edit(embed=embed)
 
-        except discord.ext.commands.ExtensionAlreadyLoaded:
-            embed = discord.Embed(description=":x: That cog is already loaded.", timestamp=discord.utils.utcnow(), color=0x2F3136)
-            embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+    #     except discord.ext.commands.ExtensionAlreadyLoaded:
+    #         embed = discord.Embed(description=":x: That cog is already loaded.", timestamp=discord.utils.utcnow(), color=0x2F3136)
+    #         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-            await message.edit(embed=embed)
+    #         await message.edit(embed=embed)
 
-        except discord.ext.commands.NoEntryPointError:
-            embed = discord.Embed(description=":x: That cog doesn't have a setup function.", timestamp=discord.utils.utcnow(), color=0x2F3136)
-            embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+    #     except discord.ext.commands.NoEntryPointError:
+    #         embed = discord.Embed(description=":x: That cog doesn't have a setup function.", timestamp=discord.utils.utcnow(), color=0x2F3136)
+    #         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-            await message.edit(embed=embed)
+    #         await message.edit(embed=embed)
 
-        except discord.ext.commands.ExtensionFailed as e:
-            traceback_string = "".join(traceback.format_exception(etype=None, value=e, tb=e.__traceback__))
-            embed = discord.Embed(description=":x An error occurred while trying to load that cog.\n```{traceback_string}```", timestamp=discord.utils.utcnow(), color=0x2F3136)
-            embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+    #     except discord.ext.commands.ExtensionFailed as e:
+    #         traceback_string = "".join(traceback.format_exception(etype=None, value=e, tb=e.__traceback__))
+    #         embed = discord.Embed(description=":x An error occurred while trying to load that cog.\n```{traceback_string}```", timestamp=discord.utils.utcnow(), color=0x2F3136)
+    #         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-            try:
-                await message.edit(embed=embed)
+    #         try:
+    #             await message.edit(embed=embed)
 
-            except:
-                embed = discord.Embed(description=":x: An error occurred while trying to load that cog. ```\nError message is too long to send it here.\nPlease check the console\n```", timestamp=discord.utils.utcnow(), color=0x2F3136)
-                embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+    #         except:
+    #             embed = discord.Embed(description=":x: An error occurred while trying to load that cog. ```\nError message is too long to send it here.\nPlease check the console\n```", timestamp=discord.utils.utcnow(), color=0x2F3136)
+    #             embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-                await message.edit()
-            raise e
+    #             await message.edit()
+    #         raise e
 
-    @commands.command(help="Unloads a cog", aliases=['unl', 'ue', 'uc'])
-    @commands.is_owner()
-    async def unload(self, ctx, extension):
-        embed = discord.Embed(description=f"⬇ {extension}", timestamp=discord.utils.utcnow(), color=0x2F3136)
-        message = await ctx.send(embed=embed)
+    # @commands.command(help="Unloads a cog", aliases=['unl', 'ue', 'uc'])
+    # @commands.is_owner()
+    # async def unload(self, ctx, extension):
+    #     embed = discord.Embed(description=f"⬇ {extension}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+    #     message = await ctx.send(embed=embed)
 
-        try:
-            self.client.unload_extension("cogs.{}".format(extension))
-            embed = discord.Embed(description=f":white_check_mark: {extension}", timestamp=discord.utils.utcnow(), color=0x2F3136)
-            embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+    #     try:
+    #         self.client.unload_extension("cogs.{}".format(extension))
+    #         embed = discord.Embed(description=f":white_check_mark: {extension}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+    #         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-            await message.edit(embed=embed)
+    #         await message.edit(embed=embed)
 
-        except discord.ext.commands.ExtensionNotFound:
-            embed = discord.Embed(description=f":x: That cog doesn't exist.", timestamp=discord.utils.utcnow(), color=0x2F3136)
-            embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+    #     except discord.ext.commands.ExtensionNotFound:
+    #         embed = discord.Embed(description=f":x: That cog doesn't exist.", timestamp=discord.utils.utcnow(), color=0x2F3136)
+    #         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-            await message.edit(embed=embed)
+    #         await message.edit(embed=embed)
 
-        except discord.ext.commands.ExtensionNotLoaded:
-            embed = discord.Embed(description = f":x: That cog isn't loaded.", timestamp=discord.utils.utcnow(), color=0x2F3136)
-            embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+    #     except discord.ext.commands.ExtensionNotLoaded:
+    #         embed = discord.Embed(description = f":x: That cog isn't loaded.", timestamp=discord.utils.utcnow(), color=0x2F3136)
+    #         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-            await message.edit(embed=embed)
+    #         await message.edit(embed=embed)
 
-    @commands.command(help="Reloads an cog", aliases=['rel', 'rc'])
-    @commands.is_owner()
-    async def reload(self, ctx, extension):
-        embed = discord.Embed(description=f"<a:loading:747680523459231834> {extension}", timestamp=discord.utils.utcnow(), color=0x2F3136)
-        message = await ctx.send(embed=embed)
+    # @commands.command(help="Reloads an cog", aliases=['rel', 'rc'])
+    # @commands.is_owner()
+    # async def reload(self, ctx, extension):
+    #     embed = discord.Embed(description=f"<a:loading:747680523459231834> {extension}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+    #     message = await ctx.send(embed=embed)
 
-        try:
-            self.client.reload_extension("cogs.{}".format(extension))
-            embed = discord.Embed(description=f":white_check_mark: {extension}", timestamp=discord.utils.utcnow(), color=0x2F3136)
-            embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+    #     try:
+    #         self.client.reload_extension("cogs.{}".format(extension))
+    #         embed = discord.Embed(description=f":white_check_mark: {extension}", timestamp=discord.utils.utcnow(), color=0x2F3136)
+    #         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-            await message.edit(embed=embed)
+    #         await message.edit(embed=embed)
 
-        except discord.ext.commands.ExtensionNotLoaded:
-            embed = discord.Embed(description=":x: That cog isn't loaded.", timestamp=discord.utils.utcnow(), color=0x2F3136)
-            embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+    #     except discord.ext.commands.ExtensionNotLoaded:
+    #         embed = discord.Embed(description=":x: That cog isn't loaded.", timestamp=discord.utils.utcnow(), color=0x2F3136)
+    #         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-            await message.edit(embed=embed)
+    #         await message.edit(embed=embed)
 
-        except discord.ext.commands.ExtensionNotFound:
-            embed = discord.Embed(description=":x: That cog doesn't exist.", timestamp=discord.utils.utcnow(), color=0x2F3136)
-            embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+    #     except discord.ext.commands.ExtensionNotFound:
+    #         embed = discord.Embed(description=":x: That cog doesn't exist.", timestamp=discord.utils.utcnow(), color=0x2F3136)
+    #         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-            await message.edit(embed=embed)
+    #         await message.edit(embed=embed)
 
-        except discord.ext.commands.NoEntryPointError:
-            embed = discord.Embed(description="x: That cog doesn't have a setup function", timestamp=discord.utils.utcnow(), color=0x2F3136)
-            embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+    #     except discord.ext.commands.NoEntryPointError:
+    #         embed = discord.Embed(description="x: That cog doesn't have a setup function", timestamp=discord.utils.utcnow(), color=0x2F3136)
+    #         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-            await message.edit(embed=embed)
+    #         await message.edit(embed=embed)
 
-        except discord.ext.commands.ExtensionFailed as e:
-            traceback_string = "".join(traceback.format_exception(etype=None, value=e, tb=e.__traceback__))
-            embed = discord.Embed(description = f":x: An error occurred while trying to load that cog.\n```{traceback_string}```", timestamp=discord.utils.utcnow(), color=0x2F3136)
-            embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+    #     except discord.ext.commands.ExtensionFailed as e:
+    #         traceback_string = "".join(traceback.format_exception(etype=None, value=e, tb=e.__traceback__))
+    #         embed = discord.Embed(description = f":x: An error occurred while trying to load that cog.\n```{traceback_string}```", timestamp=discord.utils.utcnow(), color=0x2F3136)
+    #         embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-            try:
-                await message.edit(embed=embed)
+    #         try:
+    #             await message.edit(embed=embed)
 
-            except:
-                embed = discord.Embed(description = f"An error occurred while trying to load that cog.\n``` error too long, check the console\n```", timestamp=discord.utils.utcnow(), color=0x2F3136)
-                embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
+    #         except:
+    #             embed = discord.Embed(description = f"An error occurred while trying to load that cog.\n``` error too long, check the console\n```", timestamp=discord.utils.utcnow(), color=0x2F3136)
+    #             embed.set_footer(text=f"Command requested by {ctx.author}", icon_url=ctx.author.avatar.url)
 
-                await message.edit()
-            raise e
+    #             await message.edit()
+    #         raise e
 
-    @commands.command(help="Reloads all cogs", aliases=['relall', 'rall'])
-    @commands.is_owner()
-    async def reloadall(self, ctx, argument: typing.Optional[str]):
-        list = ""
-        desc = ""
-        err = False
-        rerel = []
-        if argument == 'silent' or argument == 's': silent = True
-        else: silent = False
-        if argument == 'channel' or argument == 'c': channel = True
-        else: channel = False
+    # @commands.command(help="Reloads all cogs", aliases=['relall', 'rall'])
+    # @commands.is_owner()
+    # async def reloadall(self, ctx, argument: typing.Optional[str]):
+    #     list = ""
+    #     desc = ""
+    #     err = False
+    #     rerel = []
+    #     if argument == 'silent' or argument == 's': silent = True
+    #     else: silent = False
+    #     if argument == 'channel' or argument == 'c': channel = True
+    #     else: channel = False
 
-        for filename in os.listdir("./cogs"):
-            if filename.endswith(".py"):
-                list = f"{list} \n🔃 {filename[:-3]}"
+    #     for filename in os.listdir("./cogs"):
+    #         if filename.endswith(".py"):
+    #             list = f"{list} \n🔃 {filename[:-3]}"
 
-        embed = discord.Embed(description=list)
+    #     embed = discord.Embed(description=list)
         
-        message = await ctx.send(embed=embed)
+    #     message = await ctx.send(embed=embed)
 
-        for filename in os.listdir("./cogs"):
-            if filename.endswith(".py"):
-                try:
-                    self.client.reload_extension("cogs.{}".format(filename[:-3]))
-                    desc = f"{desc} \n✅ {filename[:-3]}"
-                except:
-                    rerel.append(filename)
+    #     for filename in os.listdir("./cogs"):
+    #         if filename.endswith(".py"):
+    #             try:
+    #                 self.client.reload_extension("cogs.{}".format(filename[:-3]))
+    #                 desc = f"{desc} \n✅ {filename[:-3]}"
+    #             except:
+    #                 rerel.append(filename)
 
-        for filename in rerel:
-            try:
-                self.client.reload_extension("cogs.{}".format(filename[:-3]))
-                desc = f"{desc} \n✅ {filename[:-3]}"
+    #     for filename in rerel:
+    #         try:
+    #             self.client.reload_extension("cogs.{}".format(filename[:-3]))
+    #             desc = f"{desc} \n✅ {filename[:-3]}"
 
-            except discord.ext.commands.ExtensionNotLoaded:
-                desc = f"{desc} \n❌ {filename[:-3]} - Not loaded"
-            except discord.ext.commands.ExtensionNotFound:
-                desc = f"{desc} \n❌ {filename[:-3]} - Not found"
-            except discord.ext.commands.NoEntryPointError:
-                desc = f"{desc} \n❌ {filename[:-3]} - No setup function"
-            except discord.ext.commands.ExtensionFailed as e:
-                traceback_string = "".join(traceback.format_exception(etype=None, value=e, tb=e.__traceback__))
-                desc = f"{desc} \n❌ {filename[:-3]} - Execution error"
-                embederr = discord.Embed(description=f"\n❌ {filename[:-3]} Execution error - Traceback\n```\n{traceback_string}\n```")
-                if silent == False:
-                    if channel == False: await ctx.author.send(embed=embederr)
-                    else: await ctx.send(embed=embederr)
-                err = True
+    #         except discord.ext.commands.ExtensionNotLoaded:
+    #             desc = f"{desc} \n❌ {filename[:-3]} - Not loaded"
+    #         except discord.ext.commands.ExtensionNotFound:
+    #             desc = f"{desc} \n❌ {filename[:-3]} - Not found"
+    #         except discord.ext.commands.NoEntryPointError:
+    #             desc = f"{desc} \n❌ {filename[:-3]} - No setup function"
+    #         except discord.ext.commands.ExtensionFailed as e:
+    #             traceback_string = "".join(traceback.format_exception(etype=None, value=e, tb=e.__traceback__))
+    #             desc = f"{desc} \n❌ {filename[:-3]} - Execution error"
+    #             embederr = discord.Embed(description=f"\n❌ {filename[:-3]} Execution error - Traceback\n```\n{traceback_string}\n```")
+    #             if silent == False:
+    #                 if channel == False: await ctx.author.send(embed=embederr)
+    #                 else: await ctx.send(embed=embederr)
+    #             err = True
 
-        if err == True:
-            if silent == False:
-                if channel == False: desc = f"{desc} \n\n📬 {ctx.author.mention}, I sent you all the tracebacks."
-                else: desc = f"{desc} \n\n📬 Sent all tracebacks here."
-            if silent == True: desc = f"{desc} \n\n📭 silent, no tracebacks sent."
-            embed = discord.Embed(title="Reloaded some cogs", description=desc)
+    #     if err == True:
+    #         if silent == False:
+    #             if channel == False: desc = f"{desc} \n\n📬 {ctx.author.mention}, I sent you all the tracebacks."
+    #             else: desc = f"{desc} \n\n📬 Sent all tracebacks here."
+    #         if silent == True: desc = f"{desc} \n\n📭 silent, no tracebacks sent."
+    #         embed = discord.Embed(title="Reloaded some cogs", description=desc)
             
-            await message.edit(embed=embed)
+    #         await message.edit(embed=embed)
             
-        else:
-            embed = discord.Embed(title="Reloaded all extensions", description=desc)
+    #     else:
+    #         embed = discord.Embed(title="Reloaded all extensions", description=desc)
             
-            await message.edit(embed=embed)
+    #         await message.edit(embed=embed)
 
     @commands.group(invoke_without_command=True, help="Blacklist command", aliases=['bl'])
     @commands.is_owner()
