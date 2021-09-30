@@ -769,3 +769,76 @@ Original text: {text}
     #                 f"{ctx.author.name} tried to swim in lava. Why would you ever try to do that?"]
     #
     #     await ctx.send(f"{random.choice(responses)}")
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    @commands.command(help="RPG.")
+    async def rpg(self, ctx):
+        answer1 = ['yes', 'no']
+        message = await ctx.send(f"Start RPG? `yes/no`")
+
+        def check(m):
+            return m.content.lower() in answer1 and m.channel.id == ctx.channel.id
+
+        try:
+            msg = await self.client.wait_for(event='message', check=check, timeout=15)
+        except asyncio.TimeoutError:
+            await message.delete() # Deletes the bot's message | Please say ... to verify
+            await ctx.reply("It's been over 15 seconds, please try again by doing `-rpg`", delete_after=5.0) # Replies to the author's message
+            await ctx.message.delete() # Deletes the author's message | -verify
+        else:
+            await message.delete() # Deletes the bot's message | Please say ... to verify
+            await msg.delete() # Delete the member's answer
+            await ctx.reply(f"Woo you said {message}", delete_after=5.0)
+            await ctx.message.delete() # Deletes the author's message | -verify
