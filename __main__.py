@@ -206,7 +206,7 @@ class CustomContext(commands.Context):
             if number == 1:
                 content = "Support **Stealth Bot** by voting: <https://top.gg/bot/760179628122964008>"
                 
-        if content not None:
+        if content is not None:
             number = random.randint(0, 10)
             if number == 1:
                 content = f"{content}\nSupport **Stealth Bot** by voting: <https://top.gg/bot/760179628122964008>"
