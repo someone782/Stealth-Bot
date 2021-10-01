@@ -68,6 +68,15 @@ class Images(commands.Cog):
 
       await ctx.reply(embed=embed)
       
+   @comamnds.command(help="Fakes a youtube comment")
+   async def youtube(self, ctx, username, comment, avatar):
+      url = f"https://some-random-api.ml/canvas/youtube-comment?username={username}&comment={comment}&avatar={avatar}"
+
+      embed = discord.Embed()
+      embed.set_image(url=url)
+
+      await ctx.send(embed=embed)
+      
    @commands.command(help="🐶 Shows a picture of a shiba", aliases=['shibe'])
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
    async def shiba(self, ctx):
