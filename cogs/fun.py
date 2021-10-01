@@ -75,19 +75,19 @@ class Fun(commands.Cog):
         number = random.randint(0, 100)
         
         if number < 10:
-            text = "Yikes.. That's bad."
+            text = "<:notlikethis:596577155169910784> Yikes.. That's bad."
         elif number > 15:
-            text = "Maybe?.. I doubt thought."
+            text = "<:blobsweatsip:759934644807401512> Maybe?.. I doubt thought."
         elif number > 20:
-            text = "Hey it's not terrible.. It could be worse."
+            text = "<:blobpain:739614945045643447> Hey it's not terrible.. It could be worse."
         elif number > 40:
-            text = "Not bad!"
+            text = "<:monkaS:596577132063490060> Not bad!"
         elif number > 60:
-            text = "AYOOO POG"
+            text = "<:rooAww:747680003021471825> AYOOO POG"
         elif number > 80:
-            text = "That's a ship!"
+            text = "<a:rooClap:759933903959228446> That's a ship!"
         else:
-            text = "I don't know man"
+            text = "<:thrinking:597590667669274651> I don't know man.."
             
         await ctx.send(f"{text}\n{ctx.author.name} & {member.name}")
         
