@@ -14,6 +14,7 @@ import itertools
 from discord.ext import commands
 import importlib
 import jishaku.modules
+import io
 from jishaku.codeblocks import Codeblock, codeblock_converter
 from jishaku.features.baseclass import Feature
 from jishaku.models import copy_context_with
