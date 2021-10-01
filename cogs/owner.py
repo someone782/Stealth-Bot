@@ -5,6 +5,7 @@ import asyncio
 import os
 import typing
 import time
+import textwrap
 import traceback
 import errors
 import jishaku
@@ -18,15 +19,81 @@ from jishaku.features.baseclass import Feature
 from jishaku.models import copy_context_with
 from jishaku.paginators import WrappedPaginator
 
-
 def setup(client):
     client.add_cog(Owner(client))
+    
+def cleanup_code(content):
+    """Automatically removes code blocks from the code."""
+    # remove ```py\n```
+    if content.startswith('```') and content.endswith('```'):
+        return '\n'.join(content.split('\n')[1:-1])
+
+    # remove `foo`
+    return content.strip('` \n')
 
 class Owner(commands.Cog):
     "<:owner_crown:845946530452209734> | Commands that only the developer of this client can use"
     def __init__(self, client):
         self.hidden = True
         self.client = client
+        
+    @commands.command(pass_context=True, hidden=True, name='eval')
+    @commands.is_owner()
+    async def _eval(self, ctx, *, body: str):
+        """Evaluates a code"""
+        env = {
+            'bot': self.client,
+            'client': self.client,
+            'ctx': ctx,
+            'channel': ctx.channel,
+            'author': ctx.author,
+            'guild': ctx.guild,
+            'message': ctx.message,
+            'server': ctx.guild,
+            '_': self._last_result
+        }
+
+        env.update(globals())
+
+        body = cleanup_code(body)
+        stdout = io.StringIO()
+
+        to_compile = f'async def func():\n{textwrap.indent(body, "  ")}'
+
+        try:
+            exec(to_compile, env)
+        except Exception as e:
+            try:
+                await ctx.message.add_reaction('⚠')
+            except (discord.Forbidden, discord.HTTPException):
+                pass
+            return await ctx.send(f'```py\n{e.__class__.__name__}: {e}\n```')
+
+        func = env['func']
+        try:
+            with contextlib.redirect_stdout(stdout):
+                ret = await func()
+        except Exception:
+            value = stdout.getvalue()
+            try:
+                await ctx.message.add_reaction('⚠')
+            except (discord.Forbidden, discord.HTTPException):
+                pass
+            await ctx.send(f'```py\n{value}{traceback.format_exc()}\n```')
+        else:
+            value = stdout.getvalue()
+            try:
+                await ctx.message.add_reaction('\u2705')
+            except (discord.Forbidden, discord.HTTPException):
+                pass
+
+            if ret is None:
+                if value:
+                    await ctx.send(f'```py\n{value}\n```')
+            else:
+                self._last_result = ret
+                await ctx.send(f'```py\n{value}{ret}\n```')
+
         
     @commands.command(help="Unloads an extension", aliases=['unl', 'ue', 'uc'])
     @commands.is_owner()
