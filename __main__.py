@@ -201,13 +201,13 @@ class CustomContext(commands.Context):
             embed.timestamp = discord.utils.utcnow()
             embed.color = color
             
-        if content == None:
-            number = random.randint(0, 10)
+        if content is None:
+            number = random.randint(0, 15)
             if number == 1:
                 content = "Support **Stealth Bot** by voting: <https://top.gg/bot/760179628122964008>"
                 
         if content is not None:
-            number = random.randint(0, 10)
+            number = random.randint(0, 15)
             if number == 1:
                 content = f"{content}\nSupport **Stealth Bot** by voting: <https://top.gg/bot/760179628122964008>"
 
