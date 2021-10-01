@@ -71,7 +71,8 @@ class Images(commands.Cog):
    @commands.command(help="Fakes a youtube comment")
    async def youtube(self, ctx, username, comment, avatar):
       embed = discord.Embed()
-      embed.set_image(url=f"https://some-random-api.ml/canvas/youtube-comment?username={username}&comment={comment}&avatar={avatar}")
+      print(f"https://some-random-api.ml/canvas/youtube-comment?username={username}&comment={comment}&avatar={avatar}")
+      #embed.set_image(url=f"https://some-random-api.ml/canvas/youtube-comment?username={username}&comment={comment}&avatar={avatar}")
 
       await ctx.send(embed=embed)
       
