@@ -96,7 +96,7 @@ class Stuff(discord.ui.View):
         self.add_item(discord.ui.Button(emoji="<:invite:860644752281436171>", label='Invite me', url=url))
         self.add_item(discord.ui.Button(emoji="<:github:744345792172654643>", label='Source code', url="https://github.com/Ender2K89/Stealth-Bot"))
         
-    @discord.ui.button(label=None, style=discord.ButtonsStyle.red, emoji="🗑️")
+    @discord.ui.button(label=None, style=discord.ButtonStyle.red, emoji="🗑️")
     async def delete(self, button : discord.ui.Button, interaction : discord.Interaction):
         await interaction.message.delete()
 
