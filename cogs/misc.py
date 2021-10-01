@@ -19,7 +19,7 @@ class Misc(commands.Cog):
     def __init__(self, client):
         self.client = client
         
-    @commands.commands()
+    @commands.command()
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
     async def emoji(self, ctx, custom_emojis: commands.Greedy[typing.Union[discord.Emoji, discord.PartialEmoji]]):
         if not custom_emojis:
