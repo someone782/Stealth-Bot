@@ -64,7 +64,8 @@ class Fun(commands.Cog):
         async with ctx.typing():
             return await ctx.send(embed=await self.reddit(random.choice(['memes', 'dankmemes'])))
         
-    @commands.command()
+    @commands.command(
+        help="Ships you with someone")
     async def ship(self, ctx, member : discord.Member=None):
         if member is None:
             if ctx.message.reference:
@@ -101,7 +102,8 @@ class Fun(commands.Cog):
             
         await ctx.send(f"{text}\n{ctx.author.name} & {member.name}\n{number1}%")
         
-    @commands.command(help="Rick rolls someone")
+    @commands.command(
+        help="Rick rolls someone")
     async def rickroll(self, ctx, member : discord.Member=None):
         if member is None:
             if ctx.message.reference:
@@ -132,7 +134,9 @@ Never gonna tell a lie and hurt {member.mention}
         
         await ctx.send(text, reply=False)
 
-    @commands.command(help="Turns any text into ASCII", aliases=['asciitext', 'ascii_text', 'gen_ascii', 'generator_ascii'])
+    @commands.command(
+        help="Turns any text into ASCII",
+        aliases=['asciitext', 'ascii_text', 'gen_ascii', 'generator_ascii'])
     async def ascii(self, ctx, *, text):
         if len(text) > 20:
             return await ctx.send("Your ASCII text exceeded the 20-character limit.")
@@ -148,7 +152,8 @@ Never gonna tell a lie and hurt {member.mention}
 
         await ctx.send(embed=embed)
 
-    @commands.command(help="Sends a image of the member you mention but triggered")
+    @commands.command(
+        help="Sends a image of the member you mention but triggered")
     @commands.cooldown(1, 5, BucketType.member)
     async def triggered(self, ctx, member : discord.Member=None):
         if member is None:
@@ -168,7 +173,9 @@ Never gonna tell a lie and hurt {member.mention}
 
                 await ctx.send(embed=embed, file=file)
 
-    @commands.command(help="Gives the member you mentioned a license to be horny", aliases=['horny_license', 'license_horny'])
+    @commands.command(
+        help="Gives the member you mentioned a license to be horny",
+        aliases=['horny_license', 'license_horny'])
     @commands.cooldown(1, 5, BucketType.member)
     async def horny(self, ctx, member : discord.Member=None):
         if member is None:
@@ -187,7 +194,9 @@ Never gonna tell a lie and hurt {member.mention}
 
                     await ctx.send(embed=embed, file=file)
 
-    @commands.command(help="Gives the member you mentioned a license to be horny", aliases=['go_to_jail', 'in_jail'])
+    @commands.command(
+        help="Gives the member you mentioned a license to be horny",
+        aliases=['go_to_jail', 'in_jail'])
     @commands.cooldown(1, 5, BucketType.member)
     async def jail(self, ctx, member : discord.Member=None):
         if member is None:
@@ -206,7 +215,9 @@ Never gonna tell a lie and hurt {member.mention}
 
                     await ctx.send(embed=embed, file=file)
 
-    @commands.command(help="Gives the member you mentioned a license to be horny", aliases=['waste'])
+    @commands.command(
+        help="Gives the member you mentioned a license to be horny",
+        aliases=['waste'])
     @commands.cooldown(1, 5, BucketType.member)
     async def wasted(self, ctx, member : discord.Member=None):
         if member is None:
@@ -225,7 +236,9 @@ Never gonna tell a lie and hurt {member.mention}
 
                     await ctx.send(embed=embed, file=file)
 
-    @commands.command(help="Gives the member you mentioned a license to be horny", aliases=['pride', 'gay'])
+    @commands.command(
+        help="Gives the member you mentioned a license to be horny",
+        aliases=['pride', 'gay'])
     @commands.cooldown(1, 5, BucketType.member)
     async def rainbow(self, ctx, member : discord.Member=None):
         if member is None:
@@ -244,7 +257,8 @@ Never gonna tell a lie and hurt {member.mention}
 
                     await ctx.send(embed=embed, file=file)
 
-    @commands.command(help="Gives the member you mentioned a license to be horny")
+    @commands.command(
+        help="Puts you behind glass")
     @commands.cooldown(1, 5, BucketType.member)
     async def glass(self, ctx, member : discord.Member=None):
         if member is None:
@@ -263,7 +277,9 @@ Never gonna tell a lie and hurt {member.mention}
                     
                     await ctx.send(embed=embed, file=file)
 
-    @commands.command(help="Sends a random token of a discord bot", alises=['bottoken', 'random_token', 'random_bot_token'])
+    @commands.command(
+        help="Sends a random token of a discord bot",
+        alises=['bottoken', 'random_token', 'random_bot_token'])
     @commands.cooldown(1, 5, BucketType.member)
     async def token(self, ctx):
         request1 = await self.client.session.get('https://some-random-api.ml/bottoken')
@@ -272,7 +288,9 @@ Never gonna tell a lie and hurt {member.mention}
         
         await ctx.send(embed=embed)
 
-    @commands.command(help="Shows the size of someones pp!", aliases=['banana', 'eggplant', 'egg_plant'])
+    @commands.command(
+        help="Shows the size of someones pp!",
+        aliases=['banana', 'eggplant', 'egg_plant'])
     async def pp(self, ctx, member : discord.Member=None):
         if member is None:
             if ctx.message.reference:
@@ -287,7 +305,9 @@ Never gonna tell a lie and hurt {member.mention}
 
         await ctx.send(embed=embed)
 
-    @commands.command(help="Answers with yes or no to your question", aliases=['8ball', 'magicball', 'magic_ball', 'eight_ball'])
+    @commands.command(
+        help="Answers with yes or no to your question",
+        aliases=['8ball', 'magicball', 'magic_ball', 'eight_ball'])
     async def eightball(self, ctx, *, question):
         responses = ['It is certain.',
                     'It is decidedly so.',
@@ -317,8 +337,9 @@ Answer: {random.choice(responses)}
         
         await ctx.send(embed=embed)
         
-    @commands.command(help="Answers with yes or no",
-                      aliases=['yes', 'no', 'yes_no', 'yesorno', 'yes_or_no'])
+    @commands.command(
+        help="Answers with yes or no",
+        aliases=['yes', 'no', 'yes_no', 'yesorno', 'yes_or_no'])
     async def yesno(self, ctx):
         start = time.perf_counter()
         
@@ -335,16 +356,18 @@ Answer: {random.choice(responses)}
         
         await ctx.send(embed=embed)
 
-    @commands.command(help="Chooses between multiple choices.\nTo denote multiple choices, you should use double quotes.",
-                      aliases=['choice', 'decide'])
+    @commands.command(
+        help="Chooses between multiple choices.\nTo denote multiple choices, you should use double quotes.",
+        aliases=['choice', 'decide'])
     async def choose(self, ctx, *choices : commands.clean_content):
         if len(choices) < 2:
             return await ctx.send("Not enough choices.")
 
         await ctx.send(f"I choose `{random.choice(choices)}`.")
         
-    @commands.command(help="Replaces all spaces in given text with a clapping emoji",
-                      aliases=['applause'])
+    @commands.command(
+        help="Replaces all spaces in given text with a clapping emoji",
+        aliases=['applause'])
     async def clap(self, ctx, *, text : str):
         text = text.replace(" ", " 👏 ")
         
@@ -355,8 +378,9 @@ Answer: {random.choice(responses)}
         
         await ctx.send(embed=embed)
         
-    @commands.command(help="Replaces all spaces in given text with a emoji/character",
-                      aliases=['ins'])
+    @commands.command(
+        help="Replaces all spaces in given text with a emoji/character",
+        aliases=['ins'])
     async def insert(self, ctx, character : str, *, text : str):
         text = text.replace(" ", f" {character} ")
         
@@ -367,7 +391,8 @@ Answer: {random.choice(responses)}
         
         await ctx.send(embed=embed)
 
-    @commands.command(help="Tells you if someone is a furry or not")
+    @commands.command(
+        help="Tells you if someone is a furry or not")
     async def furrydetector(self, ctx, member : discord.Member=None):
         if member is None:
             if ctx.message.reference:
@@ -380,7 +405,8 @@ Answer: {random.choice(responses)}
         
         await ctx.send(f"{member} {random.choice(responses)}")
 
-    @commands.command(help="Tells you how gay someone is")
+    @commands.command(
+        help="Tells you how gay someone is")
     async def gayrate(self, ctx, member : discord.Member=None):
         if member is None:
             if ctx.message.reference:
@@ -390,8 +416,9 @@ Answer: {random.choice(responses)}
 
         await ctx.send(f"{member} is {random.randint(0, 100)}% gay!")
 
-    @commands.command(help="Tells you a random number with a optional range. Minimum has to be smaller than maximum",
-                      aliases=['random_number', 'randomnumber', 'number_random', 'numberrandom'])
+    @commands.command(
+        help="Tells you a random number with a optional range. Minimum has to be smaller than maximum",
+        aliases=['random_number', 'randomnumber', 'number_random', 'numberrandom'])
     async def number(self, ctx, minimum : int=0, maximum : int=100):
         maximum = min(maximum, 1000)
         if minimum >= maximum:
@@ -399,7 +426,9 @@ Answer: {random.choice(responses)}
 
         await ctx.send(f"Randomly generated number between `{minimum}` and `{maximum}`: `{random.randint(minimum, maximum)}`")
 
-    @commands.command(help="Generates a random word", aliases=['rw'])
+    @commands.command(
+        help="Generates a random word",
+        aliases=['rw'])
     async def randomword(self, ctx):
         with open("./data/verifyWords.txt", "r") as file:
             allText = file.read()
@@ -409,7 +438,9 @@ Answer: {random.choice(responses)}
 
         await ctx.send(f"Here's a randomly generated word: `{randomWord}`")
 
-    @commands.command(help="Rolls a random dice", aliases=['randomdice', 'random_dice'])
+    @commands.command(
+        help="Rolls a random dice",
+        aliases=['randomdice', 'random_dice', 'rolladice', 'rolldice', 'roll_a_dice', 'roll_dice'])
     async def dice(self, ctx):
         responses = ['<:dice_1:883581027744907304>',
                     '<:dice_2:883581054626177105> ',
@@ -420,7 +451,9 @@ Answer: {random.choice(responses)}
         
         await ctx.send(f"{random.choice(responses)}")
 
-    @commands.command(help="Sends a random meme from the r/meme subreddit", aliases=['m'])
+    @commands.command(
+        help="Sends a random meme from the r/meme subreddit",
+        aliases=['m'])
     @commands.cooldown(1, 5, commands.BucketType.member)
     async def meme(self, ctx):
         embed = discord.Embed(title="<a:loading:747680523459231834> Getting meme...")
@@ -441,7 +474,9 @@ Answer: {random.choice(responses)}
 
         await message.edit(embed=embed)
 
-    @commands.command(help="Shows you a random meme from the subreddit r/ProgrammerHumor", aliases=['programmer_meme', 'programmeme', 'program_meme', 'pm'])
+    @commands.command(
+        help="Shows you a random meme from the subreddit r/ProgrammerHumor",
+        aliases=['programmer_meme', 'programmeme', 'program_meme', 'pm'])
     @commands.cooldown(1, 5, commands.BucketType.member)
     async def programmermeme(self, ctx):
         embed = discord.Embed(title="<a:loading:747680523459231834> Getting programmer meme...")
@@ -462,7 +497,9 @@ Answer: {random.choice(responses)}
 
         await message.edit(embed=embed)
 
-    @commands.command(help="Shows you a random piece of art from the subreddit r/Art", aliases=['drawing', 'arts', 'artist'])
+    @commands.command(
+        help="Shows you a random piece of art from the subreddit r/Art",
+        aliases=['drawing', 'arts', 'artist'])
     @commands.cooldown(1, 5, commands.BucketType.member)
     async def art(self, ctx):
         embed = discord.Embed(title="<a:loading:747680523459231834> Getting piece of art...")
@@ -483,7 +520,9 @@ Answer: {random.choice(responses)}
 
         await message.edit(embed=embed)
 
-    @commands.command(help="Messages you.", aliases=['msg_me'])
+    @commands.command(
+        help="Messages you.",
+        aliases=['msg_me'])
     async def msgme(self, ctx, *, content):
         try:
             await ctx.author.send(content)
@@ -492,7 +531,8 @@ Answer: {random.choice(responses)}
         except:
             await ctx.send("I couldn't message you, make sure your private messages are enabled.")
 
-    @commands.command(help="Let's you hug someone!")
+    @commands.command(
+        help="Let's you hug someone!")
     @commands.cooldown(1, 5, BucketType.member)
     async def hug(self, ctx, member : discord.Member=None):
         if member is None:
@@ -510,7 +550,8 @@ Answer: {random.choice(responses)}
         
         await ctx.send(embed=embed)
 
-    @commands.command(help="Let's you pat someone!")
+    @commands.command(
+        help="Let's you pat someone!")
     @commands.cooldown(1, 5, BucketType.member)
     async def pat(self, ctx, member : discord.Member=None):
         if member is None:
@@ -528,7 +569,8 @@ Answer: {random.choice(responses)}
         
         await ctx.send(embed=embed)
         
-    @commands.command(help="Let's you kiss someone!")
+    @commands.command(
+        help="Let's you kiss someone!")
     @commands.cooldown(1, 5, BucketType.member)
     async def kiss(self, ctx, member : discord.Member=None):
         if member is None:
@@ -546,7 +588,8 @@ Answer: {random.choice(responses)}
         
         await ctx.send(embed=embed)
         
-    @commands.command(help="Let's you pat someone!")
+    @commands.command(
+        help="Let's you pat someone!")
     @commands.cooldown(1, 5, BucketType.member)
     async def pat(self, ctx, member : discord.Member=None):
         if member is None:
@@ -564,7 +607,8 @@ Answer: {random.choice(responses)}
         
         await ctx.send(embed=embed)
         
-    @commands.command(help="Let's you lick someone!")
+    @commands.command(
+        help="Let's you lick someone!")
     @commands.cooldown(1, 5, BucketType.member)
     async def lick(self, ctx, member : discord.Member=None):
         if member is None:
@@ -583,7 +627,8 @@ Answer: {random.choice(responses)}
         
         await ctx.send(embed=embed)
         
-    @commands.command(help="Let's you bonk someone!")
+    @commands.command(
+        help="Let's you bonk someone!")
     @commands.cooldown(1, 5, BucketType.member)
     async def bonk(self, ctx, member : discord.Member=None):
         if member is None:
@@ -601,7 +646,8 @@ Answer: {random.choice(responses)}
         
         await ctx.send(embed=embed)
         
-    @commands.command(help="Let's you bully someone!")
+    @commands.command(
+        help="Let's you bully someone!")
     @commands.cooldown(1, 5, BucketType.member)
     async def bully(self, ctx, member : discord.Member=None):
         if member is None:
@@ -619,7 +665,8 @@ Answer: {random.choice(responses)}
         
         await ctx.send(embed=embed)
         
-    @commands.command(help="Let's you cuddle someone!")
+    @commands.command(
+        help="Let's you cuddle someone!")
     @commands.cooldown(1, 5, BucketType.member)
     async def cuddle(self, ctx, member : discord.Member=None):
         if member is None:
@@ -637,7 +684,8 @@ Answer: {random.choice(responses)}
         
         await ctx.send(embed=embed)
         
-    @commands.command(help="Let's you cuddle someone!")
+    @commands.command(
+        help="Let's you cuddle someone!")
     @commands.cooldown(1, 5, BucketType.member)
     async def cuddle(self, ctx, member : discord.Member=None):
         if member is None:
@@ -655,7 +703,8 @@ Answer: {random.choice(responses)}
         
         await ctx.send(embed=embed)
         
-    @commands.command(help="Let's you slap someone!")
+    @commands.command(
+        help="Let's you slap someone!")
     @commands.cooldown(1, 5, BucketType.member)
     async def slap(self, ctx, member : discord.Member=None):
         if member is None:
@@ -673,7 +722,8 @@ Answer: {random.choice(responses)}
         
         await ctx.send(embed=embed)
         
-    @commands.command(help="Let's you yeet someone!")
+    @commands.command(
+        help="Let's you yeet someone!")
     @commands.cooldown(1, 5, BucketType.member)
     async def yeet(self, ctx, member : discord.Member=None):
         if member is None:
@@ -691,7 +741,8 @@ Answer: {random.choice(responses)}
         
         await ctx.send(embed=embed)
         
-    @commands.command(help="Let's you wave at someone!")
+    @commands.command(
+        help="Let's you wave at someone!")
     @commands.cooldown(1, 5, BucketType.member)
     async def wave(self, ctx, member : discord.Member=None):
         if member is None:
@@ -709,7 +760,9 @@ Answer: {random.choice(responses)}
         
         await ctx.send(embed=embed)
         
-    @commands.command(help="Let's you high five someone!", aliases=['high_five'])
+    @commands.command(
+        help="Let's you high five someone!",
+        aliases=['high_five'])
     @commands.cooldown(1, 5, BucketType.member)
     async def highfive(self, ctx, member : discord.Member=None):
         if member is None:
@@ -727,7 +780,8 @@ Answer: {random.choice(responses)}
         
         await ctx.send(embed=embed)
 
-    @commands.command(help="Let's you bite someone!")
+    @commands.command(
+        help="Let's you bite someone!")
     @commands.cooldown(1, 5, BucketType.member)
     async def bite(self, ctx, member : discord.Member=None):
         if member is None:
@@ -745,7 +799,8 @@ Answer: {random.choice(responses)}
         
         await ctx.send(embed=embed)
         
-    @commands.command(help="Let's you kill someone!")
+    @commands.command(
+    help="Let's you kill someone!")
     @commands.cooldown(1, 5, BucketType.member)
     async def kill(self, ctx, member : discord.Member=None):
         if member is None:
@@ -762,7 +817,8 @@ Answer: {random.choice(responses)}
         
         await ctx.send(embed=embed)
         
-    @commands.command(description="Let's you reverse some text")
+    @commands.command(
+        help="Let's you reverse some text")
     async def reverse(self, ctx, *, text):
         embed = discord.Embed(title=f"Text reversed", description=f"""
 Original text: {text}
@@ -771,7 +827,9 @@ Original text: {text}
         
         await ctx.send(embed=embed)
 
-    @commands.command(help="OOF's the person you mentioned", aliases=['commitoof', 'commit_oof'])
+    @commands.command(
+        help="OOF's the person you mentioned",
+        aliases=['commitoof', 'commit_oof'])
     async def oof(self, ctx, member : discord.Member=None):
         if member is None or member == ctx.author:
             responses = [f"{ctx.author.name} was killed in Electrical.",
@@ -856,59 +914,6 @@ Original text: {text}
     #                 f"{ctx.author.name} tried to swim in lava. Why would you ever try to do that?"]
     #
     #     await ctx.send(f"{random.choice(responses)}")
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     @commands.command(help="RPG.")
     async def rpg(self, ctx):

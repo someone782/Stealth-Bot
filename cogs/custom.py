@@ -15,7 +15,8 @@ class Custom(commands.Cog):
 
     # <@691733395109314661>
 
-    @commands.command(help="Bonk.")
+    @commands.command(
+        help="Bonk.")
     async def cbonk(self, ctx, member : discord.Member=None):
         if(member == None):
             member = ctx.author
@@ -26,19 +27,22 @@ class Custom(commands.Cog):
 
     # <@547059830062448670>
 
-    @commands.command(help="Tells you to have some pickles!")
+    @commands.command(
+        help="Tells you to have some pickles!")
     async def hungry(self, ctx):
         await ctx.send(f"then have some pickles!")
 
     # <@748105241857097759>
 
-    @commands.command(help="Tells you to shut up cause stars is sleeping")
+    @commands.command(
+        help="Tells you to shut up cause stars is sleeping")
     async def stars(self, ctx):
         await ctx.send(f"shut up, stars is sleeping")
 
     # <@547059830062448670>
 
-    @commands.command(help="Tells you if someone has good or bad luck")
+    @commands.command(
+        help="Tells you if someone has good or bad luck")
     async def luck(self, ctx, member : discord.Member=None):
         if(member == None):
             member = ctx.author
@@ -49,19 +53,23 @@ class Custom(commands.Cog):
 
 	# <@691733395109314661>
 
-    @commands.command(aliases=["jason-derulo", "jason_derulo"], help="Replies with wiggle wiggle wiggle")
+    @commands.command(
+        help="Replies with wiggle wiggle wiggle",
+        aliases=["jason-derulo", "jason_derulo"])
     async def jason(self, ctx):
         await ctx.send(f"Wiggle wiggle wiggle")
 
 	# <@691733395109314661>
 
-    @commands.command(help="Replies with she a runner she a track star")
+    @commands.command(
+        help="Replies with she a runner she a track star")
     async def fast(self, ctx):
         await ctx.send(f"She a runner she a track star")
 
     # <@530472612871143476>
 
-    @commands.command(description="Tells you if someone is weird")
+    @commands.command(
+        help="Tells you if someone is weird")
     async def weird(self, ctx, member : discord.Member=None):
         if(member == None):
             member = ctx.author
@@ -71,7 +79,8 @@ class Custom(commands.Cog):
 
     # <@530472612871143476>
 
-    @commands.command(description="Tells a fact about someone")
+    @commands.command(
+        help="Tells a fact about someone")
     async def fact(self, ctx, member : discord.Member=None):
         if(member == None):
             member = ctx.author
@@ -79,7 +88,8 @@ class Custom(commands.Cog):
 
     # <@530472612871143476>
 
-    @commands.command(description="Tells a lie about someone")
+    @commands.command(
+        help="Tells a lie about someone")
     async def lie(self, ctx, member : discord.Member=None):
         if(member == None):
             member = ctx.author
@@ -87,64 +97,76 @@ class Custom(commands.Cog):
 
     # <@691733395109314661>
 
-    @commands.command(aliases=["cha_cha", "cha-cha"], description="Replies with Real smooth")
+    @commands.command(
+        help="Replies with Real smooth",
+        aliases=["cha_cha", "cha-cha"])
     async def cha(self, ctx):
         await ctx.send(f"Real smooth")
 
     # <@530472612871143476>
 
-    @commands.command(aliases=["ping_ender", "ender_ping"], description="Pings ender, or does it..")
+    @commands.command(
+        help="Pings ender, or does it..",
+        aliases=["ping_ender", "ender_ping"])
     async def pingender(self, ctx):
         await ctx.send(f"you thought that would work")
 
     # <@530472612871143476>
 
-    @commands.command(description="Cries")
+    @commands.command(
+        help="Cries")
     async def cry(self, ctx):
         await ctx.send(f"😢😢😢😢😢😢😢😢😢😢")
 
     # <@748105241857097759>
 
-    # @commands.command(description="Sends a GIF of a man eating a burger")
-    # async def burger(self, ctx):
-    #     if ctx.author.id == 555818548291829792:
-    #         return await ctx.send("Sorry, but you're blacklisted from using this command.")
-    #     else:
-    #         await ctx.send(f"https://tenor.com/view/burger-eating-burbger-asmr-sussy-gif-21505937")
+    @commands.command(description="Sends a GIF of a man eating a burger")
+    async def burger(self, ctx):
+        if ctx.author.id == 555818548291829792:
+            return await ctx.send("Sorry, but you're blacklisted from using this command.")
+        else:
+            await ctx.send(f"https://tenor.com/view/burger-eating-burbger-asmr-sussy-gif-21505937")
 
     # <@530472612871143476>
 
-    @commands.command(description="Replies with e")
+    @commands.command(
+        help="Replies with e")
     async def e(self, ctx):
         await ctx.send(f"e")
 
     # <@294137889514717185>
 
-    @commands.command(description="EA Sports")
+    @commands.command(
+        help="EA Sports")
     async def ea(self, ctx):
         await ctx.send(f"sports")
 
     # <@294137889514717185>
 
-    @commands.command(description="Replies with is very slow")
+    @commands.command(
+        help="Replies with is very slow")
     async def ffmpeg(self, ctx):
         await asyncio.sleep(15) # Waits 15 seconds
         await ctx.send(f"is very slow")
 
     # <@555818548291829792>
 
-    @commands.command(description="Replies with no u")
+    @commands.command(
+        help="Replies with no u")
     async def nou(self, ctx):
         await ctx.send(f"no u")
 
     # <@351375279698083841>
 
-    @commands.command(description="A friendly Hello from the bot", aliases=["h"])
+    @commands.command(
+        help="A friendly Hello from the bot",
+        aliases=["h"])
     async def hello(self, ctx):
         await ctx.send(f"fuck off")
 
     # <@699737035715641384>
 
-    @commands.command(description="idiot")
+    @commands.command(
+        help="idiot")
     async def me(self, ctx):
         await ctx.send(f"fuck you")
