@@ -19,8 +19,8 @@ class Misc(commands.Cog):
         self.client = client
         
     @commands.command()
-    async def solve_this(self, ctx):
-        await ctx.send("guys solve this: :ice_cube:     :watermelon::apple::nose::tooth:     :tooth::octopus:     :dog::ice_cube::elephant:", reply=False)
+    async def emoji(self, ctx, emoji : discord.PartialEmoji):
+        await ctx.send(emoji)
         
     @commands.command(help="Sends a invite of the bot", alises=['inv', 'invite_me', 'inviteme'])
     async def invite(self, ctx):

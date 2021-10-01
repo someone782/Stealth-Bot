@@ -21,6 +21,50 @@ class Fun(commands.Cog):
     def __init__(self, client):
         self.client = client
         
+    async def reddit(self, subreddit: str, title: bool = False, embed_type: str = 'IMAGE') -> discord.Embed:
+        subreddit = await self.client.reddit.subreddit(subreddit)
+        post = await subreddit.random()
+
+        if embed_type == 'IMAGE':
+            while 'i.redd.it' not in post.url or post.over_18:
+                post = await subreddit.random()
+
+            embed = discord.Embed(color=discord.Color.random(),
+                                  description=f"🌐 [Post](https://reddit.com{post.permalink}) • "
+                                              f"<:upvote:274492025678856192> {post.score} ({post.upvote_ratio * 100}%) "
+                                              f"• from [r/{subreddit}](https://reddit.com/r/{subreddit})")
+            embed.title = post.title if title is True else None
+            embed.set_image(url=post.url)
+            return embed
+
+        if embed_type == 'POLL':
+            while not hasattr(post, 'poll_data') or not post.poll_data or post.over_18:
+                post = await (await self.client.reddit.subreddit(subreddit)).random()
+
+            iterations: int = 1
+            options = []
+            emojis = []
+            for option in post.poll_data.options:
+                num = f"{iterations}\U0000fe0f\U000020e3"
+                options.append(f"{num} {option.text}")
+                emojis.append(num)
+                iterations += 1
+                if iterations > 9:
+                    iterations = 1
+
+            embed = discord.Embed(color=discord.Color.random(),
+                                  description='\n'.join(options))
+            embed.title = post.title if title is True else None
+            return embed, emojis
+        
+    @commands.command()
+    async def meme2(self, ctx):
+        """
+        Sends a random meme from reddit.com/r/memes.
+        """
+        async with ctx.typing():
+            return await ctx.send(embed=await self.reddit(random.choice(['memes', 'dankmemes'])))
+        
     @commands.command(help="Rick rolls someone")
     async def rickroll(self, ctx, member : discord.Member=None):
         if member is None:
