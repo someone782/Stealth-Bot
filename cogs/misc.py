@@ -16,11 +16,6 @@ def setup(client):
     
 emojis = emoji.unicode_codes.EMOJI_UNICODE["en"].values()
 
-class Misc(commands.Cog):
-    ":gear: | Miscellaneous commands"
-    def __init__(self, client):
-        self.client = client
-        
 class EmojiConverter(commands.Converter):
     async def convert(self, ctx: commands.Context, arg: str):
         # Discord throws variation selectors on the end sometimes. Just remove it I guess
@@ -28,6 +23,11 @@ class EmojiConverter(commands.Converter):
             return discord.PartialEmoji(name=arg)
         else:
             raise commands.BadArgument(f"{arg} is not an emoji")
+
+class Misc(commands.Cog):
+    ":gear: | Miscellaneous commands"
+    def __init__(self, client):
+        self.client = client
         
     @commands.command()
     async def brehj(self, ctx, *args: EmojiConverter):
