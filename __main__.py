@@ -200,6 +200,9 @@ class CustomContext(commands.Context):
             
             embed.timestamp = discord.utils.utcnow()
             embed.color = color
+            
+        if content == None:
+            content = "Hey please vote for me :)"
 
         try:
             return await super().send(content=content, embed=embed, reference=reference, **kwargs)
