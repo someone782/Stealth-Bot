@@ -76,25 +76,25 @@ class Fun(commands.Cog):
         
         number2 = int(str(number1)[:-1] + '0')
         
-        if number == 10:
+        if number2 == 10:
             text = "<:notlikethis:596577155169910784> Yikes.. That's bad."
-        elif number == 20:
+        elif number2 == 20:
             text = "<:blobsweatsip:759934644807401512> Maybe?.. I doubt thought."
-        elif number == 30:
+        elif number2 == 30:
             text = "<:blobpain:739614945045643447> Hey it's not terrible.. It could be worse."
-        elif number == 40:
+        elif number2 == 40:
             text = "<:monkaS:596577132063490060> Not bad!"
-        elif number == 50:
+        elif number2 == 50:
             text = "<:flooshed:814095751042039828> Damn!"
-        elif number > 60:
+        elif number2 > 60:
             text = "<:pogu2:787676797184770060> AYOOO POG"
-        elif number == 70:
+        elif number2 == 70:
             text = "<:rooAww:747680003021471825> That has to be a ship!"
-        elif number > 80:
+        elif number2 > 80:
             text = "<a:rooClap:759933903959228446> That's a ship!"
-        elif number == 90:
+        elif number2 == 90:
             text = ":flushed: Wow!:"
-        elif number == 100:
+        elif number2 == 100:
             text = "<:drakeYea:596577437182197791> That's a ship 100%"
         else:
             text = "<:thrinking:597590667669274651> I don't know man.."
