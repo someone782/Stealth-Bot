@@ -89,7 +89,7 @@ class Fun(commands.Cog):
         else:
             text = "<:thrinking:597590667669274651> I don't know man.."
             
-        await ctx.send(f"{text}\n{ctx.author.name} & {member.name}")
+        await ctx.send(f"{text}\n{ctx.author.name} & {member.name}\n{number}%")
         
     @commands.command(help="Rick rolls someone")
     async def rickroll(self, ctx, member : discord.Member=None):
