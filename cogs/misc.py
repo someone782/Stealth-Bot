@@ -25,7 +25,9 @@ class Misc(commands.Cog):
         else:
             text = f"<:{emoji.name}:{emoji.id}>"
             
-        await ctx.send(text)
+        embed = discord.Embed(description=text)
+        
+        await ctx.send(embed=embed)
         
     @commands.command(help="Sends a invite of the bot", alises=['inv', 'invite_me', 'inviteme'])
     async def invite(self, ctx):
