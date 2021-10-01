@@ -20,7 +20,12 @@ class Misc(commands.Cog):
         
     @commands.command()
     async def emoji(self, ctx, emoji : discord.PartialEmoji):
-        await ctx.send(emoji)
+        if emoji.animated == True:
+            text = f"<a:{emoji.name}:{emoji.id}>"
+        else:
+            text = f"<:{emoji.name}:{emoji.id}>"
+            
+        await ctx.send(text)
         
     @commands.command(help="Sends a invite of the bot", alises=['inv', 'invite_me', 'inviteme'])
     async def invite(self, ctx):
