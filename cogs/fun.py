@@ -842,7 +842,7 @@ Original text: {text}
 
             await ctx.send(f"{random.choice(responses)}")
 
-    @commands.command(help="RPG.")
+    @commands.command(help="RPG.", aliases=['fight', 'r'])
     async def rpg(self, ctx):
         validAnswers1 = ['yes', 'no']
         validAnswers2 = ['fight', 'stop']
