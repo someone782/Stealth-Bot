@@ -98,16 +98,18 @@ class Owner(commands.Cog):
                 await ctx.send(f'```py\n{value}{ret}\n```')
 
         
-    @commands.command(help="Unloads an cog", aliases=['unl', 'ue', 'uc'])
-    @commands.is_owner()
+    @commands.command(
+        help="Unloads an cog",
+        aliases=['unl', 'ue', 'uc'])
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
+    @commands.is_owner()
     async def unload(self, ctx, extension):
         embed = discord.Embed(description=f":arrow_down: {extension}")
         message = await ctx.send(embed=embed)
         
         try:
             self.client.unload_extension(f"cogs.{extension}")
-            embed = discord.Embed(description=f"<:greenTick:596576670815879169> {extension}")
+            embed = discord.Embed(description=f"<:redTick:596576672149667840> {extension}")
             
             await message.edit(embed=embed)
 
@@ -121,7 +123,9 @@ class Owner(commands.Cog):
             
             await message.edit(embed=embed)
 
-    @commands.command(help="Reloads all cogs", aliases=['relall', 'rall', 'reloadall'])
+    @commands.command(
+        help="Reloads all cogs",
+        aliases=['relall', 'rall', 'reloadall'])
     @commands.is_owner()
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
     async def reload(self, ctx, *extensions : jishaku.modules.ExtensionConverter):
@@ -180,9 +184,11 @@ class Owner(commands.Cog):
         for page in pages.pages:
             await ctx.send(page)
 
-    @commands.command(help="Reloads one or multiple cogs", aliases=['mload', 'mrl'])
-    @commands.is_owner()
+    @commands.command(
+        help="Reloads one or multiple cogs",
+        aliases=['mload', 'mrl'])
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
+    @commands.is_owner()
     async def mreload(self, ctx, *extensions : jishaku.modules.ExtensionConverter):
         pages = WrappedPaginator(prefix='', suffix='')
 
@@ -212,7 +218,9 @@ class Owner(commands.Cog):
             await ctx.send(page)
  
         
-    @commands.command(help="Shutdowns the bot", aliases=['shutdown_bot'])
+    @commands.command(
+        help="Shutdowns the bot",
+        aliases=['shutdown_bot'])
     @commands.is_owner()
     async def shutdown(self, ctx):
         message = await ctx.send("Shutting down...")
@@ -223,7 +231,8 @@ class Owner(commands.Cog):
         
         os.system('sudo systemctl stop stealthbot')
         
-    @commands.command(help="Restarts the bot")
+    @commands.command(help="Restarts the bot",
+                      aliases=['reload_bot'])
     @commands.is_owner()
     async def restart_bot(self, ctx):
         embed = discord.Embed(title="Restarting...")
@@ -234,7 +243,9 @@ class Owner(commands.Cog):
         
         os.system('sudo systemctl restart stealthbot')
 
-    @commands.command(help="Pulls code from github and reloads all files", aliases=['pull', 'githubpull', 'github_pull'])
+    @commands.command(
+        help="Pulls code from github and reloads all files",
+        aliases=['pull', 'githubpull', 'github_pull'])
     @commands.is_owner()
     async def update(self, ctx):
         start1 = time.perf_counter()
