@@ -95,9 +95,13 @@ class Stuff(discord.ui.View):
         url = "https://discord.com/api/oauth2/authorize?client_id=760179628122964008&permissions=8&scope=bot"
         self.add_item(discord.ui.Button(emoji="<:invite:860644752281436171>", label='Invite me', url=url))
         self.add_item(discord.ui.Button(emoji="<:github:744345792172654643>", label='Source code', url="https://github.com/Ender2K89/Stealth-Bot"))
+        
+    @discord.ui.button(label=None, style=discord.ButtonsStyle.red, emoji="🗑️")
+    async def delete(self, button : discord.ui.Button, interaction : discord.Interaction)
+        await interaction.message.delete()
 
     @discord.ui.button(label='Vote', style=discord.ButtonStyle.gray, emoji="⏱️")
-    async def receive(self, button: discord.ui.Button, interaction: discord.Interaction):
+    async def receive(self, button : discord.ui.Button, interaction : discord.Interaction):
         embed=discord.Embed(title="Vote for me")
         await interaction.response.send_message(embed=embed, ephemeral=True, view=VoteButtons())
 
