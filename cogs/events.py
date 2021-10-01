@@ -92,7 +92,7 @@ Content:
         if message.author.bot:
             return
         
-        if message.author.id == 596537151802572811 and "forgor" in message.content.lower:
+        if message.author.id == 596537151802572811 and "forgor" in message.content:
             await message.add_reaction("💀")
         
         if message.author.id in self.client.afk_users:
