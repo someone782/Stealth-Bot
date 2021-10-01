@@ -1,8 +1,8 @@
+> ⬇️ Added dropdowns to the help menu
+• The help command now has a dropdown where you can select a category!
+
+> ⚔️ New RPG command
+• Do %%PREFIX%%rpg to start RPG!
+
 > 🛌 New AFK system
 • The AFK system now uses a DataBase. Do use it do %%PREFIX%%afk.
-
-> 🔞 A lot of new NSFW commands!
-• Do %%PREFIX%%help NSFW to view a list of NSFW commands!
-
-> 🎵 New music system!
-• Do %%PREFIX%%help music to view all the music commands!
