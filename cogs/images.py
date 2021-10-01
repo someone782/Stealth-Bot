@@ -80,7 +80,7 @@ class Images(commands.Cog):
       
       embed.set_image(url=f"https://some-random-api.ml/canvas/youtube-comment?username={username}&comment={comment}&avatar={avatar}")
 
-      await ctx.send(embed=embed)
+      return await ctx.send(embed=embed)
       
    @commands.command(help="🐶 Shows a picture of a shiba", aliases=['shibe'])
    @commands.bot_has_permissions(send_messages=True, embed_links=True)
