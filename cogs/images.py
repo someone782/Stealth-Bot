@@ -68,7 +68,7 @@ class Images(commands.Cog):
 
       await ctx.reply(embed=embed)
       
-   @comamnds.command(help="Fakes a youtube comment")
+   @commands.command(help="Fakes a youtube comment")
    async def youtube(self, ctx, username, comment, avatar):
       url = f"https://some-random-api.ml/canvas/youtube-comment?username={username}&comment={comment}&avatar={avatar}"
 
