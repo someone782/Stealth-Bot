@@ -75,7 +75,7 @@ class Images(commands.Cog):
       comment = comment.replace(" ", "+")
       
       embed = discord.Embed()
-      print(f"https://some-random-api.ml/canvas/youtube-comment?username={username}&comment={comment}&avatar={avatar}")
+      
       embed.set_image(url=f"https://some-random-api.ml/canvas/youtube-comment?username={username}&comment={comment}&avatar={avatar}")
 
       await ctx.send(embed=embed)
