@@ -8,8 +8,7 @@ from discord.ext import commands
 from discord.ext.commands import Paginator as CommandPaginator
 from discord.ext import menus
 
-from DuckBot.helpers import helper
-from DuckBot.__main__ import CustomContext
+from helpers import helpers
 
 
 class ViewPaginator(discord.ui.View):
@@ -306,7 +305,7 @@ class UrbanPageSource(menus.ListPageSource):
 
 
 class ServerInfoPageSource(menus.ListPageSource):
-    def __init__(self, guilds: typing.List[discord.Guild], ctx: CustomContext):
+    def __init__(self, guilds: typing.List[discord.Guild], ctx: commands.Context):
         self.guilds = guilds
         self.context = ctx
         super().__init__(guilds, per_page=1)
@@ -433,7 +432,7 @@ def emoji_str(emoji: typing.Union[discord.Emoji, discord.PartialEmoji]) -> str:
 
 
 class EmojiListPageSource(menus.ListPageSource):
-    def __init__(self, data: list, ctx: CustomContext) -> discord.Embed:
+    def __init__(self, data: list, ctx: commands.Context) -> discord.Embed:
         self.data = data
         self.ctx = ctx
         self.time = discord.utils.utcnow()
