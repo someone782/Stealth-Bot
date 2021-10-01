@@ -9,29 +9,14 @@ import re
 import errors
 import aiohttp
 from discord.ext import commands
-import emoji
 
 def setup(client):
     client.add_cog(Misc(client))
-    
-emojis = emoji.unicode_codes.EMOJI_UNICODE["en"].values()
-
-class EmojiConverter(commands.Converter):
-    async def convert(self, ctx: commands.Context, arg: str):
-        # Discord throws variation selectors on the end sometimes. Just remove it I guess
-        if arg.rstrip("\N{variation selector-16}") in emojis or arg in emojis:
-            return discord.PartialEmoji(name=arg)
-        else:
-            raise commands.BadArgument(f"{arg} is not an emoji")
 
 class Misc(commands.Cog):
     ":gear: | Miscellaneous commands"
     def __init__(self, client):
         self.client = client
-        
-    @commands.command()
-    async def brehj(self, ctx, *args: EmojiConverter):
-        await ctx.send(str(args))
         
     @commands.command()
     async def emoji(self, ctx, emoji : discord.PartialEmoji):
