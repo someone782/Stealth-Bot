@@ -86,11 +86,11 @@ class Fun(commands.Cog):
             text = "<:monkaS:596577132063490060> Not bad!"
         elif number2 == 50:
             text = "<:flooshed:814095751042039828> Damn!"
-        elif number2 > 60:
+        elif number2 == 60:
             text = "<:pogu2:787676797184770060> AYOOO POG"
         elif number2 == 70:
             text = "<:rooAww:747680003021471825> That has to be a ship!"
-        elif number2 > 80:
+        elif number2 == 80:
             text = "<a:rooClap:759933903959228446> That's a ship!"
         elif number2 == 90:
             text = ":flushed: Wow!:"
