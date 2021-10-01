@@ -21,49 +21,6 @@ class Fun(commands.Cog):
     def __init__(self, client):
         self.client = client
         
-    async def reddit(self, subreddit: str, title: bool = False, embed_type: str = 'IMAGE') -> discord.Embed:
-        subreddit = await self.client.reddit.subreddit(subreddit)
-        post = await subreddit.random()
-
-        if embed_type == 'IMAGE':
-            while 'i.redd.it' not in post.url or post.over_18:
-                post = await subreddit.random()
-
-            embed = discord.Embed(description=f"🌐 [Post](https://reddit.com{post.permalink}) • "
-                                              f"<:upvote:274492025678856192> {post.score} ({post.upvote_ratio * 100}%) "
-                                              f"• from [r/{subreddit}](https://reddit.com/r/{subreddit})")
-            embed.title = post.title if title is True else None
-            embed.set_image(url=post.url)
-            return embed
-
-        if embed_type == 'POLL':
-            while not hasattr(post, 'poll_data') or not post.poll_data or post.over_18:
-                post = await (await self.client.reddit.subreddit(subreddit)).random()
-
-            iterations: int = 1
-            options = []
-            emojis = []
-            for option in post.poll_data.options:
-                num = f"{iterations}\U0000fe0f\U000020e3"
-                options.append(f"{num} {option.text}")
-                emojis.append(num)
-                iterations += 1
-                if iterations > 9:
-                    iterations = 1
-
-            embed = discord.Embed(color=discord.Color.random(),
-                                  description='\n'.join(options))
-            embed.title = post.title if title is True else None
-            return embed, emojis
-        
-    @commands.command()
-    async def meme2(self, ctx):
-        """
-        Sends a random meme from reddit.com/r/memes.
-        """
-        async with ctx.typing():
-            return await ctx.send(embed=await self.reddit(random.choice(['memes', 'dankmemes'])))
-        
     @commands.command(
         help="Ships you with someone")
     async def ship(self, ctx, member : discord.Member=None):
@@ -885,36 +842,6 @@ Original text: {text}
 
             await ctx.send(f"{random.choice(responses)}")
 
-
-    # this command was removed due to top.gg not accepting my bot cause it "promotes suicide"
-
-    # @commands.command(help="Let's you commit suicide", aliases=['suicied', 'suiced'])
-    # async def suicide(self, ctx):
-    #     responses = [f"{ctx.author.name} said, goodbye cruel world!",
-    #                 f"{ctx.author.name} commited sudoku.",
-    #                 f"{ctx.author.name} tripped down a mountain.",
-    #                 f"{ctx.author.name} stabbed themselves.",
-    #                 f"{ctx.author.name} smelt their socks.",
-    #                 f"{ctx.author.name} banged their head with a pan.",
-    #                 f"{ctx.author.name} held the knife the wrong way.",
-    #                 f"{ctx.author.name} stubbed their toe.",
-    #                 f"{ctx.author.name} forgot to grippen their shoes when walking down the stairs.",
-    #                 f"{ctx.author.name} stepped on a mine.",
-    #                 f"{ctx.author.name} held a grenade for too long.",
-    #                 f"{ctx.author.name} jumped off a cliff.",
-    #                 f"{ctx.author.name} wore a black shirt in the summer.",
-    #                 f"{ctx.author.name} caught on fire.",
-    #                 f"{ctx.author.name} choked on a chicken nugget.",
-    #                 f"{ctx.author.name} ate expired Oreos.",
-    #                 f"{ctx.author.name} hit their head on the wall.",
-    #                 f"{ctx.author.name} shook a vending machine too hard.",
-    #                 f"{ctx.author.name} was struck by lightning.",
-    #                 f"{ctx.author.name} chewed 5 gum.",
-    #                 f"{ctx.author.name} ate too many vitamin gummy bear.",
-    #                 f"{ctx.author.name} tried to swim in lava. Why would you ever try to do that?"]
-    #
-    #     await ctx.send(f"{random.choice(responses)}")
-    
     @commands.command(help="RPG.")
     async def rpg(self, ctx):
         validAnswers1 = ['yes', 'no']
