@@ -29,8 +29,7 @@ class Fun(commands.Cog):
             while 'i.redd.it' not in post.url or post.over_18:
                 post = await subreddit.random()
 
-            embed = discord.Embed(color=discord.Color.random(),
-                                  description=f"🌐 [Post](https://reddit.com{post.permalink}) • "
+            embed = discord.Embed(description=f"🌐 [Post](https://reddit.com{post.permalink}) • "
                                               f"<:upvote:274492025678856192> {post.score} ({post.upvote_ratio * 100}%) "
                                               f"• from [r/{subreddit}](https://reddit.com/r/{subreddit})")
             embed.title = post.title if title is True else None
