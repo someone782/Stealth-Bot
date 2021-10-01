@@ -64,6 +64,33 @@ class Fun(commands.Cog):
         async with ctx.typing():
             return await ctx.send(embed=await self.reddit(random.choice(['memes', 'dankmemes'])))
         
+    @commands.command()
+    async def ship(self, ctx, member : discord.Mmeber=None):
+        if member is None:
+            if ctx.message.reference:
+                member = ctx.message.reference.resolved.author
+            else:
+                member = ctx.author
+                
+        number = random.randint(0, 100)
+        
+        if number < 10:
+            text = "Yikes.. That's bad."
+        elif number > 15:
+            text = "Maybe?.. I doubt thought."
+        elif number > 20:
+            text = "Hey it's not terrible.. It could be worse."
+        elif number > 40:
+            text = "Not bad!"
+        elif number > 60:
+            text = "AYOOO POG"
+        elif number > 80:
+            text = "That's a ship!"
+        else:
+            text = "I don't know man"
+            
+        await ctx.send(f"{text}\n{ctx.author.name} & {member.name}")
+        
     @commands.command(help="Rick rolls someone")
     async def rickroll(self, ctx, member : discord.Member=None):
         if member is None:
