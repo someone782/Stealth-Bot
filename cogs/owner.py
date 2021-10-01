@@ -41,10 +41,9 @@ class Owner(commands.Cog):
         self._last_result = None
 
         
-    @commands.command(pass_context=True, hidden=True, name='eval')
+    @commands.command(help="Evaluates code")
     @commands.is_owner()
-    async def _eval(self, ctx, *, body: str):
-        """Evaluates a code"""
+    async def evak(self, ctx, *, body : str):
         env = {
             'bot': self.client,
             'client': self.client,
@@ -68,7 +67,7 @@ class Owner(commands.Cog):
             exec(to_compile, env)
         except Exception as e:
             try:
-                await ctx.message.add_reaction('⚠')
+                await ctx.message.add_reaction('<:redTick:596576672149667840>')
             except (discord.Forbidden, discord.HTTPException):
                 pass
             return await ctx.send(f'```py\n{e.__class__.__name__}: {e}\n```')
@@ -80,14 +79,14 @@ class Owner(commands.Cog):
         except Exception:
             value = stdout.getvalue()
             try:
-                await ctx.message.add_reaction('⚠')
+                await ctx.message.add_reaction('<:redTick:596576672149667840>')
             except (discord.Forbidden, discord.HTTPException):
                 pass
             await ctx.send(f'```py\n{value}{traceback.format_exc()}\n```')
         else:
             value = stdout.getvalue()
             try:
-                await ctx.message.add_reaction('\u2705')
+                await ctx.message.add_reaction('<:greenTick:596576670815879169>')
             except (discord.Forbidden, discord.HTTPException):
                 pass
 
