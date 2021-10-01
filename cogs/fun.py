@@ -65,7 +65,7 @@ class Fun(commands.Cog):
             return await ctx.send(embed=await self.reddit(random.choice(['memes', 'dankmemes'])))
         
     @commands.command()
-    async def ship(self, ctx, member : discord.Mmeber=None):
+    async def ship(self, ctx, member : discord.Member=None):
         if member is None:
             if ctx.message.reference:
                 member = ctx.message.reference.resolved.author
