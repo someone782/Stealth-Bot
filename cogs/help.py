@@ -96,12 +96,12 @@ class Stuff(discord.ui.View):
         self.add_item(discord.ui.Button(emoji="<:invite:860644752281436171>", label='Invite me', url=url))
         self.add_item(discord.ui.Button(emoji="<:github:744345792172654643>", label='Source code', url="https://github.com/Ender2K89/Stealth-Bot"))
 
-    @discord.ui.button(label='Vote', style=discord.ButtonStyle.gray, emoji="⏱️")
-    async def receive(self, button : discord.ui.Button, interaction : discord.Interaction):
+    @discord.ui.button(label="Vote", emoji="<:dbl:757235965629825084>", style=discord.ButtonStyle.gray)
+    async def vote(self, button : discord.ui.Button, interaction : discord.Interaction):
         embed=discord.Embed(title="Vote for me")
         await interaction.response.send_message(embed=embed, ephemeral=True, view=VoteButtons())
         
-    @discord.ui.button(style=discord.ButtonStyle.red, emoji="🗑️")
+    @discord.ui.button(label="Delete", emoji=":wastebasket:", style=discord.ButtonStyle.red)
     async def delete(self, button : discord.ui.Button, interaction : discord.Interaction):
         await interaction.message.delete()
 
