@@ -43,7 +43,7 @@ class Owner(commands.Cog):
         
     @commands.command(help="Evaluates code")
     @commands.is_owner()
-    async def evak(self, ctx, *, body : str):
+    async def eval(self, ctx, *, body : str):
         env = {
             'bot': self.client,
             'client': self.client,
