@@ -181,7 +181,7 @@ class Owner(commands.Cog):
         start2 = time.perf_counter()
         
         cmd = self.client.get_command("rall")
-        await ctx.invoke(cmd, argument="channel")
+        await ctx.invoke(cmd)
         
         end2 = time.perf_counter()
         
