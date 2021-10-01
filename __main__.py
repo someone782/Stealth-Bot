@@ -202,7 +202,9 @@ class CustomContext(commands.Context):
             embed.color = color
             
         if content == None:
-            content = "Hey please vote for me :)"
+            number = random.randint(0, 10)
+            if number == 1:
+                content = "Support **Stealth Bot** by voting: <https://top.gg/bot/760179628122964008>"
 
         try:
             return await super().send(content=content, embed=embed, reference=reference, **kwargs)
