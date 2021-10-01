@@ -70,9 +70,11 @@ class Images(commands.Cog):
       
    @commands.command(
       help="Fakes a youtube comment")
-   async def youtube(self, ctx, username, comment, avatar):
+   async def youtube(self, ctx, username, comment, avatar=None):
       username = username.replace(" ", "+")
       comment = comment.replace(" ", "+")
+      if avatar == None:
+         avatar = "https://media.discordapp.net/avatars/564890536947875868/a_51507bee5c67835340513d822e036a3f.png?size=2048"
       
       embed = discord.Embed()
       
