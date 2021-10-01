@@ -93,7 +93,7 @@ class Fun(commands.Cog):
         elif number2 == 80:
             text = "<a:rooClap:759933903959228446> That's a ship!"
         elif number2 == 90:
-            text = ":flushed: Wow!:"
+            text = ":flushed: Wow!"
         elif number2 == 100:
             text = "<:drakeYea:596577437182197791> That's a ship 100%"
         else:
