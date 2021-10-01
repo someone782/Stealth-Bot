@@ -310,10 +310,6 @@ class Owner(commands.Cog):
         for i in number:
             await channel.send(message)
 
-    @commands.command(aliases=['borgor', 'burgor'])
-    async def burger(self, ctx):
-        raise errors.KillYourself
-
     @commands.command(aliases=['to_do'])
     @commands.is_owner()
     async def todo(self, ctx, *, text):
