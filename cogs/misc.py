@@ -10,6 +10,7 @@ import re
 import errors
 import aiohttp
 from typing import Optional
+import typing
 from discord.ext import commands
 
 def setup(client):
