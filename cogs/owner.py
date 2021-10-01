@@ -98,32 +98,33 @@ class Owner(commands.Cog):
                 await ctx.send(f'```py\n{value}{ret}\n```')
 
         
-    @commands.command(help="Unloads an extension", aliases=['unl', 'ue', 'uc'])
+    @commands.command(help="Unloads an cog", aliases=['unl', 'ue', 'uc'])
     @commands.is_owner()
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
     async def unload(self, ctx, extension):
-        embed = discord.Embed(color=ctx.me.color, description=f"⬇ {extension}")
-        message = await ctx.send(embed=embed, footer=False)
+        embed = discord.Embed(description=f":arrow_down: {extension}")
+        message = await ctx.send(embed=embed)
+        
         try:
-            self.client.unload_extension("cogs.{}".format(extension))
-            await asyncio.sleep(0.5)
-            embed = discord.Embed(color=ctx.me.color, description=f"✅ {extension}")
+            self.client.unload_extension(f"cogs.{extension}")
+            embed = discord.Embed(description=f"<:greenTick:596576670815879169> {extension}")
+            
             await message.edit(embed=embed)
 
         except discord.ext.commands.ExtensionNotFound:
-            await asyncio.sleep(0.5)
-            embed = discord.Embed(color=ctx.me.color, description=f"❌ Extension not found")
+            embed = discord.Embed(description=f"<:redTick:596576672149667840> Extension not found")
+            
             await message.edit(embed=embed)
 
         except discord.ext.commands.ExtensionNotLoaded:
-            await asyncio.sleep(0.5)
-            embed = discord.Embed(color=ctx.me.color, description=f"❌ Extension not loaded")
+            embed = discord.Embed(description=f"<:redTick:596576672149667840> Extension not loaded")
+            
             await message.edit(embed=embed)
 
-    @commands.command(help="Reloads all extensions", aliases=['relall', 'rall', 'reloadall'])
+    @commands.command(help="Reloads all cogs", aliases=['relall', 'rall', 'reloadall'])
     @commands.is_owner()
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
-    async def reload(self, ctx, *extensions: jishaku.modules.ExtensionConverter):
+    async def reload(self, ctx, *extensions : jishaku.modules.ExtensionConverter):
         pages = WrappedPaginator(prefix='', suffix='')
         to_send = []
         err = False
@@ -162,14 +163,14 @@ class Owner(commands.Cog):
                 pages.add_line(f"{icon} `{extension}`")
 
             except tuple(error_keys.keys()) as exc:
-                pages.add_line(f"{icon}❌ `{extension}` - {error_keys[type(exc)]}")
+                pages.add_line(f"{icon}<:redTick:596576672149667840> `{extension}` - {error_keys[type(exc)]}")
 
             except discord.ext.commands.ExtensionFailed as e:
                 traceback_string = f"```py" \
                                    f"\n{''.join(traceback.format_exception(etype=None, value=e, tb=e.__traceback__))}" \
                                    f"\n```"
-                pages.add_line(f"{icon}❌ `{extension}` - Execution error")
-                to_dm = f"❌ {extension} - Execution error - Traceback:"
+                pages.add_line(f"{icon}<:redTick:596576672149667840> `{extension}` - Execution error")
+                to_dm = f"<:redTick:596576672149667840> {extension} - Execution error - Traceback:"
 
                 if (len(to_dm) + len(traceback_string) + 5) > 2000:
                     await ctx.author.send(file=io.StringIO(traceback_string))
@@ -179,13 +180,10 @@ class Owner(commands.Cog):
         for page in pages.pages:
             await ctx.send(page)
 
-    @commands.command(name="mreload", aliases=['mload', 'mrl'])
+    @commands.command(help="Reloads one or multiple cogs", aliases=['mload', 'mrl'])
     @commands.is_owner()
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
-    async def reload_module(self, ctx, *extensions: jishaku.modules.ExtensionConverter):
-        """
-        Reloads one or multiple extensions
-        """
+    async def mreload(self, ctx, *extensions : jishaku.modules.ExtensionConverter):
         pages = WrappedPaginator(prefix='', suffix='')
 
         if not extensions:
