@@ -36,6 +36,8 @@ class Owner(commands.Cog):
     def __init__(self, client):
         self.hidden = True
         self.client = client
+        self._last_result = None
+
         
     @commands.command(pass_context=True, hidden=True, name='eval')
     @commands.is_owner()
