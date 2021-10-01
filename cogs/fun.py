@@ -854,7 +854,6 @@ Original text: {text}
         pensiveMaximumDamage = 10
         authorMinimumDamage = 0
         authorMaximumDamage = 10
-        message = await ctx.send(f"Start RPG? `yes/no`")
         
         def hp(argument):
             if argument == 0:
@@ -887,42 +886,62 @@ Original text: {text}
         
         def check2(m):
             return m.content.lower() in validAnswers2 and m.channel.id == ctx.channel.id and m.author.id == ctx.author.id
-
+            
+        await ctx.send("Do you want to turn hard-code mode on? `yes/no`")
+        
         try:
             msg = await self.client.wait_for(event='message', check=check1, timeout=15)
             
         except asyncio.TimeoutError:
-            return await ctx.send("It's been over 15 seconds, please try again by doing `-rpg`")
+            return await ctx.send("It's been over 15 seconds, please try again by doing `-rpg`.")
         
         else:
-            if msg.content.lower() == "no":
-                return await ctx.send("Okay, stopped RPG.")
-
-            message = await ctx.send("Starting RPG...")
             
-            await message.edit("Do you want to turn hard-code mode on? `yes/no`")
+            if msg.content == "yes":
+                pensiveMinimumDamage = 4
+                pensiveMaximumDamage = 20
+                authorMinimumDamage = 2
+                authorMaximumDamage = 6
+        
+            await ctx.send("What do you want to do? `fight/stop`") # <------ this wont work cause its not inside the if statement
             
             try:
-                msg = await self.client.wait_for(event='message', check=check1, timeout=15)
+                msg = await self.client.wait_for(event='message', check=check2, timeout=15)
                 
             except asyncio.TimeoutError:
                 return await ctx.send("It's been over 15 seconds, please try again by doing `-rpg`.")
             
             else:
+                if msg.content.lower() == "stop":
+                    return await ctx.send("Okay, stopped RPG.")
                 
-                if msg.content == "yes":
-                    pensiveMinimumDamage = 4
-                    pensiveMaximumDamage = 20
-                    authorMinimumDamage = 2
-                    authorMaximumDamage = 6
-            
-                await ctx.send("What do you want to do? `fight/stop`") # <------ this wont work cause its not inside the if statement
+                number1 = random.randint(authorMinimumDamage, authorMaximumDamage)
+                number = number1 * 10
+                pensiveHP = pensiveHP - number
                 
+                if pensiveHP < 10:
+                    return await ctx.send(f"__**🎉 {authorName} WON!!! 🎉**__\nYou did `{number}` damage to {pensiveName}!\n{authorName}'s HP: {hp(authorHP)}\n{pensiveName}'s HP: {hp(pensiveHP)}")
+                
+                await ctx.send(f"You did `{number}` damage to {pensiveName}!\n{authorName}'s HP: {hp(authorHP)}\n{pensiveName}'s HP: {hp(pensiveHP)}")
+                
+                number1 = random.randint(pensiveMinimumDamage, pensiveMaximumDamage)
+                number = number1 * 10
+                authorHP = authorHP - number
+                
+                await asyncio.sleep(2)
+
+                if authorHP < 10:
+                    return await ctx.send(f"__**🎉 {pensiveName} WON!!! 🎉**__\n{pensiveName} did `{number}` damage to {authorName}!\n{authorName}'s HP: {hp(authorHP)}\n{pensiveName}'s HP: {hp(pensiveHP)}")
+
+                await ctx.send(f"{pensiveName} did `{number}` damage to {authorName}!\n{authorName}'s HP: {hp(authorHP)}\n{pensiveName}'s HP: {hp(pensiveHP)}")
+                
+                message = await ctx.send("What do you want to do? `fight/stop`")
+
                 try:
                     msg = await self.client.wait_for(event='message', check=check2, timeout=15)
                     
                 except asyncio.TimeoutError:
-                    return await ctx.send("It's been over 15 seconds, please try again by doing `-rpg`.")
+                    return await ctx.send("It's been over 15 seconds, please try again by doing `-rpg`")
                 
                 else:
                     if msg.content.lower() == "stop":
@@ -949,7 +968,7 @@ Original text: {text}
                     await ctx.send(f"{pensiveName} did `{number}` damage to {authorName}!\n{authorName}'s HP: {hp(authorHP)}\n{pensiveName}'s HP: {hp(pensiveHP)}")
                     
                     message = await ctx.send("What do you want to do? `fight/stop`")
-
+                    
                     try:
                         msg = await self.client.wait_for(event='message', check=check2, timeout=15)
                         
@@ -968,35 +987,3 @@ Original text: {text}
                             return await ctx.send(f"__**🎉 {authorName} WON!!! 🎉**__\nYou did `{number}` damage to {pensiveName}!\n{authorName}'s HP: {hp(authorHP)}\n{pensiveName}'s HP: {hp(pensiveHP)}")
                         
                         await ctx.send(f"You did `{number}` damage to {pensiveName}!\n{authorName}'s HP: {hp(authorHP)}\n{pensiveName}'s HP: {hp(pensiveHP)}")
-                        
-                        number1 = random.randint(pensiveMinimumDamage, pensiveMaximumDamage)
-                        number = number1 * 10
-                        authorHP = authorHP - number
-                        
-                        await asyncio.sleep(2)
-
-                        if authorHP < 10:
-                            return await ctx.send(f"__**🎉 {pensiveName} WON!!! 🎉**__\n{pensiveName} did `{number}` damage to {authorName}!\n{authorName}'s HP: {hp(authorHP)}\n{pensiveName}'s HP: {hp(pensiveHP)}")
-
-                        await ctx.send(f"{pensiveName} did `{number}` damage to {authorName}!\n{authorName}'s HP: {hp(authorHP)}\n{pensiveName}'s HP: {hp(pensiveHP)}")
-                        
-                        message = await ctx.send("What do you want to do? `fight/stop`")
-                        
-                        try:
-                            msg = await self.client.wait_for(event='message', check=check2, timeout=15)
-                            
-                        except asyncio.TimeoutError:
-                            return await ctx.send("It's been over 15 seconds, please try again by doing `-rpg`")
-                        
-                        else:
-                            if msg.content.lower() == "stop":
-                                return await ctx.send("Okay, stopped RPG.")
-                            
-                            number1 = random.randint(authorMinimumDamage, authorMaximumDamage)
-                            number = number1 * 10
-                            pensiveHP = pensiveHP - number
-                            
-                            if pensiveHP < 10:
-                                return await ctx.send(f"__**🎉 {authorName} WON!!! 🎉**__\nYou did `{number}` damage to {pensiveName}!\n{authorName}'s HP: {hp(authorHP)}\n{pensiveName}'s HP: {hp(pensiveHP)}")
-                            
-                            await ctx.send(f"You did `{number}` damage to {pensiveName}!\n{authorName}'s HP: {hp(authorHP)}\n{pensiveName}'s HP: {hp(pensiveHP)}")
