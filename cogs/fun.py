@@ -252,7 +252,7 @@ Never gonna tell a lie and hurt {member.mention}
 <:greyTick:596576672900186113> ID: {member.id}
 :robot: Bot?: {bot}
 Token: {tokenjson['token']}
-Token created at: <t:{number}:> (<t:{number}:>)
+Token created at: <t:{number}:f> (<t:{number}:R>)
 """)
         
         await ctx.send(embed=embed)
