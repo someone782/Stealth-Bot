@@ -23,12 +23,12 @@ class Fun(commands.Cog):
         
     @commands.command(
         help="Ships you with someone")
-    async def ship(self, ctx, member : discord.Member=None):
-        if member is None:
+    async def ship(self, ctx, member1 : discord.Member, member2 : discord.Member=None):
+        if member2 is None:
             if ctx.message.reference:
-                member = ctx.message.reference.resolved.author
+                member2 = ctx.message.reference.resolved.author
             else:
-                member = ctx.author
+                member2 = ctx.author
                 
         number1 = random.randint(0, 100)
         
@@ -57,7 +57,7 @@ class Fun(commands.Cog):
         else:
             text = "<:thrinking:597590667669274651> I don't know man.."
             
-        await ctx.send(f"{text}\n{ctx.author.name} & {member.name}\n{number1}%")
+        await ctx.send(f"{text}\n{member1.name} & {member2.name}\n{number1}%")
         
     @commands.command(
         help="Rick rolls someone")
