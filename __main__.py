@@ -405,7 +405,7 @@ def maintenance(ctx):
         return True
     else:
         if ctx.author.id == 564890536947875868:
-            return
+            return True
         else:
             raise errors.BotMaintenance
 
