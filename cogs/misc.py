@@ -44,9 +44,8 @@ def pretty_size(bytes, units=UNITS_MAPPING):
     return str(amount) + suffix
     
 class BotServersEmbedPage(menus.ListPageSource):
-    def __init__(self, data, name):
+    def __init__(self, data):
         self.data = data
-        self.name = name
         super().__init__(data, per_page=1)
     
 async def format_page(self, menu, entries):
