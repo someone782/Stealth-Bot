@@ -626,7 +626,7 @@ Python version: {full_version}
 
         await ctx.send(embed=embed)
         
-    @commands.command(help="Shows information about the system the bot is hosted on"
+    @commands.command(help="Shows information about the system the bot is hosted on",
                       aliases=['sys'])
     async def system(self, ctx):
         process = psutil.Process({os.getpid()})
