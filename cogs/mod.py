@@ -101,11 +101,11 @@ class Mod(commands.Cog):
         else:
             guild = ctx.guild
             
-        if not bans:
-            raise errors.NoBannedMembers
-            
         guildBans = guild.bans()
         bans = []
+        
+        if not bans:
+            raise errors.NoBannedMembers
         
         for ban in guildBans:
             
