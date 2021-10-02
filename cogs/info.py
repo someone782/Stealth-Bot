@@ -843,7 +843,7 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
             await ctx.send(f"{errorMessage}")
             
     @commands.group(invoke_without_command=True)
-    async def bannert(self, ctx):
+    async def banner(self, ctx):
         fetchedMember = await self.client.fetch_user(ctx.author.id)
         url = fetchedMember.banner
         
@@ -909,33 +909,33 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         
         await ctx.send(embed=embed)
         
-    @commands.command(help="Shows the banner of the member you mentioned", aliases=['bn'])
-    @commands.cooldown(1, 5, BucketType.member)
-    async def banner(self, ctx, member : discord.Member=None):
-        if member is None:
-            if ctx.message.reference:
-                member = ctx.message.reference.resolved.author
-                errorMessage = f"{member} doesn't have a banner"
-            else:
-                member = ctx.author
-                errorMessage = "You don't have a banner"
+    # @commands.command(help="Shows the banner of the member you mentioned", aliases=['bn'])
+    # @commands.cooldown(1, 5, BucketType.member)
+    # async def banner(self, ctx, member : discord.Member=None):
+    #     if member is None:
+    #         if ctx.message.reference:
+    #             member = ctx.message.reference.resolved.author
+    #             errorMessage = f"{member} doesn't have a banner"
+    #         else:
+    #             member = ctx.author
+    #             errorMessage = "You don't have a banner"
 
-        fetchedMember = await self.client.fetch_user(member.id)
+    #     fetchedMember = await self.client.fetch_user(member.id)
 
-        if fetchedMember.banner:
+    #     if fetchedMember.banner:
             
-            if fetchedMember.banner.is_animated() == True:
-                text = f"[PNG]({fetchedMember.banner.replace(format='png', size=2048).url}) | [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) | [JPEG]({fetchedMember.banner.replace(format='jpeg', size=2048).url}) | [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url}) | [GIF]({fetchedMember.banner.replace(format='gif', size=2048).url})"
+    #         if fetchedMember.banner.is_animated() == True:
+    #             text = f"[PNG]({fetchedMember.banner.replace(format='png', size=2048).url}) | [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) | [JPEG]({fetchedMember.banner.replace(format='jpeg', size=2048).url}) | [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url}) | [GIF]({fetchedMember.banner.replace(format='gif', size=2048).url})"
                 
-            else:
-                text = f"[PNG]({fetchedMember.banner.replace(format='png', size=2048).url}) | [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) | [JPEG]({fetchedMember.banner.replace(format='jpeg', size=2048).url}) | [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url})"
+    #         else:
+    #             text = f"[PNG]({fetchedMember.banner.replace(format='png', size=2048).url}) | [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) | [JPEG]({fetchedMember.banner.replace(format='jpeg', size=2048).url}) | [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url})"
                 
-            embed=discord.Embed(title=f"{member}'s avatar", description=f"{text}")
-            embed.set_image(url=fetchedMember.banner.url)
+    #         embed=discord.Embed(title=f"{member}'s avatar", description=f"{text}")
+    #         embed.set_image(url=fetchedMember.banner.url)
 
-            await ctx.send(embed=embed)
-        else:
-            await ctx.send(f"{errorMessage}")
+    #         await ctx.send(embed=embed)
+    #     else:
+    #         await ctx.send(f"{errorMessage}")
 
     @commands.command(help="Shows you the bot's latency")
     @commands.cooldown(1, 5, BucketType.member)
