@@ -113,7 +113,7 @@ class Mod(commands.Cog):
         
         for ban in guildBans:
             
-            bans.append(f"{ban.user}")
+            bans.append(f"test")
             
         paginator = ViewMenuPages(source=ServerBansEmbedPage(bans,guild), clear_reactions_after=True)
         page = await paginator._source.get_page(0)
