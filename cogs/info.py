@@ -850,7 +850,13 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         if url == None:
             return await ctx.send("You don't have a banner!")
         
-        embed = discord.Embed(title=f"{ctx.author.name}'s banner")
+        if fetchedMember.banner.is_animated() == True:
+            text = f"[PNG]({fetchedMember.banner.replace(format='png', size=2048).url}) | [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) | [JPEG]({fetchedMember.banner.replace(format='jpeg', size=2048).url}) | [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url}) | [GIF]({fetchedMember.banner.replace(format='gif', size=2048).url})"
+            
+        else:
+            text = f"[PNG]({fetchedMember.banner.replace(format='png', size=2048).url}) | [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) | [JPEG]({fetchedMember.banner.replace(format='jpeg', size=2048).url}) | [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url})"
+        
+        embed = discord.Embed(title=f"{ctx.author.name}'s banner", description=text)
         embed.set_image(url=url)
         
         await ctx.send(embed=embed)
@@ -863,7 +869,13 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         if url == None:
             return await ctx.send("This server doesn't have a banner!")
         
-        embed = discord.Embed(title=f"{server.name}'s banner")
+        if server.banner.is_animated() == True:
+            text = f"[PNG]({server.banner.replace(format='png', size=2048).url}) | [JPG]({server.banner.replace(format='jpg', size=2048).url}) | [JPEG]({server.banner.replace(format='jpeg', size=2048).url}) | [WEBP]({server.banner.replace(format='webp', size=2048).url}) | [GIF]({server.banner.replace(format='gif', size=2048).url})"
+            
+        else:
+            text = f"[PNG]({server.banner.replace(format='png', size=2048).url}) | [JPG]({server.banner.replace(format='jpg', size=2048).url}) | [JPEG]({server.banner.replace(format='jpeg', size=2048).url}) | [WEBP]({server.banner.replace(format='webp', size=2048).url})"
+        
+        embed = discord.Embed(title=f"{server.name}'s banner", description=text)
         embed.set_image(url=url)
         
         await ctx.send(embed=embed)
@@ -886,7 +898,13 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         if url is None:
             return await ctx.send(errorMessage)
         
-        embed = discord.Embed(title=f"{member}'s banner")
+        if fetchedMember.banner.is_animated() == True:
+            text = f"[PNG]({fetchedMember.banner.replace(format='png', size=2048).url}) | [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) | [JPEG]({fetchedMember.banner.replace(format='jpeg', size=2048).url}) | [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url}) | [GIF]({fetchedMember.banner.replace(format='gif', size=2048).url})"
+            
+        else:
+            text = f"[PNG]({fetchedMember.banner.replace(format='png', size=2048).url}) | [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) | [JPEG]({fetchedMember.banner.replace(format='jpeg', size=2048).url}) | [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url})"
+        
+        embed = discord.Embed(title=f"{member}'s banner", description=text)
         embed.set_image(url=url)
         
         await ctx.send(embed=embed)
@@ -907,12 +925,10 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         if fetchedMember.banner:
             
             if fetchedMember.banner.is_animated() == True:
-                text1 = f"[PNG]({fetchedMember.banner.replace(format='png', size=2048).url}) | [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) | [JPEG]({fetchedMember.banner.replace(format='jpeg', size=2048).url}) | [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url}) | [GIF]({fetchedMember.banner.replace(format='gif', size=2048).url})"
-                text = text1.replace("cdn.discordapp.com", "media.discordapp.net")
+                text = f"[PNG]({fetchedMember.banner.replace(format='png', size=2048).url}) | [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) | [JPEG]({fetchedMember.banner.replace(format='jpeg', size=2048).url}) | [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url}) | [GIF]({fetchedMember.banner.replace(format='gif', size=2048).url})"
                 
             else:
-                text1 = f"[PNG]({fetchedMember.avatar.replace(format='png', size=2048).url}) | [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) | [JPEG]({fetchedMember.banner.replace(format='jpeg', size=2048).url}) | [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url})"
-                text = text1.replace("cdn.discordapp.com", "media.discordapp.net")
+                text = f"[PNG]({fetchedMember.banner.replace(format='png', size=2048).url}) | [JPG]({fetchedMember.banner.replace(format='jpg', size=2048).url}) | [JPEG]({fetchedMember.banner.replace(format='jpeg', size=2048).url}) | [WEBP]({fetchedMember.banner.replace(format='webp', size=2048).url})"
                 
             embed=discord.Embed(title=f"{member}'s avatar", description=f"{text}")
             embed.set_image(url=fetchedMember.banner.url)
