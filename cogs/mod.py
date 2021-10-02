@@ -105,7 +105,7 @@ class Mod(commands.Cog):
         guildBans = guild.bans()
         bans = []
         
-        if not bans:
+        if not guildBans:
             raise errors.NoBannedMembers
         
         for ban in guildBans:
