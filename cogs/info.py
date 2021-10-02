@@ -629,7 +629,8 @@ Python version: {full_version}
     @commands.command(help="Shows information about the system the bot is hosted on",
                       aliases=['sys'])
     async def system(self, ctx):
-        process = psutil.Process({os.getpid()})
+        pid = os.getpid()
+        process = psutil.Process(pid)
         
         embed = discord.Embed(description=f"""
 ```prolog
