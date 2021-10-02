@@ -106,6 +106,10 @@ class ErrorHandler(commands.Cog):
 
         elif isinstance(error, errors.AuthorBlacklisted):
             message = f"It appears that you're blacklisted from this bot. Contact Ender2K89#9999 if you think this is a mistake."
+            
+        elif isinstance(error, errors.BotMaintenance):
+            message = f"The bot is in maintenance mode meaning no commands work."
+            await ctx.message.add_reaction("⚠️")
 
         elif isinstance(error, helpers.NotSH):
             message = f"You can only use this command in `Stealth Hangout`!\ndiscord.gg/ktkXwmD2kF"

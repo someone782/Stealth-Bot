@@ -10,6 +10,9 @@ class CommandDoesntExist(commands.CheckFailure):
 class AuthorBlacklisted(commands.CheckFailure):
     pass
 
+class BotMaintenance(commands.CheckFailure):
+    pass
+
 class TooLongPrefix(commands.CheckFailure):
     pass
 

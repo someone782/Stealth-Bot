@@ -321,7 +321,7 @@ class Owner(commands.Cog):
         embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
         await ctx.send(embed=embed)
 
-    @commands.command(help="toggles no-prefix mode on or off", aliases=["no_prefix", "silentprefix", "silent_prefix"])
+    @commands.command(help="Toggles the no-prefix mode on/off", aliases=["no_prefix", "silentprefix", "silent_prefix"])
     @commands.is_owner()
     async def noprefix(self, ctx, state : str=None):
         if state == 'on':
@@ -337,6 +337,23 @@ class Owner(commands.Cog):
             elif self.client.no_prefix == True:
                 await ctx.message.add_reaction('<:toggle_off:857842924544065536>')
                 self.client.no_prefix = False
+
+    @commands.command(help="Toggles the bot-maintenance mode on/off", aliases=["bot_maintenance", "maintenancebot", "maintenance_bot", 'botmaintenance'])
+    @commands.is_owner()
+    async def maintenance(self, ctx, state : str=None):
+        if state == 'on':
+            await ctx.message.add_reaction('<:toggle_on:857842924729270282>')
+            self.client.maintenance = True
+        elif state == 'off':
+            await ctx.message.add_reaction('<:toggle_off:857842924544065536>')
+            self.client.maintenance = False
+        else:
+            if self.client.maintenance == False:
+                await ctx.message.add_reaction('<:toggle_on:857842924729270282>')
+                self.client.maintenance = True
+            elif self.client.maintenance == True:
+                await ctx.message.add_reaction('<:toggle_off:857842924544065536>')
+                self.client.maintenance = False
 
 
     # @commands.command(help="Loads a cog", aliases=['le', 'lc', 'loadcog'])

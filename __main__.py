@@ -290,6 +290,7 @@ client.tracker = DiscordUtils.InviteTracker(client) # Initializes the tracker ob
 client.owner_ids = [564890536947875868, 555818548291829792] # 349373972103561218 (LeoCx1000) # 555818548291829792 (Vicente0670)
 client.launch_time = discord.utils.utcnow()
 client.no_prefix = False
+client.maintenance = False
 client.invite_url = "https://discord.com/api/oauth2/authorize?client_id=760179628122964008&permissions=8&scope=bot"
 client.top_gg = "https://top.gg/bot/760179628122964008"
 client.bots_gg = "https://discord.bots.gg/bots/760179628122964008"
@@ -304,7 +305,6 @@ client._BotBase__cogs = commands.core._CaseInsensitiveDict()
 client.user_id = int('760179628122964008')
 client.afk_users = {}
 client.token = "haha no"
-client.http.token = "you suck"
 client.reddit = asyncpraw.Reddit(client_id=yaml_data['ASYNC_PRAW_CLIENT_ID'],
                                 client_secret=yaml_data['ASYNC_PRAW_CLIENT_SECRET'],
                                 user_agent=yaml_data['ASYNC_PRAW_USER_AGENT'],
@@ -398,6 +398,13 @@ async def run_once_when_ready():
                 client.prefixes[guild.id]
             except KeyError:
                 client.prefixes[guild.id] = PRE
+                
+@client.check
+def maintenance(ctx):
+    if client.maintenance is False:
+        return True
+    else:
+        raise errors.BotMaintenance
 
 @client.check
 def blacklist(ctx):
