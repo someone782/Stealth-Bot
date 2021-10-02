@@ -992,7 +992,7 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
             
     @commands.command(help="Shows how many servers the bot is in", aliases=['server'])
     async def servers(self, ctx):
-        embed = discord.Embed(title=f"I' in `{self.client.guilds}` servers.")
+        embed = discord.Embed(title=f"I' in `{len(self.client.guilds)}` servers.")
 
         await ctx.send(embed=embed)
 
