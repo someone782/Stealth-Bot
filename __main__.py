@@ -309,7 +309,9 @@ client.reddit = asyncpraw.Reddit(client_id=yaml_data['ASYNC_PRAW_CLIENT_ID'],
                                 user_agent=yaml_data['ASYNC_PRAW_USER_AGENT'],
                                 username=yaml_data['ASYNC_PRAW_USERNAME'],
                                 password=yaml_data['ASYNC_PRAW_PASSWORD'])
+
 os.environ["JISHAKU_NO_UNDERSCORE"] = "True"
+os.environ["JISHAKU_FORCE_PAGINATOR"] = "true"
 
 	# Functions and stuff
 
