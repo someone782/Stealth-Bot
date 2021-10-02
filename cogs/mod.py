@@ -24,7 +24,8 @@ class ServerBansEmbedPage(menus.ListPageSource):
         offset = menu.current_page * self.per_page
         colors = [0x910023, 0xA523FF]
         color = random.choice(colors)
-        embed = discord.Embed(title=f"{self.guild}'s bans ({len(self.guild.bans)})", description="\n".join(f'{i+1}. {v}' for i, v in enumerate(entries, start=offset)), timestamp=discord.utils.utcnow(), color=color)
+        bans = await self.guild.bans()
+        embed = discord.Embed(title=f"{self.guild}'s bans ({len(bans)})", description="\n".join(f'{i+1}. {v}' for i, v in enumerate(entries, start=offset)), timestamp=discord.utils.utcnow(), color=color)
         return embed
 
 class Mod(commands.Cog):
