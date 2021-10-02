@@ -94,7 +94,7 @@ class Mod(commands.Cog):
         await self.do_removal(ctx, predicate=check, bulk=bulk, limit=amount)
 
     @commands.command(help="Gets the current guild's list of bans")
-    @commands.has_permissions(ban_members=True)
+    # @commands.has_permissions(ban_members=True)
     @commands.bot_has_permissions(send_messages=True, embed_links=True, ban_members=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def bans(self, ctx, id : int=None):
