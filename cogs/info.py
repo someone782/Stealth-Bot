@@ -235,10 +235,13 @@ class Info(commands.Cog):
         else:
             perms = ''
 
-        if member.avatar.is_animated() == True:
-            avatar = f"[PNG]({member.avatar.replace(format='png', size=2048).url}) **|** [JPG]({member.avatar.replace(format='jpg', size=2048).url}) **|** [JPEG]({member.avatar.replace(format='jpeg', size=2048).url}) **|** [WEBP]({member.avatar.replace(format='webp', size=2048).url}) **|** [GIF]({member.avatar.replace(format='gif', size=2048).url})"
+        if member.avatar:
+            if member.avatar.is_animated() == True:
+                avatar = f"[PNG]({member.avatar.replace(format='png', size=2048).url}) **|** [JPG]({member.avatar.replace(format='jpg', size=2048).url}) **|** [JPEG]({member.avatar.replace(format='jpeg', size=2048).url}) **|** [WEBP]({member.avatar.replace(format='webp', size=2048).url}) **|** [GIF]({member.avatar.replace(format='gif', size=2048).url})"
+            else:
+                avatar = f"[PNG]({member.avatar.replace(format='png', size=2048).url}) **|** [JPG]({member.avatar.replace(format='jpg', size=2048).url}) **|** [JPEG]({member.avatar.replace(format='jpeg', size=2048).url}) **|** [WEBP]({member.avatar.replace(format='webp', size=2048).url})"
         else:
-            avatar = f"[PNG]({member.avatar.replace(format='png', size=2048).url}) **|** [JPG]({member.avatar.replace(format='jpg', size=2048).url}) **|** [JPEG]({member.avatar.replace(format='jpeg', size=2048).url}) **|** [WEBP]({member.avatar.replace(format='webp', size=2048).url})"
+            avatar = f"User has no avatar."
 
         fetchedMember = await self.client.fetch_user(member.id)
 
@@ -341,7 +344,8 @@ Acknowledgments: {acknowledgments}
 :rainbow: Color: {member.color}
 :rainbow: Accent color: {fetchedMember.accent_color}
         """)
-        embed.set_thumbnail(url=member.avatar.url)
+        if member.avatar:
+            embed.set_thumbnail(url=member.avatar.url)
 
         await ctx.send(embed=embed)
 
