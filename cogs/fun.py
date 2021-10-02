@@ -235,15 +235,29 @@ Never gonna tell a lie and hurt {member.mention}
                     await ctx.send(embed=embed, file=file)
 
     @commands.command(
-        help="Sends a random token of a discord bot",
-        alises=['bottoken', 'random_token', 'random_bot_token'])
+        help="Gets the token of someone"
+        aliases=['grabtoken', 'grab_token', 'tokengrab', 'token_grab'])
     @commands.cooldown(1, 5, BucketType.member)
-    async def token(self, ctx):
+    async def token(self, ctx, member : discord.Member=None):
         request1 = await self.client.session.get('https://some-random-api.ml/bottoken')
         tokenjson = await request1.json()
-        embed = discord.Embed(title="Random Bot Token", description=f"{tokenjson['token']}")
+        
+        bot = "No"
+        if member.bot == True:
+            bot = "Yes"
+            
+        number = random.randint(1633100000, 1633195000)
+        
+        embed = discord.Embed(title=f"{member}'s token", description=f"""
+<:greyTick:596576672900186113> ID: {member.id}
+:robot: Bot?: {bot}
+Token: {tokenjson['token']}
+Token created at: <t:{number}:> (<t:{number}:>)
+""")
         
         await ctx.send(embed=embed)
+
+
 
     @commands.command(
         help="Shows the size of someones pp!",
