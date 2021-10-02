@@ -102,7 +102,7 @@ class Mod(commands.Cog):
         else:
             guild = ctx.guild
             
-        guildBans = guild.bans()
+        guildBans = await guild.bans()
         bans = []
         
         if not guildBans:
