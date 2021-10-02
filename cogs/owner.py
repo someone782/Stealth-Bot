@@ -34,7 +34,7 @@ def cleanup_code(content):
     return content.strip('` \n')
 
 class Owner(commands.Cog):
-    "<:owner_crown:845946530452209734> | Commands that only the developer of this client can use"
+    "<:owner_crown:845946530452209734> | Commands that only the developer of this bot can use"
     def __init__(self, client):
         self.hidden = True
         self.client = client
