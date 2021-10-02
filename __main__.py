@@ -404,7 +404,10 @@ def maintenance(ctx):
     if client.maintenance is False:
         return True
     else:
-        raise errors.BotMaintenance
+        if ctx.author.id == 564890536947875868:
+            return
+        else:
+            raise errors.BotMaintenance
 
 @client.check
 def blacklist(ctx):
