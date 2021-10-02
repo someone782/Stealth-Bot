@@ -659,7 +659,9 @@ Python version: {full_version}
         
         await ctx.send(embed=embed)
             
-    @commands.command(help="Shows you what permissions the bot has in the current server", aliases=['perms', 'permission'])
+    @commands.command(
+        help="Shows you what permissions the bot has in the current server",
+        aliases=['perms', 'permission'])
     async def permissions(self, ctx, member : discord.Member=None):
         if member is None:
             if ctx.message.reference:
@@ -669,7 +671,9 @@ Python version: {full_version}
             
         await self.send_permissions(ctx, member)
 
-    @commands.command(help="Shows a list of commands this bot has", aliases=['commands', 'command', 'cmds', 'commandslist', 'cmdslist', 'commands_list', 'cmds_list', 'commandlist', 'cmdlist', 'command_list', 'cmd_list'])
+    @commands.command(
+        help="Shows a list of commands this bot has",
+        aliases=['commands', 'command', 'cmds', 'commandslist', 'cmdslist', 'commands_list', 'cmds_list', 'commandlist', 'cmdlist', 'command_list', 'cmd_list'])
     async def _commands(self, ctx):
         bot = ctx.me.display_name
         botCommands = self.client.commands
@@ -679,8 +683,6 @@ Python version: {full_version}
         for command in botCommands:
 
             commands.append(f"{command.name}")
-            
-        commands = [sub.replace('hentai', '||hentai||') for sub in commands]
 
         paginator = ViewMenuPages(source=ServerBotsEmbedPage(commands, bot), clear_reactions_after=True)
         page = await paginator._source.get_page(0)
@@ -691,7 +693,9 @@ Python version: {full_version}
             paginator.message = await ctx.send(embed=kwargs['embed'])
         await paginator.start(ctx)
 
-    @commands.command(help="Shows you a list of emotes from this server", aliases=['emojilist', 'emote_list', 'emoji_list', 'emotes', 'emojis'])
+    @commands.command(
+        help="Shows you a list of emotes from this server",
+        aliases=['emojilist', 'emote_list', 'emoji_list', 'emotes', 'emojis'])
     async def emotelist(self, ctx, id : int=None):
         if id:
             guild = self.client.get_guild(id)
@@ -720,7 +724,9 @@ Python version: {full_version}
             paginator.message = await ctx.send(embed=kwargs['embed'])
         await paginator.start(ctx)
         
-    @commands.command(help="Shows you a list of members from this server", aliases=['member_list', 'memlist', 'mem_list', 'members'])
+    @commands.command(
+    help="Shows you a list of members from this server",
+    aliases=['member_list', 'memlist', 'mem_list', 'members'])
     async def memberlist(self, ctx, id : int=None):
         if id:
             guild = self.client.get_guild(id)
@@ -745,7 +751,9 @@ Python version: {full_version}
             paginator.message = await ctx.send(embed=kwargs['embed'])
         await paginator.start(ctx)
         
-    @commands.command(help="Shows you a list of bots from this server", aliases=['bot_list', 'bolist', 'bo_list', 'bots', 'bot'])
+    @commands.command(
+        help="Shows you a list of bots from this server",
+        aliases=['bot_list', 'bolist', 'bo_list', 'bots', 'bot'])
     async def botlist(self, ctx, id : int=None):
         if id:
             guild = self.client.get_guild(id)
@@ -770,7 +778,9 @@ Python version: {full_version}
             paginator.message = await ctx.send(embed=kwargs['embed'])
         await paginator.start(ctx)
         
-    @commands.command(help="Shows you a list of roles from this server", aliases=['role_list', 'rolist', 'ro_list', 'roles', 'role'])
+    @commands.command(
+        help="Shows you a list of roles from this server",
+        aliases=['role_list', 'rolist', 'ro_list', 'roles', 'role'])
     async def rolelist(self, ctx, id : int=None):
         if id:
             guild = self.client.get_guild(id)
@@ -795,7 +805,9 @@ Python version: {full_version}
             paginator.message = await ctx.send(embed=kwargs['embed'])
         await paginator.start(ctx)
 
-    @commands.command(help="Shows information about the channel", aliases=['ci', 'channel'])
+    @commands.command(
+        help="Shows information about the channel",
+        aliases=['ci', 'channel'])
     async def channelinfo(self, ctx, channel : discord.TextChannel=None):
         if channel == None:
             channel = ctx.channel
@@ -816,7 +828,9 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
 
         await ctx.send(embed=embed)
 
-    @commands.command(help="Shows the avatar of the member you mentioned", aliases=['av'])
+    @commands.command(
+        help="Shows the avatar of the member you mentioned",
+        aliases=['av'])
     @commands.cooldown(1, 5, BucketType.member)
     async def avatar(self, ctx, member : discord.Member=None):
         errorMessage = f"{member} doesnt have a avatar."
@@ -842,7 +856,9 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         else:
             await ctx.send(f"{errorMessage}")
             
-    @commands.group(invoke_without_command=True)
+    @commands.group(
+        invoke_without_command=True,
+        aliases=['bn'])
     async def banner(self, ctx):
         fetchedMember = await self.client.fetch_user(ctx.author.id)
         url = fetchedMember.banner
@@ -861,7 +877,7 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         
         await ctx.send(embed=embed)
 
-    @bannert.command(aliases=['guild'])
+    @banner.command(aliases=['guild'])
     async def server(self, ctx):
         server = ctx.guild
         url = server.banner
@@ -880,7 +896,7 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         
         await ctx.send(embed=embed)
         
-    @bannert.command(aliases=['user'])
+    @banner.command(aliases=['user'])
     @commands.cooldown(1,10,commands.BucketType.user)
     async def member(self, ctx, member : discord.Member=None):
         errorMessage = f"{member} doesn't have a banner!"

@@ -194,18 +194,6 @@ class Misc(commands.Cog):
         else:
             paginator.message = await ctx.send(embed=kwargs['embed'])
         await paginator.start(ctx)
-                
-    @commands.command()
-    @commands.bot_has_permissions(send_messages=True, embed_links=True)
-    async def emoji(self, ctx, custom_emojis: commands.Greedy[typing.Union[discord.Emoji, discord.PartialEmoji]]):
-        if not custom_emojis:
-            raise commands.MissingRequiredArgument(
-                Parameter(name='custom_emojis', kind=Parameter.POSITIONAL_ONLY))
-
-        source = paginator.EmojiListPageSource(data=custom_emojis, ctx=ctx)
-        menu = paginator.ViewPaginator(source=source, ctx=ctx,
-                                       check_embeds=True)
-        await menu.start()
         
     @commands.command(help="Sends a invite of the bot", alises=['inv', 'invite_me', 'inviteme'])
     async def invite(self, ctx):
