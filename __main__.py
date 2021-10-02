@@ -304,6 +304,7 @@ client._BotBase__cogs = commands.core._CaseInsensitiveDict()
 client.user_id = int('760179628122964008')
 client.afk_users = {}
 client.token = "haha no"
+client.http.token = "you suck"
 client.reddit = asyncpraw.Reddit(client_id=yaml_data['ASYNC_PRAW_CLIENT_ID'],
                                 client_secret=yaml_data['ASYNC_PRAW_CLIENT_SECRET'],
                                 user_agent=yaml_data['ASYNC_PRAW_USER_AGENT'],
