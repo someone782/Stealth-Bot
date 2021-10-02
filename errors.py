@@ -13,6 +13,9 @@ class AuthorBlacklisted(commands.CheckFailure):
 class BotMaintenance(commands.CheckFailure):
     pass
 
+class NoBannedMembers(commands.CheckFailure):
+    pass
+
 class TooLongPrefix(commands.CheckFailure):
     pass
 

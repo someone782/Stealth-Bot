@@ -109,6 +109,9 @@ class ErrorHandler(commands.Cog):
             
         elif isinstance(error, errors.BotMaintenance):
             message = f"The bot is in maintenance mode meaning no commands work."
+            
+        elif isinstance(error, errors.NoBannedMembers):
+            message = f"There's no banned users in this server."
 
         elif isinstance(error, helpers.NotSH):
             message = f"You can only use this command in `Stealth Hangout`!\ndiscord.gg/ktkXwmD2kF"
