@@ -15,12 +15,158 @@ from discord.ext import commands
 
 def setup(client):
     client.add_cog(Misc(client))
+    
+class BotServersEmbedPage(menus.ListPageSource):
+    def __init__(self, data, name):
+        self.data = data
+        self.name = name
+        super().__init__(data, per_page=1)
+    
+async def format_page(self, menu, entries):
+    offset = menu.current_page * self.per_page
+    colors = [0x910023, 0xA523FF]
+    color = random.choice(colors)
+    embed = discord.Embed(title=f"", description=entries, timestamp=discord.utils.utcnow(), color=color)
+    return embed
 
 class Misc(commands.Cog):
     ":gear: | Miscellaneous commands"
     def __init__(self, client):
         self.client = client
-        
+    
+    @commands.command()
+    async def serverlist(self, ctx):
+        botServers = self.client.guilds
+        servers = []
+
+        for server in botServers:
+
+            if ctx.me.guild_permissions.ban_members:
+                bannedMembers = len(await server.bans())
+            else:
+                bannedMembers = "Couldn't get banned members."
+
+            statuses = [len(list(filter(lambda m: str(m.status) == "online", server.members))),
+                        len(list(filter(lambda m: str(m.status) == "idle", server.members))),
+                        len(list(filter(lambda m: str(m.status) == "dnd", server.members))),
+                        len(list(filter(lambda m: str(m.status) == "streaming", server.members))),
+                        len(list(filter(lambda m: str(m.status) == "offline", server.members)))]
+
+            last_boost = max(server.members, key=lambda m : m.premium_since or server.created_at)
+            if last_boost.premium_since is not None:
+                boost = f"{last_boost} {discord.utils.format_dt(last_boost.premium_since, style='f')} {discord.utils.format_dt(last_boost.premium_since, style='R')}"
+            else:
+                boost = "No boosters exist."
+
+            if server.description:
+                description = server.description
+            else:
+                description = "This server doesn't have a description"
+
+            enabled_features = []
+            features = set(server.features)
+            all_features = {
+                'COMMUNITY': 'Community Server',
+                'VERIFIED': 'Verified',
+                'DISCOVERABLE': 'Discoverable',
+                'PARTNERED': 'Partnered',
+                'FEATURABLE': 'Featured',
+                'COMMERCE': 'Commerce',
+                'MONETIZATION_ENABLED': 'Monetization',
+                'NEWS': 'News Channels',
+                'PREVIEW_ENABLED': 'Preview Enabled',
+                'INVITE_SPLASH': 'Invite Splash',
+                'VANITY_URL': 'Vanity Invite URL',
+                'ANIMATED_ICON': 'Animated Server Icon',
+                'BANNER': 'Server Banner',
+                'MORE_EMOJI': 'More Emoji',
+                'MORE_STICKERS': 'More Stickers',
+                'WELCOME_SCREEN_ENABLED': 'Welcome Screen',
+                'MEMBER_VERIFICATION_GATE_ENABLED': 'Membership Screening',
+                'TICKETED_EVENTS_ENABLED': 'Ticketed Events',
+                'VIP_REGIONS': 'VIP Voice Regions',
+                'PRIVATE_THREADS': 'Private Threads',
+                'THREE_DAY_THREAD_ARCHIVE': '3 Day Thread Archive',
+                'SEVEN_DAY_THREAD_ARCHIVE': '1 Week Thread Archive',
+            }
+
+            for feature, label in all_features.items():
+                if feature in features:
+                    enabled_features.append(f"<:greenTick:596576670815879169> {label}")
+
+            features = '\n'.join(enabled_features)
+
+            if features == "":
+                features = "This server doesn't have any features."
+
+            if server.premium_tier == 1:
+                levelEmoji = "<:Level1_guild:883072977430794240>"
+            elif server.premium_tier == 2:
+                levelEmoji = "<:Level2_guild:883073003984916491>"
+            else:
+                levelEmoji = "<:Level3_guild:883073034817245234>"
+
+            verification_level1 = str(server.verification_level)
+            verification_level = verification_level1.capitalize()
+
+            if verification_level == "Low":
+                verificationEmote = "<:low_verification:883363584464285766>"
+            elif verification_level == "Medium":
+                verificationEmote = "<:medium_verifiaction:883363595163947120>"
+            elif verification_level == "High":
+                verificationEmote = "<:high_verifiaction:883363640537915472>"
+            elif verification_level == "Highest":
+                verificationEmote = "<:highest_verifiaction:883363707332202546>"
+            else:
+                verificationEmote = "<:none_verifiaction:883363576377659532>"
+
+            if str(server.explicit_content_filter) == "no_role":
+                explictContentFilter = "Scan media content from members without a role."
+            elif str(server.explicit_content_filter) == "all_members":
+                explictContentFilter = "Scan media from all members."
+            else:
+                explictContentFilter = "Don't scan any media content."
+            servers.append(f"""
+        <:greyTick:596576672900186113> ID: {server.id}
+        :information_source: Description: {description}
+
+        <:members:858326990725709854> Members: {len(server.members)} (:robot: {len(list(filter(lambda m : m.bot, server.members)))})
+        :robot: Bots: {len(list(filter(lambda m: m.bot, server.members)))}
+        <:owner_crown:845946530452209734> Owner: {server.owner}
+        <:members:858326990725709854> Max members: {server.max_members}
+        <:bans:878324391958679592> Banned members: {bannedMembers}
+
+        {verificationEmote} Verification level: {verification_level}
+        <:channel_nsfw:585783907660857354> Explicit content filter: {explictContentFilter}
+        :file_folder: Filesize limit: {pretty_size(server.filesize_limit)}
+        Created: {discord.utils.format_dt(server.created_at, style="f")} ({discord.utils.format_dt(server.created_at, style="R")})
+        {helpers.get_server_region_emote(server)} Region: {helpers.get_server_region(server)}
+
+        <:status_offline:596576752013279242> Statuses: <:status_online:596576749790429200> {statuses[0]} <:status_idle:596576773488115722> {statuses[1]} <:status_dnd:596576774364856321> {statuses[2]} <:status_streaming:596576747294818305> {statuses[3]} <:status_offline:596576752013279242> {statuses[4]}
+        <:text_channel:876503902554578984> Channels: <:text_channel:876503902554578984> {len(server.text_channels)} <:voice:860330111377866774> {len(server.voice_channels)} <:category:882685952999428107> {len(server.categories)} <:stagechannel:824240882793447444> {len(server.stage_channels)} <:threadnew:833432474347372564> {len(server.threads)}
+        <:role:876507395839381514> Roles: {len(server.roles)}
+
+        <:emoji_ghost:658538492321595393> Animated emojis: {len([x for x in server.emojis if x.animated])}/{server.emoji_limit}
+        <:emoji_ghost:658538492321595393> Non animated emojis: {len([x for x in server.emojis if not x.animated])}/{server.emoji_limit}
+
+        {levelEmoji} Level: {server.premium_tier}
+        <:boost:858326699234164756> Boosts: {server.premium_subscription_count}
+        <:boost:858326699234164756> Latest booster: {boost}
+
+        Features:
+        {features}
+        """)
+
+
+        paginator = ViewMenuPages(source=BotServersEmbedPage(servers), clear_reactions_after=True)
+        page = await paginator._source.get_page(0)
+        kwargs = await paginator._get_kwargs_from_page(page)
+        if paginator.build_view():
+            paginator.message = await ctx.send(embed=kwargs['embed'],view = paginator.build_view())
+        else:
+            paginator.message = await ctx.send(embed=kwargs['embed'])
+        await paginator.start(ctx)
+                
     @commands.command()
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
     async def emoji(self, ctx, custom_emojis: commands.Greedy[typing.Union[discord.Emoji, discord.PartialEmoji]]):
