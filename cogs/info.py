@@ -325,7 +325,34 @@ Pending verification?: {pendingText}
 AFK?: No idea
 Avatar url: {avatar}
 Banner url: {banner}
+<:greyTick:596576672900186113> ID: {server.id}
+:information_source: Description: {description}
 
+<:members:858326990725709854> Members: {len(server.members)} (:robot: {len(list(filter(lambda m : m.bot, server.members)))})
+:robot: Bots: {len(list(filter(lambda m: m.bot, server.members)))}
+<:owner_crown:845946530452209734> Owner: {server.owner}
+<:members:858326990725709854> Max members: {server.max_members}
+<:bans:878324391958679592> Banned members: {bannedMembers}
+
+{verificationEmote} Verification level: {verification_level}
+<:channel_nsfw:585783907660857354> Explicit content filter: {explictContentFilter}
+:file_folder: Filesize limit: {pretty_size(server.filesize_limit)}
+Created: {discord.utils.format_dt(server.created_at, style="f")} ({discord.utils.format_dt(server.created_at, style="R")})
+{helpers.get_server_region_emote(server)} Region: {helpers.get_server_region(server)}
+
+<:status_offline:596576752013279242> Statuses: <:status_online:596576749790429200> {statuses[0]} <:status_idle:596576773488115722> {statuses[1]} <:status_dnd:596576774364856321> {statuses[2]} <:status_streaming:596576747294818305> {statuses[3]} <:status_offline:596576752013279242> {statuses[4]}
+<:text_channel:876503902554578984> Channels: <:text_channel:876503902554578984> {len(server.text_channels)} <:voice:860330111377866774> {len(server.voice_channels)} <:category:882685952999428107> {len(server.categories)} <:stagechannel:824240882793447444> {len(server.stage_channels)} <:threadnew:833432474347372564> {len(server.threads)}
+<:role:876507395839381514> Roles: {len(server.roles)}
+
+<:emoji_ghost:658538492321595393> Animated emojis: {len([x for x in server.emojis if x.animated])}/{server.emoji_limit}
+<:emoji_ghost:658538492321595393> Non animated emojis: {len([x for x in server.emojis if not x.animated])}/{server.emoji_limit}
+
+{levelEmoji} Level: {server.premium_tier}
+<:boost:858326699234164756> Boosts: {server.premium_subscription_count}
+<:boost:858326699234164756> Latest booster: {boost}
+
+Features:
+{features}
 <a:nitro_wumpus:857636144875175936> Boosting: {premiumText}
 <:invite:860644752281436171> Created: {discord.utils.format_dt(member.created_at, style="f")} ({discord.utils.format_dt(member.created_at, style="R")})
 <:member_join:596576726163914752> Joined: {discord.utils.format_dt(member.joined_at, style="f")} ({discord.utils.format_dt(member.joined_at, style="R")})
@@ -454,34 +481,7 @@ Acknowledgments: {acknowledgments}
             explictContentFilter = "Don't scan any media content."
 
         embed = discord.Embed(title=f"{server}", description=f"""
-<:greyTick:596576672900186113> ID: {server.id}
-:information_source: Description: {description}
 
-<:members:858326990725709854> Members: {len(server.members)} (:robot: {len(list(filter(lambda m : m.bot, server.members)))})
-:robot: Bots: {len(list(filter(lambda m: m.bot, server.members)))}
-<:owner_crown:845946530452209734> Owner: {server.owner}
-<:members:858326990725709854> Max members: {server.max_members}
-<:bans:878324391958679592> Banned members: {bannedMembers}
-
-{verificationEmote} Verification level: {verification_level}
-<:channel_nsfw:585783907660857354> Explicit content filter: {explictContentFilter}
-:file_folder: Filesize limit: {pretty_size(server.filesize_limit)}
-Created: {discord.utils.format_dt(server.created_at, style="f")} ({discord.utils.format_dt(server.created_at, style="R")})
-{helpers.get_server_region_emote(server)} Region: {helpers.get_server_region(server)}
-
-<:status_offline:596576752013279242> Statuses: <:status_online:596576749790429200> {statuses[0]} <:status_idle:596576773488115722> {statuses[1]} <:status_dnd:596576774364856321> {statuses[2]} <:status_streaming:596576747294818305> {statuses[3]} <:status_offline:596576752013279242> {statuses[4]}
-<:text_channel:876503902554578984> Channels: <:text_channel:876503902554578984> {len(server.text_channels)} <:voice:860330111377866774> {len(server.voice_channels)} <:category:882685952999428107> {len(server.categories)} <:stagechannel:824240882793447444> {len(server.stage_channels)} <:threadnew:833432474347372564> {len(server.threads)}
-<:role:876507395839381514> Roles: {len(server.roles)}
-
-<:emoji_ghost:658538492321595393> Animated emojis: {len([x for x in server.emojis if x.animated])}/{server.emoji_limit}
-<:emoji_ghost:658538492321595393> Non animated emojis: {len([x for x in server.emojis if not x.animated])}/{server.emoji_limit}
-
-{levelEmoji} Level: {server.premium_tier}
-<:boost:858326699234164756> Boosts: {server.premium_subscription_count}
-<:boost:858326699234164756> Latest booster: {boost}
-
-Features:
-{features}
         """)
 
         if server.banner:
