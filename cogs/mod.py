@@ -8,6 +8,7 @@ import errors
 import datetime
 from discord.ext import commands, menus
 from discord.ext.commands.cooldowns import BucketType
+from discord.ext.menus.views import ViewMenuPages
 
 def setup(client):
     client.add_cog(Mod(client))
