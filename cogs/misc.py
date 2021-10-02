@@ -66,6 +66,8 @@ class Misc(commands.Cog):
         servers = []
 
         for server in botServers:
+            
+            name = server.name
 
             if ctx.me.guild_permissions.ban_members:
                 bannedMembers = len(await server.bans())
@@ -184,7 +186,7 @@ class Misc(commands.Cog):
             """)
 
 
-        paginator = ViewMenuPages(source=BotServersEmbedPage(servers, name=server.name), clear_reactions_after=True)
+        paginator = ViewMenuPages(source=BotServersEmbedPage(servers, name), clear_reactions_after=True)
         page = await paginator._source.get_page(0)
         kwargs = await paginator._get_kwargs_from_page(page)
         if paginator.build_view():
