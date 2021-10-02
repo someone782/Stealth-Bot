@@ -47,12 +47,12 @@ class BotServersEmbedPage(menus.ListPageSource):
         self.data = data
         super().__init__(data, per_page=1)
     
-async def format_page(self, menu, entries):
-    offset = menu.current_page * self.per_page
-    colors = [0x910023, 0xA523FF]
-    color = random.choice(colors)
-    embed = discord.Embed(title=f"Nope", description=entries, timestamp=discord.utils.utcnow(), color=color)
-    return embed
+    async def format_page(self, menu, entries):
+        offset = menu.current_page * self.per_page
+        colors = [0x910023, 0xA523FF]
+        color = random.choice(colors)
+        embed = discord.Embed(title=f"Nope", description=entries, timestamp=discord.utils.utcnow(), color=color)
+        return embed
 
 class Misc(commands.Cog):
     ":gear: | Miscellaneous commands"
