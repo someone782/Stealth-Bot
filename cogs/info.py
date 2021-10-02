@@ -138,7 +138,9 @@ class Info(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command(help="Search lyrics of any song", aliases = ['l', 'lyrc', 'lyric'])
+    @commands.command(
+        help="Search lyrics of any song",
+        aliases = ['l', 'lyrc', 'lyric'])
     async def lyrics(self, ctx, *, search):
         
         loadingEmbed = discord.Embed(title="Getting lyrics...")
@@ -179,7 +181,10 @@ class Info(commands.Cog):
             
             await ctx.reply(embed=embed)
 
-    @commands.command(help="Shows you information about the member you mentioned", aliases=['ui', 'user', 'member', 'memberinfo'], brief="https://cdn.discordapp.com/attachments/876937268609290300/886407195279884318/userinfo.gif")
+    @commands.command(
+        help="Shows you information about the member you mentioned",
+        aliases=['ui', 'user', 'member', 'memberinfo'],
+        brief="https://cdn.discordapp.com/attachments/876937268609290300/886407195279884318/userinfo.gif")
     @commands.cooldown(1, 5, BucketType.member)
     async def userinfo(self, ctx, member : discord.Member=None):
         if member is None:
@@ -350,7 +355,9 @@ Acknowledgments: {acknowledgments}
         await ctx.send(embed=embed)
 
 
-    @commands.command(help="Shows you information about the server", aliases=['si', 'guild', 'guildinfo'])
+    @commands.command(
+        help="Shows you information about the server",
+        aliases=['si', 'guild', 'guildinfo'])
     @commands.cooldown(1, 5, BucketType.member)
     async def serverinfo(self, ctx, id : int=None):
         if id:
@@ -486,7 +493,9 @@ Features:
 
         await ctx.send(embed=embed)
         
-    @commands.command(help="Shows information about a emoji", aliases=['ei', 'emoteinfo', 'emoinfo', 'eminfo', 'emojinfo', 'einfo'])
+    @commands.command(
+        help="Shows information about a emoji",
+        aliases=['ei', 'emoteinfo', 'emoinfo', 'eminfo', 'emojinfo', 'einfo'])
     async def emojiinfo(self, ctx, emoji : typing.Union[discord.Emoji, discord.PartialEmoji]):
         if isinstance(emoji, discord.Emoji):
             fetchedEmoji = await ctx.guild.fetch_emoji(emoji.id)
@@ -555,9 +564,11 @@ Created at: {discord.utils.format_dt(emoji.created_at, style="f")} ({discord.uti
             
             await ctx.send(embed=embed, view=view)
         else:
-            await ctx.send("wait what")
+            raise errors.UnknownError
         
-    @commands.command(help="Shows information about the bot", aliases=['bi'])
+    @commands.command(
+        help="Shows information about the bot",
+        aliases=['bi'])
     async def botinfo(self, ctx):
         prefixes = await self.client.get_pre(self.client, ctx.message, raw_prefix=True)
         text = ctx.me.mention + '\n' + '\n'.join(prefixes)
@@ -989,10 +1000,10 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         embed = discord.Embed(description=status)
         
         await ctx.send(embed=embed)
-            
-    @commands.command(help="Shows how many servers the bot is in", aliases=['server'])
+
+    @commands.command(help="Shows how many servers the bot is in", aliases=['guilds'])
     async def servers(self, ctx):
-        embed = discord.Embed(title=f"I' in `{len(self.client.guilds)}` servers.")
+        embed = discord.Embed(title=f"I'm in `{len(self.client.guilds)}` servers.")
 
         await ctx.send(embed=embed)
 

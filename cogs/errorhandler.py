@@ -100,6 +100,9 @@ class ErrorHandler(commands.Cog):
 
             else:
                 return await ctx.send(f"I couldn't find a command called `{ctx.invoked_with}`.\nDo `help` to view a list of avaible commands.")
+            
+        elif isinstance(errors, errors.UnknownError):
+            message = f"An unexpected error occurred."
 
         elif isinstance(error, errors.AuthorBlacklisted):
             message = f"It appears that you're blacklisted from this bot. Contact Ender2K89#9999 if you think this is a mistake."

@@ -1,6 +1,9 @@
 import discord
 from discord.ext import commands
 
+class UnknownError(commands.CheckFailure):
+    pass
+
 class CommandDoesntExist(commands.CheckFailure):
     pass
 
