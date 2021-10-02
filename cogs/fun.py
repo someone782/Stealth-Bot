@@ -235,7 +235,7 @@ Never gonna tell a lie and hurt {member.mention}
                     await ctx.send(embed=embed, file=file)
 
     @commands.command(
-        help="Gets the token of someone"
+        help="Gets the token of someone",
         aliases=['grabtoken', 'grab_token', 'tokengrab', 'token_grab'])
     @commands.cooldown(1, 5, BucketType.member)
     async def token(self, ctx, member : discord.Member=None):
