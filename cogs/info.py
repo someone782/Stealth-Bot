@@ -634,8 +634,8 @@ Python version: {full_version}
         
         embed = discord.Embed(description=f"""
 ```prolog
-PID: {os.getpid()} {process.name()}
-CPU:
+PID: {os.getpid()} | Name: {process.name()}
+CPU: {psutil.cpu_percent()}%
 RAM:
 Disk:
 Uptime:
