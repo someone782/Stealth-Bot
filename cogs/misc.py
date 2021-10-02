@@ -11,9 +11,8 @@ import errors
 import aiohttp
 from typing import Optional
 import typing
-from discord.ext import commands
+from discord.ext import commands, menus
 
-from discord.ext import menus
 from discord.ext.menus.views import ViewMenuPages
 
 def setup(client):
