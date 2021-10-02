@@ -113,7 +113,7 @@ class Mod(commands.Cog):
         
         for ban in guildBans:
             
-            bans.append(f"[{ban.user}](https://discord.com/ \'Name: {ban.user.name}\nID: {ban.user.id}\nMention: {ban.user.mention}') | [Hover for reason](https://discord.com/ '{ban.reason}')")
+            bans.append(f"[{ban.user}](https://discord.com/ \'Name: {ban.user.name}\nID: {ban.user.id}\nDiscriminator: {ban.user.discriminator}') | [Hover for reason](https://discord.com/ '{ban.reason}')")
             
         paginator = ViewMenuPages(source=ServerBansEmbedPage(bans,guild), clear_reactions_after=True)
         page = await paginator._source.get_page(0)
