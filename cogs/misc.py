@@ -43,15 +43,16 @@ def pretty_size(bytes, units=UNITS_MAPPING):
     return str(amount) + suffix
     
 class BotServersEmbedPage(menus.ListPageSource):
-    def __init__(self, data):
+    def __init__(self, data, name):
         self.data = data
+        self.name = name
         super().__init__(data, per_page=1)
     
     async def format_page(self, menu, entries):
         offset = menu.current_page * self.per_page
         colors = [0x910023, 0xA523FF]
         color = random.choice(colors)
-        embed = discord.Embed(title=f"Nope", description=entries, timestamp=discord.utils.utcnow(), color=color)
+        embed = discord.Embed(title=f"{self.name}", description=entries, timestamp=discord.utils.utcnow(), color=color)
         return embed
 
 class Misc(commands.Cog):
@@ -183,7 +184,7 @@ class Misc(commands.Cog):
             """)
 
 
-        paginator = ViewMenuPages(source=BotServersEmbedPage(servers), clear_reactions_after=True)
+        paginator = ViewMenuPages(source=BotServersEmbedPage(servers, name=server.name), clear_reactions_after=True)
         page = await paginator._source.get_page(0)
         kwargs = await paginator._get_kwargs_from_page(page)
         if paginator.build_view():
