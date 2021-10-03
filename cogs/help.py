@@ -33,7 +33,7 @@ class Dropdown(discord.ui.Select):
                 discord.SelectOption(label="Fun", description="Fun commands like -meme, -hug and more", emoji="⚽"),
                 discord.SelectOption(label="Misc", description="Miscellaneous commands", emoji="⚙️"),
                 discord.SelectOption(label="Mod", description="Moderation commands", emoji="<:staff:858326975869485077>"),
-                discord.SelectOption(albel="Games", description="Commands used to play games when you're bored!", emoji="🎮")
+                discord.SelectOption(albel="Games", description="Commands used to play games when you're bored!", emoji="🎮"),
                 discord.SelectOption(label="Music", description="Commands used to play/control music", emoji="<a:music:888778105844563988>"),
                 discord.SelectOption(label="NSFW", description="NSFW commands, type \"gif\" as the type and it'll be animated", emoji="🔞"),
                 discord.SelectOption(label="Owner", description="Commands that only the developer of this bot can use", emoji="<:owner_crown:845946530452209734>"),
@@ -45,7 +45,7 @@ class Dropdown(discord.ui.Select):
                 discord.SelectOption(label="Fun", description="Fun commands like -meme, -hug and more", emoji="⚽"),
                 discord.SelectOption(label="Misc", description="Miscellaneous commands", emoji="⚙️"),
                 discord.SelectOption(label="Mod", description="Moderation commands", emoji="<:staff:858326975869485077>"),
-                discord.SelectOption(albel="Games", description="Commands used to play games when you're bored!", emoji="🎮")
+                discord.SelectOption(albel="Games", description="Commands used to play games when you're bored!", emoji="🎮"),
                 discord.SelectOption(label="Music", description="Commands used to play/control music", emoji="<a:music:888778105844563988>"),
                 discord.SelectOption(label="Owner", description="Commands that only the developer of this bot can use", emoji="<:owner_crown:845946530452209734>"),
                 discord.SelectOption(label="Custom", description="Commands that are made by members who won a giveaway called \"Custom command for Stealth Bot\"", emoji="🎉"),
