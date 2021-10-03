@@ -12,6 +12,7 @@ import pathlib
 import errors
 import jishaku
 import psutil
+import lavalink
 import random
 import itertools
 from discord.ext import commands
