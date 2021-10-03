@@ -38,6 +38,9 @@ def get_ram_usage():
 def get_ram_total():
     return int(psutil.virtual_memory().total)
 
+def get_ram_usage_pct():
+    return psutil.virtual_memory().percent
+
 class Owner(commands.Cog):
     "<:owner_crown:845946530452209734> | Commands that only the developer of this bot can use"
     def __init__(self, client):
@@ -55,7 +58,7 @@ class Owner(commands.Cog):
 ```yaml
 PID: {os.getpid()} | Name: {process.name()}
 CPU: {psutil.cpu_percent()}% / 100%
-RAM: {int(get_ram_usage() / 1024 / 1024)}MB / {int(get_ram_total() / 1024 / 1024)}MB
+RAM: {int(get_ram_usage() / 1024 / 1024)}MB / {int(get_ram_total() / 1024 / 1024)}MB ({get_ram_usage_pct()}%)
 Disk:
 Uptime:
 Sub-PRC:
