@@ -166,7 +166,7 @@ Comments: {cm:,}
 ```yaml
 PostgreSQL:
 Lavalink: {lavalink.__version__}
-enhanced-dpy: {discord.__version__}
+e-dpy: {discord.__version__}
 asyncpg: {asyncpg.__version__}
 Python: {full_version}
 Idk: 69.42
