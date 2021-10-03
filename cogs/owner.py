@@ -68,6 +68,8 @@ class Owner(commands.Cog):
         pid = os.getpid()
         process = psutil.Process(pid)
         total, used, free = shutil.disk_usage("/")
+        ver = sys.version_info
+        full_version = f"{ver.major}.{ver.minor}.{ver.micro}"
         
         delta_uptime = discord.utils.utcnow() - self.client.launch_time
         hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
@@ -122,7 +124,7 @@ PostgreSQL:
 Lavalink: {lavalink.__version__}
 enhanced-dpy: {discord.__version__}
 asyncpg: {asyncpg.__version__}
-Python:
+Python: {full_version}
 ```
                         """, inline=True)
         embed.set_footer(text=f"{round(ms)}ms{'' * (9-len(str(round(ms, 3))))}", icon_url=ctx.me.avatar.url)
