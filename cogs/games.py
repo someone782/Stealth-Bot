@@ -205,7 +205,7 @@ class Games(commands.Cog):
         def check(m):
             return m.content.lower() in validAnswers and m.channel.id == ctx.channel.id and m.author.id == ctx.author.id
         
-        message = await ctx.send("Pick one! `rock`, `paper`, `scissors`")
+        await ctx.send("Pick one! `rock`, `paper`, `scissors`")
 
         try:
             msg = await self.client.wait_for(event='message', check=check, timeout=15)
@@ -243,4 +243,13 @@ Stealth Bot's answer: {botAnswer}
                                   """, timestamp=discord.utils.utcnow())
             embed.set_footer(text=shortText)
 
-            await ctx.reply(embed=embed)
+            message = await ctx.reply(embed=embed)
+            
+            embed = discord.Embed(title=result, description=f"""
+{ctx.author.name}'s answer: {authorAnswer}
+Stealth Bot's answer: {botAnswer}
+[Hover over this text to see why]({message.jump_url} '{longText}')
+                                  """, timestamp=discord.utils.utcnow())
+            embed.set_footer(text=shortText)
+            
+            await message.edit(embed=embed)
