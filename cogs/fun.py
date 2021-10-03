@@ -857,7 +857,9 @@ Original text: {text}
 
             await ctx.send(f"{random.choice(responses)}")
 
-    @commands.command(help="RPG.", aliases=['fight', 'r'])
+    @commands.command(
+        help="RPG.",
+        aliases=['fight', 'r'])
     async def rpg(self, ctx):
         validAnswers1 = ['yes', 'no']
         validAnswers2 = ['fight', 'stop']
@@ -1002,3 +1004,56 @@ Original text: {text}
                             return await ctx.send(f"__**🎉 {authorName} WON!!! 🎉**__\nYou did `{number}` damage to {pensiveName}!\n{authorName}'s HP: {hp(authorHP)}\n{pensiveName}'s HP: {hp(pensiveHP)}")
                         
                         await ctx.send(f"You did `{number}` damage to {pensiveName}!\n{authorName}'s HP: {hp(authorHP)}\n{pensiveName}'s HP: {hp(pensiveHP)}")
+                        
+    @commands.command(
+        help="Plays rock, paper, scissors with you",
+        aliases=['rps', 'rock_paper_scissors'])
+    async def rockpaperscissors(self, ctx):
+        validAnswers = ['rock', 'paper', 'scissors']
+        botAnswers = ['rock', 'paper', 'scissors']
+
+        def rockPaperScissors(authorName, botName, authorAnswer, botAnswer):
+            if authorAnswer == "rock" and botAnswer == "rock":
+                return f":tada: It's a tie! :tada:"
+            elif authorAnswer == "rock" and botAnswer == "paper":
+                return f":tada: {botName} won! :tada:"
+            elif authorAnswer == "rock" and botAnswer == "scissors":
+                return f":tada: {authorName} won! :tada:"
+
+            elif authorAnswer == "paper" and botAnswer == "rock":
+                return f":tada: {authorName} won! :tada:"
+            elif authorAnswer == "paper" and botAnswer == "paper":
+                return f":tada: It's a tie! :tada:"
+            elif authorAnswer == "paper" and botAnswer == "scissors":
+                return f":tada: {botName} won! :tada:"
+
+            elif authorAnswer == "scissors" and botAnswer == "rock":
+                return f":tada: {botName} won! :tada:"
+            elif authorAnswer == "scissors" and botAnswer == "paper":
+                return f":tada: {authorName} won! :tada:"
+            elif authorAnswer == "scissors" and botAnswer == "scissors":
+                return f":tada: It's a tie! :tada:"
+
+            else:
+                return f"I have no idea who won."
+
+
+        def check(m):
+            return m.content.lower() in validAnswers and m.channel.id == ctx.channel.id and m.author.id == ctx.author.id
+        
+        message = await ctx.send("Pick one! `rock`, `paper`, `scissors`")
+
+        try:
+            msg = await self.client.wait_for(event='message', check=check, timeout=15)
+
+        except asyncio.TimeoutError:
+            return await ctx.send("It's been over 15 seconds, please try again by doing `-rpg`.")
+
+        else:
+
+            authorAnswer = msg.content.lower()
+            botAnswer = random.choice(botAnswers)
+
+            embed = discord.Embed(title=rockPaperScissors(authorName=ctx.author.name, botName="Stealth Bot", authorAnswer=authorAnswer, botAnswer=botAnswer), description=f"My answer: {botAnswer}\nYour answer: {authorAnswer}")
+
+            await message.edit(embed=embed)
