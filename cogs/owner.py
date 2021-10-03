@@ -7,6 +7,7 @@ import typing
 import time
 import textwrap
 import traceback
+import shutil
 import errors
 import jishaku
 import psutil
@@ -56,13 +57,14 @@ class Owner(commands.Cog):
     async def system(self, ctx):
         pid = os.getpid()
         process = psutil.Process(pid)
+        total, used, free = shutil.disk_usage("/")
         
         embed = discord.Embed(description=f"""
 ```yaml
 PID: {os.getpid()} | Name: {process.name()}
 CPU: {psutil.cpu_percent()}% / 100% ({get_cpu_usage_pct()}%)
 RAM: {int(get_ram_usage() / 1024 / 1024)}MB / {int(get_ram_total() / 1024 / 1024)}MB ({get_ram_usage_pct()}%)
-Disk:
+Disk: {used // (2**30)}GiB / {total // (2**30)}GiB 
 Uptime:
 Sub-PRC:
 Network:
