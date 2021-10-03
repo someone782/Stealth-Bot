@@ -8,6 +8,7 @@ import time
 import textwrap
 import traceback
 import shutil
+import pathlib
 import errors
 import jishaku
 import psutil
