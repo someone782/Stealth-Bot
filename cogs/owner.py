@@ -104,7 +104,7 @@ Disk: {used // (2**30)}GB / {total // (2**30)}GB
 Uptime: {days} days, {hours} hours, {minutes} minutes and {seconds} seconds
 ```
                               """, timestamp=discord.utils.utcnow(), color=color)
-        embed.add_field(text=".", value=f"""
+        embed.add_field(name=".", value=f"""
 ```yaml
 Files: {fc}
 Lines: {ls:,}
