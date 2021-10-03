@@ -64,19 +64,41 @@ class Owner(commands.Cog):
         hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
         minutes, seconds = divmod(remainder, 60)
         days, hours = divmod(hours, 24)
-
-        text = f"{days} days, {hours} hours, {minutes} minutes and {seconds} seconds"
-
         
+        p = pathlib.Path('./')
+        cm = cr = fn = cl = ls = fc = 0
+        for f in p.rglob('*.py'):
+            if str(f).startswith("venv"):
+                continue
+            fc += 1
+            with f.open() as of:
+                for l in of.readlines():
+                    l = l.strip()
+                    if l.startswith('class'):
+                        cl += 1
+                    if l.startswith('def'):
+                        fn += 1
+                    if l.startswith('async def'):
+                        cr += 1
+                    if '#' in l:
+                        cm += 1
+                    ls += 1
+
         embed = discord.Embed(description=f"""
 ```yaml
 PID: {os.getpid()} | Name: {process.name()}
 CPU: {psutil.cpu_percent()}% / 100% ({get_cpu_usage_pct()}%)
 RAM: {int(get_ram_usage() / 1024 / 1024)}MB / {int(get_ram_total() / 1024 / 1024)}MB ({get_ram_usage_pct()}%)
 Disk: {used // (2**30)}GB / {total // (2**30)}GB
-Uptime: {text}
-Sub-process:
-Network:
+Uptime: {days} days, {hours} hours, {minutes} minutes and {seconds} seconds
+```
+```yaml
+Files: {fc}
+Lines: {ls:,}
+Classes: {cl}
+Functions: {fn}
+Coroutine: {cr}
+Comments: {cm:,}
 ```
                               """)
         
