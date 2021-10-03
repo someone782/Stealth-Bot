@@ -26,13 +26,14 @@ def setup(client):
     client.add_cog(Owner(client))
     
 def cleanup_code(content):
-    """Automatically removes code blocks from the code."""
-    # remove ```py\n```
     if content.startswith('```') and content.endswith('```'):
         return '\n'.join(content.split('\n')[1:-1])
 
     # remove `foo`
     return content.strip('` \n')
+
+def get_ram_usage():
+    return int(psutil.virtual_memory().total - psutil.virtual_memory().available)
 
 class Owner(commands.Cog):
     "<:owner_crown:845946530452209734> | Commands that only the developer of this bot can use"
@@ -51,7 +52,7 @@ class Owner(commands.Cog):
 ```yaml
 PID: {os.getpid()} | Name: {process.name()}
 CPU: {psutil.cpu_percent()}% / 100%
-RAM:
+RAM: {int(get_ram_usage() / 1024 / 1024)}
 Disk:
 Uptime:
 Sub-PRC:
