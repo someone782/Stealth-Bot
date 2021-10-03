@@ -14,9 +14,9 @@ from discord.ext.menus.views import ViewMenuPages
 from discord.ext.commands.cooldowns import BucketType
 
 def setup(client):
-    client.add_cog(Fun(client))
+    client.add_cog(Games(client))
 
-class Fun(commands.Cog):
+class Games(commands.Cog):
     ":video_game: | Commands used to play games when you're bored!" 
     def __init__(self, client):
         self.client = client
