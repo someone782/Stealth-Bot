@@ -221,7 +221,19 @@ class Games(commands.Cog):
             if msg.content.lower() == "win":
                 authorAnswer = "rock"
                 botAnswer = "scissors"
+                
+            result = rockPaperScissors(authorName=ctx.author.name, botName="Stealth Bot", authorAnswer=authorAnswer, botAnswer=botAnswer)
+            
+            if result == f":tada: {ctx.author.name} won! :tada:":
+                text = f"{authorAnswer} beats {botAnswer}"
+                
+            elif result == f":tada: Stealth Bot won! :tada:":
+                text = f"{botAnswer} beats {authorAnswer}"
+                
+            else:
+                text = f"It's a tie!"
 
-            embed = discord.Embed(title=rockPaperScissors(authorName=ctx.author.name, botName="Stealth Bot", authorAnswer=authorAnswer, botAnswer=botAnswer), description=f"My answer: {botAnswer}\nYour answer: {authorAnswer}")
+            embed = discord.Embed(title=result, description=f"My answer: {botAnswer}\nYour answer: {authorAnswer}", timestamp=discord.utils.utcnow())
+            embed.set_footer(text=text)
 
-            await ctx.send(embed=embed)
+            await ctx.reply(embed=embed)
