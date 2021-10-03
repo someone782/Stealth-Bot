@@ -118,11 +118,10 @@ Comments: {cm:,}
         embed.add_field(name=".", value=f"""
 ```yaml
 PostgreSQL:
-Lavalink: {__lavalink__.version}
-enhanced-dpy:
-asyncpg:
+Lavalink: {lavalink.__version__}
+enhanced-dpy: {discord.__version__}
+asyncpg: {asyncpg.__version__}
 Python:
-Comments:
 ```
                         """, inline=True)
         embed.set_footer(text=f"{round(ms)}ms{'' * (9-len(str(round(ms, 3))))}", icon_url=ctx.me.avatar.url)
