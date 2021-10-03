@@ -116,12 +116,12 @@ Comments: {cm:,}
                         """, inline=True)
         embed.add_field(name=".", value=f"""
 ```yaml
-Files: {fc}
-Lines: {ls:,}
-Classes: {cl}
-Functions: {fn}
-Coroutine: {cr}
-Comments: {cm:,}
+PostgreSQL:
+Lavalink: {__lavalink__.version}
+enhanced-dpy:
+asyncpg:
+Python:
+Comments:
 ```
                         """, inline=True)
         embed.set_footer(text=f"{round(ms)}ms{'' * (9-len(str(round(ms, 3))))}", icon_url=ctx.me.avatar.url)
