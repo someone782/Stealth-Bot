@@ -59,8 +59,6 @@ class Owner(commands.Cog):
     @commands.command(help="Shows information about the system the bot is hosted on",
                       aliases=['sys'])
     async def system(self, ctx):
-        message = await ctx.send("Getting system information...")
-        
         colors = [0x910023, 0xA523FF]
         color = random.choice(colors)
         
@@ -106,7 +104,7 @@ class Owner(commands.Cog):
         pings.append(typingms)
 
         start2 = time.perf_counter()
-        message2 = await ctx.send("Getting ping...")
+        message = await ctx.send("Getting system information...")
         end2 = time.perf_counter()
         messagems = (end2 - start2) * 1000
         pings.append(messagems)
