@@ -225,18 +225,22 @@ class Games(commands.Cog):
             result = rockPaperScissors(authorName=ctx.author.name, botName="Stealth Bot", authorAnswer=authorAnswer, botAnswer=botAnswer)
             
             if result == f":tada: {ctx.author.name} won! :tada:":
-                text = f"{str(authorAnswer).title()} beats {str(botAnswer).title()}"
+                shortText = f"{str(authorAnswer).title()} beats {str(botAnswer).title()}"
+                longText = f"{str(authorAnswer).title()} beats {str(botAnswer).title()} meaning {ctx.author.name} won."
                 
             elif result == f":tada: Stealth Bot won! :tada:":
-                text = f"{str(botAnswer).title()} beats {str(authorAnswer).title()}"
+                shortText = f"{str(botAnswer).title()} beats {str(authorAnswer).title()}"
+                longText = f"{str(botAnswer).title()} beats {str(authorAnswer).title()} meaning Stealth Bot won."
                 
             else:
-                text = f"It's a tie!"
+                shortText = f"It's a tie!"
+                longText = f"{str(botAnswer).title()} doesn't beat {str(authorAnswer).title()} and {str(authorAnswer).title()} doesn't beat {str(botAnswer).title()} meaning it's a tie."
 
             embed = discord.Embed(title=result, description=f"""
 {ctx.author.name}'s answer: {authorAnswer}
 Stealth Bot's answer: {botAnswer}
+[Hover over this text to see why](https://www.youtube.com/ '{longText}')
                                   """, timestamp=discord.utils.utcnow())
-            embed.set_footer(text=text)
+            embed.set_footer(text=shortText)
 
             await ctx.reply(embed=embed)
