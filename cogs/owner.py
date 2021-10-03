@@ -55,7 +55,7 @@ class Owner(commands.Cog):
 ```yaml
 PID: {os.getpid()} | Name: {process.name()}
 CPU: {psutil.cpu_percent()}% / 100%
-RAM: {int(get_ram_usage() / 1024 / 1024)}MB / {int(get_ram_total() / 1024 / 1024)}
+RAM: {int(get_ram_usage() / 1024 / 1024)}MB / {int(get_ram_total() / 1024 / 1024)}MB
 Disk:
 Uptime:
 Sub-PRC:
