@@ -56,9 +56,12 @@ class Owner(commands.Cog):
     @commands.command(help="Shows information about the system the bot is hosted on",
                       aliases=['sys'])
     async def system(self, ctx):
+        message = await ctx.send("Getting system information...")
+        
+        start = time.perf_counter()
+        
         pid = os.getpid()
         process = psutil.Process(pid)
-        
         total, used, free = shutil.disk_usage("/")
         
         delta_uptime = discord.utils.utcnow() - self.client.launch_time
@@ -84,6 +87,10 @@ class Owner(commands.Cog):
                     if '#' in l:
                         cm += 1
                     ls += 1
+                    
+        end = time.perf_counter()
+
+        ms = (end - start) * 1000
 
         embed = discord.Embed(description=f"""
 ```yaml
@@ -101,9 +108,10 @@ Functions: {fn}
 Coroutine: {cr}
 Comments: {cm:,}
 ```
-                              """)
+                              """, timestamp=discord.utils.utcnow(), color=color)
+        embed.set_footer(text=f"{round(ms)}ms{'' * (9-len(str(round(ms, 3))))}", icon_url=ctx.me.avatar.url)
         
-        await ctx.send(embed=embed)
+        await message.edit(content="Received system information", embed=embed)
 
     @commands.command(help="Evaluates code")
     @commands.is_owner()
