@@ -35,6 +35,9 @@ def cleanup_code(content):
 def get_ram_usage():
     return int(psutil.virtual_memory().total - psutil.virtual_memory().available)
 
+def get_ram_total():
+    return int(psutil.virtual_memory().total)
+
 class Owner(commands.Cog):
     "<:owner_crown:845946530452209734> | Commands that only the developer of this bot can use"
     def __init__(self, client):
@@ -52,7 +55,7 @@ class Owner(commands.Cog):
 ```yaml
 PID: {os.getpid()} | Name: {process.name()}
 CPU: {psutil.cpu_percent()}% / 100%
-RAM: {int(get_ram_usage() / 1024 / 1024)}
+RAM: {int(get_ram_usage() / 1024 / 1024)}MB / {int(get_ram_total() / 1024 / 1024)}
 Disk:
 Uptime:
 Sub-PRC:
