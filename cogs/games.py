@@ -233,7 +233,10 @@ class Games(commands.Cog):
             else:
                 text = f"It's a tie!"
 
-            embed = discord.Embed(title=result, description=f"My answer: {botAnswer}\nYour answer: {authorAnswer}", timestamp=discord.utils.utcnow())
+            embed = discord.Embed(title=result, description=f"""
+{ctx.author.name}'s answer: {authorAnswer}
+Stealth Bot's answer: {botAnswer}
+                                  """, timestamp=discord.utils.utcnow())
             embed.set_footer(text=text)
 
             await ctx.reply(embed=embed)
