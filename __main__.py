@@ -175,13 +175,6 @@ class CustomContext(commands.Context):
         if text:
             return f"{emoji} {text}"
         return emoji
-    
-    # async def send(self, content=None, **kwargs):
-    # tip = random.choice(['your tips here'])
-    # if random.randint(1, 100) == 1:
-    #     content = f"{tip}\n\n{str(content) if content else ''}"
-    #     return await super().send(content, **kwargs)
-    # return await super().send(content, **kwargs)
 
     async def send(self, content: str = None, embed: discord.Embed = None,
                    reply: bool = True, footer: bool = True,

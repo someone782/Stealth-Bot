@@ -58,6 +58,9 @@ class Owner(commands.Cog):
     async def system(self, ctx):
         message = await ctx.send("Getting system information...")
         
+        colors = [0x910023, 0xA523FF]
+        color = random.choice(colors)
+        
         start = time.perf_counter()
         
         pid = os.getpid()
