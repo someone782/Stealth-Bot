@@ -97,12 +97,14 @@ class Owner(commands.Cog):
 
         embed = discord.Embed(description=f"""
 ```yaml
-PID: {os.getpid()} | Name: {process.name()}
+PID: {os.getpid()}
 CPU: {psutil.cpu_percent()}% / 100% ({get_cpu_usage_pct()}%)
 RAM: {int(get_ram_usage() / 1024 / 1024)}MB / {int(get_ram_total() / 1024 / 1024)}MB ({get_ram_usage_pct()}%)
 Disk: {used // (2**30)}GB / {total // (2**30)}GB
 Uptime: {days} days, {hours} hours, {minutes} minutes and {seconds} seconds
 ```
+                              """, timestamp=discord.utils.utcnow(), color=color)
+        embed.add_field(text=".", value=f"""
 ```yaml
 Files: {fc}
 Lines: {ls:,}
@@ -111,7 +113,7 @@ Functions: {fn}
 Coroutine: {cr}
 Comments: {cm:,}
 ```
-                              """, timestamp=discord.utils.utcnow(), color=color)
+                        """)
         embed.set_footer(text=f"{round(ms)}ms{'' * (9-len(str(round(ms, 3))))}", icon_url=ctx.me.avatar.url)
         
         await message.edit(content="Received system information!", embed=embed)
