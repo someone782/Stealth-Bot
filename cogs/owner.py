@@ -8,6 +8,7 @@ import time
 import textwrap
 import asyncpg
 import traceback
+import sys
 import shutil
 import pathlib
 import errors
