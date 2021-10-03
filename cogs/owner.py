@@ -6,6 +6,7 @@ import os
 import typing
 import time
 import textwrap
+import asyncpg
 import traceback
 import shutil
 import pathlib
