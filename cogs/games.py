@@ -173,7 +173,7 @@ class Games(commands.Cog):
         help="Plays rock, paper, scissors with you",
         aliases=['rps', 'rock_paper_scissors'])
     async def rockpaperscissors(self, ctx):
-        validAnswers = ['rock', 'paper', 'scissors']
+        validAnswers = ['rock', 'paper', 'scissors', 'win']
         botAnswers = ['rock', 'paper', 'scissors']
 
         def rockPaperScissors(authorName, botName, authorAnswer, botAnswer):
@@ -214,9 +214,13 @@ class Games(commands.Cog):
             return await ctx.send("It's been over 15 seconds, please try again by doing `-rpg`.")
 
         else:
-
+            
             authorAnswer = msg.content.lower()
             botAnswer = random.choice(botAnswers)
+            
+            if msg.content.lower() == "win":
+                authorAnswer = "rock"
+                botAnswer = "scissors"
 
             embed = discord.Embed(title=rockPaperScissors(authorName=ctx.author.name, botName="Stealth Bot", authorAnswer=authorAnswer, botAnswer=botAnswer), description=f"My answer: {botAnswer}\nYour answer: {authorAnswer}")
 
