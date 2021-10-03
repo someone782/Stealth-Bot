@@ -114,7 +114,7 @@ Comments: {cm:,}
                               """, timestamp=discord.utils.utcnow(), color=color)
         embed.set_footer(text=f"{round(ms)}ms{'' * (9-len(str(round(ms, 3))))}", icon_url=ctx.me.avatar.url)
         
-        await message.edit(content="Received system information", embed=embed)
+        await message.edit(content="Received system information!", embed=embed)
 
     @commands.command(help="Evaluates code")
     @commands.is_owner()
