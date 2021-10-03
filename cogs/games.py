@@ -239,17 +239,8 @@ class Games(commands.Cog):
             embed = discord.Embed(title=result, description=f"""
 {ctx.author.name}'s answer: {authorAnswer}
 Stealth Bot's answer: {botAnswer}
-[Hover over this text to see why]({ctx.channel.last_message.jump_url} '{longText}')
+[Hover over this text to see why]({msg.jump_url} '{longText}')
                                   """, timestamp=discord.utils.utcnow())
             embed.set_footer(text=shortText)
 
             await ctx.reply(embed=embed)
-            
-#             embed = discord.Embed(title=result, description=f"""
-# {ctx.author.name}'s answer: {authorAnswer}
-# Stealth Bot's answer: {botAnswer}
-# [Hover over this text to see why]({message.jump_url} '{longText}')
-#                                   """, timestamp=discord.utils.utcnow())
-#             embed.set_footer(text=shortText)
-            
-#             await message.edit(embed=embed)
