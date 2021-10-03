@@ -239,7 +239,7 @@ class Games(commands.Cog):
             embed = discord.Embed(title=result, description=f"""
 {ctx.author.name}'s answer: {authorAnswer}
 Stealth Bot's answer: {botAnswer}
-[Hover over this text to see why](https://www.youtube.com/ '{longText}')
+[Hover over this text to see why]({ctx.message.jump_url} '{longText}')
                                   """, timestamp=discord.utils.utcnow())
             embed.set_footer(text=shortText)
 
