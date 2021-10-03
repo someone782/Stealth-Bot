@@ -225,10 +225,10 @@ class Games(commands.Cog):
             result = rockPaperScissors(authorName=ctx.author.name, botName="Stealth Bot", authorAnswer=authorAnswer, botAnswer=botAnswer)
             
             if result == f":tada: {ctx.author.name} won! :tada:":
-                text = f"{str(authorAnswer).upper()} beats {str(botAnswer).upper()}"
+                text = f"{str(authorAnswer).title()} beats {str(botAnswer).title()}"
                 
             elif result == f":tada: Stealth Bot won! :tada:":
-                text = f"{str(botAnswer).upper()} beats {str(authorAnswer).upper()}"
+                text = f"{str(botAnswer).title()} beats {str(authorAnswer).title()}"
                 
             else:
                 text = f"It's a tie!"
