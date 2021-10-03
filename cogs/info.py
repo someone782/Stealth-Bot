@@ -971,15 +971,15 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         messagems = (end - start) * 1000
         pings.append(messagems)
 
-        discords = time.monotonic()
-        url = "https://discordapp.com/"
-        resp = await self.client.session.get(url)
-        if resp.status == 200:
-                discorde = time.monotonic()
-                discordms = (discorde - discords) * 1000
-                pings.append(discordms)
-        else:
-                discordms = 0
+        # discords = time.monotonic()
+        # url = "https://discordapp.com/"
+        # resp = await self.client.session.get(url)
+        # if resp.status == 200:
+        #         discorde = time.monotonic()
+        #         discordms = (discorde - discords) * 1000
+        #         pings.append(discordms)
+        # else:
+        #         discordms = 0
 
         latencyms = self.client.latency * 1000
         pings.append(latencyms)
@@ -997,7 +997,7 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         websocket_latency = f"{round(latencyms)}ms{' ' * (9-len(str(round(latencyms, 3))))}"
         typing_latency = f"{round(typingms)}ms{' ' * (9-len(str(round(typingms, 3))))}"
         message_latency = f"{round(messagems)}ms{' ' * (9-len(str(round(messagems, 3))))}"
-        discord_latency = f"{round(discordms)}ms{' ' * (9-len(str(round(discordms, 3))))}"
+        # discord_latency = f"{round(discordms)}ms{' ' * (9-len(str(round(discordms, 3))))}"
         database_latency = f"{round(psqlms)}ms{' ' * (9-len(str(round(psqlms, 3))))}"
         average_latency = f"{round(average)}ms{' ' * (9-len(str(round(average, 3))))}"
 
@@ -1005,7 +1005,7 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         embed.add_field(name=":globe_with_meridians: Websocket latency", value=f"{websocket_latency}")
         embed.add_field(name="<a:typing:597589448607399949> Typing latency", value=f"{typing_latency}")
         embed.add_field(name=":speech_balloon: Message latency", value=f"{message_latency}")
-        embed.add_field(name="<:discord:877926570512236564> Discord latency", value=f"{discord_latency}")
+        # embed.add_field(name="<:discord:877926570512236564> Discord latency", value=f"{discord_latency}")
         embed.add_field(name="<:psql:871758815345901619> Database latency", value=f"{database_latency}")
         embed.add_field(name=":infinity: Average latency", value=f"{average_latency}")
 

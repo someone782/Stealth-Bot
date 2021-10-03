@@ -109,15 +109,15 @@ class Owner(commands.Cog):
         messagems = (end2 - start2) * 1000
         pings.append(messagems)
 
-        discords = time.monotonic()
-        url = "https://discordapp.com/"
-        resp = await self.client.session.get(url)
-        if resp.status == 200:
-                discorde = time.monotonic()
-                discordms = (discorde - discords) * 1000
-                pings.append(discordms)
-        else:
-                discordms = 0
+        # discords = time.monotonic()
+        # url = "https://discordapp.com/"
+        # resp = await self.client.session.get(url)
+        # if resp.status == 200:
+        #         discorde = time.monotonic()
+        #         discordms = (discorde - discords) * 1000
+        #         pings.append(discordms)
+        # else:
+        #         discordms = 0
 
         latencyms = self.client.latency * 1000
         pings.append(latencyms)
@@ -135,7 +135,7 @@ class Owner(commands.Cog):
         websocket_latency = f"{round(latencyms)}ms{' ' * (9-len(str(round(latencyms, 3))))}"
         typing_latency = f"{round(typingms)}ms{' ' * (9-len(str(round(typingms, 3))))}"
         message_latency = f"{round(messagems)}ms{' ' * (9-len(str(round(messagems, 3))))}"
-        discord_latency = f"{round(discordms)}ms{' ' * (9-len(str(round(discordms, 3))))}"
+        # discord_latency = f"{round(discordms)}ms{' ' * (9-len(str(round(discordms, 3))))}"
         database_latency = f"{round(psqlms)}ms{' ' * (9-len(str(round(psqlms, 3))))}"
         average_latency = f"{round(average)}ms{' ' * (9-len(str(round(average, 3))))}"
                     
@@ -152,6 +152,7 @@ Disk: {used // (2**30)}GB / {total // (2**30)}GB
 Uptime: {days} days, {hours} hours, {minutes} minutes and {seconds} seconds
 ```
                               """, timestamp=discord.utils.utcnow(), color=color)
+        
         embed.add_field(name="\u200b", value=f"""
 ```yaml
 Files: {fc}
@@ -162,6 +163,7 @@ Coroutine: {cr}
 Comments: {cm:,}
 ```
                         """, inline=True)
+        
         embed.add_field(name="\u200b", value=f"""
 ```yaml
 PostgreSQL:
@@ -172,16 +174,17 @@ Python: {full_version}
 Idk: 69.42
 ```
                         """, inline=True)
+        
         embed.add_field(name="\u200b", value=f"""
 ```yaml
 Websocket: {websocket_latency}
 Typing: {typing_latency}
 Message: {message_latency}
-Discord: {discord_latency}
 Database: {database_latency}
 Average: {average_latency}
 ```
                         """, inline=True)
+        
         embed.set_footer(text=f"{round(ms)}ms{'' * (9-len(str(round(ms, 3))))}", icon_url=ctx.me.avatar.url)
         
         await message.edit(content="Received system information!", embed=embed)
