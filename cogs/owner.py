@@ -57,7 +57,16 @@ class Owner(commands.Cog):
     async def system(self, ctx):
         pid = os.getpid()
         process = psutil.Process(pid)
+        
         total, used, free = shutil.disk_usage("/")
+        
+        delta_uptime = discord.utils.utcnow() - self.client.launch_time
+        hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
+        minutes, seconds = divmod(remainder, 60)
+        days, hours = divmod(hours, 24)
+
+        text = f"{days} days, {hours} hours, {minutes} minutes and {seconds} seconds"
+
         
         embed = discord.Embed(description=f"""
 ```yaml
@@ -65,8 +74,8 @@ PID: {os.getpid()} | Name: {process.name()}
 CPU: {psutil.cpu_percent()}% / 100% ({get_cpu_usage_pct()}%)
 RAM: {int(get_ram_usage() / 1024 / 1024)}MB / {int(get_ram_total() / 1024 / 1024)}MB ({get_ram_usage_pct()}%)
 Disk: {used // (2**30)}GB / {total // (2**30)}GB
-Uptime:
-Sub-PRC:
+Uptime: {text}
+Sub-process:
 Network:
 ```
                               """)
