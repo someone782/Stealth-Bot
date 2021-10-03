@@ -32,6 +32,9 @@ def cleanup_code(content):
     # remove `foo`
     return content.strip('` \n')
 
+def get_cpu_usage_pct():
+    return psutil.cpu_percent(interval=0.5)
+
 def get_ram_usage():
     return int(psutil.virtual_memory().total - psutil.virtual_memory().available)
 
@@ -57,7 +60,7 @@ class Owner(commands.Cog):
         embed = discord.Embed(description=f"""
 ```yaml
 PID: {os.getpid()} | Name: {process.name()}
-CPU: {psutil.cpu_percent()}% / 100%
+CPU: {psutil.cpu_percent()}% / 100% ({get_cpu_usage_pct()}%)
 RAM: {int(get_ram_usage() / 1024 / 1024)}MB / {int(get_ram_total() / 1024 / 1024)}MB ({get_ram_usage_pct()}%)
 Disk:
 Uptime:
