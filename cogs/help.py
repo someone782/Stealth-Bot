@@ -27,29 +27,42 @@ def count_python(root: str) -> int:
 class Dropdown(discord.ui.Select):
     def __init__(self, ctx):
         self.ctx = ctx
-        options = [
-            discord.SelectOption(label="Info", description="All informative commands like serverinfo, userinfo and more!", emoji="<:info:888768239889424444>"),
-            discord.SelectOption(label="Fun", description="Fun commands like -meme, -hug and more", emoji="⚽"),
-            discord.SelectOption(label="Misc", description="Miscellaneous commands", emoji="⚙️"),
-            discord.SelectOption(label="Mod", description="Moderation commands", emoji="<:staff:858326975869485077>"),
-            discord.SelectOption(albel="Games", description="Commands used to play games when you're bored!", emoji="🎮")
-            discord.SelectOption(label="Music", description="Commands used to play/control music", emoji="<a:music:888778105844563988>"),
-            discord.SelectOption(label="Owner", description="Commands that only the developer of this bot can use", emoji="<:owner_crown:845946530452209734>"),
-            discord.SelectOption(label="Custom", description="Commands that are made by members who won a giveaway called \"Custom command for Stealth Bot\"", emoji="🎉"),
-            discord.SelectOption(label="Images", description="Commands that show you images?...", emoji="🖼️")]
+        if ctx.channel.is_nsfw() == True:
+            options = [
+                discord.SelectOption(label="Info", description="All informative commands like serverinfo, userinfo and more!", emoji="<:info:888768239889424444>"),
+                discord.SelectOption(label="Fun", description="Fun commands like -meme, -hug and more", emoji="⚽"),
+                discord.SelectOption(label="Misc", description="Miscellaneous commands", emoji="⚙️"),
+                discord.SelectOption(label="Mod", description="Moderation commands", emoji="<:staff:858326975869485077>"),
+                discord.SelectOption(albel="Games", description="Commands used to play games when you're bored!", emoji="🎮")
+                discord.SelectOption(label="Music", description="Commands used to play/control music", emoji="<a:music:888778105844563988>"),
+                discord.SelectOption(label="NSFW", description="NSFW commands, type \"gif\" as the type and it'll be animated", emoji="🔞"),
+                discord.SelectOption(label="Owner", description="Commands that only the developer of this bot can use", emoji="<:owner_crown:845946530452209734>"),
+                discord.SelectOption(label="Custom", description="Commands that are made by members who won a giveaway called \"Custom command for Stealth Bot\"", emoji="🎉"),
+                discord.SelectOption(label="Images", description="Commands that show you images?...", emoji="🖼️")]
+        else: # i know this is a terrible way of doing it, i don't care.
+            options = [
+                discord.SelectOption(label="Info", description="All informative commands like serverinfo, userinfo and more!", emoji="<:info:888768239889424444>"),
+                discord.SelectOption(label="Fun", description="Fun commands like -meme, -hug and more", emoji="⚽"),
+                discord.SelectOption(label="Misc", description="Miscellaneous commands", emoji="⚙️"),
+                discord.SelectOption(label="Mod", description="Moderation commands", emoji="<:staff:858326975869485077>"),
+                discord.SelectOption(albel="Games", description="Commands used to play games when you're bored!", emoji="🎮")
+                discord.SelectOption(label="Music", description="Commands used to play/control music", emoji="<a:music:888778105844563988>"),
+                discord.SelectOption(label="Owner", description="Commands that only the developer of this bot can use", emoji="<:owner_crown:845946530452209734>"),
+                discord.SelectOption(label="Custom", description="Commands that are made by members who won a giveaway called \"Custom command for Stealth Bot\"", emoji="🎉"),
+                discord.SelectOption(label="Images", description="Commands that show you images?...", emoji="🖼️")]
 
         super().__init__(placeholder='Select a category...', min_values=1, max_values=1, options=options)
         
     def get_minimal_command_signature(self, command):
-        return '%s%s %s' % (self.ctx.clean_prefix, command.qualified_name, command.signature)
+        return "%s%s %s" % (self.ctx.clean_prefix, command.qualified_name, command.signature)
 
     def get_command_name(self, command):
-        return '%s' % (command.qualified_name)
+        return "%s" % (command.qualified_name)
 
     async def callback(self, interaction: discord.Interaction):
         cog = self.ctx.bot.get_cog(self.values[0])
         
-        if cog.qualified_name.lower() == 'nsfw' and ctx.channel.is_nsfw() == False:
+        if cog.qualified_name.lower() == "nsfw" and ctx.channel.is_nsfw() == False: # idk how okay
             raise commands.NSFWChannelRequired(ctx.channel)
         
         entries = cog.get_commands()
