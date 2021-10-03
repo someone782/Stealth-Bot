@@ -64,7 +64,7 @@ class Owner(commands.Cog):
 PID: {os.getpid()} | Name: {process.name()}
 CPU: {psutil.cpu_percent()}% / 100% ({get_cpu_usage_pct()}%)
 RAM: {int(get_ram_usage() / 1024 / 1024)}MB / {int(get_ram_total() / 1024 / 1024)}MB ({get_ram_usage_pct()}%)
-Disk: {used // (2**30)}GiB / {total // (2**30)}GiB 
+Disk: {used // (2**30)}GB / {total // (2**30)}GB
 Uptime:
 Sub-PRC:
 Network:
