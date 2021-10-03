@@ -109,7 +109,7 @@ Disk: {used // (2**30)}GB / {total // (2**30)}GB
 Uptime: {days} days, {hours} hours, {minutes} minutes and {seconds} seconds
 ```
                               """, timestamp=discord.utils.utcnow(), color=color)
-        embed.add_field(name=".", value=f"""
+        embed.add_field(name="\u200b", value=f"""
 ```yaml
 Files: {fc}
 Lines: {ls:,}
@@ -119,13 +119,14 @@ Coroutine: {cr}
 Comments: {cm:,}
 ```
                         """, inline=True)
-        embed.add_field(name=".", value=f"""
+        embed.add_field(name="\u200b", value=f"""
 ```yaml
 PostgreSQL:
 Lavalink: {lavalink.__version__}
 enhanced-dpy: {discord.__version__}
 asyncpg: {asyncpg.__version__}
 Python: {full_version}
+Idk: 69.42
 ```
                         """, inline=True)
         embed.set_footer(text=f"{round(ms)}ms{'' * (9-len(str(round(ms, 3))))}", icon_url=ctx.me.avatar.url)
