@@ -1056,4 +1056,4 @@ Original text: {text}
 
             embed = discord.Embed(title=rockPaperScissors(authorName=ctx.author.name, botName="Stealth Bot", authorAnswer=authorAnswer, botAnswer=botAnswer), description=f"My answer: {botAnswer}\nYour answer: {authorAnswer}")
 
-            await message.edit(embed=embed)
+            await ctx.send(embed=embed)
