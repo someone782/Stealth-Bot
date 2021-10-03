@@ -626,26 +626,6 @@ Python version: {full_version}
 
         await ctx.send(embed=embed)
         
-    @commands.command(help="Shows information about the system the bot is hosted on",
-                      aliases=['sys'])
-    async def system(self, ctx):
-        pid = os.getpid()
-        process = psutil.Process(pid)
-        
-        embed = discord.Embed(description=f"""
-```prolog
-PID: {os.getpid()} | Name: {process.name()}
-CPU: {psutil.cpu_percent()} / 100
-RAM:
-Disk:
-Uptime:
-Sub-PRC:
-Network:
-```
-                              """)
-        
-        await ctx.send(embed=embed)
-        
     async def send_permissions(self, ctx, member):
         permissions = [permission for permission in member.guild_permissions]
         

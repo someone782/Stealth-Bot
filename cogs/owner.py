@@ -39,8 +39,27 @@ class Owner(commands.Cog):
         self.hidden = True
         self.client = client
         self._last_result = None
-
         
+    @commands.command(help="Shows information about the system the bot is hosted on",
+                      aliases=['sys'])
+    async def system(self, ctx):
+        pid = os.getpid()
+        process = psutil.Process(pid)
+        
+        embed = discord.Embed(description=f"""
+```yaml
+PID: {os.getpid()} | Name: {process.name()}
+CPU: {psutil.cpu_percent()}% / 100%
+RAM:
+Disk:
+Uptime:
+Sub-PRC:
+Network:
+```
+                              """)
+        
+        await ctx.send(embed=embed)
+
     @commands.command(help="Evaluates code")
     @commands.is_owner()
     async def eval(self, ctx, *, body : str):
