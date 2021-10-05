@@ -1197,7 +1197,7 @@ Tested verify command: Eiiknostv#2016
         
         text = f'{"Enabled" if mode is True else "Disabled"}'
                                   
-        embed = discord.Embed(title=f"{text} automatic AFK removal", description="To remove your AFK status do `afk` again.")
+        embed = discord.Embed(title=f"{ctx.toggle(mode)} {text} automatic AFK removal", description="To remove your AFK status do `afk` again.")
                                   
         return await ctx.send(embed=embed)
 
