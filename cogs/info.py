@@ -840,7 +840,6 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
                 
         message = ctx.channel.get_partial_message(message.id)
         embed = discord.Embed(title="Message information", description=f"""
-Content: [Hover over this]({message.jump_url} '{message.content}')
 ID: {message.id}
 
 Server: {message.guild} ({message.guild.id})
@@ -851,7 +850,7 @@ Sent at:
 Jump URL: [Click here]({message.jump_url})
         """)
 
-        await ctx.send(embed=embed, reply=False)
+        await ctx.send(embed=embed)
 
     @commands.command(
         help="Shows the avatar of the member you mentioned",
