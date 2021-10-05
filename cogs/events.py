@@ -4,6 +4,7 @@ from discord.ext.commands.core import command
 from discord.utils import get
 import random
 from jishaku.paginators import WrappedPaginator
+import random
 
 def remove(afk):
     if "[AFK]" in afk.split():
@@ -121,8 +122,11 @@ Content:
             hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
             minutes, seconds = divmod(remainder, 60)
             days, hours = divmod(hours, 24)
+            
+            colors = [0x910023, 0xA523FF]
+            color = random.choice(colors)
 
-            embed = discord.Embed(title=f"👋 Welcome back {message.author.name}!", description=f"You've been afk for {days} days, {hours} hours, {minutes} minutes and {seconds} seconds.\nReason: {info['reason']}")
+            embed = discord.Embed(title=f"👋 Welcome back {message.author.name}!", description=f"You've been afk for {days} days, {hours} hours, {minutes} minutes and {seconds} seconds.\nReason: {info['reason']}", timestamp=discord.utils.utcnow(), color=color)
 
             await message.channel.send(embed=embed)
 

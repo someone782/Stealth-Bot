@@ -1165,7 +1165,7 @@ Tested verify command: Eiiknostv#2016
                                       ctx.author.id, ctx.message.created_at, reason[0:1800])
             self.client.afk_users[ctx.author.id] = True
             
-            embed = discord.Embed(title=f"{ctx.author.name} is now AFK", description=f"Reason: {reason}")
+            embed = discord.Embed(title=f"<:idle:872784075591675904> {ctx.author.name} is now AFK", description=f"Reason: {reason}")
             
             await ctx.send(embed=embed)
             
@@ -1183,7 +1183,7 @@ Tested verify command: Eiiknostv#2016
             
             embed = discord.Embed(title=f"👋 Welcome back {ctx.author.name}!", description=f"You've been afk for {days} days, {hours} hours, {minutes} minutes and {seconds} seconds.\nReason: {info['reason']}")
             
-            await ctx.channel.send(embed=embed)
+            await ctx.send(embed=embed)
 
             await ctx.message.add_reaction("👋")
 
