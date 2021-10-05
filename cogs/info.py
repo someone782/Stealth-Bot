@@ -827,6 +827,30 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
         """)
 
         await ctx.send(embed=embed)
+        
+    @commands.command(
+        help="Shows information about a message",
+        aliases=['mi'])
+    async def messageinfo(self, ctx, message : discord.Message=None):
+        if message is None:
+            if ctx.message.reference:
+                message = ctx.message.reference
+            else:
+                message = ctx.message
+                
+        message = ctx.channel.get_partial_message(894920035062140988)
+        embed = discord.Embed(title="Message information", description=f"""
+ID: {message.id}
+
+Server: {message.guild} ({message.guild.id})
+Channel: {message.channel.mention} ({message.channel.id})
+
+Sent at: {discord.utils.format_dt(message.created_at, style="R")} ({discord.utils.format_dt(message.created_at, style="f")})
+
+Jump URL: [Click here]({message.jump_url})
+        """)
+
+        await ctx.send(embed=embed, reply=False)
 
     @commands.command(
         help="Shows the avatar of the member you mentioned",
