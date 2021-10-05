@@ -845,7 +845,7 @@ ID: {message.id}
 Server: {message.guild} ({message.guild.id})
 Channel: {message.channel.mention} ({message.channel.id})
 
-Sent at: {discord.utils.format_dt(message.created_at, style="R")} ({discord.utils.format_dt(message.created_at, style="f")})
+Sent at: 
 
 Jump URL: [Click here]({message.jump_url})
         """)
