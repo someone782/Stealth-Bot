@@ -113,14 +113,20 @@ Content:
 
             self.client.afk_users.pop(message.author.id)
 
-            info = await self.client.db.fetchrow('SELECT * FROM afk WHERE user_id = $1', message.author.id)
-            await self.client.db.execute('INSERT INTO afk (user_id, start_time, reason) VALUES ($1, null, null) '
-                                      'ON CONFLICT (user_id) DO UPDATE SET start_time = null, reason = null', message.author.id)
+            info = await self.client.db.fetchrow("SELECT * FROM afk WHERE user_id = $1", message.author.id)
+            await self.client.db.execute("INSERT INTO afk (user_id, start_time, reason) VALUES ($1, null, null) "
+                                      "ON CONFLICT (user_id) DO UPDATE SET start_time = null, reason = null", message.author.id)
 
-            await message.channel.send(f'**Welcome back, {message.author.mention}, afk since: {discord.utils.format_dt(info["start_time"], "R")}**'
-                                       f'\n**With reason:** {info["reason"]}', delete_after=10)
+            delta_uptime = discord.utils.utcnow() - info["start_time"]
+            hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
+            minutes, seconds = divmod(remainder, 60)
+            days, hours = divmod(hours, 24)
 
-            await message.add_reaction('👋')
+            embed = discord.Embed(title=f"👋 Welcome back {ctx.author.name}!", description=f"You've been afk for {days} days, {hours} hours, {minutes} minutes and {seconds} seconds.\nReason: {info['reason']}")
+
+            await message.channel.send(embed=embed)
+
+            await message.add_reaction("👋")
             
     @commands.Cog.listener('on_message')
     async def on_afk_user_mention(self, message):
@@ -136,17 +142,18 @@ Content:
             for user_id in pinged_afk_user_ids:
                 member = message.guild.get_member(user_id)
                 if member and member.id != message.author.id:
-                    info = await self.client.db.fetchrow('SELECT * FROM afk WHERE user_id = $1', user_id)
-                    paginator.add_line(f'**woah there, {message.author.mention}, it seems like {member.mention} has been afk '
-                                       f'since {discord.utils.format_dt(info["start_time"], style="R")}!**'
-                                       f'\n**With reason:** {info["reason"]}\n')
+                    info = await self.client.db.fetchrow("SELECT * FROM afk WHERE user_id = $1", user_id)
+                    
+                delta_uptime = discord.utils.utcnow() - info["start_time"]
+                hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
+                minutes, seconds = divmod(remainder, 60)
+                days, hours = divmod(hours, 24)
+                    
+                    paginator.add_line(f"It seems that {member.mention} has been afk for {days} days, {hours} hours, {minutes} minutes and {seconds} seconds.\nReason: {info['reason']}\n")
 
-            ctx: commands.Context = await self.client.get_context(message)
+            ctx : commands.Context = await self.client.get_context(message)
             for page in paginator.pages:
-                await ctx.send(page, allowed_mentions=discord.AllowedMentions(replied_user=True,
-                                                                              users=False,
-                                                                              roles=False,
-                                                                              everyone=False))
+                await ctx.send(page, allowed_mentions=discord.AllowedMentions(replied_user=True, users=False, roles=False, everyone=False))
                 
 #     @commands.Cog.listener()
 #     async def on_message(self, message):

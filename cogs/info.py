@@ -1158,37 +1158,48 @@ Tested verify command: Eiiknostv#2016
     async def afk(self, ctx, *, reason="No reason provided"):
         if ctx.author.id in self.client.afk_users and ctx.author.id in self.client.auto_un_afk and self.client.auto_un_afk[ctx.author.id] is True:
             return
+        
         if ctx.author.id not in self.client.afk_users:
-            await self.client.db.execute('INSERT INTO afk (user_id, start_time, reason) VALUES ($1, $2, $3) '
-                                      'ON CONFLICT (user_id) DO UPDATE SET start_time = $2, reason = $3',
+            await self.client.db.execute("INSERT INTO afk (user_id, start_time, reason) VALUES ($1, $2, $3) "
+                                      "ON CONFLICT (user_id) DO UPDATE SET start_time = $2, reason = $3",
                                       ctx.author.id, ctx.message.created_at, reason[0:1800])
             self.client.afk_users[ctx.author.id] = True
-            await ctx.send('**You are now afk!** <:RooSleep:892425348078256138>'
-                           f'\n**with reason:** {reason}')
+            
+            embed = discord.Embed(title=f"{ctx.author.name} is now AFK", description=f"Reason: {reason}")
+            
+            await ctx.send(embed=embed)
+            
         else:
             self.client.afk_users.pop(ctx.author.id)
 
-            info = await self.client.db.fetchrow('SELECT * FROM afk WHERE user_id = $1', ctx.author.id)
-            await self.client.db.execute('INSERT INTO afk (user_id, start_time, reason) VALUES ($1, null, null) '
-                                      'ON CONFLICT (user_id) DO UPDATE SET start_time = null, reason = null', ctx.author.id)
+            info = await self.client.db.fetchrow("SELECT * FROM afk WHERE user_id = $1", ctx.author.id)
+            await self.client.db.execute("INSERT INTO afk (user_id, start_time, reason) VALUES ($1, null, null) "
+                                      "ON CONFLICT (user_id) DO UPDATE SET start_time = null, reason = null", ctx.author.id)
+            
+            delta_uptime = discord.utils.utcnow() - info["start_time"]
+            hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
+            minutes, seconds = divmod(remainder, 60)
+            days, hours = divmod(hours, 24)
+            
+            embed = discord.Embed(title=f"👋 Welcome back {ctx.author.name}!", description=f"You've been afk for {days} days, {hours} hours, {minutes} minutes and {seconds} seconds.\nReason: {info['reason']}")
+            
+            await ctx.channel.send(embed=embed)
 
-            await ctx.channel.send(f'**Welcome back, {ctx.author.mention}, afk since: {discord.utils.format_dt(info["start_time"], "R")}**'
-                                   f'\n**With reason:** {info["reason"]}', delete_after=10)
+            await ctx.message.add_reaction("👋")
 
-            await ctx.message.add_reaction('👋')
-
-    @commands.command(name='auto-afk-remove', aliases=['autoafk', 'aafk'])
-    async def auto_un_afk(self, ctx, mode : bool = None):
-        """
-        Toggles weather to remove the AFK status automatically or not.
-        mode: either enabled or disabled. If none, it will toggle it.
-        """
+    @commands.command(help="Toggles if the bot should remove your AFK status after you send a message or not", aliases=['auto_un_afk', 'aafk', 'auto-afk-remove'])
+    async def autoafk(self, ctx, mode : bool = None):
         mode = mode or (False if (ctx.author.id in self.client.auto_un_afk and self.client.auto_un_afk[ctx.author.id] is True) or ctx.author.id not in self.client.auto_un_afk else True)
         self.client.auto_un_afk[ctx.author.id] = mode
-        await self.client.db.execute('INSERT INTO afk (user_id, auto_un_afk) VALUES ($1, $2) '
-                                  'ON CONFLICT (user_id) DO UPDATE SET auto_un_afk = $2', ctx.author.id, mode)
-        return await ctx.send(f'{"Enabled" if mode is True else "Disabled"} automatic AFK removal.'
-                              f'\n{"**Remove your AFK status by running the `afk` command while being AFK**" if mode is False else ""}')
+        
+        await self.client.db.execute("INSERT INTO afk (user_id, auto_un_afk) VALUES ($1, $2) "
+                                  "ON CONFLICT (user_id) DO UPDATE SET auto_un_afk = $2", ctx.author.id, mode)
+        
+        text = f"{"Enabled" if mode is True else "Disabled"}"
+                                  
+        embed = discord.Embed(title=f"{text} automatic AFK removal", description="To remove your AFK status do `afk` again.")
+                                  
+        return await ctx.send(embed=embed)
 
     # @commands.command()
     # async def afk(self, ctx, *, reason="No reason provided"):
