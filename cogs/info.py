@@ -315,7 +315,7 @@ Mention: {member.mention}
 
 :robot: Bot?: {botStatus}
 Pending verification?: {pendingStatus}
-AFK?: {afkStatus}
+<:afk:894886040576348190> AFK?: {afkStatus}
 Blacklisted?: {blacklistedStatus}
 
 Avatar url: {avatar}
