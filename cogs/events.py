@@ -122,7 +122,7 @@ Content:
             minutes, seconds = divmod(remainder, 60)
             days, hours = divmod(hours, 24)
 
-            embed = discord.Embed(title=f"👋 Welcome back {ctx.author.name}!", description=f"You've been afk for {days} days, {hours} hours, {minutes} minutes and {seconds} seconds.\nReason: {info['reason']}")
+            embed = discord.Embed(title=f"👋 Welcome back {message.author.name}!", description=f"You've been afk for {days} days, {hours} hours, {minutes} minutes and {seconds} seconds.\nReason: {info['reason']}")
 
             await message.channel.send(embed=embed)
 
