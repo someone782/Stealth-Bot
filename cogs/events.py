@@ -6,12 +6,6 @@ import random
 from jishaku.paginators import WrappedPaginator
 import random
 
-def remove(afk):
-    if "[AFK]" in afk.split():
-        return " ".join(afk.split()[1:])
-    else:
-        return afk
-
 def setup(client):
     client.add_cog(Events(client))
 
