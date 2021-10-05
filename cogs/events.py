@@ -119,6 +119,7 @@ Reason: {reason}""",
                                   color=color)
             
             await message.channel.send(embed=embed)
+            await message.add_reaction("👋")
             
         elif message.raw_mentions:
             pinged_afk_user_ids = list(set(message.raw_mentions).intersection(self.client.afk_users))
