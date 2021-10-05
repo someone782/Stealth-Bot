@@ -108,13 +108,13 @@ Content:
             minutes, seconds = divmod(remainder, 60)
             days, hours = divmod(hours, 24)
 
-            text = f"{days} days, {hours} hours, {minutes} minutes and {seconds} seconds"
-            
             colors = [0x910023, 0xA523FF]
             color = random.choice(colors)
             
             embed = discord.Embed(title=f"👋 Welcome back {message.author.name}! I've removed your AFK status.",
-                                  description=f"You've been AFK for {text}.",
+                                  description=f"""
+You've been AFK for {days} days, {hours} hours, {minutes} minutes and {seconds} seconds.
+Reason: {reason}""",
                                   timestamp=discord.utils.utcnow(),
                                   color=color)
             
@@ -129,12 +129,9 @@ Content:
                     info = await self.client.db.fetchrow('SELECT * FROM afk WHERE user_id = $1', user_id)
                     paginator.add_line(f'It seems {member.mention} is AFK since {discord.utils.format_dt(info["start_time"], style="R")}\nReason: {info["reason"]}\n')
 
-            ctx: commands.Context = await self.client.get_context(message)
+            ctx : commands.Context = await self.client.get_context(message)
             for page in paginator.pages:
-                await ctx.send(page, allowed_mentions=discord.AllowedMentions(replied_user=True,
-                                                                              users=False,
-                                                                              roles=False,
-                                                                              everyone=False))
+                await ctx.send(page, allowed_mentions=discord.AllowedMentions(replied_user=True, users=False, roles=False, everyone=False))
 
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
