@@ -1195,7 +1195,7 @@ Tested verify command: Eiiknostv#2016
         await self.client.db.execute("INSERT INTO afk (user_id, auto_un_afk) VALUES ($1, $2) "
                                   "ON CONFLICT (user_id) DO UPDATE SET auto_un_afk = $2", ctx.author.id, mode)
         
-        text = f"{"Enabled" if mode is True else "Disabled"}"
+        text = f'{"Enabled" if mode is True else "Disabled"}'
                                   
         embed = discord.Embed(title=f"{text} automatic AFK removal", description="To remove your AFK status do `afk` again.")
                                   
