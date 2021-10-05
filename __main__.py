@@ -277,7 +277,8 @@ client = StealthBot(
     case_insensitive=True,
     help_command=None,
     enable_debug_events=True,
-    strip_after_prefix=True) # Initializes the client object
+    strip_after_prefix=True,
+    shard=3) # Initializes the client object
 
 client.tracker = DiscordUtils.InviteTracker(client) # Initializes the tracker object
 client.owner_ids = [564890536947875868, 555818548291829792] # 349373972103561218 (LeoCx1000) # 555818548291829792 (Vicente0670)
