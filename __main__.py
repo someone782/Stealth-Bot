@@ -117,90 +117,47 @@ class Confirm(discord.ui.View):
 class CustomContext(commands.Context):
 
     @staticmethod
-    def tick(opt: bool, text: str = None) -> str:
+    def tick(option : bool):
         ticks = {
             True: '<:greenTick:596576670815879169>',
             False: '<:redTick:596576672149667840>',
-            None: '<:greyTick:860644729933791283>',
-        }
-        emoji = ticks.get(opt, "<:redTick:596576672149667840>")
-        if text:
-            return f"{emoji} {text}"
+            None: '<:greyTick:860644729933791283>'}
+        
+        emoji = ticks.get(option, "<:redTick:596576672149667840>")
         return emoji
 
     @staticmethod
-    def default_tick(opt: bool, text: str = None) -> str:
-        ticks = {
-            True: '✅',
-            False: '❌',
-            None: '➖',
-        }
-        emoji = ticks.get(opt, "❌")
-        if text:
-            return f"{emoji} {text}"
-        return emoji
-
-    @staticmethod
-    def square_tick(opt: bool, text: str = None) -> str:
-        ticks = {
-            True: '🟩',
-            False: '🟥',
-            None: '⬛',
-        }
-        emoji = ticks.get(opt, "🟥")
-        if text:
-            return f"{emoji} {text}"
-        return emoji
-
-    @staticmethod
-    def dc_toggle(opt: bool, text: str = None) -> str:
-        ticks = {
-            True: '<:DiscordON:882991627541565461>',
-            False: '<:DiscordOFF:882991627994542080>',
-            None: '<:DiscordNONE:882991627994546237>',
-        }
-        emoji = ticks.get(opt, "<:DiscordOFF:882991627994542080>")
-        if text:
-            return f"{emoji} {text}"
-        return emoji
-
-    @staticmethod
-    def toggle(opt: bool, text: str = None) -> str:
+    def toggle(option : bool):
         ticks = {
             True: '<:toggle_on:857842924729270282>',
             False: '<:toggle_off:857842924544065536>',
-            None: '<:toggle_off:857842924544065536>',
-        }
-        emoji = ticks.get(opt, "<:toggle_off:857842924544065536>")
-        if text:
-            return f"{emoji} {text}"
+            None: '<:toggle_off:857842924544065536>'}
+        
+        emoji = ticks.get(option, "<:toggle_off:857842924544065536>")
         return emoji
 
-    async def send(self, content: str = None, embed: discord.Embed = None,
-                   reply: bool = True, footer: bool = True,
-                   reference: typing.Union[discord.Message, discord.MessageReference] = None, **kwargs):
+    async def send(self, content : str = None, embed : discord.Embed = None,
+                   reply : bool = True, footer : bool = True,
+                   reference : typing.Union[discord.Message, discord.MessageReference] = None, **kwargs):
 
         reference = (reference or self.message.reference or self.message) if reply is True else reference
-
-        if embed and footer is True:
-            if not embed.footer:
-                embed.set_footer(text=f"Requested by {self.author}",
-                                 icon_url=self.author.display_avatar.url)
-
+        
         if embed:
             colors = [0x910023, 0xA523FF]
             color = random.choice(colors)
             
             embed.timestamp = discord.utils.utcnow()
             embed.color = color
+            if footer == True:
+                embed.set_footer(text=f"Requested by {self.author}", icon_url=self.author.display_avatar.url)
                 
         if content is not None:
-            number = random.randint(0, 15)
+            number = random.randint(0, 20)
             if number == 1:
                 content = f"{content}\nSupport **Stealth Bot** by voting: <https://top.gg/bot/760179628122964008>"
                 
         if content is None:
-            number = random.randint(0, 15)
+            number = random.randint(0, 20)
             if number == 1:
                 content = "Support **Stealth Bot** by voting: <https://top.gg/bot/760179628122964008>"
 
@@ -209,8 +166,8 @@ class CustomContext(commands.Context):
         except discord.HTTPException:
             return await super().send(content=content, embed=embed, reference=None, **kwargs)
         
-    async def confirm(self, message: str = 'Do you want to confirm?',
-                      buttons: typing.Tuple[typing.Union[discord.PartialEmoji, str],
+    async def confirm(self, message : str = "Do you want to confirm?",
+                      buttons : typing.Tuple[typing.Union[discord.PartialEmoji, str],
                                             str, discord.ButtonStyle] = None, timeout: int = 30,
                       delete_after_confirm: bool = False, delete_after_timeout: bool = False,
                       delete_after_cancel: bool = None):
@@ -222,6 +179,7 @@ class CustomContext(commands.Context):
         view.ctx = self
         message = await self.send(message, view=view)
         await view.wait()
+        
         if view.value is None:
             try:
                 (await message.edit(view=None)) if \
@@ -229,6 +187,7 @@ class CustomContext(commands.Context):
             except (discord.Forbidden, discord.HTTPException):
                 pass
             return False
+        
         elif view.value:
             try:
                 (await message.edit(view=None)) if \
@@ -236,6 +195,7 @@ class CustomContext(commands.Context):
             except (discord.Forbidden, discord.HTTPException):
                 pass
             return True
+        
         else:
             try:
                 (await message.edit(view=None)) if \
@@ -249,13 +209,16 @@ class StealthBot(commands.AutoShardedBot):
     def __init__(self, *args, **kwargs):
         super().__init__(command_prefix=self.get_pre, *args, **kwargs)
 
-    async def get_pre(self, bot, message: discord.Message, raw_prefix: Optional[bool] = False) -> List[str]:
+    async def get_pre(self, bot, message : discord.Message, raw_prefix : Optional[bool] = False):
         if not message:
             return commands.when_mentioned_or(*self.PRE)(bot, message) if not raw_prefix else self.PRE
+        
         if not message.guild:
             return commands.when_mentioned_or(*self.PRE)(bot, message) if not raw_prefix else self.PRE
+        
         try:
             prefix = self.prefixes[message.guild.id]
+            
         except KeyError:
             prefix = (await self.db.fetchval('SELECT prefix FROM guilds WHERE guild_id = $1',
                                              message.guild.id)) or self.PRE
@@ -278,9 +241,9 @@ client = StealthBot(
     help_command=None,
     enable_debug_events=True,
     strip_after_prefix=True,
-    shard_count=3) # Initializes the client object
+    shard_count=2)
 
-client.tracker = DiscordUtils.InviteTracker(client) # Initializes the tracker object
+client.tracker = DiscordUtils.InviteTracker(client)
 client.owner_ids = [564890536947875868, 555818548291829792] # 349373972103561218 (LeoCx1000) # 555818548291829792 (Vicente0670)
 client.launch_time = discord.utils.utcnow()
 client.no_prefix = False
@@ -289,7 +252,6 @@ client.invite_url = "https://discord.com/api/oauth2/authorize?client_id=76017962
 client.top_gg = "https://top.gg/bot/760179628122964008"
 client.bots_gg = "https://discord.bots.gg/bots/760179628122964008"
 client.github = "https://github.com/Ender2K89/Stealth-Bot"
-#client.allowed_mentions = discord.AllowedMentions(replied_user=False)
 client.allowed_mentions = discord.AllowedMentions.none()
 client.session = aiohttp.ClientSession()
 client.blacklist = {}

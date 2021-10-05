@@ -194,32 +194,47 @@ class Info(commands.Cog):
                 member = ctx.author
                 
         fetchedMember = await self.client.fetch_user(member.id)
+        guild = ctx.guild
+        server = ctx.guild
+        botStatus = "No"
+        pendingText = "No"
+        premiumStatus = "Not boosting"
+        acknowledgments = "None"
+        statusEmote = "<:status_offline:596576752013279242>"
+        nickname = member.nick
+        desktopStatus = ":desktop: <:redTick:596576672149667840>"
+        webStatus = ":globe_with_meridians: <:redTick:596576672149667840>"
+        mobileStatus = ":mobile_phone:  <:redTick:596576672149667840>"
 
         if member.bot:
-            botText = "Yes"
-        else:
-            botText = "No"
+            botStatus = "Yes"
 
         if member.pending:
-            pendingText = "Yes"
-        else:
-            pendingText = "No"
+            pendingStatus = "Yes"
 
-        if member.premium_since == None:
-            premiumText = "Not boosting"
-        else:
-            premiumText = f"{discord.utils.format_dt(member.premium_since, style='f')} ({discord.utils.format_dt(member.premium_since, style='R')})"
+        if member.premium_since:
+            premiumStatus = f"{discord.utils.format_dt(member.premium_since, style='f')} ({discord.utils.format_dt(member.premium_since, style='R')})"
 
         if str(member.status).title() == "Online":
             statusEmote = "<:status_online:596576749790429200>"
+            
         elif str(member.status).title() == "Idle":
             statusEmote = "<:status_idle:596576773488115722>"
+            
         elif str(member.status).title() == "Dnd":
             statusEmote = "<:status_dnd:596576774364856321>"
+            
         elif str(member.status).title() == "Streaming":
             statusEmote = "<:status_streaming:596576747294818305>"
-        else:
-            statusEmote = "<:status_offline:596576752013279242>"
+        
+        if member.id == 564890536947875868:
+            acknowledgments = ":crown: Owner"
+            
+        elif member.id == 349373972103561218:
+            acknowledgments = "Helped with a lot of stuff"
+            
+        if member.nick is None:
+            nickname = f"{member.name} (No nickname)"
 
         roles = ""
         for role in member.roles:
@@ -258,12 +273,6 @@ class Info(commands.Cog):
         else:
             banner = "No banner found"
 
-        guild = ctx.guild
-
-        desktopStatus = ":desktop: <:redTick:596576672149667840>"
-        webStatus = ":globe_with_meridians: <:redTick:596576672149667840>"
-        mobileStatus = ":mobile_phone:  <:redTick:596576672149667840>"
-
         if str(member.desktop_status) == "online" or str(member.desktop_status) == "idle" or str(member.desktop_status) == "dnd" or str(member.desktop_status) == "streaming":
             desktopStatus = ":desktop: <:greenTick:596576670815879169>"
 
@@ -272,13 +281,6 @@ class Info(commands.Cog):
 
         if str(member.mobile_status) == "online" or str(member.mobile_status) == "idle" or str(member.mobile_status) == "dnd" or str(member.mobile_status) == "streaming":
             mobileStatus = ":mobile_phone: <:greenTick:596576670815879169>"
-
-        # if member.id in afks.keys():
-        #     afkStatus = "Yes"
-        # else:
-        #     afkStatus = "No"
-
-        # copied code :troll: \/ \/ \/
 
         joined = sorted(ctx.guild.members, key=lambda mem: mem.joined_at)
         pos = joined.index(member)
@@ -296,23 +298,6 @@ class Info(commands.Cog):
         x = members.index(ctx.author)
         join_pos = "\n".join(map(str, members[x - 3: x + 3]))
 
-        # copied code :troll: /\ /\ /\
-
-
-    # {sorted(ctx.guild.members, key=lambda member : member.joined_at).index(member) + 1}
-
-        acknowledgments = "None"
-        if member.id == 564890536947875868:
-            acknowledgments = ":crown: Owner"
-        elif member.id == 349373972103561218:
-            acknowledgments = "Helped with a lot of stuff"
-        elif member.id == 636292554416979979:
-            acknowledgments = "retard"
-            
-        nickname = member.nick
-        if member.nick is None:
-            nickname = f"{member.name} (No nickname)"
-
 
         embed = discord.Embed(title=f"{member}", url=f"https://discord.com/users/{member.id}", description=f"""
 <:nickname:876507754917929020> Nickname: {nickname}
@@ -320,14 +305,15 @@ class Info(commands.Cog):
 Mention: {member.mention}
 <:greyTick:596576672900186113> ID: {member.id}
 
-:robot: Bot?: {botText}
-Pending verification?: {pendingText}
-AFK?: No idea
+:robot: Bot?: {botStatus}
+Pending verification?: {pendingStatus}
+AFK?: {afkStatus}
+Blacklisted?: {blacklistedStatus}
 
 Avatar url: {avatar}
 Banner url: {banner}
 
-<a:nitro_wumpus:857636144875175936> Boosting: {premiumText}
+<a:nitro_wumpus:857636144875175936> Boosting: {premiumStatus}
 <:invite:860644752281436171> Created: {discord.utils.format_dt(member.created_at, style="f")} ({discord.utils.format_dt(member.created_at, style="R")})
 <:member_join:596576726163914752> Joined: {discord.utils.format_dt(member.joined_at, style="f")} ({discord.utils.format_dt(member.joined_at, style="R")})
 <:moved:848312880666640394> Join position:
