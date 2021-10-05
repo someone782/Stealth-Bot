@@ -254,13 +254,13 @@ client.bots_gg = "https://discord.bots.gg/bots/760179628122964008"
 client.github = "https://github.com/Ender2K89/Stealth-Bot"
 client.allowed_mentions = discord.AllowedMentions.none()
 client.session = aiohttp.ClientSession()
-client.blacklist = {}
-client.prefixes = {}
 client.brain_cells = 0
 client._BotBase__cogs = commands.core._CaseInsensitiveDict()
 client.user_id = int('760179628122964008')
 client.afk_users = {}
 client.auto_un_afk = {}
+client.blacklist = {}
+client.prefixes = {}
 client.token = "haha no"
 client.reddit = asyncpraw.Reddit(client_id=yaml_data['ASYNC_PRAW_CLIENT_ID'],
                                 client_secret=yaml_data['ASYNC_PRAW_CLIENT_SECRET'],

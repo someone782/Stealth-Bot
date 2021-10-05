@@ -213,7 +213,13 @@ class Info(commands.Cog):
 
         if member.pending:
             pendingStatus = "Yes"
-
+            
+        if member.id in self.client.afk_users:
+            afkStatus = "Yes"
+            
+        if member.id in self.client.blacklist:
+            blacklistedStatus = "Yes"
+            
         if member.premium_since:
             premiumStatus = f"{discord.utils.format_dt(member.premium_since, style='f')} ({discord.utils.format_dt(member.premium_since, style='R')})"
 
