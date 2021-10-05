@@ -85,54 +85,117 @@ Content:
         
         await commandChannel.send(embed=embed)
         
-    @commands.Cog.listener()
-    async def on_message(self, message):
-        self.client.messages = self.client.messages + 1
+    @commands.Cog.listener('on_message')
+    async def on_owner_forgor(self, message):
+        if not message.guild:
+            return
         
         if message.author.bot:
             return
         
         if message.author.id == 564890536947875868 and "forgor" in message.content:
-            await message.add_reaction("💀")
+            return await message.add_reaction("💀")
+        
+    @commands.Cog.listener('on_message')
+    async def on_afk_user_message(self, message):
+        if not message.guild:
+            return
+        
+        if message.author.bot:
+            return
         
         if message.author.id in self.client.afk_users:
-        
-            self.client.afk_users.pop(message.author.id)
-            info = await self.client.db.fetchrow('SELECT * FROM afk WHERE user_id = $1', message.author.id)
-            await self.client.db.execute('DELETE FROM afk WHERE user_id = $1', message.author.id)
-            
-            reason = info["reason"]
-            
-            delta_uptime = discord.utils.utcnow() - info["start_time"]
-            hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
-            minutes, seconds = divmod(remainder, 60)
-            days, hours = divmod(hours, 24)
+            try:
+                if self.client.auto_un_afk[message.author.id] is False:
+                    return
+            except KeyError:
+                pass
 
-            colors = [0x910023, 0xA523FF]
-            color = random.choice(colors)
+            self.bot.afk_users.pop(message.author.id)
+
+            info = await self.client.db.fetchrow('SELECT * FROM afk WHERE user_id = $1', message.author.id)
+            await self.client.db.execute('INSERT INTO afk (user_id, start_time, reason) VALUES ($1, null, null) '
+                                      'ON CONFLICT (user_id) DO UPDATE SET start_time = null, reason = null', message.author.id)
+
+            await message.channel.send(f'**Welcome back, {message.author.mention}, afk since: {discord.utils.format_dt(info["start_time"], "R")}**'
+                                       f'\n**With reason:** {info["reason"]}', delete_after=10)
+
+            await message.add_reaction('👋')
             
-            embed = discord.Embed(title=f"👋 Welcome back {message.author.name}! I've removed your AFK status.",
-                                  description=f"""
-You've been AFK for {days} days, {hours} hours, {minutes} minutes and {seconds} seconds.
-Reason: {reason}""",
-                                  timestamp=discord.utils.utcnow(),
-                                  color=color)
-            
-            await message.channel.send(embed=embed)
-            await message.add_reaction("👋")
-            
-        elif message.raw_mentions:
-            pinged_afk_user_ids = list(set(message.raw_mentions).intersection(self.client.afk_users))
+    @commands.Cog.listener('on_message')
+    async def on_afk_user_mention(self, message):
+        if not message.guild:
+            return
+        
+        if message.author == self.client.user:
+            return
+        
+        if message.mentions:
+            pinged_afk_user_ids = list(set([u.id for u in message.mentions]).intersection(self.client.afk_users))
             paginator = WrappedPaginator(prefix='', suffix='')
             for user_id in pinged_afk_user_ids:
                 member = message.guild.get_member(user_id)
                 if member and member.id != message.author.id:
                     info = await self.client.db.fetchrow('SELECT * FROM afk WHERE user_id = $1', user_id)
-                    paginator.add_line(f'It seems {member.mention} is AFK since {discord.utils.format_dt(info["start_time"], style="R")}\nReason: {info["reason"]}\n')
+                    paginator.add_line(f'**woah there, {message.author.mention}, it seems like {member.mention} has been afk '
+                                       f'since {discord.utils.format_dt(info["start_time"], style="R")}!**'
+                                       f'\n**With reason:** {info["reason"]}\n')
 
-            ctx : commands.Context = await self.client.get_context(message)
+            ctx: commands.Context = await self.client.get_context(message)
             for page in paginator.pages:
-                await ctx.send(page, allowed_mentions=discord.AllowedMentions(replied_user=True, users=False, roles=False, everyone=False))
+                await ctx.send(page, allowed_mentions=discord.AllowedMentions(replied_user=True,
+                                                                              users=False,
+                                                                              roles=False,
+                                                                              everyone=False))
+                
+#     @commands.Cog.listener()
+#     async def on_message(self, message):
+#         self.client.messages = self.client.messages + 1
+        
+#         if message.author.bot:
+#             return
+        
+#         if message.author.id == 564890536947875868 and "forgor" in message.content:
+#             await message.add_reaction("💀")
+        
+#         if message.author.id in self.client.afk_users:
+        
+#             self.client.afk_users.pop(message.author.id)
+#             info = await self.client.db.fetchrow('SELECT * FROM afk WHERE user_id = $1', message.author.id)
+#             await self.client.db.execute('DELETE FROM afk WHERE user_id = $1', message.author.id)
+            
+#             reason = info["reason"]
+            
+#             delta_uptime = discord.utils.utcnow() - info["start_time"]
+#             hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
+#             minutes, seconds = divmod(remainder, 60)
+#             days, hours = divmod(hours, 24)
+
+#             colors = [0x910023, 0xA523FF]
+#             color = random.choice(colors)
+            
+#             embed = discord.Embed(title=f"👋 Welcome back {message.author.name}! I've removed your AFK status.",
+#                                   description=f"""
+# You've been AFK for {days} days, {hours} hours, {minutes} minutes and {seconds} seconds.
+# Reason: {reason}""",
+#                                   timestamp=discord.utils.utcnow(),
+#                                   color=color)
+            
+#             await message.channel.send(embed=embed)
+#             await message.add_reaction("👋")
+            
+#         elif message.raw_mentions:
+#             pinged_afk_user_ids = list(set(message.raw_mentions).intersection(self.client.afk_users))
+#             paginator = WrappedPaginator(prefix='', suffix='')
+#             for user_id in pinged_afk_user_ids:
+#                 member = message.guild.get_member(user_id)
+#                 if member and member.id != message.author.id:
+#                     info = await self.client.db.fetchrow('SELECT * FROM afk WHERE user_id = $1', user_id)
+#                     paginator.add_line(f'It seems {member.mention} is AFK since {discord.utils.format_dt(info["start_time"], style="R")}\nReason: {info["reason"]}\n')
+
+#             ctx : commands.Context = await self.client.get_context(message)
+#             for page in paginator.pages:
+#                 await ctx.send(page, allowed_mentions=discord.AllowedMentions(replied_user=True, users=False, roles=False, everyone=False))
 
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):

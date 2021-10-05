@@ -1153,26 +1153,62 @@ Tested verify command: Eiiknostv#2016
         embed = discord.Embed(title=f"The current time is {discord.utils.format_dt(discord.utils.utcnow(), style='T')}")
         
         await ctx.send(embed=embed)
-
+        
     @commands.command()
     async def afk(self, ctx, *, reason="No reason provided"):
-        if len(reason) > 100:
-            return await ctx.send("Reason cannot be over 100 characters.")
-        
-        try:
-            await member.edit(nick=f"[AFK] {ctx.author.display_name}")
-        except:
-            pass
+        if ctx.author.id in self.client.afk_users and ctx.author.id in self.client.auto_un_afk and self.client.auto_un_afk[ctx.author.id] is True:
+            return
+        if ctx.author.id not in self.client.afk_users:
+            await self.client.db.execute('INSERT INTO afk (user_id, start_time, reason) VALUES ($1, $2, $3) '
+                                      'ON CONFLICT (user_id) DO UPDATE SET start_time = $2, reason = $3',
+                                      ctx.author.id, ctx.message.created_at, reason[0:1800])
+            self.client.afk_users[ctx.author.id] = True
+            await ctx.send('**You are now afk!** <:RooSleep:892425348078256138>'
+                           f'\n**with reason:** {reason}')
+        else:
+            self.client.afk_users.pop(ctx.author.id)
 
-        await self.client.db.execute('INSERT INTO afk (user_id, start_time, reason) VALUES ($1, $2, $3) '
-                                  'ON CONFLICT (user_id) DO UPDATE SET start_time = $2, reason = $3',
-                                  ctx.author.id, ctx.message.created_at, reason[0:1800])
-        
-        self.client.afk_users[ctx.author.id] = True
-        
-        embed = discord.Embed(title=f"<:status_idle:596576773488115722> {ctx.author.name} is now afk cause: {reason}")
+            info = await self.client.db.fetchrow('SELECT * FROM afk WHERE user_id = $1', ctx.author.id)
+            await self.client.db.execute('INSERT INTO afk (user_id, start_time, reason) VALUES ($1, null, null) '
+                                      'ON CONFLICT (user_id) DO UPDATE SET start_time = null, reason = null', ctx.author.id)
 
-        await ctx.send(embed=embed)
+            await ctx.channel.send(f'**Welcome back, {ctx.author.mention}, afk since: {discord.utils.format_dt(info["start_time"], "R")}**'
+                                   f'\n**With reason:** {info["reason"]}', delete_after=10)
+
+            await ctx.message.add_reaction('👋')
+
+    @commands.command(name='auto-afk-remove', aliases=['autoafk', 'aafk'])
+    async def auto_un_afk(self, ctx, mode : bool = None):
+        """
+        Toggles weather to remove the AFK status automatically or not.
+        mode: either enabled or disabled. If none, it will toggle it.
+        """
+        mode = mode or (False if (ctx.author.id in self.client.auto_un_afk and self.client.auto_un_afk[ctx.author.id] is True) or ctx.author.id not in self.client.auto_un_afk else True)
+        self.client.auto_un_afk[ctx.author.id] = mode
+        await self.client.db.execute('INSERT INTO afk (user_id, auto_un_afk) VALUES ($1, $2) '
+                                  'ON CONFLICT (user_id) DO UPDATE SET auto_un_afk = $2', ctx.author.id, mode)
+        return await ctx.send(f'{"Enabled" if mode is True else "Disabled"} automatic AFK removal.'
+                              f'\n{"**Remove your AFK status by running the `afk` command while being AFK**" if mode is False else ""}')
+
+    # @commands.command()
+    # async def afk(self, ctx, *, reason="No reason provided"):
+    #     if len(reason) > 100:
+    #         return await ctx.send("Reason cannot be over 100 characters.")
+        
+    #     try:
+    #         await member.edit(nick=f"[AFK] {ctx.author.display_name}")
+    #     except:
+    #         pass
+
+    #     await self.client.db.execute('INSERT INTO afk (user_id, start_time, reason) VALUES ($1, $2, $3) '
+    #                               'ON CONFLICT (user_id) DO UPDATE SET start_time = $2, reason = $3',
+    #                               ctx.author.id, ctx.message.created_at, reason[0:1800])
+        
+    #     self.client.afk_users[ctx.author.id] = True
+        
+    #     embed = discord.Embed(title=f"<:status_idle:596576773488115722> {ctx.author.name} is now afk cause: {reason}")
+
+    #     await ctx.send(embed=embed)
 
     @commands.command(help="Sends the source code of the bot/a command")
     @commands.bot_has_permissions(send_messages=True, embed_links=True)
