@@ -838,7 +838,7 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
             else:
                 message = ctx.message
                 
-        message = ctx.channel.get_partial_message({message.id})
+        message = ctx.channel.get_partial_message(message.id)
         embed = discord.Embed(title="Message information", description=f"""
 ID: {message.id}
 
