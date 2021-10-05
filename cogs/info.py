@@ -198,6 +198,8 @@ class Info(commands.Cog):
         server = ctx.guild
         botStatus = "No"
         pendingStatus = "No"
+        afkStatus = "No"
+        blacklistedStatus = "No"
         premiumStatus = "Not boosting"
         acknowledgments = "None"
         statusEmote = "<:status_offline:596576752013279242>"
