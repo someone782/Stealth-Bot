@@ -111,7 +111,7 @@ Content:
             except KeyError:
                 pass
 
-            self.bot.afk_users.pop(message.author.id)
+            self.client.afk_users.pop(message.author.id)
 
             info = await self.client.db.fetchrow('SELECT * FROM afk WHERE user_id = $1', message.author.id)
             await self.client.db.execute('INSERT INTO afk (user_id, start_time, reason) VALUES ($1, null, null) '
