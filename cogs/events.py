@@ -144,11 +144,11 @@ Content:
                 if member and member.id != message.author.id:
                     info = await self.client.db.fetchrow("SELECT * FROM afk WHERE user_id = $1", user_id)
                     
-                delta_uptime = discord.utils.utcnow() - info["start_time"]
-                hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
-                minutes, seconds = divmod(remainder, 60)
-                days, hours = divmod(hours, 24)
-                    
+                    delta_uptime = discord.utils.utcnow() - info["start_time"]
+                    hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
+                    minutes, seconds = divmod(remainder, 60)
+                    days, hours = divmod(hours, 24)
+                        
                     paginator.add_line(f"It seems that {member.mention} has been afk for {days} days, {hours} hours, {minutes} minutes and {seconds} seconds.\nReason: {info['reason']}\n")
 
             ctx : commands.Context = await self.client.get_context(message)
