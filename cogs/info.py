@@ -197,7 +197,7 @@ class Info(commands.Cog):
         guild = ctx.guild
         server = ctx.guild
         botStatus = "No"
-        pendingText = "No"
+        pendingStatus = "No"
         premiumStatus = "Not boosting"
         acknowledgments = "None"
         statusEmote = "<:status_offline:596576752013279242>"
