@@ -834,7 +834,7 @@ Creation date: {discord.utils.format_dt(channel.created_at, style="f")} ({discor
     async def messageinfo(self, ctx, message : discord.Message=None):
         if message is None:
             if ctx.message.reference:
-                message = ctx.message.reference
+                message = ctx.message.reference.resolved
             else:
                 message = ctx.message
                 
