@@ -100,29 +100,9 @@ class VoteButtons(discord.ui.View):
         self.add_item(discord.ui.Button(emoji="<:botsgg:870134146972938310>", label='bots.gg', url="https://discord.bots.gg/bots/760179628122964008"))
 
 class Stuff(discord.ui.View):
-    def __init__(self,ctx):
+    def __init__(self, ctx):
         super().__init__()
-        
-        async def interaction_check(self, interaction: discord.Interaction):
-                if interaction.user.id != self.ctx.author.id:
-                    colors = [0x910023, 0xA523FF]
-                    color = random.choice(colors)
-                    embed = discord.Embed(description="This isn't your menu.", timestamp=discord.utils.utcnow(), color=color)
-                    await interaction.response.send_message(embed=embed, ephemeral=True)
-                    return False
-                
-                else:
-                    self.stop()
-                    return True
-                
-        async def on_timeout(self):
-            for item in self.children:
-                if isinstance(item, discord.ui.Select):
-                    item.placeholder = "Command disabled due to timeout."
-                item.disabled = True
-                
-            await self.message.edit(view=self)
-                
+        self.ctx = ctx
         self.add_item(Dropdown(ctx))
         url = "https://discord.com/api/oauth2/authorize?client_id=760179628122964008&permissions=8&scope=bot"
         self.add_item(discord.ui.Button(emoji="<:invite:860644752281436171>", label='Invite me', url=url))
@@ -137,7 +117,31 @@ class Stuff(discord.ui.View):
     async def delete(self, button : discord.ui.Button, interaction : discord.Interaction):
         await interaction.message.delete()
         
-        
+    async def interaction_check(self, interaction: discord.Interaction):
+            if interaction.user.id != self.ctx.author.id:
+                colors = [0x910023, 0xA523FF]
+                color = random.choice(colors)
+                embed = discord.Embed(description="This isn't your menu.", timestamp=discord.utils.utcnow(), color=color)
+                await interaction.response.send_message(embed=embed, ephemeral=True)
+                return False
+            
+            else:
+                self.stop()
+                return True
+            
+    async def on_timeout(self):
+        for item in self.children:
+            if isinstance(item, discord.ui.Select):
+                item.placeholder = "Command disabled due to timeout."
+            item.disabled = True
+            
+        await self.message.edit(view=self)
+            
+    self.add_item(Dropdown(ctx))
+    url = "https://discord.com/api/oauth2/authorize?client_id=760179628122964008&permissions=8&scope=bot"
+    self.add_item(discord.ui.Button(emoji="<:invite:860644752281436171>", label='Invite me', url=url))
+    self.add_item(discord.ui.Button(emoji="<:github:744345792172654643>", label='Source code', url="https://github.com/Ender2K89/Stealth-Bot"))
+    
 
 class MyHelp(commands.HelpCommand):
     def get_minimal_command_signature(self, command):
