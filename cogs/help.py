@@ -103,25 +103,25 @@ class Stuff(discord.ui.View):
     def __init__(self,ctx):
         super().__init__()
         
-        async def interaction_check(self, interaction: discord.Interaction):
-                if interaction.user.id != self.ctx.author.id:
-                    colors = [0x910023, 0xA523FF]
-                    color = random.choice(colors)
-                    embed = discord.Embed(description="This isn't your menu.", timestamp=discord.utils.utcnow(), color=color)
-                    await interaction.response.send_message(embed=embed, ephemeral=True)
-                    return False
+    async def interaction_check(self, interaction: discord.Interaction):
+            if interaction.user.id != self.ctx.author.id:
+                colors = [0x910023, 0xA523FF]
+                color = random.choice(colors)
+                embed = discord.Embed(description="This isn't your menu.", timestamp=discord.utils.utcnow(), color=color)
+                await interaction.response.send_message(embed=embed, ephemeral=True)
+                return False
+            
+            else:
+                self.stop()
+                return True
+            
+        async def on_timeout(self):
+            for item in self.children:
+                if isinstance(item, discord.ui.Select):
+                    item.placeholder = "Command disabled due to timeout."
+                item.disabled = True
                 
-                else:
-                    self.stop()
-                    return True
-                
-            async def on_timeout(self):
-                for item in self.children:
-                    if isinstance(item, discord.ui.Select):
-                        item.placeholder = "Command disabled due to timeout."
-                    item.disabled = True
-                    
-                await self.message.edit(view=self)
+            await self.message.edit(view=self)
                 
         self.add_item(Dropdown(ctx))
         url = "https://discord.com/api/oauth2/authorize?client_id=760179628122964008&permissions=8&scope=bot"
