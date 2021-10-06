@@ -257,7 +257,7 @@ class MyHelp(commands.HelpCommand):
             news = new1.replace("%%PREFIX%%", f"{prefix}")
             
         embed = discord.Embed(title="Help", description=f"""
-Prefix: `{prefix}`
+Prefix: `{prefixes}`
 Total commands: `{len(list(self.context.bot.commands))}`
 Commands usable by you (in this server): `{len(await self.filter_commands(list(self.context.bot.commands), sort=True))}`
 Written with `{count_python('.'):,}` lines.
