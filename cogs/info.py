@@ -1447,21 +1447,17 @@ Tested verify command: Eiiknostv#2016
 
         await ctx.send(embed=embed, view=view)
 
-    @commands.group(help="Gives you a documentation link for a enhanced-discord.py entity in English", aliases=['rtfd'], invoke_without_command=True)
+    @commands.group(help="Gives you a documentation link for a enhanced-discord.py entity", aliases=['rtfd'], invoke_without_command=True)
     async def rtfm(self, ctx, *, entity : str=None):
         key = self.transform_rtfm_language_key(ctx, 'latest')
         await self.do_rtfm(ctx, key, entity)
-
-    @rtfm.command(help="Gives you a documentation link for a enhanced-discord.py entity in Japanese", name="jp", aliases=['ja', 'latest-jp', 'latest-ja', 'latest_jp', 'latest_ja'])
-    async def rtfm_jp(self, ctx, *, entity : str=None):
-        await self.do_rtfm(ctx, 'latest-jp', entity)
-
-    @rtfm.command(help="Gives you a documentation link for a Python entity in English", name="python", aliases=['py'])
-    async def rtfm_python(self, ctx, *, entity : str=None):
-        """Gives you a documentation link for a Python entity."""
-        key = self.transform_rtfm_language_key(ctx, 'python')
+        
+    @commands.group(help="Gives you a documentation link for a enhanced-discord.py entity", aliases=['edpy', 'dpy'], invoke_without_command=True)
+    async def rtfm_edpy(self, ctx, *, entity : str=None):
+        key = self.transform_rtfm_language_key(ctx, 'latest')
         await self.do_rtfm(ctx, key, entity)
 
-    @rtfm.command(help="Gives you a documentation link for a Python entity in Japanese", name="py-jp", aliases=['py-ja', 'py_ja', 'ja-py', 'ja_py'])
-    async def rtfm_python_jp(self, ctx, *, entity : str=None):
-        await self.do_rtfm(ctx, 'python-jp', entity)
+    @rtfm.command(help="Gives you a documentation link for a Python entity", name="python", aliases=['py'])
+    async def rtfm_python(self, ctx, *, entity : str=None):
+        key = self.transform_rtfm_language_key(ctx, 'python')
+        await self.do_rtfm(ctx, key, entity)
