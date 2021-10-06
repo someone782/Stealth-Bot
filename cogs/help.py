@@ -91,7 +91,7 @@ __**Available commands**__ **[{len(cog.get_commands())}]**
                               """, timestamp=discord.utils.utcnow(), color=color)
         embed.set_footer(text=f"Requested by {self.ctx.author}", icon_url=self.ctx.author.avatar.url)
         
-        await interaction.response.send_message(embed=embed, ephemeral=True)
+        await interaction.message.edit(embed=embed)
 
 class VoteButtons(discord.ui.View):
     def __init__(self):
