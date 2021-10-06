@@ -115,13 +115,13 @@ class Stuff(discord.ui.View):
                 self.stop()
                 return True
             
-        async def on_timeout(self):
-            for item in self.children:
-                if isinstance(item, discord.ui.Select):
-                    item.placeholder = "Command disabled due to timeout."
-                item.disabled = True
-                
-            await self.message.edit(view=self)
+    async def on_timeout(self):
+        for item in self.children:
+            if isinstance(item, discord.ui.Select):
+                item.placeholder = "Command disabled due to timeout."
+            item.disabled = True
+            
+        await self.message.edit(view=self)
                 
         self.add_item(Dropdown(ctx))
         url = "https://discord.com/api/oauth2/authorize?client_id=760179628122964008&permissions=8&scope=bot"
