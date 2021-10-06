@@ -245,8 +245,8 @@ class MyHelp(commands.HelpCommand):
         ctx = self.context
         # prefix = self.context.clean_prefix
         prefixes = await self.context.bot.get_pre(self.context.bot, ctx.message, raw_prefix=True)
-        prefixes = ctx.me.mention + ', ' + ', '.join(prefixes)
         prefix = prefixes[0]
+        prefixes = ctx.me.mention + ', ' + ', '.join(prefixes)
         
         if len(prefixes) > 30:
             prefixes = f"[Hover over for a list of prefixes]({ctx.message.jump_url} '{prefixes}')"
