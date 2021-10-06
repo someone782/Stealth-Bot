@@ -123,10 +123,10 @@ class Stuff(discord.ui.View):
             
         await self.message.edit(view=self)
                 
-        self.add_item(Dropdown(ctx))
-        url = "https://discord.com/api/oauth2/authorize?client_id=760179628122964008&permissions=8&scope=bot"
-        self.add_item(discord.ui.Button(emoji="<:invite:860644752281436171>", label='Invite me', url=url))
-        self.add_item(discord.ui.Button(emoji="<:github:744345792172654643>", label='Source code', url="https://github.com/Ender2K89/Stealth-Bot"))
+    self.add_item(Dropdown(ctx))
+    url = "https://discord.com/api/oauth2/authorize?client_id=760179628122964008&permissions=8&scope=bot"
+    self.add_item(discord.ui.Button(emoji="<:invite:860644752281436171>", label='Invite me', url=url))
+    self.add_item(discord.ui.Button(emoji="<:github:744345792172654643>", label='Source code', url="https://github.com/Ender2K89/Stealth-Bot"))
 
     @discord.ui.button(label="Vote", emoji="<:dbl:757235965629825084>", style=discord.ButtonStyle.gray)
     async def vote(self, button : discord.ui.Button, interaction : discord.Interaction):
