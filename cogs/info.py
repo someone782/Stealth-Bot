@@ -247,7 +247,14 @@ class MyHelp(commands.HelpCommand):
         prefixes = await self.context.bot.get_pre(self.context.bot, ctx.message, raw_prefix=True)
         prefix = prefixes[0]
         prefixes = ctx.me.mention + ', ' + ', '.join(prefixes)
-        
+
+        delta_uptime = discord.utils.utcnow() - self.context.bot.launch_time
+        hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
+        minutes, seconds = divmod(remainder, 60)
+        days, hours = divmod(hours, 24)
+
+        uptime = f"{days}:{hours}:{minutes}:{seconds}"
+
         if len(prefixes) > 30:
             prefixes = f"[Hover over for a list of prefixes]({ctx.message.jump_url} '{prefixes}')"
         
@@ -260,7 +267,8 @@ class MyHelp(commands.HelpCommand):
 Prefixes: {prefixes}
 Total commands: `{len(list(self.context.bot.commands))}`
 Commands usable by you (in this server): `{len(await self.filter_commands(list(self.context.bot.commands), sort=True))}`
-Written with `{count_python('.'):,}` lines.
+Written with `{count_python('.'):,}` lines
+Uptime: {uptime}
 ```diff
 + Type {prefix}help [command/category] for help on a command/category
 - <> = required argument
