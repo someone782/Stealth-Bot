@@ -147,7 +147,7 @@ class Dropdown(discord.ui.Select):
                 discord.SelectOption(label="Custom", description="Commands that are made by members who won a giveaway called \"Custom command for Stealth Bot\"", emoji="🎉"),
                 discord.SelectOption(label="Images", description="Commands that show you images?...", emoji="🖼️")]
 
-        super().__init__(placeholder='Select a category...', min_values=1, max_values=1, timeout=15, options=options)
+        super().__init__(placeholder='Select a category...', min_values=1, max_values=1, options=options)
         
     def get_minimal_command_signature(self, command):
         return "%s%s %s" % (self.ctx.clean_prefix, command.qualified_name, command.signature)
