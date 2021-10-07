@@ -156,7 +156,7 @@ class CustomContext(commands.Context):
                     ":star: A feature isn't working like it's supposed to? Join the **support server**: https://discord.gg/MrBcA6PZPw"]
         
         answer = random.choice(answers)
-        number = random.randint(1, 2)
+        number = random.randint(1, 25)
         
         content = content
         
