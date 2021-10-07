@@ -192,8 +192,8 @@ __**Available commands**__ **[{len(cog.get_commands())}]**
 class VoteButtons(discord.ui.View):
     def __init__(self):
         super().__init__()
-        self.add_item(discord.ui.Button(emoji="<:topgg:870133913102721045>", label='top.gg', url="https://top.gg/bot/760179628122964008"))
-        self.add_item(discord.ui.Button(emoji="<:botsgg:870134146972938310>", label='bots.gg', url="https://discord.bots.gg/bots/760179628122964008"))
+        self.add_item(discord.ui.Button(emoji="<:dbl:757235965629825084>", label='top.gg', url="https://top.gg/bot/760179628122964008"))
+        self.add_item(discord.ui.Button(emoji="<:botsgg:895688440547520512>", label='bots.gg', url="https://discord.bots.gg/bots/760179628122964008"))
 
 class Stuff(discord.ui.View):
     def __init__(self, ctx):
