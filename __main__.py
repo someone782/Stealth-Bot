@@ -151,17 +151,17 @@ class CustomContext(commands.Context):
             if footer == True:
                 embed.set_footer(text=f"Requested by {self.author}", icon_url=self.author.display_avatar.url)
             
-            answers = [":star: Support **Stealth Bot** by voting on top.gg:",
-                       ":star: Haven't voted for Stealth Bot yet? Make sure to vote on top.gg: ",
-                       ":star: A feature isn't working like it's supposed to? Join the support server: "]
-            
-            answer = random.choice(answers)
-            number = random.randint(1, 2)
-            
-            content = content
-            
-            if number == 1:
-                content = f"{answer}\n\n{str(content) if content else ''}"
+        answers = [":star: Support **Stealth Bot** by voting on top.gg:",
+                    ":star: Haven't voted for Stealth Bot yet? Make sure to vote on top.gg: ",
+                    ":star: A feature isn't working like it's supposed to? Join the support server: "]
+        
+        answer = random.choice(answers)
+        number = random.randint(1, 2)
+        
+        content = content
+        
+        if number == 1:
+            content = f"{answer}\n\n{str(content) if content else ''}"
             
         try:
             return await super().send(content=content, embed=embed, reference=reference, **kwargs)
