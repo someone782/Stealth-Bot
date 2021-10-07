@@ -150,17 +150,19 @@ class CustomContext(commands.Context):
             embed.color = color
             if footer == True:
                 embed.set_footer(text=f"Requested by {self.author}", icon_url=self.author.display_avatar.url)
-                
-        if content is not None:
-            number = random.randint(0, 20)
+            
+            answers = [":star: Support **Stealth Bot** by voting on top.gg:",
+                       ":star: Haven't voted for Stealth Bot yet? Make sure to vote on top.gg: ",
+                       ":star: A feature isn't working like it's supposed to? Join the support server: "]
+            
+            answer = random.choice(answers)
+            number = random.randint(1, 2)
+            
+            content = content
+            
             if number == 1:
-                content = f"{content}\nSupport **Stealth Bot** by voting: <https://top.gg/bot/760179628122964008>"
-                
-        if content is None:
-            number = random.randint(0, 20)
-            if number == 1:
-                content = "Support **Stealth Bot** by voting: <https://top.gg/bot/760179628122964008>"
-
+                content = f"{answer}\n\n{str(content) if content else ''}"
+            
         try:
             return await super().send(content=content, embed=embed, reference=reference, **kwargs)
         except discord.HTTPException:
