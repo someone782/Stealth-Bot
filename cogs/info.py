@@ -591,6 +591,7 @@ class Info(commands.Cog):
                     obj = f'abc.Messageable.{name}'
                     break
 
+        e = discord.Embed()
         cache = list(self._rtfm_cache[key].items())
 
         matches = finder(obj, cache, key=lambda t: t[0], lazy=False)[:8]
