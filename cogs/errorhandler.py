@@ -87,7 +87,7 @@ class ErrorHandler(commands.Cog):
                 embed = discord.Embed(title="Yes")
                 confirm = await ctx.confirm(message=f"I couldn't find a command called `{ctx.invoked_with}`.\nDid you mean `{f'{matches[0]}' if matches else ''}`?",
                                             delete_after_confirm=True, delete_after_timeout=True, delete_after_cancel=True,
-                                            buttons=(('<:greenTick:596576670815879169>', f'', discord.ButtonStyle.gray), ('🗑', None, discord.ButtonStyle.red)), timeout=15)
+                                            buttons=(('<:greenTick:895688440690147370>', f'', discord.ButtonStyle.gray), ('🗑', None, discord.ButtonStyle.red)), timeout=15)
 
                 if confirm is True:
                     message = copy.copy(ctx.message)
