@@ -147,7 +147,7 @@ class Dropdown(discord.ui.Select):
                 discord.SelectOption(label="Custom", description="Commands that are made by members who won a giveaway called \"Custom command for Stealth Bot\"", emoji="🎉"),
                 discord.SelectOption(label="Images", description="Commands that show you images?...", emoji="🖼️")]
 
-        super().__init__(placeholder='Select a category...', min_values=1, max_values=1, options=options)
+        super().__init__(placeholder='Select a category...', min_values=1, max_values=1, timeout=15, options=options)
         
     def get_minimal_command_signature(self, command):
         return "%s%s %s" % (self.ctx.clean_prefix, command.qualified_name, command.signature)
@@ -204,12 +204,12 @@ class Stuff(discord.ui.View):
         self.add_item(discord.ui.Button(emoji="<:invite:895688440639799347>", label='Invite me', url=url))
         self.add_item(discord.ui.Button(emoji="<:github:895688440492986389>", label='Source code', url="https://github.com/Ender2K89/Stealth-Bot"))
 
-    @discord.ui.button(label="Vote", emoji="<:dbl:757235965629825084>", style=discord.ButtonStyle.gray)
+    @discord.ui.button(label="Vote", emoji="<:dbl:757235965629825084>", timeout=15, style=discord.ButtonStyle.gray)
     async def vote(self, button : discord.ui.Button, interaction : discord.Interaction):
         embed=discord.Embed(title="Vote for me")
         await interaction.response.send_message(embed=embed, ephemeral=True, view=VoteButtons())
         
-    @discord.ui.button(label="Delete", emoji="🗑️", style=discord.ButtonStyle.red)
+    @discord.ui.button(label="Delete", emoji="🗑️", timeout=15, style=discord.ButtonStyle.red)
     async def delete(self, button : discord.ui.Button, interaction : discord.Interaction):
         await interaction.message.delete()
         
