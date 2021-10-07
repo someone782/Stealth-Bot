@@ -290,7 +290,7 @@ Uptime: {uptime}
                 allcogs.append(f"{cog.description.split('|')[0]} `{prefix}help {cog.qualified_name}`")
                 iter+=1
         nl = '\n'
-        embed.add_field(name=f"<:category:895688440220356669> __**Available categories**__ **[{len(allcogs)}]**", value=f"""
+        embed.add_field(name=f"<:category:895688440220356669>  __**Available categories**__ **[{len(allcogs)}]**", value=f"""
 {nl.join(allcogs)}
         """)
 
