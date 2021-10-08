@@ -105,7 +105,8 @@ class ErrorHandler(commands.Cog):
             message = f"An unexpected error occurred."
 
         elif isinstance(error, errors.AuthorBlacklisted):
-            message = f"It appears that you're blacklisted from this bot. Contact Ender2K89#9999 if you think this is a mistake."
+            reason = await self.client.db.fetchval("SELECT reason FROM blacklist WHERE user_id = $1", ctx.author.id)
+            message = f"It appears that you're blacklisted from this bot with the reason being: {reason}\n*If you think this is a mistake, contact Ender2K89*"
             
         elif isinstance(error, errors.BotMaintenance):
             message = f"The bot is in maintenance mode meaning no commands work."
