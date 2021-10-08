@@ -461,13 +461,11 @@ Average: {average_latency}
     @commands.command(aliases=['to_do'])
     @commands.is_owner()
     async def todo(self, ctx, *, text):
-        channel = self.client.get_channel(881541529381007431)
+        await self.client.db.execute("INSERT INTO todo (text, creation_date) VALUES ($1, $2) "
+                                    "ON CONFLICT (text) DO UPDATE SET creation_date = $2",
+                                    text[0:1800]; ctx.message.created_at)
 
-        await channel.send(f"TO DO: {text}")
-
-        embed = discord.Embed(title=f"Sent to do!", description=f"What was sent: {text}", timestamp=discord.utils.utcnow(), color=0x2F3136)
-        embed.set_footer(text=f"Command requested by: {ctx.author}", icon_url=ctx.author.avatar.url)
-        await ctx.send(embed=embed)
+        await ctx.send(text[0:1800])
 
     @commands.command(help="Toggles the no-prefix mode on/off", aliases=["no_prefix", "silentprefix", "silent_prefix"])
     @commands.is_owner()
@@ -684,7 +682,7 @@ Average: {average_latency}
     #         embed = discord.Embed(title="Reloaded all extensions", description=desc)
             
     #         await message.edit(embed=embed)
-
+    
     @commands.group(invoke_without_command=True, help="Blacklist command", aliases=['bl'])
     @commands.is_owner()
     async def blacklist(self, ctx):
