@@ -266,7 +266,7 @@ class Games(commands.Cog):
             
     @commands.command(help="Starts a Rock-Paper-Scissors game", aliases=['rps', 'rock_paper_scissors'])
     async def rock_paper_scissors(self, ctx):
-        embed = discord.Embed(description=f":mag_right: {ctx.author.name} is looking to play Tic-Tac-Toe")
+        embed = discord.Embed(description=f":mag_right: {ctx.author.name} is looking to play Rock-Paper-Scissors")
         embed.set_thumbnail(url='https://i.imgur.com/DZhQwnD.gif')
 
         sep = '\u2001'
