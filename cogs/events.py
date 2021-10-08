@@ -1,6 +1,6 @@
 import discord
-from discord.ext import commands
-from discord.ext.commands.core import command, menus
+from discord.ext import commands, menus
+from discord.ext.commands.core import command
 from discord.ext.menus.views import ViewMenuPages
 from discord.utils import get
 import random
