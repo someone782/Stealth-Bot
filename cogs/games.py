@@ -268,7 +268,7 @@ class Games(commands.Cog):
         embed = discord.Embed(description=f"🔎 {ctx.author.name} is looking to play Rock-Paper-Scissors!")
 
         sep = '\u2001'
-        view = LookingToPlay(timeout=120, label=f"{sep*10}Join this game!{sep*10}")
+        view = LookingToPlay(timeout=120, label=f"{sep*8}Join this game!{sep*8}")
         view.ctx = ctx
         view.message = await ctx.send(embed=embed,
                                       view=view, footer=False)
