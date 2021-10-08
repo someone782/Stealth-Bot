@@ -177,15 +177,15 @@ Commands usable by you (in this server): {len(await self.filter_commands(cog.get
 - [] = optional argument
 + Type {prefix}help [command] for help on a command
 ```
-                        """)
+                        """, timestamp=discord.utils.utcnow(), color=color)
     embed.add_field(name=f"Category: {cog.qualified_name}", value=f"""
 {cog.description.split('|' )[0]} {cog.description.split('| ')[1]}
 ```yaml
 {val}
 ```
-                    """, timestamp=discord.utils.utcnow(), color=color)
+                    """)
         embed.set_footer(text=f"Requested by {self.ctx.author}", icon_url=self.ctx.author.avatar.url)
-        
+
         await interaction.message.edit(embed=embed)
 
 class VoteButtons(discord.ui.View):
