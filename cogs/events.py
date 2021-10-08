@@ -207,7 +207,7 @@ Content:
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
-        if message.content is None:
+        if message.content is "":
             self.client.last_message = "*Message did not contain any content*"
         else:
             self.client.last_message = message
