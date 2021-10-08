@@ -1541,7 +1541,9 @@ Jump URL: [Click here]({message.jump_url})
 
     @commands.command()
     async def snipe(self, ctx):
-        embed = discord.Embed(title="Sniped message", description=f"Message: {self.client.last_message}\nAuthor: {self.client.last_message_author} **|** {self.client.last_message_author.id}")
+        embed = discord.Embed(description=f"{self.client.last_message.content}")
+        embed.set_author(=f"{self.client.last_message.author} ({self.client.last_message.author.id}) said in #{self.client.last_message.channel}:", =f"{self.client.last_message.author.avatar.url}")
+        embed.add_footer(name="Deletion date", value=f"Message was deleted {discord.utils.format_dt(self.client.last_message.created_at, style="R")}")
 
         await ctx.send(embed=embed)
 

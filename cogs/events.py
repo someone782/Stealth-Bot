@@ -22,8 +22,6 @@ class Events(commands.Cog):
             self.client.edited_messages = 0
         if not hasattr(self.client, 'last_message'):
             self.client.last_message = None
-        if not hasattr(self.client, 'last_message_author'):
-            self.client.last_message_author = None
             
     @commands.Cog.listener()
     async def on_command(self, ctx):
@@ -209,8 +207,7 @@ Content:
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
-        self.client.last_message = message.content
-        self.client.last_message_author = message.author
+        self.client.last_message = message
 
     @commands.Cog.listener()
     async def on_member_join(self, member): # If a member joined the server then:
