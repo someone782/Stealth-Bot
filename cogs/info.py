@@ -371,8 +371,7 @@ Commands usable by you (in this server): {len(await self.filter_commands(cog.get
 ```
                                 """)
             embed.add_field(name=f"Category: {cog.qualified_name}", value=f"""
-                            {cog.description.split('|' )[0]} {cog.description.split('| ')[1]}
-__**Available commands**__ **[{len(cog.get_commands())}]**
+{cog.description.split('|' )[0]} {cog.description.split('| ')[1]}
 ```yaml
 {val}
 ```
