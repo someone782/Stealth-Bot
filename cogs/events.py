@@ -159,18 +159,6 @@ Content:
             for page in paginator.pages:
                 await ctx.send(page, allowed_mentions=discord.AllowedMentions(replied_user=True, users=False, roles=False, everyone=False))
                 
-                
-    @commands.Cog.listener('on_message')
-    async def on_spam(self, message):
-        if not message.guild:
-            return
-        
-        if message.author == self.client.user:
-            return
-        
-        if message.guild.id is not 799330949686231050:
-            return
-                
 #     @commands.Cog.listener()
 #     async def on_message(self, message):
 #         self.client.messages = self.client.messages + 1
