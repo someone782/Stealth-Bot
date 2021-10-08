@@ -167,7 +167,7 @@ Content:
                     minutes, seconds = divmod(remainder, 60)
                     days, hours = divmod(hours, 24)
                         
-                    afkUsers.append(f"{member.mention} has been AFK since {discord.utils.format_dt(info['start_time'], style='R')} with the reason being {info['reason']}\n")
+                    afkUsers.append(f"{member.mention} has been AFK since for {days} days, {hours} hours, {minutes} minutes and {seconds} seconds with the reason being {info['reason']}\n")
                     
             if afkUsers:
                 ctx : commands.Context = await self.client.get_context(message)
