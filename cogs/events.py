@@ -88,7 +88,7 @@ Content:
         if message.author.bot:
             return
         
-        if message.author.id == 564890536947875868 and "forgor" in message.content:
+        if message.author.id == 564890536947875868 and "forgor" in message.content.lower():
             return await message.add_reaction("💀")
         
     @commands.Cog.listener('on_message')
