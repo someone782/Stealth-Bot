@@ -30,6 +30,7 @@ class CancelGame(discord.ui.Button):
             
             for item in view.children:
                 item.disabled = True
+                sep = '\u2001'
                 item.label = item.label.replace(f"{sep*8}Cancel{sep*8}", "Cancelled!").replace("Join this game!\u2001", "The game has ended!")
             await view.message.edit(view=view)
             view.stop()
