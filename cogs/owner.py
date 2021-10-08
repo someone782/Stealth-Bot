@@ -708,9 +708,9 @@ Average: {average_latency}
     async def blacklist_add(self, ctx, member : discord.User, reason : str):
 
         await self.client.db.execute(
-            "INSERT INTO blacklist(user_id, reason, is_blacklisted) VALUES ($1, $2, $2) "
-            "ON CONFLICT (user_id) DO UPDATE SET is_blacklisted = $3",
-            member.id, reason[0:1800], True)
+            "INSERT INTO blacklist(user_id, is_blacklisted, reason) VALUES ($1, $2, $2) "
+            "ON CONFLICT (user_id) DO UPDATE SET is_blacklisted = $2",
+            member.id, True, reason[0:1800])
 
         self.client.blacklist[member.id] = True
 
