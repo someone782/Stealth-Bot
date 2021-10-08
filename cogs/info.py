@@ -168,23 +168,22 @@ class Dropdown(discord.ui.Select):
             
         colors = [0x910023, 0xA523FF]
         color = random.choice(colors)
-            
-        embed = discord.Embed(title=f"Help - {self.values[0]}", description=f"""
+        
+        embed=discord.Embed(title=f"Help - {cog.qualified_name}", description=f"""
 Total commands: {len(cog.get_commands())}
-Commands usable by you (in this server): 
+Commands usable by you (in this server): {len(await self.filter_commands(cog.get_commands(), sort=True))}
 ```diff
 - <> = required argument
 - [] = optional argument
-+ Type help [command] for help on a command
++ Type {prefix}help [command] for help on a command
 ```
-`Description:` {cog.description.split('|')[0]}
-`{cog.description.split('| ')[1]}`
-
-__**Available commands**__ **[{len(cog.get_commands())}]**
+                        """)
+    embed.add_field(name=f"Category: {cog.qualified_name}", value=f"""
+{cog.description.split('|' )[0]} {cog.description.split('| ')[1]}
 ```yaml
 {val}
 ```
-                              """, timestamp=discord.utils.utcnow(), color=color)
+                    """, timestamp=discord.utils.utcnow(), color=color)
         embed.set_footer(text=f"Requested by {self.ctx.author}", icon_url=self.ctx.author.avatar.url)
         
         await interaction.message.edit(embed=embed)
