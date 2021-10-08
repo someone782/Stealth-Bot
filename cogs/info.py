@@ -638,6 +638,7 @@ class Info(commands.Cog):
         title = jsonData['name']
         #thumbnail = jsonData['url']
         explicit = jsonData['explicit']
+        length = jsonData['length']
         explicitStatus = "No"
         
         if explicit is True:
@@ -655,7 +656,7 @@ class Info(commands.Cog):
         for chunk in textwrap.wrap(lyrics, 1536, replace_whitespace=False):
             embed = discord.Embed(title=f"{title}", description=chunk, timestamp=discord.utils.utcnow(), color=color)
             #embed.set_thumbnail(url=thumbnail)
-            embed.set_footer(text=f"{round(ms)}ms{' ' * (9-len(str(round(ms, 3))))} • Explicit? {explicitStatus}", icon_url=ctx.author.avatar.url)
+            embed.set_footer(text=f"{round(ms)}ms{'' * (9-len(str(round(ms, 3))))} • Explicit? {explicitStatus} • Length: {length}", icon_url=ctx.author.avatar.url)
             
             await ctx.reply(embed=embed, footer=False)
 
