@@ -652,7 +652,7 @@ class Info(commands.Cog):
             #embed.set_thumbnail(url=thumbnail)
             embed.set_footer(text=f"{round(ms)}ms{' ' * (9-len(str(round(ms, 3))))}", icon_url=ctx.author.avatar.url)
             
-            await ctx.reply(embed=embed)
+            await ctx.reply(embed=embed, footer=False)
 
     @commands.command(
         help="Shows you information about the member you mentioned",
