@@ -463,7 +463,7 @@ Average: {average_latency}
     async def todo(self, ctx, *, text):
         await self.client.db.execute("INSERT INTO todo (text, creation_date) VALUES ($1, $2) "
                                     "ON CONFLICT (text) DO UPDATE SET creation_date = $2",
-                                    text[0:1800]; ctx.message.created_at)
+                                    text[0:1800], ctx.message.created_at)
 
         await ctx.send(text[0:1800])
 
