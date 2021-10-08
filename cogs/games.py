@@ -179,7 +179,7 @@ class Games(commands.Cog):
 
         def rockPaperScissors(authorName, botName, authorAnswer, botAnswer):
             if authorAnswer == "rock" and botAnswer == "rock":
-                return f":tada: It's a tie! :tada:"
+                return f":necktie: It's a tie!"
             elif authorAnswer == "rock" and botAnswer == "paper":
                 return f":tada: __**{botName} WON!!!**__ :tada:"
             elif authorAnswer == "rock" and botAnswer == "scissors":
@@ -188,7 +188,7 @@ class Games(commands.Cog):
             elif authorAnswer == "paper" and botAnswer == "rock":
                 return f":tada: __**{authorName} WON!!!**__ :tada:"
             elif authorAnswer == "paper" and botAnswer == "paper":
-                return f":tada: It's a tie! :tada:"
+                return f":necktie:  It's a tie!"
             elif authorAnswer == "paper" and botAnswer == "scissors":
                 return f":tada: __**{botName} WON!!!**__ :tada:"
 
@@ -197,7 +197,7 @@ class Games(commands.Cog):
             elif authorAnswer == "scissors" and botAnswer == "paper":
                 return f":tada: __**{authorName} WON!!!**__ :tada:"
             elif authorAnswer == "scissors" and botAnswer == "scissors":
-                return f":tada: It's a tie! :tada:"
+                return f":necktie: It's a tie!"
 
             else:
                 return f"I have no idea who won."
@@ -234,7 +234,7 @@ class Games(commands.Cog):
                 longText = f"{str(botAnswer).title()} beats {str(authorAnswer).title()} meaning Stealth Bot won."
                 
             else:
-                shortText = f"It's a tie!"
+                shortText = f":necktie: It's a tie!"
                 longText = f"{str(botAnswer).title()} doesn't beat {str(authorAnswer).title()} and {str(authorAnswer).title()} doesn't beat {str(botAnswer).title()} meaning it's a tie."
 
             embed = discord.Embed(title=result, description=f"""
