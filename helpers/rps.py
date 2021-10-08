@@ -21,8 +21,8 @@ class ObjectSelector(discord.ui.Select):
         view.responses[interaction.user.id] = self.values[0]
 
         embed = view.message.embeds[0].copy()
-        embed.description = f"> {view.ctx.default_tick(view.player1.id in view.responses)} {view.player1.display_name}" \
-                            f"\n> {view.ctx.default_tick(view.player2.id in view.responses)} {view.player2.display_name}"
+        embed.description = f"> {view.ctx.tick(view.player1.id in view.responses)} {view.player1.display_name}" \
+                            f"\n> {view.ctx.tick(view.player2.id in view.responses)} {view.player2.display_name}"
 
         await view.message.edit(embed=embed)
 
