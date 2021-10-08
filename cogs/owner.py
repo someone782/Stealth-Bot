@@ -752,6 +752,8 @@ Average: {average_latency}
         except KeyError:
             status = False
             
+        text = f"{member} isn't blacklisted"
+            
         if status is True:
             reason = await self.client.db.fetchval("SELECT reason FROM blacklist WHERE user_id = $1", member.id)
             text = f"{member} is blacklisted\nReason: {reason}"
