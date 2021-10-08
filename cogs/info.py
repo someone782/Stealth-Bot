@@ -1541,7 +1541,7 @@ Jump URL: [Click here]({message.jump_url})
     async def snipe(self, ctx):
         embed = discord.Embed(description=f"{self.client.last_message}")
         embed.set_author(name=f"{self.client.last_message_author} ({self.client.last_message_author.id}) said in #{self.client.last_message_channel}:", url=f"{self.client.last_message_author.avatar.url}")
-        embed.add_field(name="Deletion date:", value=f"Message was deleted at {discord.utils.format_dt(self.client.last_message.created_at, style='R')}")
+        embed.add_field(name="Deletion date:", value=f"Message was deleted at {discord.utils.format_dt(self.client.last_message_deletion_date, style='R')}")
 
         await ctx.send(embed=embed)
 

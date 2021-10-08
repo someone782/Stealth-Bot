@@ -28,6 +28,8 @@ class Events(commands.Cog):
             self.client.last_message_channel = None
         if not hasattr(self.client, 'last_message_guild'):
             self.client.last_message_guild = None
+        if not hasattr(self.client, 'last_message_deletion_date'):
+            self.client.last_message_deletion_date = None
             
     @commands.Cog.listener()
     async def on_command(self, ctx):
@@ -216,6 +218,7 @@ Content:
         self.client.last_message_author = message.author
         self.client.last_message_channel = message.channel
         self.client.last_message_guild = message.guild
+        self.client.last_message_deletion_date = message.created_at
         
         if message.content is "":
             self.client.last_message = "*Message did not contain any content*"
