@@ -360,6 +360,7 @@ Permissions needed: No
         command_signatures = [self.get_minimal_command_signature(c) for c in entries]
         if command_signatures:
             val = "\n".join(command_signatures)
+            
             embed=discord.Embed(title=f"Help - {cog.qualified_name}", description=f"""
 Total commands: {len(cog.get_commands())}
 Commands usable by you (in this server): {len(await self.filter_commands(cog.get_commands(), sort=True))}
@@ -377,6 +378,13 @@ __**Available commands**__ **[{len(cog.get_commands())}]**
 {val}
 ```
                                 """)
+            embed.add_field(name=f"Category: {cog.qualified_name}", value=f"""
+                            {cog.description.split('|' )[0]} {cog.description.split('| ')[1]}
+__**Available commands**__ **[{len(cog.get_commands())}]**
+```yaml
+{val}
+```
+                            """)
 
             await ctx.send(embed=embed)
         else:
