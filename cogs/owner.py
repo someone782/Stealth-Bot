@@ -740,7 +740,7 @@ Average: {average_latency}
             status = False
             
         if status is True:
-            reason = await client.db.fetchval("SELECT reason FROM todo WHERE user_id = $1)", member.id)
+            reason = await self.client.db.fetchval("SELECT reason FROM todo WHERE user_id = $1)", member.id)
             text = f"{member} is blacklisted\nReason: {reason}"
             
         embed = discord.Embed(description=f"{text}", timestamp=discord.utils.utcnow(), color=0x2F3136)
