@@ -13,6 +13,7 @@ from discord.ext import commands, menus
 from discord.ext.menus.views import ViewMenuPages
 from discord.ext.commands.cooldowns import BucketType
 from helpers.ttt import LookingToPlay, TicTacToe
+from helpers.rps import RockPaperScissors
 
 def setup(client):
     client.add_cog(Games(client))
@@ -251,14 +252,33 @@ Stealth Bot's answer: {botAnswer}
         embed = discord.Embed(description=f":mag_right: {ctx.author.name} is looking to play Tic-Tac-Toe")
         embed.set_thumbnail(url='https://i.imgur.com/DZhQwnD.gif')
         
-        player1 = ctx.author
         view = LookingToPlay(timeout=60)
         view.ctx = ctx
         view.message = await ctx.send(embed=embed, view=view)
         await view.wait()
+        player1 = ctx.author
         player2 = view.value
         
         if player2:
             starter = random.choice([player1, player2])
             ttt = TicTacToe(ctx, player1, player2, starter=starter)
             ttt.message = await view.message.edit(content=f"#️⃣ {starter.name} goes first", view=ttt, embed=None)
+            
+    @commands.command(help="Starts a Rock-Paper-Scissors game", aliases=['rps', 'rock_paper_scissors'])
+    async def rock_paper_scissors(self, ctx):
+        embed = discord.Embed(description=f":mag_right: {ctx.author.name} is looking to play Tic-Tac-Toe")
+        embed.set_thumbnail(url='https://i.imgur.com/DZhQwnD.gif')
+
+        sep = '\u2001'
+        view = LookingToPlay(timeout=120, label=f'{sep*13}Join this game!{sep*13}')
+        view.ctx = ctx
+        view.message = await ctx.send(embed=embed, view=view)
+        await view.wait()
+        player1 = ctx.author
+        player2 = view.value
+
+        if player2:
+            embed = discord.Embed(description=f"<:redTick:596576672149667840> {player1.display_name}\n<:redTick:596576672149667840> {player2.display_name}")
+            rps = RockPaperScissors(ctx, player1, player2)
+            rps.message = await view.message.edit(embed=embed, view=rps)
+            await rps.wait()
