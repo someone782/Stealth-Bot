@@ -12,7 +12,7 @@ import pyfiglet
 from discord.ext import commands, menus
 from discord.ext.menus.views import ViewMenuPages
 from discord.ext.commands.cooldowns import BucketType
-from helpers.tictactoe import LookingToPlay, TicTacToe
+from helpers.ttt import LookingToPlay, TicTacToe
 
 def setup(client):
     client.add_cog(Games(client))
