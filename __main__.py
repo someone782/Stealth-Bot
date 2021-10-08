@@ -368,19 +368,19 @@ def maintenance(ctx):
         else:
             raise errors.BotMaintenance
 
-@client.check
-def blacklist(ctx):
-    try:
-        is_blacklisted = client.blacklist[ctx.author.id]
-    except KeyError:
-        is_blacklisted = False
-    if ctx.author.id == client.owner_id:
-        is_blacklisted = False
+# @client.check
+# def blacklist(ctx):
+#     try:
+#         is_blacklisted = client.blacklist[ctx.author.id]
+#     except KeyError:
+#         is_blacklisted = False
+#     if ctx.author.id == client.owner_id:
+#         is_blacklisted = False
 
-    if is_blacklisted is False:
-        return True
-    else:
-        raise errors.AuthorBlacklisted
+#     if is_blacklisted is False:
+#         return True
+#     else:
+#         raise errors.AuthorBlacklisted
 
 @client.event
 async def on_invite_create(invite):
