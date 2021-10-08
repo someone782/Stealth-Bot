@@ -264,7 +264,7 @@ class Games(commands.Cog):
             ttt = TicTacToe(ctx, player1, player2, starter=starter)
             ttt.message = await view.message.edit(content=f"#️⃣ {starter.name} goes first", view=ttt, embed=None)
             
-    @commands.command(help="Starts a Rock-Paper-Scissors game", aliases=['rps', 'rock_paper_scissors'])
+    @commands.command(help="Starts a Rock-Paper-Scissors game", aliases=['rps', 'rock-paper-scissors'])
     async def rock_paper_scissors(self, ctx):
         embed = discord.Embed(description=f":mag_right: {ctx.author.name} is looking to play Rock-Paper-Scissors")
         embed.set_thumbnail(url='https://i.imgur.com/DZhQwnD.gif')
