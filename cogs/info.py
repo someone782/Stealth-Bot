@@ -1497,7 +1497,7 @@ Jump URL: [Click here]({message.jump_url})
         embed.add_field(name="<a:typing:597589448607399949> Typing latency", value=f"{typing_latency}")
         embed.add_field(name=":speech_balloon: Message latency", value=f"{message_latency}")
         # embed.add_field(name="<:discord:877926570512236564> Discord latency", value=f"{discord_latency}")
-        embed.add_field(name="<:psql:871758815345901619> Database latency", value=f"{database_latency}")
+        embed.add_field(name="<:psql:896134588961800294> Database latency", value=f"{database_latency}")
         embed.add_field(name=":infinity: Average latency", value=f"{average_latency}")
 
         await message.edit(content="Received ping!", embed=embed)
