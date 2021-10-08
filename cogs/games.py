@@ -171,81 +171,81 @@ class Games(commands.Cog):
                         
                         await ctx.send(f"You did `{number}` damage to {pensiveName}!\n{authorName}'s HP: {hp(authorHP)}\n{pensiveName}'s HP: {hp(pensiveHP)}")
                         
-    @commands.command(
-        help="Plays rock, paper, scissors with you",
-        aliases=['rps', 'rock_paper_scissors'])
-    async def rockpaperscissors(self, ctx):
-        validAnswers = ['rock', 'paper', 'scissors', 'win']
-        botAnswers = ['rock', 'paper', 'scissors']
+#     @commands.command(
+#         help="Plays rock, paper, scissors with you",
+#         aliases=['rps', 'rock_paper_scissors'])
+#     async def rockpaperscissors(self, ctx):
+#         validAnswers = ['rock', 'paper', 'scissors', 'win']
+#         botAnswers = ['rock', 'paper', 'scissors']
 
-        def rockPaperScissors(authorName, botName, authorAnswer, botAnswer):
-            if authorAnswer == "rock" and botAnswer == "rock":
-                return f":tada: It's a tie! :tada:"
-            elif authorAnswer == "rock" and botAnswer == "paper":
-                return f":tada: {botName} won! :tada:"
-            elif authorAnswer == "rock" and botAnswer == "scissors":
-                return f":tada: {authorName} won! :tada:"
+#         def rockPaperScissors(authorName, botName, authorAnswer, botAnswer):
+#             if authorAnswer == "rock" and botAnswer == "rock":
+#                 return f":tada: It's a tie! :tada:"
+#             elif authorAnswer == "rock" and botAnswer == "paper":
+#                 return f":tada: {botName} won! :tada:"
+#             elif authorAnswer == "rock" and botAnswer == "scissors":
+#                 return f":tada: {authorName} won! :tada:"
 
-            elif authorAnswer == "paper" and botAnswer == "rock":
-                return f":tada: {authorName} won! :tada:"
-            elif authorAnswer == "paper" and botAnswer == "paper":
-                return f":tada: It's a tie! :tada:"
-            elif authorAnswer == "paper" and botAnswer == "scissors":
-                return f":tada: {botName} won! :tada:"
+#             elif authorAnswer == "paper" and botAnswer == "rock":
+#                 return f":tada: {authorName} won! :tada:"
+#             elif authorAnswer == "paper" and botAnswer == "paper":
+#                 return f":tada: It's a tie! :tada:"
+#             elif authorAnswer == "paper" and botAnswer == "scissors":
+#                 return f":tada: {botName} won! :tada:"
 
-            elif authorAnswer == "scissors" and botAnswer == "rock":
-                return f":tada: {botName} won! :tada:"
-            elif authorAnswer == "scissors" and botAnswer == "paper":
-                return f":tada: {authorName} won! :tada:"
-            elif authorAnswer == "scissors" and botAnswer == "scissors":
-                return f":tada: It's a tie! :tada:"
+#             elif authorAnswer == "scissors" and botAnswer == "rock":
+#                 return f":tada: {botName} won! :tada:"
+#             elif authorAnswer == "scissors" and botAnswer == "paper":
+#                 return f":tada: {authorName} won! :tada:"
+#             elif authorAnswer == "scissors" and botAnswer == "scissors":
+#                 return f":tada: It's a tie! :tada:"
 
-            else:
-                return f"I have no idea who won."
+#             else:
+#                 return f"I have no idea who won."
 
 
-        def check(m):
-            return m.content.lower() in validAnswers and m.channel.id == ctx.channel.id and m.author.id == ctx.author.id
+#         def check(m):
+#             return m.content.lower() in validAnswers and m.channel.id == ctx.channel.id and m.author.id == ctx.author.id
         
-        await ctx.send("Pick one! `rock`, `paper`, `scissors`")
+#         await ctx.send("Pick one! `rock`, `paper`, `scissors`")
 
-        try:
-            msg = await self.client.wait_for(event='message', check=check, timeout=15)
+#         try:
+#             msg = await self.client.wait_for(event='message', check=check, timeout=15)
 
-        except asyncio.TimeoutError:
-            return await ctx.send("It's been over 15 seconds, please try again by doing `-rpg`.")
+#         except asyncio.TimeoutError:
+#             return await ctx.send("It's been over 15 seconds, please try again by doing `-rpg`.")
 
-        else:
+#         else:
             
-            authorAnswer = msg.content.lower()
-            botAnswer = random.choice(botAnswers)
+#             authorAnswer = msg.content.lower()
+#             botAnswer = random.choice(botAnswers)
             
-            if msg.content.lower() == "win":
-                authorAnswer = "rock"
-                botAnswer = "scissors"
+#             if msg.content.lower() == "win":
+#                 authorAnswer = "rock"
+#                 botAnswer = "scissors"
                 
-            result = rockPaperScissors(authorName=ctx.author.name, botName="Stealth Bot", authorAnswer=authorAnswer, botAnswer=botAnswer)
+#             result = rockPaperScissors(authorName=ctx.author.name, botName="Stealth Bot", authorAnswer=authorAnswer, botAnswer=botAnswer)
             
-            if result == f":tada: {ctx.author.name} won! :tada:":
-                shortText = f"{str(authorAnswer).title()} beats {str(botAnswer).title()}"
-                longText = f"{str(authorAnswer).title()} beats {str(botAnswer).title()} meaning {ctx.author.name} won."
+#             if result == f":tada: {ctx.author.name} won! :tada:":
+#                 shortText = f"{str(authorAnswer).title()} beats {str(botAnswer).title()}"
+#                 longText = f"{str(authorAnswer).title()} beats {str(botAnswer).title()} meaning {ctx.author.name} won."
                 
-            elif result == f":tada: Stealth Bot won! :tada:":
-                shortText = f"{str(botAnswer).title()} beats {str(authorAnswer).title()}"
-                longText = f"{str(botAnswer).title()} beats {str(authorAnswer).title()} meaning Stealth Bot won."
+#             elif result == f":tada: Stealth Bot won! :tada:":
+#                 shortText = f"{str(botAnswer).title()} beats {str(authorAnswer).title()}"
+#                 longText = f"{str(botAnswer).title()} beats {str(authorAnswer).title()} meaning Stealth Bot won."
                 
-            else:
-                shortText = f"It's a tie!"
-                longText = f"{str(botAnswer).title()} doesn't beat {str(authorAnswer).title()} and {str(authorAnswer).title()} doesn't beat {str(botAnswer).title()} meaning it's a tie."
+#             else:
+#                 shortText = f"It's a tie!"
+#                 longText = f"{str(botAnswer).title()} doesn't beat {str(authorAnswer).title()} and {str(authorAnswer).title()} doesn't beat {str(botAnswer).title()} meaning it's a tie."
 
-            embed = discord.Embed(title=result, description=f"""
-{ctx.author.name}'s answer: {authorAnswer}
-Stealth Bot's answer: {botAnswer}
-[Hover over this text to see why]({msg.jump_url} '{longText}')
-                                  """, timestamp=discord.utils.utcnow())
-            embed.set_footer(text=shortText)
+#             embed = discord.Embed(title=result, description=f"""
+# {ctx.author.name}'s answer: {authorAnswer}
+# Stealth Bot's answer: {botAnswer}
+# [Hover over this text to see why]({msg.jump_url} '{longText}')
+#                                   """, timestamp=discord.utils.utcnow())
+#             embed.set_footer(text=shortText)
 
-            await ctx.reply(embed=embed)
+#             await ctx.reply(embed=embed)
             
     @commands.command(help="Starts a Tic-Tac-Toe game",aliases=['ttt', 'tic'])
     async def tictactoe(self, ctx):
