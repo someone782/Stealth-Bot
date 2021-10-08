@@ -254,7 +254,7 @@ client.invite_url = "https://discord.com/api/oauth2/authorize?client_id=76017962
 client.top_gg = "https://top.gg/bot/760179628122964008"
 client.bots_gg = "https://discord.bots.gg/bots/760179628122964008"
 client.github = "https://github.com/Ender2K89/Stealth-Bot"
-client.allowed_mentions = discord.AllowedMentions.none()
+#client.allowed_mentions = discord.AllowedMentions.none()
 client.session = aiohttp.ClientSession()
 client.brain_cells = 0
 client._BotBase__cogs = commands.core._CaseInsensitiveDict()
