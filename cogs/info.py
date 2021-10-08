@@ -637,11 +637,11 @@ class Info(commands.Cog):
         #artist = jsonData['author']
         title = jsonData['name']
         #thumbnail = jsonData['url']
-        explict = jsonData['explict']
-        explictStatus = "No"
+        explicit = jsonData['explicit']
+        explicitStatus = "No"
         
-        if explict is True:
-            explictStatus = "Yes"
+        if explicit is True:
+            explicitStatus = "Yes"
 
         end = time.perf_counter()
         
@@ -655,7 +655,7 @@ class Info(commands.Cog):
         for chunk in textwrap.wrap(lyrics, 1536, replace_whitespace=False):
             embed = discord.Embed(title=f"{title}", description=chunk, timestamp=discord.utils.utcnow(), color=color)
             #embed.set_thumbnail(url=thumbnail)
-            embed.set_footer(text=f"{round(ms)}ms{' ' * (9-len(str(round(ms, 3))))} • Explict? {explictStatus}", icon_url=ctx.author.avatar.url)
+            embed.set_footer(text=f"{round(ms)}ms{' ' * (9-len(str(round(ms, 3))))} • Explicit? {explicitStatus}", icon_url=ctx.author.avatar.url)
             
             await ctx.reply(embed=embed, footer=False)
 
