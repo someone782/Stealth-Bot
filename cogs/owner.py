@@ -688,7 +688,7 @@ Average: {average_latency}
     @todo.command(name="add", help="Adds a todo to your todo list", aliases=['a'])
     async def todo_add(self, ctx, number : int, text : str):
         await self.client.db.execute("INSERT INTO todo (number, text, creation_date) VALUES ($1, $2, $3) "
-                                    "ON CONFLICT (text) DO UPDATE SET creation_date = $2",
+                                    "ON CONFLICT (text) DO UPDATE SET creation_date = $3",
                                     number, text[0:1800], ctx.message.created_at)
         
         embed = discord.Embed(description=f"Successfully added `{text[0:1800]}` to your todo list. (Number: `{number}`)")
