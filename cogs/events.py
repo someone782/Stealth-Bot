@@ -22,8 +22,6 @@ class Events(commands.Cog):
             self.client.edited_messages = 0
         if not hasattr(self.client, 'last_message'):
             self.client.last_message = None
-        if not hasattr(self.client, 'last_message_deletion_date'):
-            self.client.last_message_deletion_date = None
             
     @commands.Cog.listener()
     async def on_command(self, ctx):
@@ -210,7 +208,6 @@ Content:
     @commands.Cog.listener()
     async def on_message_delete(self, message):
         self.client.last_message = message
-        self.client.last_message_deletion_date = discord.utils.utncow()
 
     @commands.Cog.listener()
     async def on_member_join(self, member): # If a member joined the server then:
