@@ -636,7 +636,7 @@ class Info(commands.Cog):
         lyrics = jsonData['lyrics']
        # artist = jsonData['author']
         title = jsonData['name']
-        thumbnail = jsonData['url']
+        thumbnail = title['url']
 
         end = time.perf_counter()
         
