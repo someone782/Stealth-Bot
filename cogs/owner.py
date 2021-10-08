@@ -705,16 +705,16 @@ Average: {average_latency}
         await ctx.send(embed=embed)
 
     @blacklist.command(name="add", help="Adds a member to the blacklist", aliases=['a'])
-    async def blacklist_add(self, ctx, member : discord.User):
+    async def blacklist_add(self, ctx, member : discord.User, reason : str):
 
         await self.client.db.execute(
-            "INSERT INTO blacklist(user_id, is_blacklisted) VALUES ($1, $2) "
-            "ON CONFLICT (user_id) DO UPDATE SET is_blacklisted = $2",
-            member.id, True)
+            "INSERT INTO blacklist(user_id, reason, is_blacklisted) VALUES ($1, $2, $2) "
+            "ON CONFLICT (user_id) DO UPDATE SET is_blacklisted = $3",
+            member.id, reason[0:1800], True)
 
         self.client.blacklist[member.id] = True
 
-        embed = discord.Embed(description=f"Successfully added {member} to the blacklist", timestamp=discord.utils.utcnow(), color=0x2F3136)
+        embed = discord.Embed(description=f"Successfully added {member} to the blacklist with the reason being {reason[0:1800]}", timestamp=discord.utils.utcnow(), color=0x2F3136)
 
         return await ctx.send(embed=embed)
 
