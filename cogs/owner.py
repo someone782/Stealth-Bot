@@ -738,6 +738,11 @@ Average: {average_latency}
 
         except KeyError:
             status = False
-        embed = discord.Embed(description=f"{member} {'is' if status is True else 'is not'} blacklisted", timestamp=discord.utils.utcnow(), color=0x2F3136)
+            
+        if status is True:
+            reason = await client.db.fetchval("SELECT reason FROM todo WHERE user_id = $1)", member.id)
+            text = f"{member} is blacklisted\nReason: {reason}"
+            
+        embed = discord.Embed(description=f"{text}", timestamp=discord.utils.utcnow(), color=0x2F3136)
 
         return await ctx.send(embed=embed)
