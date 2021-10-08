@@ -698,7 +698,7 @@ Average: {average_latency}
     @todo.command(name="remove", help="Remove a todo from your todo list", aliases=['r', 'rm'])
     async def todo_remove(self, ctx, number : int):
         await self.client.db.execute("DELETE FROM todo where number = $1",
-                                    numbert)
+                                    number)
         
         embed = discord.Embed(description=f"Successfully removed `{number}` from your todo list")
 
