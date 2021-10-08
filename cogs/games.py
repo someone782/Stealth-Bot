@@ -181,21 +181,21 @@ class Games(commands.Cog):
             if authorAnswer == "rock" and botAnswer == "rock":
                 return f":tada: It's a tie! :tada:"
             elif authorAnswer == "rock" and botAnswer == "paper":
-                return f":tada: {botName} won! :tada:"
+                return f":tada: __**{botName} WON!!!**__ :tada:"
             elif authorAnswer == "rock" and botAnswer == "scissors":
-                return f":tada: {authorName} won! :tada:"
+                return f":tada: __**{authorName} WON!!!**__ :tada:"
 
             elif authorAnswer == "paper" and botAnswer == "rock":
-                return f":tada: {authorName} won! :tada:"
+                return f":tada: __**{authorName} WON!!!**__ :tada:"
             elif authorAnswer == "paper" and botAnswer == "paper":
                 return f":tada: It's a tie! :tada:"
             elif authorAnswer == "paper" and botAnswer == "scissors":
-                return f":tada: {botName} won! :tada:"
+                return f":tada: __**{botName} WON!!!**__ :tada:"
 
             elif authorAnswer == "scissors" and botAnswer == "rock":
-                return f":tada: {botName} won! :tada:"
+                return f":tada: __**{botName} WON!!!**__ :tada:"
             elif authorAnswer == "scissors" and botAnswer == "paper":
-                return f":tada: {authorName} won! :tada:"
+                return f":tada: __**{authorName} WON!!!**__ :tada:"
             elif authorAnswer == "scissors" and botAnswer == "scissors":
                 return f":tada: It's a tie! :tada:"
 
@@ -225,11 +225,11 @@ class Games(commands.Cog):
                 
             result = rockPaperScissors(authorName=ctx.author.name, botName="Stealth Bot", authorAnswer=authorAnswer, botAnswer=botAnswer)
             
-            if result == f":tada: {ctx.author.name} won! :tada:":
+            if result == f":tada: __**{ctx.author.name} WON!!!**__ :tada:":
                 shortText = f"{str(authorAnswer).title()} beats {str(botAnswer).title()}"
                 longText = f"{str(authorAnswer).title()} beats {str(botAnswer).title()} meaning {ctx.author.name} won."
                 
-            elif result == f":tada: Stealth Bot won! :tada:":
+            elif result == f":tada: __**Stealth Bot WON!!!**__ :tada:":
                 shortText = f"{str(botAnswer).title()} beats {str(authorAnswer).title()}"
                 longText = f"{str(botAnswer).title()} beats {str(authorAnswer).title()} meaning Stealth Bot won."
                 
