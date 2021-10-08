@@ -238,8 +238,8 @@ class Games(commands.Cog):
                 longText = f"{str(botAnswer).title()} doesn't beat {str(authorAnswer).title()} and {str(authorAnswer).title()} doesn't beat {str(botAnswer).title()} meaning it's a tie."
 
             embed = discord.Embed(title=result, description=f"""
-{ctx.author.name}'s answer: {authorAnswer}
-Stealth Bot's answer: {botAnswer}
+{ctx.author.name}'s answer: {str(authorAnswer).title()}
+Stealth Bot's answer: {str(botAnswer).title()}
 [Hover over this text to see why]({msg.jump_url} '{longText}')
                                   """, timestamp=discord.utils.utcnow())
             embed.set_footer(text=shortText)
