@@ -207,7 +207,10 @@ Content:
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
-        self.client.last_message = message
+        if message.content is None:
+            self.client.last_message = "*Message did not contain any content*"
+        else:
+            self.client.last_message = message
 
     @commands.Cog.listener()
     async def on_member_join(self, member): # If a member joined the server then:
