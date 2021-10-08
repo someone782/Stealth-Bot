@@ -270,8 +270,7 @@ class Games(commands.Cog):
         sep = '\u2001'
         view = LookingToPlay(timeout=120, label=f"{sep*8}Join this game!{sep*8}")
         view.ctx = ctx
-        view.message = await ctx.send(embed=embed,
-                                      view=view, footer=False)
+        view.message = await ctx.send(embed=embed, view=view)
         await view.wait()
         player1 = ctx.author
         player2 = view.value
