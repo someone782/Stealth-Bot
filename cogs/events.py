@@ -8,6 +8,18 @@ import random
 
 def setup(client):
     client.add_cog(Events(client))
+    
+class AFKUsersEmbedPage(menus.ListPageSource):
+    def __init__(self, data):
+        self.data = data
+        super().__init__(data, per_page=20)
+        
+    async def format_page(self, menu, entries):
+        offset = menu.current_page * self.per_page
+        colors = [0x910023, 0xA523FF]
+        color = random.choice(colors)
+        embed = discord.Embed(title=f"It looks like some of the users, that you just mentioned, are AFK", description="\n".join(f'{i+1}. {v}' for i, v in enumerate(entries, start=offset)), timestamp=discord.utils.utcnow(), color=color)
+        return embed
 
 class Events(commands.Cog):
     "<:hypesquad:895688440610422900> | Just some events.. but how did you find this cog?..."
@@ -143,6 +155,7 @@ Content:
         if message.mentions:
             pinged_afk_user_ids = list(set([u.id for u in message.mentions]).intersection(self.client.afk_users))
             paginator = WrappedPaginator(prefix='', suffix='')
+            afkUsers = []
             for user_id in pinged_afk_user_ids:
                 member = message.guild.get_member(user_id)
                 if member and member.id != message.author.id:
@@ -153,11 +166,22 @@ Content:
                     minutes, seconds = divmod(remainder, 60)
                     days, hours = divmod(hours, 24)
                         
-                    paginator.add_line(f"It seems that {member.mention} has been afk for {days} days, {hours} hours, {minutes} minutes and {seconds} seconds.\nReason: {info['reason']}\n")
-
+                    afkUsers.append(f"{member.mention} has been AFK since {discord.utils.format_dt(info['start_time'], style='R')} with the reason being {info['reason']}\n")
+                    
             ctx : commands.Context = await self.client.get_context(message)
-            for page in paginator.pages:
-                await ctx.send(page, allowed_mentions=discord.AllowedMentions(replied_user=True, users=False, roles=False, everyone=False))
+                    
+            paginator = ViewMenuPages(source=AFKUsersEmbedPage(afkUsers), clear_reactions_after=True)
+            page = await paginator._source.get_page(0)
+            kwargs = await paginator._get_kwargs_from_page(page)
+            if paginator.build_view():
+                paginator.message = await ctc.send(embed=kwargs['embed'],view = paginator.build_view())
+            else:
+                paginator.message = await ctx.send(embed=kwargs['embed'])
+            await paginator.start(ctx)
+
+            # ctx : commands.Context = await self.client.get_context(message)
+            # for page in paginator.pages:
+            #     await ctx.send(page, allowed_mentions=discord.AllowedMentions(replied_user=True, users=False, roles=False, everyone=False))
                 
 #     @commands.Cog.listener()
 #     async def on_message(self, message):
