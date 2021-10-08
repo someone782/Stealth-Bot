@@ -634,7 +634,7 @@ class Info(commands.Cog):
             raise error
 
         lyrics = jsonData['lyrics']
-        artist = jsonData['artists']
+        artist = jsonData['artists']['name']
         title = jsonData['name']
         #thumbnail = jsonData['url']
         explicit = jsonData['explicit']
@@ -654,7 +654,7 @@ class Info(commands.Cog):
         await message.delete()
 
         for chunk in textwrap.wrap(lyrics, 1536, replace_whitespace=False):
-            embed = discord.Embed(title=f"{title} - {artist}", description=chunk, timestamp=discord.utils.utcnow(), color=color)
+            embed = discord.Embed(title=f"{artist} - {title}", description=chunk, timestamp=discord.utils.utcnow(), color=color)
             #embed.set_thumbnail(url=thumbnail)
             embed.set_footer(text=f"{round(ms)}ms{'' * (9-len(str(round(ms, 3))))} • Explicit? {explicitStatus} • Length: {length}", icon_url=ctx.author.avatar.url)
             
