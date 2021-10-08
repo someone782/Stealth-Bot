@@ -458,15 +458,6 @@ Average: {average_latency}
         for i in number:
             await channel.send(message)
 
-    @commands.command(aliases=['to_do'])
-    @commands.is_owner()
-    async def todo(self, ctx, *, text):
-        await self.client.db.execute("INSERT INTO todo (text, creation_date) VALUES ($1, $2) "
-                                    "ON CONFLICT (text) DO UPDATE SET creation_date = $2",
-                                    text[0:1800], ctx.message.created_at)
-
-        await ctx.send(text[0:1800])
-
     @commands.command(help="Toggles the no-prefix mode on/off", aliases=["no_prefix", "silentprefix", "silent_prefix"])
     @commands.is_owner()
     async def noprefix(self, ctx, state : str=None):
@@ -688,6 +679,30 @@ Average: {average_latency}
     async def blacklist(self, ctx):
         if ctx.invoked_subcommand is None:
             return await ctx.send("youre so retarded")
+        
+    @commands.group(aliases=['to_do'])
+    @commands.is_owner()
+    async def todo(self, ctx):
+        return await ctx.send("no?")
+        
+    @todo.command(name="add", help="Adds a todo to your todo list", aliases=['a'])
+    async def todo_add(self, ctx, number : int, text : str):
+        await self.client.db.execute("INSERT INTO todo (number, text, creation_date) VALUES ($1, $2, $3) "
+                                    "ON CONFLICT (text) DO UPDATE SET creation_date = $2",
+                                    number, text[0:1800], ctx.message.created_at)
+        
+        embed = discord.Embed(description=f"Successfully added `{text[0:1800]}` to your todo list. (Number: `{number}`)")
+
+        await ctx.send(embed=embed)
+        
+    @todo.command(name="remove", help="Remove a todo from your todo list", aliases=['r', 'rm'])
+    async def todo_remove(self, ctx, number : int):
+        await self.client.db.execute("DELETE FROM todo where number = $1",
+                                    numbert)
+        
+        embed = discord.Embed(description=f"Successfully removed `{number}` from your todo list")
+
+        await ctx.send(embed=embed)
 
     @blacklist.command(name="add", help="Adds a member to the blacklist", aliases=['a'])
     async def blacklist_add(self, ctx, member : discord.User):
