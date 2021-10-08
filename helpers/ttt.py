@@ -19,7 +19,7 @@ class LookingForButton(discord.ui.Button):
 
 class CancelGame(discord.ui.Button):
     def __init__(self, disabled : bool=False, label : str=None):
-        super().__init__(label="Cancel", style=discord.ButtonStyle.red, row=2, disabled=disabled)
+        super().__init__(label=f"{sep*8}Cancel{sep*8}", style=discord.ButtonStyle.red, row=2, disabled=disabled)
 
     async def callback(self, interaction : discord.Interaction):
         assert self.view is not None
@@ -30,7 +30,7 @@ class CancelGame(discord.ui.Button):
             
             for item in view.children:
                 item.disabled = True
-                item.label = item.label.replace("Cancel", "Cancelled!").replace("Join this game!\u2001", "The game has ended!")
+                item.label = item.label.replace(f"{sep*8}Cancel{sep*8}", "Cancelled!").replace("Join this game!\u2001", "The game has ended!")
             await view.message.edit(view=view)
             view.stop()
             
