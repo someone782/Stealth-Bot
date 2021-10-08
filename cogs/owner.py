@@ -17,7 +17,8 @@ import psutil
 import lavalink
 import random
 import itertools
-from discord.ext import commands
+from discord.ext import commands, menus
+from discord.ext.menus.views import ViewMenuPages
 import importlib
 import jishaku.modules
 import io
@@ -48,6 +49,18 @@ def get_ram_total():
 
 def get_ram_usage_pct():
     return psutil.virtual_memory().percent
+
+class BlacklitedUsersEmbedPage(menus.ListPageSource):
+    def __init__(self, data):
+        self.data = data
+        super().__init__(data, per_page=20)
+        
+    async def format_page(self, menu, entries):
+        offset = menu.current_page * self.per_page
+        colors = [0x910023, 0xA523FF]
+        color = random.choice(colors)
+        embed = discord.Embed(title=f"Blacklisted users", description="\n".join(entries), timestamp=discord.utils.utcnow(), color=color)
+        return embed
 
 class Owner(commands.Cog):
     "<:owner_crown:845946530452209734> | Commands that only the developer of this bot can use"
@@ -746,3 +759,23 @@ Average: {average_latency}
         embed = discord.Embed(description=f"{text}", timestamp=discord.utils.utcnow(), color=0x2F3136)
 
         return await ctx.send(embed=embed)
+
+    @blacklist.command(name='list', help="Sends a list of banned members", aliases=['l'])
+    async def blacklist_list(self, ctx):
+        blacklistedUsers = []
+        
+        blacklist = await self.client.db.fetch("SELECT * FROM blacklist")
+        for stuff in blacklisted:
+            user = self.client.get_user(stuff["user_id"])
+            reason = stuff["reason"]
+            
+            blacklitedUsers.append(f"{user.name} **|** {user.id} **|** [Hover over for reason]({ctx.message.jump_url} '{reason}')")
+            
+        paginator = ViewMenuPages(source=BlacklitedUsersEmbedPage(blacklitedUsers), clear_reactions_after=True)
+        page = await paginator._source.get_page(0)
+        kwargs = await paginator._get_kwargs_from_page(page)
+        if paginator.build_view():
+            paginator.message = await ctx.send(embed=kwargs['embed'],view = paginator.build_view())
+        else:
+            paginator.message = await ctx.send(embed=kwargs['embed'])
+        await paginator.start(ctx)
