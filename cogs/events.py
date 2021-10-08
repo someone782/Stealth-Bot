@@ -169,7 +169,7 @@ Content:
                         
                     afkUsers.append(f"{member.mention} has been AFK since {discord.utils.format_dt(info['start_time'], style='R')} with the reason being {info['reason']}\n")
                     
-            if afkUsers is not None:
+            if afkUsers:
                 ctx : commands.Context = await self.client.get_context(message)
                         
                 paginator = ViewMenuPages(source=AFKUsersEmbedPage(afkUsers), clear_reactions_after=True)
