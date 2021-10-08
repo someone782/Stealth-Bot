@@ -169,16 +169,19 @@ Content:
                         
                     afkUsers.append(f"{member.mention} has been AFK since {discord.utils.format_dt(info['start_time'], style='R')} with the reason being {info['reason']}\n")
                     
-            ctx : commands.Context = await self.client.get_context(message)
-                    
-            paginator = ViewMenuPages(source=AFKUsersEmbedPage(afkUsers), clear_reactions_after=True)
-            page = await paginator._source.get_page(0)
-            kwargs = await paginator._get_kwargs_from_page(page)
-            if paginator.build_view():
-                paginator.message = await ctc.send(embed=kwargs['embed'],view = paginator.build_view())
+            if afkUsers is not None:
+                ctx : commands.Context = await self.client.get_context(message)
+                        
+                paginator = ViewMenuPages(source=AFKUsersEmbedPage(afkUsers), clear_reactions_after=True)
+                page = await paginator._source.get_page(0)
+                kwargs = await paginator._get_kwargs_from_page(page)
+                if paginator.build_view():
+                    paginator.message = await ctc.send(embed=kwargs['embed'],view = paginator.build_view())
+                else:
+                    paginator.message = await ctx.send(embed=kwargs['embed'])
+                await paginator.start(ctx)
             else:
-                paginator.message = await ctx.send(embed=kwargs['embed'])
-            await paginator.start(ctx)
+                return
 
             # ctx : commands.Context = await self.client.get_context(message)
             # for page in paginator.pages:
