@@ -769,9 +769,9 @@ Average: {average_latency}
             user = self.client.get_user(stuff["user_id"])
             reason = stuff["reason"]
             
-            blacklitedUsers.append(f"{user.name} **|** {user.id} **|** [Hover over for reason]({ctx.message.jump_url} '{reason}')")
+            blacklistedUsers.append(f"{user.name} **|** {user.id} **|** [Hover over for reason]({ctx.message.jump_url} '{reason}')")
             
-        paginator = ViewMenuPages(source=BlacklitedUsersEmbedPage(blacklitedUsers), clear_reactions_after=True)
+        paginator = ViewMenuPages(source=BlacklitedUsersEmbedPage(blacklistedUsers), clear_reactions_after=True)
         page = await paginator._source.get_page(0)
         kwargs = await paginator._get_kwargs_from_page(page)
         if paginator.build_view():
