@@ -177,7 +177,7 @@ Commands usable by you (in this server):
 - [] = optional argument
 + Type help [command] for help on a command
 ```
-                            """)
+                            """, timestamp=discord.utils.utcnow(), color=color)
         embed.add_field(name=f"Category: {cog.qualified_name}", value=f"""
 {cog.description.split('|' )[0]} {cog.description.split('| ')[1]}
 ```yaml
