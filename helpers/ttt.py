@@ -98,7 +98,7 @@ class TicTacToe(discord.ui.View):
     O = 1
     Tie = 2
 
-    def __init__(self, ctx: CustomContext, player1: discord.Member, player2: discord.Member, starter: discord.User):
+    def __init__(self, ctx, player1 : discord.Member, player2 : discord.Member, starter : discord.User):
         super().__init__()
         self.current_player = starter
         self.ctx: CustomContext = ctx
