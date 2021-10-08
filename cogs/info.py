@@ -623,7 +623,7 @@ class Info(commands.Cog):
         start = time.perf_counter()
         
         song = urllib.parse.quote(search)
-        res = await self.client.session.get(f'https://some-random-api.ml/lyrics?title={song}')
+        res = await self.client.session.get(f'https://evan.lol/lyrics/search/top?q={song}')
         if not 300 > res.status >= 200:
                 return await ctx.send(f'Recieved poor status code of {res.status}')
 
@@ -634,10 +634,10 @@ class Info(commands.Cog):
             raise error
 
         lyrics = jsonData['lyrics']
-        artist = jsonData['author']
-        title = jsonData['title']
-        thumbnail = jsonData['thumbnail']['genius']
-        
+       # artist = jsonData['author']
+        title = jsonData['name']
+        thumbnail = jsonData['url']
+
         end = time.perf_counter()
         
         ms = (end - start) * 1000
@@ -648,7 +648,7 @@ class Info(commands.Cog):
         await message.delete()
 
         for chunk in textwrap.wrap(lyrics, 2048, replace_whitespace=False):
-            embed = discord.Embed(title=f"{title} - {artist}", description=chunk, timestamp=discord.utils.utcnow(), color=color)
+            embed = discord.Embed(title=f"{title}", description=chunk, timestamp=discord.utils.utcnow(), color=color)
             embed.set_thumbnail(url=thumbnail)
             embed.set_footer(text=f"{round(ms)}ms{' ' * (9-len(str(round(ms, 3))))}", icon_url=ctx.author.avatar.url)
             
