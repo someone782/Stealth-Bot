@@ -5,6 +5,7 @@ from discord.utils import get
 import random
 from jishaku.paginators import WrappedPaginator
 import random
+from AntiSpam import AntiSpamHandler
 
 def setup(client):
     client.add_cog(Events(client))
@@ -14,6 +15,7 @@ class Events(commands.Cog):
     def __init__(self, client):
         self.hidden = True
         self.client = client
+        self.handler = AntiSpamHandler(self.client)
         if not hasattr(self.client, 'commands_used'):
             self.client.commands_used = 0
         if not hasattr(self.client, 'messages'):
@@ -158,6 +160,20 @@ Content:
             ctx : commands.Context = await self.client.get_context(message)
             for page in paginator.pages:
                 await ctx.send(page, allowed_mentions=discord.AllowedMentions(replied_user=True, users=False, roles=False, everyone=False))
+                
+                
+    @commands.Cog.listener('on_message')
+    async def on_spam(self, message):
+        if not message.guild:
+            return
+        
+        if message.author == self.client.user:
+            return
+        
+        if message.guild.id is not 799330949686231050:
+            return
+        
+        await self.handler.propagate(message)
                 
 #     @commands.Cog.listener()
 #     async def on_message(self, message):

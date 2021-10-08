@@ -246,7 +246,7 @@ client = StealthBot(
     shard_count=2)
 
 client.tracker = DiscordUtils.InviteTracker(client)
-client.owner_ids = [564890536947875868, 555818548291829792] # 349373972103561218 (LeoCx1000) # 555818548291829792 (Vicente0670)
+client.owner_ids = [564890536947875868, 555818548291829792, 349373972103561218] # 349373972103561218 (LeoCx1000) # 555818548291829792 (Vicente0670)
 client.launch_time = discord.utils.utcnow()
 client.no_prefix = False
 client.maintenance = False

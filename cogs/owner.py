@@ -705,7 +705,7 @@ Average: {average_latency}
         await ctx.send(embed=embed)
 
     @blacklist.command(name="add", help="Adds a member to the blacklist", aliases=['a'])
-    async def blacklist_add(self, ctx, member : discord.User, reason : str):
+    async def blacklist_add(self, ctx, member : discord.User, *, reason : str):
 
         await self.client.db.execute(
             "INSERT INTO blacklist(user_id, is_blacklisted, reason) VALUES ($1, $2, $3) "
