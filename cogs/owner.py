@@ -765,7 +765,7 @@ Average: {average_latency}
         blacklistedUsers = []
         
         blacklist = await self.client.db.fetch("SELECT * FROM blacklist")
-        for stuff in blacklisted:
+        for stuff in blacklist:
             user = self.client.get_user(stuff["user_id"])
             reason = stuff["reason"]
             
