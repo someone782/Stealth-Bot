@@ -634,9 +634,9 @@ class Info(commands.Cog):
             raise error
 
         lyrics = jsonData['lyrics']
-        artist = jsonData['artists']['name']
+        artist = jsonData['artists']["name"]
         title = jsonData['name']
-        thumbnail = jsonData['icon']['url']
+        thumbnail = jsonData['icon']["url"]
         explicit = jsonData['explicit']
         length = jsonData['length']
         explicitStatus = "No"
