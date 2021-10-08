@@ -368,10 +368,12 @@ Commands usable by you (in this server): {len(await self.filter_commands(cog.get
 - [] = optional argument
 + Type {prefix}help [command] for help on a command
 ```
-`Description:` {cog.description.split('|' )[0]} `{cog.description.split('| ')[1]}`
+
+Category: {cog.qualified_name}
+{cog.description}
 
 __**Available commands**__ **[{len(cog.get_commands())}]**
-```yaml
+```css
 {val}
 ```
                                 """)
