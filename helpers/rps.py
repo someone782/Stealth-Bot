@@ -5,7 +5,7 @@ from discord import Interaction
 class ObjectSelector(discord.ui.Select):
     def __init__(self):
         options = [
-            discord.SelectOption(label="Rock", description="Rock beats Scissors", emoji=":rock: "),
+            discord.SelectOption(label="Rock", description="Rock beats Scissors", emoji=":rock:"),
             discord.SelectOption(label="Paper", description="Paper beats Rock", emoji=":newspaper:"),
             discord.SelectOption(label="Scissors", description="Scissors beats Paper", emoji=":scissors:")
         ]
