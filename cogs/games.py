@@ -246,10 +246,8 @@ Stealth Bot's answer: {botAnswer}
 
             await ctx.reply(embed=embed)
             
-    @commands.max_concurrency(1, commands.BucketType.user, wait=False)
-    @commands.command(aliases=['ttt', 'tic'])
+    @commands.command(help="Starts a Tic-Tac-Toe game",aliases=['ttt', 'tic'])
     async def tictactoe(self, ctx):
-        """Starts a tic-tac-toe game."""
         embed = discord.Embed(description=f":mag_right: {ctx.author.name} is looking to play Tic-Tac-Toe")
         embed.set_thumbnail(url='https://i.imgur.com/DZhQwnD.gif')
         
@@ -263,4 +261,4 @@ Stealth Bot's answer: {botAnswer}
         if player2:
             starter = random.choice([player1, player2])
             ttt = TicTacToe(ctx, player1, player2, starter=starter)
-            ttt.message = await view.message.edit(content=f"#️⃣ | {starter.name} goes first", view=ttt, embed=None)
+            ttt.message = await view.message.edit(content=f"#️⃣ {starter.name} goes first", view=ttt, embed=None)
