@@ -263,7 +263,7 @@ class Games(commands.Cog):
             ttt.message = await view.message.edit(content=f'#️⃣ {starter.name} goes first', view=ttt, embed=None)
             await ttt.wait()
 
-    @commands.command(help="Starts a Rock-Paper-Scissors game", aliases=['rps', 'rock_paper_scissors'])
+    @commands.command(help="Starts a Rock-Paper-Scissors game", aliases=['rps', 'rock-paper-scissors'])
     async def rock_paper_scissors(self, ctx):
         embed = discord.Embed(description=f"🔎 {ctx.author.name} is looking to play Rock-Paper-Scissors!")
 
