@@ -312,6 +312,10 @@ Uptime: {uptime}
         description = command.help
         aliastext = "Aliases: ❌ This command has no aliases."
         descriptiontext = "Description: ❌ This command has no description."
+        usable_by_you = "No"
+        owner_only = "No"
+        slowmode = "No"
+        permission_needed = "None"
         
         if alias:
             aliastext = f"Aliases: {', '.join(alias)}"
@@ -323,10 +327,6 @@ Uptime: {uptime}
         with contextlib.suppress(commands.CommandError):
             if await command.can_run(self.context):
                 usable_by_you = 'Yes'
-                
-        owner_only = 'No'
-        if 'is_owner' in command.checks:
-            owner_only = 'Yes'
                 
         embed = discord.Embed(title=f"Help - {command}", description=f"""
 ```diff
@@ -341,11 +341,12 @@ Category: {command.cog_name}
 ```
                                   """)
         embed.add_field(name="Checks", value=f"""
+Checks that the 
 ```yaml
 Usable by you: {usable_by_you}
 Owner only: {owner_only}
-Slowmode: No
-Permissions needed: No
+Slowmode: {slowmode}
+Permissions needed: {permission_needed}
 ```
                         """)
 
