@@ -239,20 +239,8 @@ class NotCPvP(commands.CheckFailure):
 
 def is_cpvp_server():
     def predicate(ctx):
-        if ctx.guild.id == 882341595528175686: return True
+        if ctx.guild.id == 882341595528175686:
+            return True
         else:
             raise NotCPvP("You can only use this command in `ClassicPvP`!\nhttps://discord.gg/afBDa2Kqc9")
-    return commands.check(predicate)
-
-#blacklisted_ids = []
-
-class Blacklisted(commands.CheckFailure):
-    pass
-
-def is_user_blacklisted():
-    blacklisted_ids = []
-    def predicate(ctx):
-        if ctx.author.id not in blacklisted_ids: return True
-        else:
-            raise Blacklisted("It appears that you're blacklisted from this bot. Contact Ender2K89#9999 if you think this is a mistake.")
     return commands.check(predicate)
