@@ -693,10 +693,11 @@ Average: {average_latency}
         if ctx.invoked_subcommand is None:
             return await ctx.send("youre so retarded")
         
-    @commands.group(aliases=['to_do'])
+    @commands.group(invoke_without_command=True, help="Todo command", aliases=['to_do'])
     @commands.is_owner()
     async def todo(self, ctx):
-        return await ctx.send("no?")
+        if ctx.invoked_subcommand is None:
+            return await ctx.send("youre so retarded")
         
     @todo.command(name="add", help="Adds a todo to your todo list", aliases=['a'])
     async def todo_add(self, ctx, number : int, text : str):
@@ -729,7 +730,9 @@ Average: {average_latency}
             
             todoList.append(f"{number}. {text} ({discord.utils.format_dt(creation_date, style='R')})")
             
-        await ctx.send("\n".join(todoList))
+        embed = discord.Embed(title=f"{ctx.author.name}'s todo list", description="\n".join(todoList))
+            
+        await ctx.send(embed=embed)
 
     @blacklist.command(name="add", help="Adds a member to the blacklist", aliases=['a'])
     async def blacklist_add(self, ctx, member : discord.User, *, reason : str):
