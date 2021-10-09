@@ -50,28 +50,40 @@ def get_member_badges(member):
     flags = dict(author_flags)
     emoji_flags = ""
     if flags['staff'] is True:
-        emoji_flags = f"{emoji_flags} <:staff:860644241800429639>"
+        emoji_flags = f"{emoji_flags} <:staff:858326975869485077>"
+        
     if flags['partner'] is True:
-        emoji_flags = f"{emoji_flags} <:partnernew:860644259107569685>"
+        emoji_flags = f"{emoji_flags} <:partnernew:895688440933416980>"
+        
     if flags['hypesquad'] is True:
-        emoji_flags = f"{emoji_flags} <:hypesquad:860644277687943208:>"
+        emoji_flags = f"{emoji_flags} <:hypesquad:895688440610422900>"
+        
     if flags['bug_hunter'] is True:
-        emoji_flags = f"{emoji_flags} <:bughunter:860644408353357894>"
+        emoji_flags = f"{emoji_flags} <:bughunter:895688440534937620>"
+        
     if flags['hypesquad_bravery'] is True:
-        emoji_flags = f"{emoji_flags} <:bravery:860644425319710760>"
+        emoji_flags = f"{emoji_flags} <:bravery:895688440513974362>"
+        
     if flags['hypesquad_brilliance'] is True:
-        emoji_flags = f"{emoji_flags} <:brilliance:860644445435199539>"
+        emoji_flags = f"{emoji_flags} <:brilliance:895688440132284457>"
+        
     if flags['hypesquad_balance'] is True:
-        emoji_flags = f"{emoji_flags} <:balance:860644467933839410>"
+        emoji_flags = f"{emoji_flags} <:balance:895688440207777843>"
+        
     if flags['early_supporter'] is True:
-        emoji_flags = f"{emoji_flags} <:supporter:860644501067268106>"
+        emoji_flags = f"{emoji_flags} <:supporter:896381619731071006>"
+        
     if member.premium_since:
-        emoji_flags = f"{emoji_flags} <:nitro:878983758970257428> <:boost:858326699234164756>"
+        emoji_flags = f"{emoji_flags} <:nitro:895688440702726175> <:boost:858326699234164756>"
+        
     if flags['bug_hunter_level_2'] is True:
-        emoji_flags = f"{emoji_flags} <:bughunter_gold:850843414953984041>" #not from bots.gg
+        emoji_flags = f"{emoji_flags} <:bughunter_gold:895688440610422899>"
+        
     if flags['verified_bot_developer'] is True:
-        emoji_flags = f"{emoji_flags} <:earlybotdev:850843591756349450>" #not from bots.gg
+        emoji_flags = f"{emoji_flags} <:earlybotdev:895688440547520513>"
+        
     if emoji_flags == "": emoji_flags = None
+    
     return emoji_flags
 
 def get_server_region_emote(server : discord.Guild):
@@ -181,47 +193,6 @@ def get_server_region(server : discord.Guild):
         return "VIP US West"
     else:
         return "Unknown region"
-    
-def generate_youtube_bar(position: int, duration: int, bar_length: int) -> str:
-    played = int(position/duration*bar_length)
-    missing = int(bar_length-played)
-
-    bars = (
-        ('<a:bar_start_full:891218466172993536>',
-         '<a:bar_start_mid:891218253513371679>',
-         None),
-        ('<a:bar_center_full:891218254553575424>',
-         '<a:bar_center_mid:891218253827940472>',
-         '<a:bar_center_empty:891218254343856168>'),
-        ('<a:bar_end_full:891232339437453343>',
-         '<a:bar_end_mid:891232862400028693>',
-         '<a:bar_end_empty:891218253433679885>'
-         )
-    )
-    bar = []
-    if played == 0 and missing > 0:
-        bar += [bars[0][1]]
-        bar += [bars[1][2]*(missing-2)]
-        bar += [bars[2][2]]
-
-    elif played > 0 and missing == 0:
-        bar += [bars[0][0]]
-        bar += [bars[1][0]*(played-2)]
-        bar += [bars[2][1]]
-
-    elif played > 0 and missing > 0:
-        bar += [bars[0][0]]
-        bar += [bars[1][0]*(played-2)]
-        bar += [bars[1][1]]
-        bar += [bars[1][2]*(missing-1)]
-        bar += [bars[2][2]]
-
-    elif played > missing:
-        bar += [bars[0][0]]
-        bar += [bars[1][0]*(bar_length-2)]
-        bar += [bars[2][0]]
-
-    return ''.join(bar)
 
 class NotSH(commands.CheckFailure):
     pass
