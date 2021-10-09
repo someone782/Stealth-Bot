@@ -12,7 +12,7 @@ import aiohttp
 from typing import Optional
 import typing
 from discord.ext import commands, menus
-
+import pyshorteners as sh
 from discord.ext.menus.views import ViewMenuPages
 
 def setup(client):
@@ -59,6 +59,11 @@ class Misc(commands.Cog):
     ":gear: | Miscellaneous commands"
     def __init__(self, client):
         self.client = client
+        self.shortener = sh.Shortener()
+        
+    @commands.command(help="Shortens a URL using TinyURL", aliases=['tiny-url', 'tiny_url', 'shortenurl', 'shorten-url', 'shorten_url'])
+    async def tinyurl(self, ctx, url):
+        await ctx.send(self.shortener.tinyurl.short(url))
     
     @commands.command()
     async def serverlist(self, ctx):
