@@ -106,7 +106,7 @@ class ErrorHandler(commands.Cog):
 
         elif isinstance(error, errors.AuthorBlacklisted):
             reason = await self.client.db.fetchval("SELECT reason FROM blacklist WHERE user_id = $1", ctx.author.id)
-            message = f"It appears that you're blacklisted from this bot with the reason being:\n{reason}\n*If you think this is a mistake, contact Ender2K89*"
+            message = f"It appears that you're blacklisted from this bot with the reason being:{reason}\n*If you think this is a mistake, contact Ender2K89*"
             
         elif isinstance(error, errors.BotMaintenance):
             message = f"The bot is in maintenance mode meaning no commands work."
@@ -117,8 +117,8 @@ class ErrorHandler(commands.Cog):
         elif isinstance(error, helpers.NotSH):
             message = f"You can only use this command in `Stealth Hangout`!\ndiscord.gg/ktkXwmD2kF"
 
-        elif isinstance(error, helpers.NotCSMP):
-            message = f"You can only use this command in `ClassicSMP`!\nhttps://discord.gg/afBDa2Kqc9"
+        elif isinstance(error, helpers.NotCPvP):
+            message = f"You can only use this command in `ClassicPvP`!\nhttps://discord.gg/afBDa2Kqc9"
 
         elif isinstance(error, errors.TooLongPrefix):
             message = f"Prefixes can only be up to 50 characters!"

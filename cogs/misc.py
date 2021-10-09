@@ -357,10 +357,10 @@ class Misc(commands.Cog):
                 return
                 # await member.add_roles(discord.utils.get(member.guild.roles, name=role))
 
-    @commands.command(help="Shows the server address and port of ClassicSMP", aliases=['address', 'classicsmp'])
-    @helpers.is_csmp_server()
+    @commands.command(help="Shows the server address and port of ClassicPvP", aliases=['address', 'classicpvp'])
+    @helpers.is_cpvp_server()
     async def ip(self, ctx):
-        embed = discord.Embed(title="ClassicSMP IP", description="""
+        embed = discord.Embed(title="ClassicPvP IP", description="""
 ```diff
 - Java Edition:
 + Server address: play.classic-smp.com
