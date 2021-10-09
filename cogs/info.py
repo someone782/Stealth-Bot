@@ -337,14 +337,17 @@ Uptime: {uptime}
 Usage: {self.get_minimal_command_signature(command)}
 {aliastext}
 {descriptiontext}
+Category: {command.cog.qualified_name}
 ```
+                                  """)
+        embed.add_field(name="Checks", value=f"""
 ```yaml
 Usable by you: {usable_by_you}
 Owner only: {owner_only}
 Slowmode: No
 Permissions needed: No
 ```
-                                  """)
+                        """)
 
         if command.brief:
             embed.set_image(url=command.brief)
