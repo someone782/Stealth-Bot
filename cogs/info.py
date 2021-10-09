@@ -337,7 +337,7 @@ Uptime: {uptime}
 Usage: {self.get_minimal_command_signature(command)}
 {aliastext}
 {descriptiontext}
-Category: {command.cog.qualified_name}
+Category: {command.cog.name}
 ```
                                   """)
         embed.add_field(name="Checks", value=f"""
