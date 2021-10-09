@@ -794,16 +794,16 @@ Mention: {member.mention}
 
 :robot: Bot?: {botStatus}
 Pending verification?: {pendingStatus}
-<:afk:894886040576348190> AFK?: {afkStatus}
+AFK?: {afkStatus}
 Blacklisted?: {blacklistedStatus}
 
 Avatar url: {avatar}
 Banner url: {banner}
 
-<a:nitro_wumpus:857636144875175936> Boosting: {premiumStatus}
-<:invite:860644752281436171> Created: {discord.utils.format_dt(member.created_at, style="f")} ({discord.utils.format_dt(member.created_at, style="R")})
-<:member_join:596576726163914752> Joined: {discord.utils.format_dt(member.joined_at, style="f")} ({discord.utils.format_dt(member.joined_at, style="R")})
-<:moved:848312880666640394> Join position:
+<:boost:858326699234164756> Boosting: {premiumStatus}
+<:invite:895688440639799347> Created: {discord.utils.format_dt(member.created_at, style="f")} ({discord.utils.format_dt(member.created_at, style="R")})
+<:joined:895688440786595880> Joined: {discord.utils.format_dt(member.joined_at, style="f")} ({discord.utils.format_dt(member.joined_at, style="R")})
+<:moved:895688440543342625> Join position:
 ```yaml
 {join_seq}
 ```
@@ -814,10 +814,10 @@ Mutual guilds: {len(member.mutual_guilds)}
 :video_game: Current activity: {str(member.activity.type).split('.')[-1].title() if member.activity else 'Not playing'} {member.activity.name if member.activity else ''}
 <:discord:877926570512236564> Client: {desktopStatus} **|** {webStatus} **|** {mobileStatus}
 
-<:role:876507395839381514> Top Role: {member.top_role.mention}
-<:role:876507395839381514> Roles: {roles}
-<:store_tag:860644620857507901> Staff permissions: {perms}
-<:store_tag:860644620857507901> Badges: {badges}
+<:role:895688440513974365> Top Role: {member.top_role.mention}
+<:role:895688440513974365> Roles: {roles}
+<:store_tag:896379579973894155> Staff permissions: {perms}
+<:store_tag:896379579973894155> Badges: {badges}
 Acknowledgments: {acknowledgments}
 
 :rainbow: Color: {member.color}
