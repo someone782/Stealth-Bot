@@ -121,8 +121,9 @@ def count_python(root: str) -> int:
     return sum(reading_recursive(root))
 
 class Dropdown(discord.ui.Select):
-    def __init__(self, ctx):
+    def __init__(self, ctx, view):
         self.ctx = ctx
+        self.view = view
         if ctx.channel.is_nsfw() == True:
             options = [
                 discord.SelectOption(label="Info", description="All informative commands like serverinfo, userinfo and more!", emoji="<:info:888768239889424444>"),
@@ -158,8 +159,8 @@ class Dropdown(discord.ui.Select):
     async def callback(self, interaction: discord.Interaction):
         cog = self.ctx.bot.get_cog(self.values[0])
         
-        if cog.qualified_name.lower() == "nsfw" and ctx.channel.is_nsfw() == False: # idk how okay
-            raise commands.NSFWChannelRequired(ctx.channel)
+        if cog.qualified_name.lower() == "nsfw" and self.ctx.channel.is_nsfw() == False: # you forgor 'self'
+            raise commands.NSFWChannelRequired(self.ctx.channel)
         
         entries = cog.get_commands()
         command_signatures = [self.get_minimal_command_signature(c) for c in entries]
@@ -185,7 +186,7 @@ Commands usable by you (in this server):
 ```
                         """)
         
-        await interaction.message.edit(embed=embed)
+        await interaction.message.edit(embed=embed, view = self.view) #you need to update the view to listen to further interaction
 
 class VoteButtons(discord.ui.View):
     def __init__(self):
@@ -197,7 +198,7 @@ class Stuff(discord.ui.View):
     def __init__(self, ctx):
         super().__init__()
         self.ctx = ctx
-        self.add_item(Dropdown(ctx))
+        self.add_item(Dropdown(ctx, self))
         url = "https://discord.com/api/oauth2/authorize?client_id=760179628122964008&permissions=8&scope=bot"
         self.add_item(discord.ui.Button(emoji="<:invite:895688440639799347>", label='Invite me', url=url))
         self.add_item(discord.ui.Button(emoji="<:github:895688440492986389>", label='Source code', url="https://github.com/Ender2K89/Stealth-Bot"))
@@ -212,16 +213,16 @@ class Stuff(discord.ui.View):
         await interaction.message.delete()
         
     async def interaction_check(self, interaction: discord.Interaction):
-            if interaction.user.id != self.ctx.author.id:
+            if not interaction.user == self.ctx.author:
                 colors = [0x910023, 0xA523FF]
                 color = random.choice(colors)
                 embed = discord.Embed(description="This isn't your menu.", timestamp=discord.utils.utcnow(), color=color)
                 await interaction.response.send_message(embed=embed, ephemeral=True)
-                return False
-            
-            else:
-                self.stop()
-                return True
+                #return False is not need of that cuz we can just return interaction.user == self.ctx.author
+            return interaction.user == self.ctx.author
+            # else:
+            #     self.stop() # self.stop() would stop listening to the components after one interaction 
+            #     return True
             
     async def on_timeout(self):
         for item in self.children:
@@ -299,8 +300,10 @@ Uptime: {uptime}
         """)
 
         embed.set_footer(text=f"Suggested command: {prefix}{random.choice(list(self.context.bot.commands))} • Credits given in {prefix}credits")
+        view = Stuff(ctx)
 
-        await ctx.send(embed=embed, view=Stuff(ctx))
+
+        view.message = await ctx.send(embed=embed, view=view) #without this line 233 would not work
 
 
     async def send_command_help(self, command):
