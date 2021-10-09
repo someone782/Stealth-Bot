@@ -123,7 +123,7 @@ def count_python(root: str) -> int:
 class Dropdown(discord.ui.Select):
     def __init__(self, ctx, view):
         self.ctx = ctx
-        self.view = view
+        self.view_ = view # i hope that works
         if ctx.channel.is_nsfw() == True:
             options = [
                 discord.SelectOption(label="Info", description="All informative commands like serverinfo, userinfo and more!", emoji="<:info:888768239889424444>"),
@@ -186,7 +186,7 @@ Commands usable by you (in this server):
 ```
                         """)
         
-        await interaction.message.edit(embed=embed, view = self.view) #you need to update the view to listen to further interaction
+        await interaction.message.edit(embed=embed, view = self.view_) #you need to update the view to listen to further interaction
 
 class VoteButtons(discord.ui.View):
     def __init__(self):
