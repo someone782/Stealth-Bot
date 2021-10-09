@@ -700,7 +700,7 @@ Average: {average_latency}
             return await ctx.send("youre so retarded")
         
     @todo.command(name="add", help="Adds a todo to your todo list", aliases=['a'])
-    async def todo_add(self, ctx, number : int, text : str):
+    async def todo_add(self, ctx, number : int, *, text : str):
         await self.client.db.execute("INSERT INTO todo (number, text, creation_date) VALUES ($1, $2, $3) "
                                     "ON CONFLICT (text) DO UPDATE SET creation_date = $3",
                                     number, text[0:1800], ctx.message.created_at)
