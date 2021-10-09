@@ -716,6 +716,20 @@ Average: {average_latency}
         embed = discord.Embed(description=f"Successfully removed `{number}` from your todo list")
 
         await ctx.send(embed=embed)
+        
+    @todo.command(name='list', help="Sends a list of your todos", aliases=['l'])
+    async def todo_list(self, ctx):
+        todoList = []
+        
+        todo = await self.client.db.fetch("SELECT * FROM todo")
+        for stuff in todo:
+            number = stuff["number"]
+            text = stuff["text"]
+            creation_date = stuff["creation_date"]
+            
+            todoList.append(f"{number}. {text} ({discord.utils.format_dt(creation_date, style='R')})")
+            
+        await ctx.send(todoList)
 
     @blacklist.command(name="add", help="Adds a member to the blacklist", aliases=['a'])
     async def blacklist_add(self, ctx, member : discord.User, *, reason : str):
