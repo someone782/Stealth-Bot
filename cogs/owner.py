@@ -729,7 +729,7 @@ Average: {average_latency}
             
             todoList.append(f"{number}. {text} ({discord.utils.format_dt(creation_date, style='R')})")
             
-        await ctx.send(todoList)
+        await ctx.send("\n".join(todoList))
 
     @blacklist.command(name="add", help="Adds a member to the blacklist", aliases=['a'])
     async def blacklist_add(self, ctx, member : discord.User, *, reason : str):
