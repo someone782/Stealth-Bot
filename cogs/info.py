@@ -1085,7 +1085,7 @@ Created at: {discord.utils.format_dt(emoji.created_at, style="f")} ({discord.uti
 
         embed = discord.Embed(title=f"{self.client.user.name}", description=f"""
 <:members:858326990725709854> Members: {len(self.client.users)} (:robot: {len(list(filter(lambda m : m.bot, self.client.users)))})
-<:servers:870152102759006208> Servers: {len(self.client.guilds)}
+<:servers:895688440690147371> Servers: {len(self.client.guilds)}
 <:text_channel:876503902554578984> Channels: <:text_channel:876503902554578984> {text_channels} <:voice:860330111377866774> {voice_channels} <:category:882685952999428107> {categories} <:stagechannel:824240882793447444> {stage_channels} <:threadnew:833432474347372564> {threads}
 
 Prefixes:
