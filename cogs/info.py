@@ -909,9 +909,11 @@ Acknowledgments: {acknowledgments}
         if server.premium_tier == 1:
             levelEmoji = "<:Level1_guild:883072977430794240>"
         elif server.premium_tier == 2:
-            levelEmoji = "<:Level2_guild:883073003984916491>"
+            levelEmoji = "<:Level2_guild:895688440589484074>"
+        elif server.premium_tier == 3:
+            levelEmoji = "<:Level3_guild:895688440568483871>"
         else:
-            levelEmoji = "<:Level3_guild:883073034817245234>"
+            levelEmoji = "<:Level0_guild:895688440492986390> "
 
         verification_level1 = str(server.verification_level)
         verification_level = verification_level1.capitalize()
@@ -942,7 +944,7 @@ Acknowledgments: {acknowledgments}
 :robot: Bots: {len(list(filter(lambda m: m.bot, server.members)))}
 <:owner_crown:845946530452209734> Owner: {server.owner}
 <:members:858326990725709854> Max members: {server.max_members}
-<:bans:878324391958679592> Banned members: {bannedMembers}
+Banned members: {bannedMembers}
 
 {verificationEmote} Verification level: {verification_level}
 <:channel_nsfw:585783907660857354> Explicit content filter: {explictContentFilter}
