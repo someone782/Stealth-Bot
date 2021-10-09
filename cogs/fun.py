@@ -798,6 +798,19 @@ Original text: {text}
         """)
         
         await ctx.send(embed=embed)
+        
+    @commands.command(
+        help="Catches someone",
+        aliases=['cag'])
+    async def catch(self, ctx):
+        def check(m):
+            return m.channel.id == ctx.channel.id and m.author.id == ctx.author.id
+        
+        await ctx.send("https://media.discordapp.net/attachments/879251951714467840/896293818096291840/Sv6kz8f.png", reply=False)
+        
+        await self.client.wait_for(event='message', check=check)
+        
+        await ctx.send("https://media.discordapp.net/attachments/879251951714467840/896297890396389377/wvUPp3d.png", reply=False)
 
     @commands.command(
         help="OOF's the person you mentioned",
