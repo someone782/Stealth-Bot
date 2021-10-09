@@ -241,7 +241,7 @@ def is_cpvp_server():
     def predicate(ctx):
         if ctx.guild.id == 882341595528175686: return True
         else:
-            raise NotCSMP("You can only use this command in `ClassicPvP`!\nhttps://discord.gg/afBDa2Kqc9")
+            raise NotCPvP("You can only use this command in `ClassicPvP`!\nhttps://discord.gg/afBDa2Kqc9")
     return commands.check(predicate)
 
 #blacklisted_ids = []
