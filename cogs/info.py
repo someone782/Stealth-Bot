@@ -1612,15 +1612,21 @@ URL: [Click here]({message.jump_url}/ 'Jump URL')
     @commands.command(help="Shows you who helped with the making of this bot", aliases=['credit'])
     async def credits(self, ctx):
         embed = discord.Embed(title="Credits", description="""
-```yaml
-Owner: Ender2K89#9999
-Helped with a lot: LeoCx1000#9999
-Did some PRs on my github: Someone#5555
-Main help command page inspired by: Charles#5244
-Made music cog: DaPandaOfficial🐼#5684
-A lot of command ideas: Vicente0670 YT#0670
-A lot of command ideas too: ROLEX#0009
-Tested verify command: Eiiknostv#2016
+```diff
++ Ender2K89#9999 (564890536947875868)
+- Owner of the bot
+
++ LeoCx1000#9999 (349373972103561218)
+- Helped with a lot
+
++ Someone#5555 (422854944857784322) and SHERLOCK#7309 (428812756456570882)
+- Made some PR's on the github
+
++ DaPandaOfficial🐼#5684 (383946213629624322)
+- Made the muic cog
+
++ Vicente0670 YT#0670 (555818548291829792) and ROLEX#0009 (531179463673774080)
+- Gave me some command ideas
 ```
         """)
 
